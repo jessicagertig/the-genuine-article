@@ -1,0 +1,97 @@
+@import "normalize.css";
+@import url('https://fonts.googleapis.com/css2?family=Bellota+Text:ital,wght@0,300;0,400;0,700;1,400&family=Goudy+Bookletter+1911&display=swap');
+
+html { 
+  font-family: 'Bellota Text', cursive;
+  font-family: 'Goudy Bookletter 1911', serif;
+}
+
+@supports (font-variation-settings: normal) {
+  html { 
+    font-family: 'Bellota Text', cursive;
+    font-family: 'Goudy Bookletter 1911', serif;
+    // font-feature-settings: ;
+  }
+}
+
+body,
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+p {
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  padding: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  font-size: 0.875rem;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}

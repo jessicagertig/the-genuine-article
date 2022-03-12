@@ -74,3 +74,232 @@ const spacing = {
   "64": "16rem",
   auto: "auto",
 };
+
+function spacingFromSize(size) {
+  let sizeString = size.toString();
+  if (sizeString.charAt(0) === "-") {
+    return "-" + spacing[sizeString.substr(1)];
+  } else return spacing[sizeString];
+}
+
+const typeScale = {
+  xs: css`
+    font-size: 0.75rem;
+  `,
+  sm: css`
+    font-size: 0.875rem;
+  `,
+  base: css`
+    font-size: 1rem;
+  `,
+  lg: css`
+    font-size: 1.125rem;
+  `,
+  xl: css`
+    font-size: 1.25rem;
+  `,
+  xxl: css`
+    font-size: 1.5rem;
+  `,
+  xxxl: css`
+    font-size: 1.875rem;
+  `,
+};
+
+const breakpoints: { [index: string]: number } = {
+  md: 480,
+  lg: 768,
+  xl: 1024,
+};
+
+const mq = Object.keys(breakpoints)
+  .map((key) => [key, breakpoints[key]] as [string, number])
+  .reduce((prev, [key, breakpoint]) => {
+    prev[key] = `@media (min-width: ${breakpoint}px)`;
+    return prev;
+  }, {} as { [index: string]: string });
+
+  const theme = {
+    color,
+    spacing,
+    mq,
+  
+    // Size
+    h: function(size) {
+      return css`
+        height: ${spacing[size.toString()]};
+      `;
+    },
+    w: function(size) {
+      return css`
+        width: ${spacing[size.toString()]};
+      `;
+    },
+  
+    // Position
+    l: function(size) {
+      return css`
+        left: ${spacingFromSize(size)};
+      `;
+    },
+    r: function(size) {
+      return css`
+        right: ${spacingFromSize(size)};
+      `;
+    },
+    t: function(size) {
+      return css`
+        top: ${spacingFromSize(size)};
+      `;
+    },
+    b: function(size) {
+      return css`
+        bottom: ${spacingFromSize(size)};
+      `;
+    },
+  
+    // Margins
+    m: function(size) {
+      return css`
+        margin: ${spacingFromSize(size)};
+      `;
+    },
+    ml: function(size) {
+      return css`
+        margin-left: ${spacingFromSize(size)};
+      `;
+    },
+    mr: function(size) {
+      return css`
+        margin-right: ${spacingFromSize(size)};
+      `;
+    },
+    mt: function(size) {
+      return css`
+        margin-top: ${spacingFromSize(size)};
+      `;
+    },
+    mb: function(size) {
+      return css`
+        margin-bottom: ${spacingFromSize(size)};
+      `;
+    },
+    mx: function(size) {
+      return css`
+        margin-left: ${spacingFromSize(size)};
+        margin-right: ${spacingFromSize(size)};
+      `;
+    },
+    my: function(size) {
+      return css`
+        margin-top: ${spacingFromSize(size)};
+        margin-bottom: ${spacingFromSize(size)};
+      `;
+    },
+  
+    // Padding
+    p: function(size) {
+      return css`
+        padding: ${spacing[size.toString()]};
+      `;
+    },
+    pl: function(size) {
+      return css`
+        padding-left: ${spacing[size.toString()]};
+      `;
+    },
+    pr: function(size) {
+      return css`
+        padding-right: ${spacing[size.toString()]};
+      `;
+    },
+    pt: function(size) {
+      return css`
+        padding-top: ${spacing[size.toString()]};
+      `;
+    },
+    pb: function(size) {
+      return css`
+        padding-bottom: ${spacing[size.toString()]};
+      `;
+    },
+    px: function(size) {
+      var sizeKey = size.toString();
+      return css`
+        padding-left: ${spacing[sizeKey]};
+        padding-right: ${spacing[sizeKey]};
+      `;
+    },
+    py: function(size) {
+      var sizeKey = size.toString();
+      return css`
+        padding-top: ${spacing[sizeKey]};
+        padding-bottom: ${spacing[sizeKey]};
+      `;
+    },
+
+    text: {
+      ...typeScale,
+  
+      // Font Weights
+      normal: css`
+        font-weight: 400;
+      `,
+      medium: css`
+        font-weight: 500;
+      `,
+      semibold: css`
+        font-weight: 600;
+      `,
+      bold: css`
+        font-weight: 700;
+      `,
+  
+      // Font Colors
+      primary: css`
+      color: ${color.black};
+    `,
+    secondary: css`
+      color: ${color.gray[600]};
+    `,
+    // Headings
+    h1: css`
+      font-weight: 700;
+      ${typeScale.xxxl};
+    `,
+    h2: css`
+      font-weight: 700;
+      ${typeScale.xxl};
+    `,
+    h3: css`
+      font-weight: 700;
+      ${typeScale.xl};
+    `,
+    h4: css`
+      font-weight: 700;
+      ${typeScale.lg};
+    `,
+    h5: css`
+      font-weight: 700;
+      ${typeScale.base};
+    `,
+    h6: css`
+      font-weight: 700;
+      ${typeScale.sm};
+    `,
+  },
+
+  rounded: {
+    xs: css`
+      border-radius: 0.25rem;
+    `,
+    sm: css`
+      border-radius: 0.3125rem;
+    `,
+    md: css`
+      border-radius: 0.4375rem;
+    `,
+  },
+};
+
+export default theme;

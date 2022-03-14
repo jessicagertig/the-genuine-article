@@ -1,4 +1,4 @@
-import { css } from "@emotion/core";
+import { css } from "@emotion/react";
 
 const color = {
   data: [
@@ -39,11 +39,12 @@ const color = {
     500: "#831616"
   },
   blue_gray: {
-    100: "#AFBBCF",
-    200: "#8FA0BC",
-    300: "#899AB8",
-    400: "#6A80A6",
-    500: "#4C5F80",
+    100: "#D3D9E5",
+    200: "#AFBBCF",
+    300: "#8FA0BC",
+    400: "#899AB8",
+    500: "#6A80A6",
+    600: "#4C5F80",
   },
   pink: {
     200: "#FBE9EF",
@@ -52,7 +53,7 @@ const color = {
   } 
 };
 
-const spacing = {
+const spacing: Record<string, string> = {
   "0": "0px",
   px: "1px",
   "1": "0.25rem",

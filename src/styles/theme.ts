@@ -1,4 +1,6 @@
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
+
+type Spacing = {[key: string | 'auto' | 'px' ]: string}
 
 const color = {
   data: [
@@ -53,7 +55,7 @@ const color = {
   } 
 };
 
-const spacing: Record<string, string> = {
+const spacing: Spacing = {
   "0": "0px",
   px: "1px",
   "1": "0.25rem",
@@ -76,10 +78,10 @@ const spacing: Record<string, string> = {
   auto: "auto",
 };
 
-function spacingFromSize(size) {
+function spacingFromSize(size: Spacing) {
   let sizeString = size.toString();
   if (sizeString.charAt(0) === "-") {
-    return "-" + spacing[sizeString.substr(1)];
+    return `-${spacing[sizeString.substr(1)]}`;
   } else return spacing[sizeString];
 }
 
@@ -120,78 +122,78 @@ const mq = Object.keys(breakpoints)
     return prev;
   }, {} as { [index: string]: string });
 
-  const theme = {
+const theme: Theme = {
     color,
     spacing,
     mq,
   
     // Size
-    h: function(size) {
+    h: function(size: number) {
       return css`
         height: ${spacing[size.toString()]};
       `;
     },
-    w: function(size) {
+    w: function(size: number) {
       return css`
         width: ${spacing[size.toString()]};
       `;
     },
   
     // Position
-    l: function(size) {
+    l: function(size: Spacing) {
       return css`
         left: ${spacingFromSize(size)};
       `;
     },
-    r: function(size) {
+    r: function(size: Spacing) {
       return css`
         right: ${spacingFromSize(size)};
       `;
     },
-    t: function(size) {
+    t: function(size: Spacing) {
       return css`
         top: ${spacingFromSize(size)};
       `;
     },
-    b: function(size) {
+    b: function(size: Spacing) {
       return css`
         bottom: ${spacingFromSize(size)};
       `;
     },
   
     // Margins
-    m: function(size) {
+    m: function(size: Spacing) {
       return css`
         margin: ${spacingFromSize(size)};
       `;
     },
-    ml: function(size) {
+    ml: function(size: Spacing) {
       return css`
         margin-left: ${spacingFromSize(size)};
       `;
     },
-    mr: function(size) {
+    mr: function(size: Spacing) {
       return css`
         margin-right: ${spacingFromSize(size)};
       `;
     },
-    mt: function(size) {
+    mt: function(size: Spacing) {
       return css`
         margin-top: ${spacingFromSize(size)};
       `;
     },
-    mb: function(size) {
+    mb: function(size: Spacing) {
       return css`
         margin-bottom: ${spacingFromSize(size)};
       `;
     },
-    mx: function(size) {
+    mx: function(size: Spacing) {
       return css`
         margin-left: ${spacingFromSize(size)};
         margin-right: ${spacingFromSize(size)};
       `;
     },
-    my: function(size) {
+    my: function(size: Spacing) {
       return css`
         margin-top: ${spacingFromSize(size)};
         margin-bottom: ${spacingFromSize(size)};
@@ -199,39 +201,39 @@ const mq = Object.keys(breakpoints)
     },
   
     // Padding
-    p: function(size) {
+    p: function(size: number) {
       return css`
         padding: ${spacing[size.toString()]};
       `;
     },
-    pl: function(size) {
+    pl: function(size: number) {
       return css`
         padding-left: ${spacing[size.toString()]};
       `;
     },
-    pr: function(size) {
+    pr: function(size: number) {
       return css`
         padding-right: ${spacing[size.toString()]};
       `;
     },
-    pt: function(size) {
+    pt: function(size: number) {
       return css`
         padding-top: ${spacing[size.toString()]};
       `;
     },
-    pb: function(size) {
+    pb: function(size: number) {
       return css`
         padding-bottom: ${spacing[size.toString()]};
       `;
     },
-    px: function(size) {
+    px: function(size: number) {
       var sizeKey = size.toString();
       return css`
         padding-left: ${spacing[sizeKey]};
         padding-right: ${spacing[sizeKey]};
       `;
     },
-    py: function(size) {
+    py: function(size: number) {
       var sizeKey = size.toString();
       return css`
         padding-top: ${spacing[sizeKey]};
@@ -259,35 +261,35 @@ const mq = Object.keys(breakpoints)
       // Font Colors
       primary: css`
       color: ${color.black};
-    `,
-    secondary: css`
-      color: ${color.gray[600]};
-    `,
-    // Headings
-    h1: css`
-      font-weight: 700;
-      ${typeScale.xxxl};
-    `,
-    h2: css`
-      font-weight: 700;
-      ${typeScale.xxl};
-    `,
-    h3: css`
-      font-weight: 700;
-      ${typeScale.xl};
-    `,
-    h4: css`
-      font-weight: 700;
-      ${typeScale.lg};
-    `,
-    h5: css`
-      font-weight: 700;
-      ${typeScale.base};
-    `,
-    h6: css`
-      font-weight: 700;
-      ${typeScale.sm};
-    `,
+      `,
+      secondary: css`
+        color: ${color.gray[600]};
+      `,
+      // Headings
+      h1: css`
+        font-weight: 700;
+        ${typeScale.xxxl};
+      `,
+      h2: css`
+        font-weight: 700;
+        ${typeScale.xxl};
+      `,
+      h3: css`
+        font-weight: 700;
+        ${typeScale.xl};
+      `,
+      h4: css`
+        font-weight: 700;
+        ${typeScale.lg};
+      `,
+      h5: css`
+        font-weight: 700;
+        ${typeScale.base};
+      `,
+      h6: css`
+        font-weight: 700;
+        ${typeScale.sm};
+      `
   },
 
   rounded: {
@@ -303,4 +305,4 @@ const mq = Object.keys(breakpoints)
   },
 };
 
-export default theme;
+export default theme

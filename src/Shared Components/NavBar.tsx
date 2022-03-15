@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
@@ -20,7 +19,9 @@ let Styled: any
 Styled = {}
 
 Styled.Container = styled.div((props) => {
-  const t: any = props.theme;
+  console.log("PROPS")
+  console.log(props)
+  const t = props.theme;
   return css`
     label: NavBar;
     ${[t.h(20), t.px(4)]}
@@ -30,6 +31,6 @@ Styled.Container = styled.div((props) => {
     justify-content: space-between;
     align-items: center;
     z-index: 2;
-    color: ${t.color.blue_gray[100]}
+    background: ${t.color.blue_gray[100]}
   `
 })

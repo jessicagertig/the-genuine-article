@@ -21,7 +21,12 @@
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react"
   },
+  "baseUrl": "./src",
+  // "paths": {
+  //   "styles/*": ["./styles/*"],
+  //   "components/*": ["./components/*"]
+  // },
   "include": [
-    "src"
-  ]
+    "./src"
+  ],
 }

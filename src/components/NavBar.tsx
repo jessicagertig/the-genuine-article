@@ -6,7 +6,9 @@ function NavBar() {
 
   return (
   <Styled.Container>
-    NavBar
+    <Styled.Content>
+      NavBar
+    </Styled.Content>
   </Styled.Container>
   )
 }
@@ -24,7 +26,7 @@ Styled.Container = styled.div((props) => {
   const t = props.theme;
   return css`
     label: NavBar;
-    ${[t.h(20), t.px(4)]}
+    ${[t.h(24), t.px(4)]}
     position: sticky;
     width: 100%
     display: flex;
@@ -32,5 +34,15 @@ Styled.Container = styled.div((props) => {
     align-items: center;
     z-index: 2;
     background: ${t.color.blue_gray[100]}
+  `
+})
+
+Styled.Content = styled.p((props) => {
+  console.log("PROPS")
+  console.log(props)
+  const t = props.theme;
+  return css`
+    label: NavBarContent;
+    ${[t.text.base, t.text.bold]}
   `
 })

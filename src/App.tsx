@@ -1,4 +1,5 @@
-import NavBar from "./Shared Components/NavBar"
+import NavBar from "./components/NavBar"
+
 
 function App() {
   return (

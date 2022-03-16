@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './App.tsx';
 import theme from "./styles/theme";
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@emotion/react';
+import './styles/styles.scss'
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    <App />,
+    <App />
   </ThemeProvider>,
   document.getElementById('root')
 );

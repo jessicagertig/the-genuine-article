@@ -6,7 +6,6 @@ function App() {
     <>
       <NavBar />
       <div className="App">
-        The Genuine Article
       </div>
     </>
   );

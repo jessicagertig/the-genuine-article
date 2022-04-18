@@ -33,7 +33,8 @@ const color = {
     100: "#2F579C",
     200: "#223F7C",
     300: "#1E3768",
-    400: "#172A4F"
+    400: "#172A4F",
+    500: "#223F7C"
   },
   red: {
     300: "#DA2929",
@@ -263,12 +264,13 @@ const theme: Theme = {
       color: ${color.black};
       `,
       secondary: css`
-        color: ${color.gray[600]};
+      color: ${color.blue[500]};
       `,
       // Headings
       h1: css`
         font-weight: 700;
         ${typeScale.xxxl};
+        color: ${color.blue[500]};
       `,
       h2: css`
         font-weight: 700;

@@ -33,8 +33,8 @@ const color = {
     100: "#2F579C",
     200: "#223F7C",
     300: "#1E3768",
-    400: "#172A4F",
-    500: "#223F7C"
+    400: "#223F7C",
+    500: "#133067"
   },
   red: {
     300: "#DA2929",
@@ -48,7 +48,8 @@ const color = {
     400: "#899AB8",
     500: "#6A80A6",
     600: "#4C5F80",
-    700: "#182A50"
+    700: "#203C77",
+    800: "#182A50"
   },
   pink: {
     200: "#FBE9EF",
@@ -72,6 +73,7 @@ const spacing: Spacing = {
   "16": "4rem",
   "20": "5rem",
   "24": "6rem",
+  "28": "7rem",
   "32": "8rem",
   "40": "10rem",
   "48": "12rem",
@@ -88,8 +90,11 @@ function spacingFromSize(size: Spacing) {
 }
 
 const typeScale = {
-  xs: css`
+  xxs: css`
     font-size: 0.75rem;
+  `,
+  xs: css`
+  font-size: 0.825rem;
   `,
   sm: css`
     font-size: 0.875rem;
@@ -108,6 +113,9 @@ const typeScale = {
   `,
   xxxl: css`
     font-size: 1.875rem;
+  `,
+  xxxxl: css`
+    font-size: 2rem;
   `,
 };
 
@@ -259,7 +267,9 @@ const theme: Theme = {
       bold: css`
         font-weight: 700;
       `,
-  
+      heavy: css`
+        font-weight: 800;
+      `,
       // Font Colors
       primary: css`
       color: ${color.black};
@@ -269,7 +279,7 @@ const theme: Theme = {
       `,
       // Headings
       h1: css`
-        font-weight: 700;
+        font-weight: 900;
         ${typeScale.xxxl};
         color: ${color.blue[500]};
       `,

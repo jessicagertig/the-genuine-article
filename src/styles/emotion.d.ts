@@ -3,8 +3,8 @@ import { SerializedStyles } from '@emotion/react';
 
 type SpacingKeys = string | 'auto' | 'px' 
 type RoundedKeys = 'xs' | 'sm' | 'md'
-type TextSizeKeys = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | 'xxl' | 'xxxl'
-type TextWeightKeys = 'normal' | 'medium' | 'semibold' | 'bold'
+type TextSizeKeys = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'xxxxl'
+type TextWeightKeys = 'normal' | 'medium' | 'semibold' | 'bold' | 'heavy'
 type TextColorKeys = 'primary' | 'secondary'
 type TextHeadingKeys = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 type TextKeys = TextSizeKeys | TextWeightKeys | TextColorKeys | TextHeadingKeys 

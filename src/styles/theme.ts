@@ -281,10 +281,9 @@ const theme: Theme = {
       h1: css`
         font-weight: 900;
         ${typeScale.xxxl};
-        color: ${color.blue[500]};
       `,
       h2: css`
-        font-weight: 700;
+        font-weight: 800;
         ${typeScale.xxl};
       `,
       h3: css`

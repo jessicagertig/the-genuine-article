@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App.tsx';
+import App from './layouts/AppWithLayout.tsx';
 import theme from "./styles/theme";
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@emotion/react';

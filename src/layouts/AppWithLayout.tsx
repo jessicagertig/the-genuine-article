@@ -1,6 +1,7 @@
-import { BrowserRouter, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-
+import PublicLayout from './PublicLayout'; 
+import MainPage from '../components/MainPage';
 // type Pages = []
 
 const pages = [
@@ -29,17 +30,19 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {pages.map( (i, index) => {
-          <Route key={index}
-          exact={i.exact}
-          path={i.path}
-          render={props => (
-            <i.layout history={props.history}>
-              <i.component {...props} />
-            </i.layout>
-          )}/>
-        })}
+        {pages.map((page, index) => (
+          <Route 
+            key={index}
+            path={page.path}
+            element={(
+              <page.layout>
+                <page.component />
+              </page.layout>
+            )}/>
+        ))}
       </Routes>
     </BrowserRouter>
   )
 }
+
+export default App;

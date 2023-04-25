@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import PublicLayout from './PublicLayout'; 
+import MainPageLayout from './MainPageLayout'; 
 import MainPage from '../components/MainPage';
 // type Pages = []
 
@@ -9,7 +9,7 @@ const pages = [
   {
     path: '/',
     component: MainPage,
-    layout: PublicLayout
+    layout: MainPageLayout
   },
   // {
   //   exact: true,

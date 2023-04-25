@@ -50,14 +50,14 @@ Styled.NavBarContainer = styled.div((props) => {
   const t = props.theme;
   return css`
     label: NavBar;
-    ${t.pt(6)}
+    ${t.py(6)}
     position: sticky;
     width: 100%;
-    height: 204px;
+    height: 175px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: ${t.color.blue_gray[100]};
+    background: ${t.color.white};
     padding-right: 8%;
     padding-left: 8%;
     // border: solid 1px red;

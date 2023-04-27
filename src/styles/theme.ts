@@ -1,6 +1,6 @@
 import { css, Theme } from "@emotion/react";
 
-type Spacing = {[key: string | 'auto' | 'px' ]: string}
+type Space = {[key: string | 'auto' | 'px' ]: string}
 
 const color = {
   data: [
@@ -58,7 +58,7 @@ const color = {
   } 
 };
 
-const spacing: Spacing = {
+const space: Space = {
   "0": "0px",
   px: "1px",
   "1": "0.25rem",
@@ -82,11 +82,11 @@ const spacing: Spacing = {
   auto: "auto",
 };
 
-function spacingFromSize(size: Spacing) {
+function spaceFromSize(size: Space) {
   let sizeString = size.toString();
   if (sizeString.charAt(0) === "-") {
-    return `-${spacing[sizeString.substr(1)]}`;
-  } else return spacing[sizeString];
+    return `-${space[sizeString.substr(1)]}`;
+  } else return space[sizeString];
 }
 
 const typeScale = {
@@ -134,120 +134,120 @@ const mq = Object.keys(breakpoints)
 
 const theme: Theme = {
     color,
-    spacing,
+    space,
     mq,
   
     // Size
     h: function(size: number) {
       return css`
-        height: ${spacing[size.toString()]};
+        height: ${space[size.toString()]};
       `;
     },
     w: function(size: number) {
       return css`
-        width: ${spacing[size.toString()]};
+        width: ${space[size.toString()]};
       `;
     },
   
     // Position
-    l: function(size: Spacing) {
+    l: function(size: Space) {
       return css`
-        left: ${spacingFromSize(size)};
+        left: ${spaceFromSize(size)};
       `;
     },
-    r: function(size: Spacing) {
+    r: function(size: Space) {
       return css`
-        right: ${spacingFromSize(size)};
+        right: ${spaceFromSize(size)};
       `;
     },
-    t: function(size: Spacing) {
+    t: function(size: Space) {
       return css`
-        top: ${spacingFromSize(size)};
+        top: ${spaceFromSize(size)};
       `;
     },
-    b: function(size: Spacing) {
+    b: function(size: Space) {
       return css`
-        bottom: ${spacingFromSize(size)};
+        bottom: ${spaceFromSize(size)};
       `;
     },
   
     // Margins
-    m: function(size: Spacing) {
+    m: function(size: Space) {
       return css`
-        margin: ${spacingFromSize(size)};
+        margin: ${spaceFromSize(size)};
       `;
     },
-    ml: function(size: Spacing) {
+    ml: function(size: Space) {
       return css`
-        margin-left: ${spacingFromSize(size)};
+        margin-left: ${spaceFromSize(size)};
       `;
     },
-    mr: function(size: Spacing) {
+    mr: function(size: Space) {
       return css`
-        margin-right: ${spacingFromSize(size)};
+        margin-right: ${spaceFromSize(size)};
       `;
     },
-    mt: function(size: Spacing) {
+    mt: function(size: Space) {
       return css`
-        margin-top: ${spacingFromSize(size)};
+        margin-top: ${spaceFromSize(size)};
       `;
     },
-    mb: function(size: Spacing) {
+    mb: function(size: Space) {
       return css`
-        margin-bottom: ${spacingFromSize(size)};
+        margin-bottom: ${spaceFromSize(size)};
       `;
     },
-    mx: function(size: Spacing) {
+    mx: function(size: Space) {
       return css`
-        margin-left: ${spacingFromSize(size)};
-        margin-right: ${spacingFromSize(size)};
+        margin-left: ${spaceFromSize(size)};
+        margin-right: ${spaceFromSize(size)};
       `;
     },
-    my: function(size: Spacing) {
+    my: function(size: Space) {
       return css`
-        margin-top: ${spacingFromSize(size)};
-        margin-bottom: ${spacingFromSize(size)};
+        margin-top: ${spaceFromSize(size)};
+        margin-bottom: ${spaceFromSize(size)};
       `;
     },
   
     // Padding
     p: function(size: number) {
       return css`
-        padding: ${spacing[size.toString()]};
+        padding: ${space[size.toString()]};
       `;
     },
     pl: function(size: number) {
       return css`
-        padding-left: ${spacing[size.toString()]};
+        padding-left: ${space[size.toString()]};
       `;
     },
     pr: function(size: number) {
       return css`
-        padding-right: ${spacing[size.toString()]};
+        padding-right: ${space[size.toString()]};
       `;
     },
     pt: function(size: number) {
       return css`
-        padding-top: ${spacing[size.toString()]};
+        padding-top: ${space[size.toString()]};
       `;
     },
     pb: function(size: number) {
       return css`
-        padding-bottom: ${spacing[size.toString()]};
+        padding-bottom: ${space[size.toString()]};
       `;
     },
     px: function(size: number) {
       var sizeKey = size.toString();
       return css`
-        padding-left: ${spacing[sizeKey]};
-        padding-right: ${spacing[sizeKey]};
+        padding-left: ${space[sizeKey]};
+        padding-right: ${space[sizeKey]};
       `;
     },
     py: function(size: number) {
       var sizeKey = size.toString();
       return css`
-        padding-top: ${spacing[sizeKey]};
-        padding-bottom: ${spacing[sizeKey]};
+        padding-top: ${space[sizeKey]};
+        padding-bottom: ${space[sizeKey]};
       `;
     },
 

@@ -2,8 +2,8 @@ import React from 'react';
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import NavBar from '../components/shared/PublicNavBar';
-import Footer from '../components/shared/Footer';
+import NavBar from '../../components/shared/PublicNavBar';
+import Footer from '../../components/shared/Footer';
 
 interface PublicLayoutProps {
   children: React.ReactNode;
@@ -13,9 +13,7 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
     <Styled.PageContainer>
       <NavBar />
-      <div className="Public App">
-        {children}
-      </div>
+      {children}
       <Footer />
     </Styled.PageContainer>
   );

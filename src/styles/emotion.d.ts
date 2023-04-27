@@ -40,7 +40,7 @@ declare module '@emotion/react' {
     py: Function;
     r: Function;
     rounded: {[key in RoundedKeys ]: SerializedStyles};
-    spacing:{[key: SpacingKeys]: string}
+    space:{[key: SpacingKeys]: string}
     t: Function;
     text: {[key in TextKeys]: SerializedStyles};
     w: Function;

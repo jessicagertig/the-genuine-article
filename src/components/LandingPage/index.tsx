@@ -32,6 +32,5 @@ Styled.LandingPageContainer = styled.div((props) => {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
   `;
 });

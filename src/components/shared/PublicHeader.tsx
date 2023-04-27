@@ -31,7 +31,6 @@ Styled.Heading = styled.div((props) => {
   return css`
     label: Heading;
     ${t.pt(6)}
-    position: sticky;
     width: 100%;
     height: 400px;
     display: flex;
@@ -59,6 +58,5 @@ Styled.Description = styled.p((props) => {
     label: Description;
     ${[t.text.heavy, t.text.xxl, t.pb(10)]}
     color: ${t.color.blue_gray[600]};
-    text-shadow: 0.5px 0 ${t.color.blue_gray[600]}, -0.5px 0 ${t.color.blue_gray[600]}, 0 0.5px ${t.color.blue_gray[600]}, 0 -0.5px ${t.color.blue_gray[600]};
   `
 })

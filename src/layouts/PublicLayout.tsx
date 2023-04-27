@@ -1,8 +1,9 @@
 import React from 'react';
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
-import PublicHeader from '../components/PublicHeader';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
+import NavBar from '../components/shared/PublicNavBar';
+import Footer from '../components/shared/Footer';
 
 interface PublicLayoutProps {
   children: React.ReactNode;
@@ -10,13 +11,30 @@ interface PublicLayoutProps {
 
 export default function PublicLayout({ children }: PublicLayoutProps) {
   return (
-    <>
-      <PublicHeader />
+    <Styled.PageContainer>
       <NavBar />
-      <div className="App">
+      <div className="Public App">
         {children}
       </div>
       <Footer />
-    </>
+    </Styled.PageContainer>
   );
 }
+
+// Styled Components
+// =======================================================
+
+let Styled: any;
+Styled = {};
+
+Styled.PageContainer = styled.div((props) => {
+  const t = props.theme;
+  return css`
+    label: LandingPageContainer;
+    ${t.pt(6)}
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `;
+});

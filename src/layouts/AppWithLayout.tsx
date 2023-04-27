@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import MainPageLayout from './MainPageLayout'; 
-import MainPage from '../components/MainPage';
+import PublicLayout from '../layouts/PublicLayout';
+import LandingPage from '../components/LandingPage/LandingPage';
 // type Pages = []
 
 const pages = [
   // Public pages
   {
     path: '/',
-    component: MainPage,
-    layout: MainPageLayout
+    component: LandingPage,
+    layout: PublicLayout
   },
   // {
   //   exact: true,

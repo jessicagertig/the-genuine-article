@@ -5,7 +5,7 @@ import App from 'components/layouts/AppWithLayout.tsx';
 import theme from "styles/theme";
 import reportWebVitals from 'src/reportWebVitals';
 import { ThemeProvider } from '@emotion/react';
-import 'styles/styles.scss'
+import './styles/styles.scss'
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);

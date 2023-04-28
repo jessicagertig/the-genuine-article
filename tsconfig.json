@@ -19,14 +19,14 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "@emotion/react"
-  },
-  "baseUrl": "./src",
-  "paths": {
-    "styles/*": ["./styles/*"],
-    "components/*": ["./components/*"]
+    "jsxImportSource": "@emotion/react",
+    "baseUrl": "./",
+    "paths": {
+      "components/*": ["src/components/*"],
+      "styles/*": ["src/styles/*"],
+    }
   },
   "include": [
-    "./src"
-  ],
+    "src"
+  ]
 }

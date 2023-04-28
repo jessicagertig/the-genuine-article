@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
-import PublicLayout from '../layouts/PublicLayout';
-import LandingPage from '../components/LandingPage';
+import PublicLayout from 'src/layouts/PublicLayout';
+import LandingPage from 'components/LandingPage';
 // type Pages = []
 
 const pages = [

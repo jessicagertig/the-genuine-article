@@ -1,16 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen } from 'src/utils/testUtils';
 import { MemoryRouter } from 'react-router-dom';
-import App from './layouts/AppWithLayout';
-import { ThemeProvider } from '@emotion/react';
-import theme from './styles/theme';
+import App from 'src/layouts/AppWithLayout';
 
 describe("App", () => {
   it("should render the LandingPage component by default", () => {
     render(
       <MemoryRouter>
-        <ThemeProvider theme={theme}> 
           <App />
-        </ThemeProvider>
       </MemoryRouter>
     );
     const landingPageElement = screen.getByText(/The Genuine Article/i);

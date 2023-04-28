@@ -1,8 +1,7 @@
-import React from 'react';
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import PublicHeader from '../shared/PublicHeader';
+import PublicHeader from 'components/shared/PublicHeader';
 
 type Props = {};
 

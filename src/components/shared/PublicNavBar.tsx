@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { Link } from "react-router-dom";
-import logo from "../../assets/BonnetLogo.png"
+import logo from "src/assets/BonnetLogo.png"
 
 type Props = {}
 

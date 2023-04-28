@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 
-import PublicLayout from 'src/layouts/PublicLayout';
+import PublicLayout from './PublicLayout';
 import LandingPage from 'components/LandingPage';
 // type Pages = []
 

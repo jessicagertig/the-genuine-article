@@ -1,0 +1,319 @@
+{
+  "garments": [
+    {
+      "id": 1,
+      "garment_title": "Morning Dress",
+      "garment_type": "One piece",
+      "begin_year": 1828,
+      "end_year": null,
+      "decade": "1820s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/108029",
+      "creator": "Unknown",
+      "source": "Gift of Mrs. Howard E. Cox, 1978",
+      "item_collection_no": "1978.359",
+      "description": "Cotton Morning Dress circa 1828. ",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 2,
+      "garment_title": "Dress",
+      "garment_type": "One piece",
+      "begin_year": 1836,
+      "end_year": 1838,
+      "decade": "1830s",
+      "secondary_decade": null,
+      "culture_country": "England",
+      "collection": "Victoria and Albert Museum",
+      "collection_url": "http://m.vam.ac.uk/item/O13833/dress-unknown/",
+      "creator": "Unknown",
+      "source": "Given by Mrs H. M. Shepherd",
+      "item_collection_no": "T.11-1935",
+      "description": "Printed wool, trimmed with printed wool, lined with cotton, hand-sewn. Wool was a popular fabric for winter day wear, as seen in this example. The dress is printed in a complicated design of shamrocks on a lilac and brown chequered ground...",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 3,
+      "garment_title": "Dress",
+      "garment_type": "One piece",
+      "begin_year": 1867,
+      "end_year": null,
+      "decade": "1860s",
+      "secondary_decade": null,
+      "culture_country": "Western",
+      "collection": "Colonial Williamsburg",
+      "collection_url": "https://emuseum.history.org/objects/5792/dress?ctx=146625e9a5ad296fe848b9f0f3aeb9ba7cee142b&idx=459",
+      "creator": "Unknown",
+      "source": "Gift of Tasha Tudor",
+      "item_collection_no": "1998-236",
+      "description": "Woman's gown of soft blue green ribbed changeable silk, woven with floral sprigs, trimmed with solid green silk fringe and puffed bands of self fabric. ",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 4,
+      "garment_title": "Mourning Dress",
+      "garment_type": "Two piece",
+      "begin_year": 1872,
+      "end_year": 1874,
+      "decade": "1870s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/159230",
+      "creator": "Unknown",
+      "source": "Brooklyn Museum Costume Collection at The Metropolitan Museum of Art, Gift of the Brooklyn Museum, 2009; Gift of Mrs. Clarence E. Van Buren, 1944",
+      "item_collection_no": "2009.300.673a, b",
+      "description": "Black mourning dress reached its peak during the reign of Queen Victoria (1819-1901) of the United Kingdom in the second half of the 19th century...",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 5,
+      "garment_title": "Court Dress",
+      "garment_type": "Court Presentation Ensemble, skirt, train, three(3) bodices.",
+      "begin_year": 1888,
+      "end_year": null,
+      "decade": "1880s",
+      "secondary_decade": null,
+      "culture_country": "French",
+      "collection": "The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/80074016?img=1",
+      "creator": "The House of Worth",
+      "source": "Purchase, Friends of The Costume Institute Gifts, 2007",
+      "item_collection_no": "2007.385a-l",
+      "description": "This particular gown was worn by Esther Chapin, whose great-great-granduncle was George Washington. Ordered with three bodices, it can be transformed into a dinner dress, a ballgown, and, as here, with the extraordinary train, into a court presentation gown. The spectacular voided velvet, woven in Lyons...",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 6,
+      "garment_title": "Evening Gown",
+      "garment_type": "Gown",
+      "begin_year": 1930,
+      "end_year": 1935,
+      "decade": "1930s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Costume Institute of The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/100439",
+      "creator": "Elsa Schiaparelli",
+      "source": "Gift of Mrs. Harrison Williams, 1952",
+      "item_collection_no": "C.I.52.24.6a, b",
+      "description": "This evening gown is a masterpiece of the Art Deco period, with its striking design of a stylized fish skeleton in white beads on a black silk crepe background.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 7,
+      "garment_title": "Evening Gown",
+      "garment_type": "Silk chiffon, tulle, sequins, beads.",
+      "begin_year": 1920,
+      "end_year": null,
+      "decade": "1920s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Museum at FIT",
+      "collection_url": "https://www.fitnyc.edu/museum/collections/dress/1920s-1930s/index.php",
+      "creator": "unknown",
+      "source": "Gift of Mrs. Edgar B. Fried",
+      "item_collection_no": "79.118.1",
+      "description": "This elegant evening gown features intricate beading and embroidery, and was likely worn by a wealthy American woman in the 1920s.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 8,
+      "garment_title": "Evening Dress",
+      "garment_type": "Evening gown with silk chiffon overlay and beaded trim.",
+      "begin_year": 1920,
+      "end_year": null,
+      "decade": "1920s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Costume Institute, The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/832602",
+      "creator": "Unknown",
+      "source": "Gift of Mercedes de Acosta, 1963",
+      "item_collection_no": "C.I.63.23.2a, b",
+      "description": "This dress was owned by Mercedes de Acosta, a poet, playwright, and costume collector.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 9,
+      "garment_title": "Morning Dress",
+      "garment_type": "Morning gown with lace and embroidery trim.",
+      "begin_year": 1815,
+      "end_year": null,
+      "decade": "1810s",
+      "secondary_decade": null,
+      "culture_country": "British",
+      "collection": "Victoria and Albert Museum",
+      "collection_url": "https://collections.vam.ac.uk/item/O17698/morning-dress-unknown/",
+      "creator": "Unknown",
+      "source": "Victoria and Albert Museum",
+      "item_collection_no": "T.151-1974",
+      "description": "This morning dress is typical of the style worn by upper-class women in the early 19th century.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 10,
+      "garment_title": "Ball Gown",
+      "garment_type": "Silk taffeta with lace trim",
+      "begin_year": 1912,
+      "end_year": null,
+      "decade": "1910s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Costume Institute, The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/104148?img=0",
+      "creator": "Lucile, Ltd.",
+      "source": "Gift of Mrs. Boudinot Keith",
+      "item_collection_no": "1959.177.9",
+      "description": "This gown was owned by Mrs. Boudinot Keith, a prominent American socialite.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 11,
+      "garment_title": "Morning Dress",
+      "garment_type": "Cotton and linen blend with lace trim",
+      "begin_year": 1840,
+      "end_year": null,
+      "decade": "1840s",
+      "secondary_decade": null,
+      "culture_country": "English",
+      "collection": "The Costume Institute, The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/80105613?img=0",
+      "creator": "Unknown",
+      "source": "Gift of Mr. and Mrs. John Rossiter",
+      "item_collection_no": "1958.12.1a-c",
+      "description": "This dress was likely worn as a morning or informal dress by a middle-class Englishwoman.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 11,
+      "garment_title": "Evening Gown",
+      "garment_type": "Ballgown, silk satin and tulle",
+      "begin_year": 1912,
+      "end_year": null,
+      "decade": "1910s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/158012?&img=0",
+      "creator": "Lucile",
+      "source": "Purchase, Friends of The Costume Institute Gifts, 1978",
+      "item_collection_no": "1978.287.2a, b",
+      "description": "This evening gown was worn by American socialite Irene Castle.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 13,
+      "garment_title": "Day Dress",
+      "garment_type": "Dress, cotton voile",
+      "begin_year": 1900,
+      "end_year": null,
+      "decade": "1900s",
+      "secondary_decade": null,
+      "culture_country": "French",
+      "collection": "The Costume Institute, The Metropolitan Museum of Art",
+      "collection_url": "https://www.metmuseum.org/art/collection/search/101582?&img=0",
+      "creator": "Unknown",
+      "source": "Gift of the Brooklyn Museum, 2009; Gift of Mrs. Otto H. Kahn, 1937",
+      "item_collection_no": "2009.300.3077",
+      "description": "This day dress was worn by a French woman in the early 1900s.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 14,
+      "garment_title": "Ball Gown",
+      "garment_type": "Silk ball gown with lace trimmings",
+      "begin_year": 1850,
+      "end_year": null,
+      "decade": "1850s",
+      "secondary_decade": null,
+      "culture_country": "American",
+      "collection": "The Smithsonian National Museum of American History",
+      "collection_url": "https://americanhistory.si.edu/collections/search/object/nmah_1515832",
+      "creator": "unknown",
+      "source": "Gift of Mrs. John B. Abbott",
+      "item_collection_no": "1982.0292.01",
+      "description": "This ball gown is made of silk with lace trimmings, and was likely worn by a wealthy American woman to a formal event.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    },
+    {
+      "id": 15,
+      "garment_title": "Empress Eugenie's Dress",
+      "garment_type": "Silk dress with metallic embroidery",
+      "begin_year": 1860,
+      "end_year": null,
+      "decade": "1860s",
+      "secondary_decade": null,
+      "culture_country": "French",
+      "collection": "The Victoria and Albert Museum",
+      "collection_url": "https://collections.vam.ac.uk/item/O13574/dress-house-of-worth/",
+      "creator": "The House of Worth",
+      "source": "Given by the Empress Eugénie",
+      "item_collection_no": "T.7-1933",
+      "description": "This dress was owned by Empress Eugenie of France, and features intricate metallic embroidery.",
+      "image_urls": {
+        "main_image_url": "",
+        "large_url": "",
+        "display_url": ""
+      }
+    }
+  ]
+}  

@@ -2,8 +2,8 @@ import React from 'react';
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import NavBar from 'components/shared/PublicNavBar';
-import Footer from 'components/shared/Footer';
+import NavBar from '../../components/shared/PublicNavBar';
+import Footer from '../../components/shared/Footer';
 
 interface PublicLayoutProps {
   children: React.ReactNode;

@@ -2,31 +2,32 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import PublicHeader from '../shared/PublicHeader';
+import SearchResults from '../SearchPage/SearchResults';
 
 type Props = {};
 
-const LandingPage = (props: Props) => {
+const SearchPage = (props: Props) => {
   return (
-    <Styled.LandingPageContainer>
+    <Styled.SearchPageContainer>
       <PublicHeader
-        titleText='The Genuine Article'
-        descriptionText='A collection of images of original historical clothing from the 19th century '
+        titleText='Search Garments'
       />
-    </Styled.LandingPageContainer>
+      <SearchResults />
+    </Styled.SearchPageContainer>
   );
 };
 
-export default LandingPage;
+export default SearchPage;
 
 // Styled Components
 // =======================================================
 let Styled: any;
 Styled = {};
 
-Styled.LandingPageContainer = styled.div((props) => {
+Styled.SearchPageContainer = styled.div((props) => {
   const t = props.theme;
   return css`
-    label: LandingPageContainer;
+    label: SearchPageContainer;
     ${t.pt(6)}
     width: 100%;
     display: flex;

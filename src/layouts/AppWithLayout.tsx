@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 
 import PublicLayout from './PublicLayout';
-import LandingPage from 'components/LandingPage';
+import LandingPage from '../components/LandingPage';
+import SearchPage from '../components/SearchPage';
 // type Pages = []
 
 const pages = [
@@ -9,6 +10,11 @@ const pages = [
   {
     path: '/',
     component: LandingPage,
+    layout: PublicLayout
+  },
+  {
+    path: '/search',
+    component: SearchPage,
     layout: PublicLayout
   },
   // {

@@ -1,9 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from 'components/layouts/AppWithLayout.tsx';
+import App from './layouts/AppWithLayout';
 import theme from "./styles/theme";
-import reportWebVitals from 'src/reportWebVitals';
+import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@emotion/react';
 import './styles/styles.scss'
 

@@ -1,44 +1,59 @@
 import React from 'react'
+import { StyledGarmentCard, StyledGarmentCardImage } from 'src/components/SearchPage/styles/StyledGarmentCard';
 
-type Props = {}
+type Props = {
+  garment: any;  
+}
 
-function GarmentCard(props: Props) {
+function GarmentCard({ garment }: Props) {
   return (
-    <div>
+    <StyledGarmentCard>
       <div>
-        <img src="" alt=""/>
+        <StyledGarmentCardImage>
+          <img src="" alt=""/>
+        </StyledGarmentCardImage>
+        <p>
+          <span>
+            {`  ${garment.garment_title}`}
+          </span>
+        </p>
         <p>
           Garment Type: 
           <span>
+            {`  ${garment.garment_type}`}
           </span>
         </p>
         <p>
           Date: 
           <span>
+            {`  ${garment.begin_year}`}
           </span>
         </p>
         <p>
           Culture/Country: 
           <span>
+            {`  ${garment.culture_country}`}
           </span>
         </p>
         <p>
-          Decade(s): 
+          Decade: 
           <span>
+            {`  ${garment.decade}`}
           </span>
         </p>
         <p>
-          Location: 
+          Location:
           <span>
+            {`  ${garment.collection}`}
           </span>
         </p>
-        <p>
-          Materials: 
-          <span>
+        <p> 
+          <span className='description'>
+            {`  ${garment.description}`}
           </span>
         </p>
       </div>
-    </div>
+    </StyledGarmentCard>
   )
 }
 

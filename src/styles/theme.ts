@@ -34,7 +34,9 @@ const color = {
     200: "#223F7C",
     300: "#1E3768",
     400: "#223F7C",
-    500: "#133067"
+    500: "#133067",
+    600: "#0D1F4C",
+    700: "#172a4f",
   },
   red: {
     300: "#DA2929",
@@ -43,7 +45,7 @@ const color = {
   },
   blue_gray: {
     100: "#D3D9E5",
-    200: "#AFBBCF",
+    200: "#BFC9D9",
     300: "#8FA0BC",
     400: "#899AB8",
     500: "#6A80A6",
@@ -60,16 +62,17 @@ const color = {
 
 const space: Space = {
   "0": "0px",
-  px: "1px",
-  "1": "0.25rem",
-  "2": "0.5rem",
-  "3": "0.75rem",
-  "4": "1rem",
-  "5": "1.25rem",
-  "6": "1.5rem",
-  "8": "2rem",
-  "10": "2.5rem",
-  "12": "3rem",
+  px: "1px", // 1px
+  "1": "0.25rem", // 4px
+  "2": "0.5rem", // 8px
+  "2.5": "0.625rem", // 10px
+  "3": "0.75rem", // 12px
+  "4": "1rem", // 16px
+  "5": "1.25rem", // 20px
+  "6": "1.5rem", // 24px
+  "8": "2rem", // 32px
+  "10": "2.5rem", // 40px
+  "12": "3rem", // 48px
   "16": "4rem",
   "20": "5rem",
   "24": "6rem",
@@ -120,6 +123,7 @@ const typeScale = {
 };
 
 const breakpoints: { [index: string]: number } = {
+  sm: 320,
   md: 480,
   lg: 768,
   xl: 1024,
@@ -301,7 +305,11 @@ const theme: Theme = {
       h6: css`
         font-weight: 700;
         ${typeScale.sm};
-      `
+      `,
+      p: css`
+        font-weight: 400;
+        ${typeScale.base};
+      `,
   },
 
   rounded: {

@@ -31,8 +31,8 @@ Styled.PageContainer = styled.div((props) => {
     label: LandingPageContainer;
     ${t.pt(6)}
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 100%;
+    display: block;
+    overflow-y: scroll;
   `;
 });

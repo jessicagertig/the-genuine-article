@@ -17,7 +17,7 @@ export const StyledGarmentCard = styled.div((props) => {
     ${t.mq.md} {
       ${t.m(4)};
       width: 334px;
-      height: 610px;  
+      height: 590px;  
     }
 
     span {

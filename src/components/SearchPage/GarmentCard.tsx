@@ -12,7 +12,7 @@ function GarmentCard({ garment }: Props) {
         <StyledGarmentCardImage>
           <img src="" alt=""/>
         </StyledGarmentCardImage>
-        <p>
+        <p>Title:
           <span>
             {`  ${garment.garment_title}`}
           </span>
@@ -33,12 +33,6 @@ function GarmentCard({ garment }: Props) {
           Culture/Country: 
           <span>
             {`  ${garment.culture_country}`}
-          </span>
-        </p>
-        <p>
-          Decade: 
-          <span>
-            {`  ${garment.decade}`}
           </span>
         </p>
         <p>

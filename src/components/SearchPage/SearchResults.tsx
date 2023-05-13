@@ -9,9 +9,6 @@ function SearchResults() {
   console.log("data", data)
   return (
     <>
-      <div>
-        <h2>Search Results</h2>
-      </div>
       <StyledSearchResults>
         {data.garments.map((garment: any, index: number) => (
           <GarmentCard key={index} garment={garment} />

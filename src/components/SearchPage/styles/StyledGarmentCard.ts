@@ -6,7 +6,7 @@ export const StyledGarmentCard = styled.div((props) => {
   const t = props.theme;
   return css`
     label: GarmentCard;
-    ${[t.p(2.5), t.text.p]};
+    ${[t.p(4), t.text.p]};
     width: 100%;
     height: 100%;
     color: ${t.color.blue_gray[200]};
@@ -16,7 +16,7 @@ export const StyledGarmentCard = styled.div((props) => {
 
     ${t.mq.md} {
       ${t.m(4)};
-      width: 322px;
+      width: 334px;
       height: 610px;  
     }
 
@@ -30,6 +30,7 @@ export const StyledGarmentCardImage = styled.div((props) => {
   const t = props.theme;
   return css`
     label: GarmentCardImage;
+    ${t.mb(4)};
     width: 100%;
     height: 100%;
     background-color: ${t.color.white};

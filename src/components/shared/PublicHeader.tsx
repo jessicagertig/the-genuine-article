@@ -30,14 +30,17 @@ Styled.Heading = styled.div((props) => {
   const t = props.theme;
   return css`
     label: Heading;
-    ${t.pt(6)}
+    ${[t.pt(10), t.px(0)]}
     width: 100%;
-    height: 400px;
+    height: 200px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
-    background: ${t.color.blue_gray[100]};
+    background: rgba(211, 217, 229, 0.5);
+
+    ${t.mq.xl} {
+      height: 260px;
+    }
   `
 })
 
@@ -45,10 +48,15 @@ Styled.Title = styled.h1((props) => {
   const t = props.theme;
   return css`
     label: Title;
-    ${t.text.normal}
-    font-size: 3rem;
-    color: ${t.color.blue[400]};
-    text-shadow: 1px 0 ${t.color.blue_gray[400]}, -0.5px 0 ${t.color.blue_gray[400]}, 0 1px ${t.color.blue_gray[400]}, 0 -0.5px ${t.color.blue_gray[400]};
+    ${[t.pb(8)]}
+    font-size: 2rem;
+    font-weight: 600;
+    color: ${t.color.blue[500]};
+    letter-spacing: 0.07rem;
+
+    ${t.mq.xl} {
+      font-size: 2.5rem;
+    }
   `
 })
 
@@ -56,7 +64,13 @@ Styled.Description = styled.p((props) => {
   const t = props.theme;
   return css`
     label: Description;
-    ${[t.text.heavy, t.text.xxl, t.pb(10)]}
-    color: ${t.color.blue_gray[600]};
+    ${[t.px(10), t.text.bold]}
+    font-size: 1.187rem;
+    color: ${t.color.blue_gray[700]};
+    text-align: center;
+
+    ${t.mq.xl} {
+      ${t.text.xl}
+      } 
   `
 })

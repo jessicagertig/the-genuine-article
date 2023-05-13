@@ -71,6 +71,7 @@ const space: Space = {
   "5": "1.25rem", // 20px
   "6": "1.5rem", // 24px
   "8": "2rem", // 32px
+  "9": "2.25rem", // 36px
   "10": "2.5rem", // 40px
   "12": "3rem", // 48px
   "16": "4rem",
@@ -103,30 +104,31 @@ const typeScale = {
     font-size: 0.875rem;
   `,
   base: css`
-    font-size: 1rem;
+    font-size: 1rem; // 16px
   `,
   lg: css`
-    font-size: 1.125rem;
+    font-size: 1.125rem; // 18px
   `,
   xl: css`
-    font-size: 1.25rem;
+    font-size: 1.375rem; // 22px
   `,
   xxl: css`
-    font-size: 1.5rem;
+    font-size: 1.5rem; // 24px
   `,
   xxxl: css`
-    font-size: 1.875rem;
+    font-size: 1.875rem; // 30px
   `,
   xxxxl: css`
-    font-size: 2rem;
+    font-size: 2.25rem;
   `,
 };
 
 const breakpoints: { [index: string]: number } = {
   sm: 320,
   md: 480,
-  lg: 768,
-  xl: 1024,
+  lg: 640,
+  xl: 768,
+  xxl: 1024,
 };
 
 const mq = Object.keys(breakpoints)
@@ -284,7 +286,7 @@ const theme: Theme = {
       // Headings
       h1: css`
         font-weight: 900;
-        ${typeScale.xxxl};
+        ${typeScale.xxxxl};
       `,
       h2: css`
         font-weight: 800;

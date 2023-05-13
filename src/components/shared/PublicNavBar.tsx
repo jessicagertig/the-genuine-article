@@ -1,10 +1,22 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import { NavLink } from 'react-router-dom';
 import logo from "src/assets/BonnetLogo.png"
 
 type Props = {}
 
 const NavBar = (props: Props) => {
+
+  const title = (
+    <Styled.TitleContainer>
+      <Styled.Title>
+      The Genuine
+      </Styled.Title>
+      <Styled.Title>
+      <span>Article</span>
+      </Styled.Title>
+    </Styled.TitleContainer>
+  )
 
   return (
     <Styled.NavBarContainer>
@@ -12,26 +24,19 @@ const NavBar = (props: Props) => {
         <Styled.LogoContainer>
           <img src={logo} alt="bonnet logo"/>
         </Styled.LogoContainer>
-        <Styled.TitleContainer>
-          <Styled.Title>
-          The Genuine
-          </Styled.Title>
-          <Styled.Title>
-          <span>Article</span>
-          </Styled.Title>
-        </Styled.TitleContainer>
+        {title}
       </Styled.Container>
       <Styled.Container>
         <Styled.LinksContainer>
-          <Styled.Link to='/'>
+          <Styled.NavLink to='/'>
             Home
-          </Styled.Link>
-          <Styled.Link to='/'>
+          </Styled.NavLink>
+          <Styled.NavLink to='/search'>
             Search
-          </Styled.Link>
-          <Styled.Link to='/'>
+          </Styled.NavLink>
+          <Styled.NavLink to='/about'>
             About
-          </Styled.Link>
+          </Styled.NavLink>
         </Styled.LinksContainer>
       </Styled.Container>
     </Styled.NavBarContainer>
@@ -52,35 +57,51 @@ Styled.NavBarContainer = styled.div((props) => {
     ${t.py(6)}
     position: sticky;
     width: 100%;
-    height: 175px;
+    height: 50px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: ${t.color.white};
     padding-right: 8%;
     padding-left: 8%;
-  `
-})
 
-Styled.Container = styled.div((props) => {
-  // const t = props.theme;
-  return css`
-    label: NavBarItem;
-    width: 34%;
-    // border: solid 1px red;
+    ${t.mq.xl} {
+      height: 90px;
+    }
+
+    ${t.mq.xxl} {
+      height: 125px;
     }
   `
 })
 
+Styled.Container = styled.div((props) => {
+  const t = props.theme;
+  return css`
+    label: NavBarItems;
+    width: 50%;
+
+    ${t.mq.lg} {
+      width: 40%;
+
+    }
+    ${t.mq.xxl} {
+      width: 34%; 
+    }
+
+  `
+})
+
 Styled.LogoContainer = styled.div((props) => {
+  const t = props.theme;
   return css`
     label: NavBarLogo;
-    width: 125px;
-    height: 125px;
-    // border: solid 1px red;
-    
-    img {
-      height: 125px;
+    width: 90px;
+    height: 90px;
+
+    ${t.mq.xxl} {
+      height: 120px;
+      width: 120px;
     }
   `
 })
@@ -91,11 +112,15 @@ Styled.TitleContainer = styled.div((props) => {
   return css`
     label: NavBarTitle;
     width: 170px;
-    display: block;
+    display: none;
     ${[t.pb(8), t.pt(3)]}
 
     span {
       ${[t.pl(3)]}
+    }
+
+    ${t.mq.xxl} {
+      display: block;
     }
   `
 })
@@ -104,8 +129,9 @@ Styled.Title = styled.h1((props) => {
   const t = props.theme
   return css`
   label: NavBarTitleText;
+  ${t.text.h1};
+  
   font-size: 1.8rem;
-  font-weight: 900;
   color: ${t.color.blue[400]};
   line-height: 35px;
   letter-spacing: 0.05rem;
@@ -113,41 +139,39 @@ Styled.Title = styled.h1((props) => {
 })
 
 Styled.LinksContainer = styled.div((props) => {
-  // const t = props.theme
+  const t = props.theme
   return css`
   label: NavBarLinks
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // border: solid 1px red;
-  width: 100%
+  width: 100%;
+
+  a {
+    color: ${t.color.red[400]};
+  }
+
+  a.active {
+    color: ${t.color.red[500]};
+  }
   `
 })
 
-Styled.Link = styled.h2((props) => {
+Styled.NavLink = styled(NavLink)((props) => {
   const t: any = props.theme;
   return css`
     ${t.text.h2};
     ${[t.py(1), t.px(2), t.pb(12), t.rounded.sm]}
     label: NavBarLink;
-    // display: flex;
-    // flex-shrink: 0;
-    // justify-content: center;
-    // align-items: center;
     font-size: 1.45rem;
     font-weight: 900;
-    transition: background-color 0.2s ease;
+    transition: font-size 0.2s ease;
     font-family: 'Bellota Text', cursive;
-    color: ${t.color.red[400]};
-
-    &:visited,
-    &:link {
-      color: ${t.color.red[300]};
-    }
 
     &:hover {
+      cursor: pointer;
       color: ${t.color.red[500]};
-      // background-color: ${t.color.blue_gray[200]};
+      font-size: 1.46rem;
     }
   `;
 });

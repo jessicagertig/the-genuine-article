@@ -47,11 +47,6 @@ function GarmentCard({ garment }: Props) {
             {`  ${garment.collection}`}
           </span>
         </p>
-        <p> 
-          <span className='description'>
-            {`  ${garment.description}`}
-          </span>
-        </p>
       </div>
     </StyledGarmentCard>
   )

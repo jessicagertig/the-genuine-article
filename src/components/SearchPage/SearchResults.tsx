@@ -1,6 +1,6 @@
 import React from 'react';
 
-import GarmentCard from '../GarmentCard';
+import GarmentCard from 'src/components/SearchPage/GarmentCard';
 
 function SearchResults() {
   return (

@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 
-import PublicLayout from './PublicLayout';
-import LandingPage from '../components/LandingPage';
-import SearchPage from '../components/SearchPage';
+import PublicLayout from 'src/layouts/PublicLayout';
+import LandingPage from 'src/components/LandingPage';
+import SearchPage from 'src/components/SearchPage';
 // type Pages = []
 
 const pages = [

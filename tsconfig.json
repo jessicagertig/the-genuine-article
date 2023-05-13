@@ -20,9 +20,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "jsxImportSource": "@emotion/react",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
-      "components/*": ["src/components/*"],
       "styles/*": ["src/styles/*"],
     }
   },

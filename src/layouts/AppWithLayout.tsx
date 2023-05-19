@@ -3,9 +3,14 @@ import { Routes, Route } from 'react-router-dom';
 import PublicLayout from 'src/layouts/PublicLayout';
 import LandingPage from 'src/components/LandingPage';
 import SearchPage from 'src/components/SearchPage';
-// type Pages = []
 
-const pages = [
+type Page = {
+  path: string,
+  component: React.FC,
+  layout: React.FC<{ children: React.ReactNode }>
+}
+
+const pages: Page[] = [
   // Public pages
   {
     path: '/',
@@ -32,7 +37,7 @@ const pages = [
   // }
 ];
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Routes>
       {pages.map((page, index) => (

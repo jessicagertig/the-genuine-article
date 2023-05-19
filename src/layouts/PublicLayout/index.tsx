@@ -9,7 +9,7 @@ interface PublicLayoutProps {
   children: React.ReactNode;
 }
 
-export default function PublicLayout({ children }: PublicLayoutProps) {
+const PublicLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   return (
     <Styled.PageContainer>
       <NavBar />
@@ -18,6 +18,8 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
     </Styled.PageContainer>
   );
 }
+
+export default PublicLayout;
 
 // Styled Components
 // =======================================================

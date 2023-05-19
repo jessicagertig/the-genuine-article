@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyledGarmentCard, StyledGarmentCardImage } from 'src/components/SearchPage/styles/StyledGarmentCard';
+//TODO: add a types file with a garment type once actual data is returned
 
 type Props = {
   garment: any;  

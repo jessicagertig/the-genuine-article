@@ -3,14 +3,18 @@ import React from 'react';
 import GarmentCard from 'src/components/SearchPage/GarmentCard';
 import { StyledSearchResults } from 'src/components/SearchPage/styles/StyledSearchResults';
 
-const data = require('src/assets/data.json');
+const fakeData = require('src/assets/data.json');
 
-function SearchResults() {
-  console.log("data", data)
+interface SearchResultsProps {
+  // data: any;
+}
+
+const SearchResults: React.FC<SearchResultsProps> = () => {
+  console.log("data", fakeData)
   return (
     <>
       <StyledSearchResults>
-        {data.garments.map((garment: any, index: number) => (
+        {fakeData.garments.map((garment: any, index: number) => (
           <GarmentCard key={index} garment={garment} />
         ))}
       </StyledSearchResults>

@@ -7,7 +7,7 @@ import reportWebVitals from 'src/reportWebVitals';
 import { ThemeProvider } from '@chakra-ui/react';
 import './styles/styles.scss'
 
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById("root")!; // non null assertion operator tells TS that element will always exist - may need to explicetly type instead when using some eslint extensions
 const root = createRoot(rootElement);
 
 root.render(

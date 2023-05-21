@@ -1,5 +1,4 @@
-import { css } from "@emotion/react";
-import { extendTheme } from "@chakra-ui/react";
+import { css, Theme } from "@emotion/react";
 
 type Space = {[key: string | 'auto' | 'px' ]: string}
 
@@ -139,7 +138,7 @@ const mq = Object.keys(breakpoints)
     return prev;
   }, {} as { [index: string]: string });
 
-const customTheme = extendTheme({
+const theme: Theme = {
     color,
     space,
     mq,
@@ -326,6 +325,6 @@ const customTheme = extendTheme({
       border-radius: 0.4375rem;
     `,
   },
-});
+};
 
-export default customTheme
+export default theme

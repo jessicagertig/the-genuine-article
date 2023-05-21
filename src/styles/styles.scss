@@ -30,7 +30,7 @@ pre {
   margin: 0;
 }
 
-p {
+p, h6 {
   font-family: 'Bellota Text';
   line-height: 1.6;
 }
@@ -39,8 +39,7 @@ h1,
 h2,
 h3,
 h4,
-h5,
-h6 {
+h5 {
   font-family: 'Goudy Bookletter 1911', serif;
   font-size: inherit;
   font-weight: inherit;

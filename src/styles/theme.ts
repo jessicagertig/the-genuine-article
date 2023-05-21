@@ -322,7 +322,7 @@ const theme: Theme = {
       border-radius: 0.3125rem;
     `,
     md: css`
-      border-radius: 0.4375rem;
+      border-radius: 0.5rem;
     `,
   },
 };

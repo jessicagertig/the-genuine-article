@@ -17,7 +17,7 @@
       "description": "Cotton Morning Dress circa 1828. ",
       "image_urls": {
         "main_image_url": "",
-        "large_url": "",
+        "large_url": "http://genuine-article-uploads.s3.us-east-2.amazonaws.com/garment_item_id1/resized_main_image/large_morningDress.jpg",
         "display_url": ""
       }
     },
@@ -38,28 +38,7 @@
       "description": "Printed wool, trimmed with printed wool, lined with cotton, hand-sewn. Wool was a popular fabric for winter day wear, as seen in this example. The dress is printed in a complicated design of shamrocks on a lilac and brown chequered ground...",
       "image_urls": {
         "main_image_url": "",
-        "large_url": "",
-        "display_url": ""
-      }
-    },
-    {
-      "id": 3,
-      "garment_title": "Dress",
-      "garment_type": "One piece",
-      "begin_year": 1867,
-      "end_year": null,
-      "decade": "1860s",
-      "secondary_decade": null,
-      "culture_country": "Western",
-      "collection": "Colonial Williamsburg",
-      "collection_url": "https://emuseum.history.org/objects/5792/dress?ctx=146625e9a5ad296fe848b9f0f3aeb9ba7cee142b&idx=459",
-      "creator": "Unknown",
-      "source": "Gift of Tasha Tudor",
-      "item_collection_no": "1998-236",
-      "description": "Woman's gown of soft blue green ribbed changeable silk, woven with floral sprigs, trimmed with solid green silk fringe and puffed bands of self fabric. ",
-      "image_urls": {
-        "main_image_url": "",
-        "large_url": "",
+        "large_url": "http://genuine-article-uploads.s3.us-east-2.amazonaws.com/garment_item_id2/resized_main_image/large_2012FH8119.jpg",
         "display_url": ""
       }
     },
@@ -80,7 +59,7 @@
       "description": "Black mourning dress reached its peak during the reign of Queen Victoria (1819-1901) of the United Kingdom in the second half of the 19th century...",
       "image_urls": {
         "main_image_url": "",
-        "large_url": "",
+        "large_url": "http://genuine-article-uploads.s3.us-east-2.amazonaws.com/garment_item_id4/resized_main_image/large_44.147.1a-b_front_CP4.jpg",
         "display_url": ""
       }
     },
@@ -101,7 +80,7 @@
       "description": "This particular gown was worn by Esther Chapin, whose great-great-granduncle was George Washington. Ordered with three bodices, it can be transformed into a dinner dress, a ballgown, and, as here, with the extraordinary train, into a court presentation gown. The spectacular voided velvet, woven in Lyons...",
       "image_urls": {
         "main_image_url": "",
-        "large_url": "",
+        "large_url": "http://genuine-article-uploads.s3.us-east-2.amazonaws.com/garment_item_id5/resized_main_image/large_threepiece.jpeg",
         "display_url": ""
       }
     },

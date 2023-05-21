@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyledGarmentCard, StyledGarmentCardImage } from 'src/components/SearchPage/styles/StyledGarmentCard';
+import { StyledGarmentCard, StyledGarmentCardImage, StyledGarmentCardText } from 'src/components/SearchPage/styles/StyledGarmentCard';
 //TODO: add a types file with a garment type once actual data is returned
 
 type Props = {
@@ -7,42 +7,23 @@ type Props = {
 }
 
 function GarmentCard({ garment }: Props) {
+  const url = garment.image_urls.large_url
   return (
     <StyledGarmentCard>
-      <div>
-        <StyledGarmentCardImage>
-          <img src="" alt=""/>
-        </StyledGarmentCardImage>
-        <p>Title:
-          <span>
-            {`  ${garment.garment_title}`}
-          </span>
+      <StyledGarmentCardImage>
+        <img src={url} alt={garment.garment_title}/>
+      </StyledGarmentCardImage>
+      <StyledGarmentCardText>
+        <h6>
+          {garment.garment_title}
+        </h6>
+        <p>
+          {garment.begin_year}
         </p>
         <p>
-          Garment Type: 
-          <span>
-            {`  ${garment.garment_type}`}
-          </span>
+          {garment.culture_country}
         </p>
-        <p>
-          Date: 
-          <span>
-            {`  ${garment.begin_year}`}
-          </span>
-        </p>
-        <p>
-          Culture/Country: 
-          <span>
-            {`  ${garment.culture_country}`}
-          </span>
-        </p>
-        <p>
-          Location:
-          <span>
-            {`  ${garment.collection}`}
-          </span>
-        </p>
-      </div>
+      </StyledGarmentCardText>
     </StyledGarmentCard>
   )
 }

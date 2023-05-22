@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import NavBar from 'src/components/shared/PublicNavBar';
+import NavBar from 'src/components/shared/NavBar';
 import Footer from 'src/components/shared/Footer';
 
 interface PublicLayoutProps {
@@ -12,7 +12,7 @@ interface PublicLayoutProps {
 const PublicLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   return (
     <Styled.PageContainer>
-      <NavBar />
+      <NavBar backgroundColor='white'/>
       {children}
       <Footer />
     </Styled.PageContainer>

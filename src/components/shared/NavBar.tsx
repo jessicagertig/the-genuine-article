@@ -3,9 +3,11 @@ import { css } from "@emotion/react";
 import { NavLink } from 'react-router-dom';
 import logo from "src/assets/BonnetLogo.png"
 
-type Props = {}
+type Props = {
+  backgroundColor?: string;
+}
 
-const NavBar = (props: Props) => {
+const NavBar = ({backgroundColor}: Props) => {
 
   const title = (
     <Styled.TitleContainer>
@@ -19,7 +21,7 @@ const NavBar = (props: Props) => {
   )
 
   return (
-    <Styled.NavBarContainer>
+    <Styled.NavBarContainer style={{"background": backgroundColor}}>
       <Styled.Container>
         <Styled.LogoContainer>
           <img src={logo} alt="bonnet logo"/>
@@ -61,7 +63,6 @@ Styled.NavBarContainer = styled.div((props) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: ${t.color.white};
     padding-right: 8%;
     padding-left: 8%;
 

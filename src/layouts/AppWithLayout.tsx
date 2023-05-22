@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 
 import PublicLayout from 'src/layouts/PublicLayout';
+import AdminLayout from 'src/layouts/AdminLayout';
+import AdminPage from 'src/components/AdminPage';
 import LandingPage from 'src/components/LandingPage';
 import SearchPage from 'src/components/SearchPage';
 
@@ -35,6 +37,11 @@ const pages: Page[] = [
   //   component: DashboardPage,
   //   layout: AuthLayout
   // }
+  {
+    path: '/admin',
+    component: AdminPage,
+    layout: AdminLayout
+  }
 ];
 
 const App: React.FC = () => {

@@ -61,5 +61,9 @@ export const StyledGarmentCardImage = styled.div((props) => {
       width: 280px;
       height: 341px; 
     }
+
+    img {
+      max-width: 100%;
+    }
   `;
 });

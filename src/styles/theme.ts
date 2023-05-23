@@ -17,46 +17,32 @@ const color = {
   ],
   white: "#FFFFFF",
   gray: {
-     50: "#FAFAFA",
-    100: "#F4F4F4",
-    200: "#E7E7E7",
-    300: "#D5D5D5",
-    400: "#A3A3A3",
-    500: "#727272",
-    600: "#555555",
-    700: "#414141",
-    800: "#292929",
-    900: "#181818",
+    100: "#FAFAFA",
+    200: "#AFBBCF",
+
   },
   black: "#000000",
   blue: {
-    100: "#2F579C",
-    200: "#223F7C",
-    300: "#1E3768",
-    400: "#223F7C",
-    500: "#133067",
-    600: "#0D1F4C",
-    700: "#172a4f",
+    100: "#2F579C",//primary light
+    400: "#223F7C",//primary dark
+    700: "#172a4f",//primary main
   },
   red: {
-    300: "#DA2929",
-    400: "#C42121",
-    500: "#831616"
+    300: "#DA2929", //error light
+    400: "#C42121", //error main
+    500: "#831616" //error dark
   },
   blue_gray: {
-    100: "#D3D9E5",
-    200: "#BFC9D9",
-    300: "#8FA0BC",
-    400: "#899AB8",
-    500: "#6A80A6",
-    600: "#4C5F80",
+    100: "#D3D9E5",// nav background- info light
+    200: "#BFC9D9", // secondary text - info light
+    400: "#899AB8", //form text and underline info main
+    600: "#4C5F80", // info dark
     700: "#203C77",
-    800: "#182A50"
   },
   pink: {
-    200: "#FBE9EF",
-    400: "#F0A6BD",
-    600: "#EC79A9"
+    200: "#FBE9EF", // secondary light
+    400: "#F0A6BD", // secondary main
+    600: "#EC79A9" // secondary dark
   } 
 };
 
@@ -281,7 +267,7 @@ const theme: Theme = {
       color: ${color.black};
       `,
       secondary: css`
-      color: ${color.blue[500]};
+      color: ${color.blue[400]};
       `,
       // Headings
       h1: css`

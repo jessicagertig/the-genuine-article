@@ -51,7 +51,7 @@ Styled.Title = styled.h1((props) => {
     ${[t.pb(8)]}
     font-size: 2rem;
     font-weight: 600;
-    color: ${t.color.blue[500]};
+    color: ${t.color.blue[400]};
     letter-spacing: 0.07rem;
 
     ${t.mq.xl} {

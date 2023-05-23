@@ -3,20 +3,19 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from 'src/layouts/AppWithLayout';
 import myTheme from "src/styles/theme";
+import customTheme from "src/styles/customTheme";
 import reportWebVitals from 'src/reportWebVitals';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
 import './styles/styles.scss'
 
 const rootElement = document.getElementById("root")!; // non null assertion operator tells TS that element will always exist - may need to explicetly type instead when using some eslint extensions
 const root = createRoot(rootElement);
 
-const theme = createTheme({})
-
 root.render(
   <StrictMode>
     <Router>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={customTheme}>
         <EmotionThemeProvider theme={myTheme}>
           <App />
         </EmotionThemeProvider>

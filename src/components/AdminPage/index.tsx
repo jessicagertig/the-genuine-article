@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
@@ -6,116 +7,180 @@ import {
     TextField,
 } from "@mui/material";
 
+import { ItemInfo } from 'src/types';
+import {
+  colorOptions,
+  materialOptions,
+  garmentTitleOptions,
+  Option
+} from 'src/utils/lookups';
+
 type Props = {};
 
 const AdminPage = (props: Props) => {
 
-  const state = {
-    title: '',
-    color: {label: '', id: 1}
+  const [colors, setColors] = React.useState([]);
+  const [materials, setMaterials] = React.useState([]);
+
+  const initialState: ItemInfo = {
+    garmentTitle: garmentTitleOptions[0].label, //Material UI type
+    garmentType: '',
+    beginYear: 1800,
+    endYear: undefined,
+    decade: '',
+    secondaryDecade: '',
+    cultureCountry: null,
+    collection: null,
+    creator: null,
+    collectionUrl: null,
+    source: null,
+    itemCollectionNo: null,
+    description: '',
   }
-//kinds = singleSelect, multiSelect, text, textArea
+
+  const [state, setState] = React.useState(initialState)
+
+  const { garmentTitle, garmentType, beginYear, endYear, decade, secondaryDecade, cultureCountry, collection, creator, collectionUrl, source, itemCollectionNo, description} = state
+
+  const handleTextInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
+      setState({...state, [name]: event.target.value})
+  }
+
+  const handleSelectInputChange = (event: React.SyntheticEvent, value: any, name: string) => {
+    console.log('EVENT SELECT', event.currentTarget)
+    console.log('VALUE', value)
+    console.log('NAME', name)
+  }
+
+  type Field = {
+    kind: string;
+    name: string;
+    label: string;
+    value: any;
+    required: boolean;
+    error: any;
+    options?: Option[];
+  };
+  
+
+  console.log('coloroptions', colorOptions)
+  //kinds = singleSelect, multiSelect, text, textArea
   const formFields = [
     {
       kind: 'singleSelect',
-      type: 'text',
-      value: state.color.id,
-      onChange: (e: any) => {},
-      name: 'color',
-      label: 'Color',
-      multiline: false,
-      minRows: 4,
+      name: 'garmentTitle',
+      label: 'Title',
+      options: garmentTitleOptions,
+      value: garmentTitle,
       required: false,
       error: false,
-      options: [{label: 'zealous', id: 1}, {label: 'alabama', id: 2}]
-    },
-    {
-      kind: 'multiSelect',
-      type: 'text',
-      value: state.color.id,
-      onChange: (e: any) => {},
-      name: 'materials',
-      label: 'Materials',
-      multiline: false,
-      minRows: 4,
-      required: false,
-      error: false,
-      options: [{label: 'zealous', id: 1}, {label: 'alabama', id: 2}]
     },
     {
       kind: 'text',
-      type: 'text',
-      value: state.title,
-      onChange: (e: any) => {},
-      name: 'title',
-      label: 'Title',
-      multiline: false,
-      minRows: 4,
+      name: 'garmentType',
+      label: 'Garment Type',
+      value: garmentType,
       required: false,
       error: false,
     },
     {
       kind: 'textArea',
-      type: 'text',
-      value: state.title,
-      onChange: (e: any) => {},
       name: 'description',
       label: 'Description',
-      multiline: true,
-      minRows: 4,
+      value: description,
       required: false,
       error: false,
-    }
+    },
+    {
+      kind: 'multiSelect',
+      name: 'colors',
+      label: 'Colors',
+      options: colorOptions,
+      value: colors,
+      required: false,
+      error: false,
+    },
+    {
+      kind: 'multiSelect',
+      name: 'materials',
+      label: 'Materials',
+      options: materialOptions,
+      value: materials,
+      required: false,
+      error: false,
+    },
   ]
 
-  const formFieldNodes = formFields.map((formField) => {
-    if (formField.kind === 'singleSelect') {
+  const formFieldNodes = formFields.map((field: Field) => {
+    const { kind, label, name, required, error, options, value } = field
+    if (kind === 'singleSelect') {
       return (
         <Autocomplete
-          disablePortal
-          id=""
-          options={formField.options}
+          disablePortal={true}
+          id={name}
+          options={options as Option[]}
+          getOptionLabel={(option: Option) => option.label}
           sx={{ m: 1, width: 300 }}
-          renderInput={(params) => <TextField {...params} label={formField.label} variant="filled"/>}
-          onChange={formField.onChange}
-          value={formField.value}
+          renderInput={(params) => 
+            <TextField 
+              {...params} 
+              label={label}
+              name={name}
+              required={required} 
+              variant="filled"
+              error={error}
+              />}
+          onChange={(event, value) => handleSelectInputChange(event, value, name)}
         />
       )
-    } else if (formField.kind === 'multiSelect') {
+    } else if (kind === 'multiSelect') {
       return (
         <Autocomplete
-          disablePortal
-          id=""
-          options={formField.options}
+          disablePortal={true}
+          id={name}
+          options={options as Option[]}
+          getOptionLabel={(option: Option) => option.label}
           sx={{ m: 1, width: 300 }}
-          renderInput={(params) => <TextField {...params} label={formField.label} variant="filled"/>}
-          multiple={true}
-          onChange={formField.onChange}
-          value={formField.value}
+          renderInput={(params) => 
+              <TextField 
+                {...params} 
+                label={label}
+                name={name}
+                required={required} 
+                variant="filled"
+                error={error}
+                />}
+            multiple={true}
+            onChange={(event, value) => handleSelectInputChange(event, value, name)}
         />
         )
-    } else if (formField.kind === 'text') {
+    } else if (kind === 'text') {
       return (
         <TextField
-          type={formField.type}
-          label={formField.label}
-          value={formField.value}
+          label={label}
+          name={name}
+          id={name}
+          value={value}
           sx={{ m: 1, width: 300 }}
-          onChange={formField.onChange}
+          onChange={(event) => handleTextInputChange(event, name)}
           variant='filled'
+          required={required}
+          error={error}
         />
       )
-    } else if (formField.kind === 'textArea') {
+    } else if (kind === 'textArea') {
       return (
         <TextField
-          type={formField.type}
-          label={formField.label}
-          value={formField.value}
+          label={label}
+          value={value}
+          id={name}
           multiline={true}
           minRows={4}
           sx={{ m: 1, width: 300 }}
-          onChange={formField.onChange}
+          onChange={(event) => handleTextInputChange(event, name)}
           variant='filled'
+          required={required}
+          error={error}
         />
       )
     } else {
@@ -131,31 +196,7 @@ const AdminPage = (props: Props) => {
         <h2>ADD NEW GARMENT</h2>
       </Styled.AdminPageHeader>
       <form>
-        <TextField
-          label='Title'
-          type='text'
-          value={state.title}
-          variant='filled'
-          sx={{ m: 1, width: 300 }}
-        />
-        <Autocomplete
-          disablePortal
-          id=""
-          options={[{label: 'zealous', value: 1}, {label: 'alabama', value: 2}]}
-          sx={{ m: 1, width: 300 }}
-          renderInput={(params) => <TextField {...params} label='Select' variant="filled"/>}
-          multiple={true}
-        />
-        <TextField
-          type='text'
-          value={state.title}
-          multiline={true}
-          minRows={4}
-          variant='filled'
-          sx={{ m: 1, width: 300 }}
-          onChange={(e: any) => {}}
-          label='Description'
-        />
+        {formFieldNodes}
       </form>
     </Styled.AdminPageContainer>
   );

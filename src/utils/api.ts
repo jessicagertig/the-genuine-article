@@ -1,44 +1,81 @@
-import 'isomorphic-fetch';
-import * as e6p from 'es6-promise';
-(e6p as any).polyfill();
+import axios from 'axios';
 
 const baseUrl: string = 'http://localhost:4000/';
 
-async function request<T>(url: string, options: RequestInit): Promise<T> {
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw new Error(response.statusText)
-  }
-  const data = await response.json()
-  return data as T;
+type ReqParams = {
+  method?: string;
+  endpoint: string;
+  variables?: any;
 }
 
-export async function get<T>(endpoint: string): Promise<T> {
+export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
   const url = baseUrl + endpoint;
-  return request<T>(url, { method: 'GET' });
+  
+  const { data } = await axios.get(url, {
+    headers: {
+      Accept: "application/json",
+      "Content=Type": "application/json",
+    },
+  })
+
+  return data
 }
 
-export async function post<T>(endpoint: string, body: object): Promise<T> {
+// apiMutate used in apiPost and apiPut
+
+async function apiMutate<T>({ method, endpoint, variables}: ReqParams): Promise<T> {
   const url = baseUrl + endpoint;
-  return request<T>(url, {
-    method: 'POST',
-    body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' },
-  });
+
+  const { data } = await axios
+    .request({
+      method,
+      url: url,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        // "X-CSRF-Token": 
+      },
+      data: variables
+    })
+    .catch((errorObject) => {
+      const { response } = errorObject;
+      const responseData = response.data;
+      const normalizedError = {
+        ...response,
+        data: responseData,
+      };
+      return Promise.reject(normalizedError);
+    });
+  
+  return data;
 }
 
-export async function put<T>(endpoint: string, body: object): Promise<T> {
-  const url = baseUrl + endpoint;
-  return request<T>(url, {
-    method: 'PUT',
-    body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json' },
-  });
+export async function apiPost<T>({ endpoint, variables }: ReqParams): Promise<T> {
+  const url: string = baseUrl + endpoint;
+
+  return await apiMutate({ method: "post", endpoint: url, variables });
 }
 
-export async function deleteRequest<T>(endpoint: string): Promise<T> {
-  const url = baseUrl + endpoint;
-  return request<T>(url, { method: 'DELETE' });
+export async function apiPut<T>({ endpoint, variables }: ReqParams): Promise<T> {
+  const url: string = baseUrl + endpoint;
+
+  return await apiMutate({ method: "put", endpoint: url, variables });
+}
+
+export async function apiDelete<T>({ endpoint, variables }: ReqParams): Promise<T> {
+  const url: string = baseUrl + endpoint;
+
+  const { data } = await axios.request({
+      method: "delete",
+      url: url,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      data: variables,
+    });
+
+  return data;
 }
 
 /*

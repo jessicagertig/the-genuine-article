@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { allKeysToSnake, allKeysToCamel } from 'src/utils/structure';
 
 const baseUrl: string = 'http://localhost:4000/';
 
@@ -6,6 +7,7 @@ type ReqParams = {
   method?: string;
   endpoint: string;
   variables?: any;
+  keysToSnake?: boolean;
 }
 
 export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
@@ -16,14 +18,14 @@ export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
       Accept: "application/json",
       "Content=Type": "application/json",
     },
-  })
+  });
 
-  return data
+  return allKeysToCamel(data);
 }
 
 // apiMutate used in apiPost and apiPut
 
-async function apiMutate<T>({ method, endpoint, variables}: ReqParams): Promise<T> {
+async function apiMutate<T>({ method, endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
   const url = baseUrl + endpoint;
 
   const { data } = await axios
@@ -35,11 +37,11 @@ async function apiMutate<T>({ method, endpoint, variables}: ReqParams): Promise<
         "Content-Type": "application/json",
         // "X-CSRF-Token": 
       },
-      data: variables
+      data: keysToSnake ? allKeysToSnake(variables) : variables
     })
     .catch((errorObject) => {
       const { response } = errorObject;
-      const responseData = response.data;
+      const responseData = allKeysToCamel(response.data);
       const normalizedError = {
         ...response,
         data: responseData,
@@ -47,19 +49,19 @@ async function apiMutate<T>({ method, endpoint, variables}: ReqParams): Promise<
       return Promise.reject(normalizedError);
     });
   
-  return data;
+  return allKeysToCamel(data);
 }
 
-export async function apiPost<T>({ endpoint, variables }: ReqParams): Promise<T> {
+export async function apiPost<T>({ endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
 
-  return await apiMutate({ method: "post", endpoint: url, variables });
+  return await apiMutate({ method: "post", endpoint: url, variables, keysToSnake});
 }
 
-export async function apiPut<T>({ endpoint, variables }: ReqParams): Promise<T> {
+export async function apiPut<T>({ endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
 
-  return await apiMutate({ method: "put", endpoint: url, variables });
+  return await apiMutate({ method: "put", endpoint: url, variables, keysToSnake});
 }
 
 export async function apiDelete<T>({ endpoint, variables }: ReqParams): Promise<T> {
@@ -72,10 +74,10 @@ export async function apiDelete<T>({ endpoint, variables }: ReqParams): Promise<
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      data: variables,
+      data: allKeysToSnake(variables),
     });
 
-  return data;
+  return allKeysToCamel(data);
 }
 
 /*

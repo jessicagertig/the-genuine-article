@@ -14,29 +14,30 @@ import has from 'lodash/has';
 //   return errors;
 // };
 
-export const keysToCamel = (obj) => {
-  if (!isPlainObject(obj)) {
-    return obj;
-  }
-  const newObject = {};
-  forEach(Object.keys(obj), (key) => {
-    newObject[camelCase(key)] = obj[key];
-  });
-  return newObject;
-};
+// export const keysToCamel = (obj) => {
+//   if (!isPlainObject(obj)) {
+//     return obj;
+//   }
+//   const newObject = {};
+//   forEach(Object.keys(obj), (key) => {
+//     newObject[camelCase(key)] = obj[key];
+//   });
+//   return newObject;
+// };
 
 // collection: array of objects
-export const collectionToCamel = (collection) => {
-  if (!isArray(collection)) {
-    return collection;
-  }
-  const newCollection = [];
-  forEach(collection, (obj) => {
-    newCollection.push(keysToCamel(obj));
-  });
-  return newCollection;
-};
+// export const collectionToCamel = (collection) => {
+//   if (!isArray(collection)) {
+//     return collection;
+//   }
+//   const newCollection = [];
+//   forEach(collection, (obj) => {
+//     newCollection.push(keysToCamel(obj));
+//   });
+//   return newCollection;
+// };
 
+// recursive
 export const allKeysToCamel = (obj, modifyValues = {}) => {
   const simpleKeysToCamel = (object) => {
     if (!isPlainObject(object)) {
@@ -70,27 +71,27 @@ export const allKeysToCamel = (obj, modifyValues = {}) => {
   return obj;
 };
 
-export const keysToSnake = (obj) => {
-  if (!isPlainObject(obj)) {
-    return obj;
-  }
-  const newObject = {};
-  forEach(Object.keys(obj), (key) => {
-    newObject[snakeCase(key)] = obj[key];
-  });
-  return newObject;
-};
+// export const keysToSnake = (obj) => {
+//   if (!isPlainObject(obj)) {
+//     return obj;
+//   }
+//   const newObject = {};
+//   forEach(Object.keys(obj), (key) => {
+//     newObject[snakeCase(key)] = obj[key];
+//   });
+//   return newObject;
+// };
 
-export const collectionToSnake = (collection) => {
-  if (!isArray(collection)) {
-    return collection;
-  }
-  const newCollection = [];
-  forEach(collection, (obj) => {
-    newCollection.push(keysToSnake(obj));
-  });
-  return newCollection;
-};
+// export const collectionToSnake = (collection) => {
+//   if (!isArray(collection)) {
+//     return collection;
+//   }
+//   const newCollection = [];
+//   forEach(collection, (obj) => {
+//     newCollection.push(keysToSnake(obj));
+//   });
+//   return newCollection;
+// };
 
 export const allKeysToSnake = (obj, modifyValues = {}) => {
   const simpleKeysToSnake = (object) => {

@@ -1,18 +1,26 @@
 export interface ItemInfo {
-  id?: number | null;
-  garmentTitle: string | null;
-  garmentType: string | null;
-  beginYear: number | null;
+  id?: number;
+  garmentTitle: string;
+  garmentType: string;
+  beginYear: number;
   endYear?: number | null;
   decade?: string | null;
   secondaryDecade?: string | null;
   cultureCountry?: string | null;
   collection?: string | null;
-  collectionUrl: string | null;
+  collectionUrl: string;
   creator?: string | null;
   source?: string | null;
   itemCollectionNo?: string | null;
   description?: string | null;
+}
+
+export interface ImageUrls {
+  mainImageUrl: string;
+  largeUrl: string;
+  displayUrl: string;
+  smallUrl: string;
+  thumbUrl: string;
 }
 
 export interface GarmentState {
@@ -27,6 +35,12 @@ export interface Garment {
   colors: String[];
   materials: String[];
   imageUrls: {} | null;
+}
+
+export interface GarmentData extends ItemInfo {
+  colors: String[];
+  materials: String[];
+  imageUrls: ImageUrls;
 }
 
 // for POST request

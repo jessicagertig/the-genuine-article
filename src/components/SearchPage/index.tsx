@@ -4,15 +4,18 @@ import { css } from "@emotion/react";
 import PublicHeader from 'src/components/shared/PublicHeader';
 import SearchResults from 'src/components/SearchPage/SearchResults';
 
+import { useGarments } from 'src/queryHooks/useGarments'; 
+
 type Props = {};
 
 const SearchPage = (props: Props) => {
+  const { data: garments, isLoading, error } = useGarments();
   return (
     <Styled.SearchPageContainer>
       <PublicHeader
         titleText='Search Garments'
       />
-      <SearchResults />
+      <SearchResults garments={garments} isLoading={isLoading} error={error} />
     </Styled.SearchPageContainer>
   );
 };

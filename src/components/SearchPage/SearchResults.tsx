@@ -2,19 +2,24 @@ import React from 'react';
 
 import GarmentCard from 'src/components/SearchPage/GarmentCard';
 import { StyledSearchResults } from 'src/components/SearchPage/styles/StyledSearchResults';
-
-const fakeData = require('src/assets/data.json');
+import { GarmentData } from 'src/types';
 
 interface SearchResultsProps {
-  // data: any;
+  garments: GarmentData[],
+  isLoading: boolean,
+  error: any
 }
 
-const SearchResults: React.FC<SearchResultsProps> = () => {
-  console.log("data", fakeData)
+const SearchResults: React.FC<SearchResultsProps> = ({ garments, isLoading, error }) => {
+  console.log("data", garments)
+  if (isLoading) {
+    return <h2>"Loading..."</h2>
+  }
+
   return (
     <>
       <StyledSearchResults>
-        {fakeData.garments.map((garment: any, index: number) => (
+        {garments?.map((garment: any, index: number) => (
           <GarmentCard key={index} garment={garment} />
         ))}
       </StyledSearchResults>

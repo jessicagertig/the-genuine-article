@@ -32,7 +32,7 @@ const AdminPage = (props: Props) => {
     cultureCountry: null,
     collection: null,
     creator: null,
-    collectionUrl: null,
+    collectionUrl: '',
     source: null,
     itemCollectionNo: null,
     description: '',

@@ -1,27 +1,27 @@
 import React from 'react'
 import { StyledGarmentCard, StyledGarmentCardImage, StyledGarmentCardText } from 'src/components/SearchPage/styles/StyledGarmentCard';
-//TODO: add a types file with a garment type once actual data is returned
+import { GarmentData } from 'src/types';
 
 type Props = {
-  garment: any;  
+  garment: GarmentData;  
 }
 
 function GarmentCard({ garment }: Props) {
-  const url = garment.image_urls.large_url
+  const url = garment && garment.imageUrls ? garment.imageUrls.largeUrl : undefined
   return (
     <StyledGarmentCard>
       <StyledGarmentCardImage>
-        <img src={url} alt={garment.garment_title}/>
+        <img src={url} alt={garment?.garmentTitle}/>
       </StyledGarmentCardImage>
       <StyledGarmentCardText>
         <h6>
-          {garment.garment_title}
+          {garment?.garmentTitle}
         </h6>
         <p>
-          {garment.begin_year}
+          {garment?.beginYear}
         </p>
         <p>
-          {garment.culture_country}
+          {garment?.cultureCountry}
         </p>
       </StyledGarmentCardText>
     </StyledGarmentCard>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { allKeysToSnake, allKeysToCamel } from 'src/utils/structure';
 
-const baseUrl: string = 'http://localhost:4000/';
+const baseUrl: string = 'http://localhost:4000';
 
 type ReqParams = {
   method?: string;
@@ -16,7 +16,7 @@ export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
   const { data } = await axios.get(url, {
     headers: {
       Accept: "application/json",
-      "Content=Type": "application/json",
+      "Content-Type": "application/json",
     },
   });
 

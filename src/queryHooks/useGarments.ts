@@ -1,10 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { apiGet, apiPost } from './api';
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { apiGet, apiPost } from "./api";
 
 const getGarments = async () => {
-  return await apiGet({ endpoint: '/items'});
-}
-
+  return await apiGet({ endpoint: "/items" });
+};
 
 /* Hooks
 --===================================================-- */
@@ -16,11 +15,9 @@ function useGarments(): {
   isFetching: boolean;
   isLoading: boolean;
 } {
-  return useQuery(["garments"], ()  => getGarments(), {
+  return useQuery(["garments"], () => getGarments(), {
     refetchOnWindowFocus: false,
-  })
+  });
 }
-
-
 
 export { useGarments };

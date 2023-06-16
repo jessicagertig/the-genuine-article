@@ -1,58 +1,49 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { NavLink } from 'react-router-dom';
-import logo from "src/assets/BonnetLogo.png"
+import { NavLink } from "react-router-dom";
+import logo from "src/assets/BonnetLogo.png";
 
 type Props = {
   backgroundColor?: string;
-}
+};
 
-const NavBar = ({backgroundColor}: Props) => {
-
+const NavBar = ({ backgroundColor }: Props) => {
   const title = (
     <Styled.TitleContainer>
+      <Styled.Title>The Genuine</Styled.Title>
       <Styled.Title>
-      The Genuine
-      </Styled.Title>
-      <Styled.Title>
-      <span>Article</span>
+        <span>Article</span>
       </Styled.Title>
     </Styled.TitleContainer>
-  )
+  );
 
   return (
-    <Styled.NavBarContainer style={{"background": backgroundColor}}>
+    <Styled.NavBarContainer style={{ background: backgroundColor }}>
       <Styled.Container>
         <Styled.LogoContainer>
-          <img src={logo} alt="bonnet logo"/>
+          <img src={logo} alt="bonnet logo" />
         </Styled.LogoContainer>
         {title}
       </Styled.Container>
       <Styled.Container>
         <Styled.LinksContainer>
-          <Styled.NavLink to='/'>
-            Home
-          </Styled.NavLink>
-          <Styled.NavLink to='/search'>
-            Search
-          </Styled.NavLink>
-          <Styled.NavLink to='/about'>
-            About
-          </Styled.NavLink>
+          <Styled.NavLink to="/">Home</Styled.NavLink>
+          <Styled.NavLink to="/search">Search</Styled.NavLink>
+          <Styled.NavLink to="/about">About</Styled.NavLink>
         </Styled.LinksContainer>
       </Styled.Container>
     </Styled.NavBarContainer>
-  )
-}
+  );
+};
 
 export default NavBar;
 
 /* Styled Components
 ======================================================= */
-let Styled: any
-Styled = {}
+let Styled: any;
+Styled = {};
 
-Styled.NavBarContainer = styled.div((props) => {
+Styled.NavBarContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: NavBar;
@@ -73,10 +64,10 @@ Styled.NavBarContainer = styled.div((props) => {
     ${t.mq.xxl} {
       height: 125px;
     }
-  `
-})
+  `;
+});
 
-Styled.Container = styled.div((props) => {
+Styled.Container = styled.div(props => {
   const t = props.theme;
   return css`
     label: NavBarItems;
@@ -84,16 +75,14 @@ Styled.Container = styled.div((props) => {
 
     ${t.mq.lg} {
       width: 40%;
-
     }
     ${t.mq.xxl} {
-      width: 34%; 
+      width: 34%;
     }
+  `;
+});
 
-  `
-})
-
-Styled.LogoContainer = styled.div((props) => {
+Styled.LogoContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: NavBarLogo;
@@ -104,11 +93,10 @@ Styled.LogoContainer = styled.div((props) => {
       height: 120px;
       width: 120px;
     }
-  `
-})
+  `;
+});
 
-
-Styled.TitleContainer = styled.div((props) => {
+Styled.TitleContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: NavBarTitle;
@@ -123,24 +111,24 @@ Styled.TitleContainer = styled.div((props) => {
     ${t.mq.xxl} {
       display: block;
     }
-  `
-})
+  `;
+});
 
-Styled.Title = styled.h1((props) => {
-  const t = props.theme
+Styled.Title = styled.h1(props => {
+  const t = props.theme;
   return css`
-  label: NavBarTitleText;
-  ${t.text.h1};
-  
-  font-size: 1.8rem;
-  color: ${t.color.blue[400]};
-  line-height: 35px;
-  letter-spacing: 0.05rem;
-  `
-})
+    label: NavBarTitleText;
+    ${t.text.h1};
 
-Styled.LinksContainer = styled.div((props) => {
-  const t = props.theme
+    font-size: 1.8rem;
+    color: ${t.color.blue[400]};
+    line-height: 35px;
+    letter-spacing: 0.05rem;
+  `;
+});
+
+Styled.LinksContainer = styled.div(props => {
+  const t = props.theme;
   return css`
   label: NavBarLinks
   display: flex;
@@ -155,10 +143,10 @@ Styled.LinksContainer = styled.div((props) => {
   a.active {
     color: ${t.color.red[500]};
   }
-  `
-})
+  `;
+});
 
-Styled.NavLink = styled(NavLink)((props) => {
+Styled.NavLink = styled(NavLink)(props => {
   const t: any = props.theme;
   return css`
     ${t.text.h2};
@@ -167,7 +155,7 @@ Styled.NavLink = styled(NavLink)((props) => {
     font-size: 1.45rem;
     font-weight: 900;
     transition: font-size 0.2s ease;
-    font-family: 'Bellota Text', cursive;
+    font-family: "Bellota Text", cursive;
 
     &:hover {
       cursor: pointer;

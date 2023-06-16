@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 function MainButton(props: Props) {
-  return (
-    <div>MainButton</div>
-  )
+  return <div>MainButton</div>;
 }
 
-export default MainButton
+export default MainButton;

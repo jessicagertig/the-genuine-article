@@ -1,17 +1,15 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material';
-import { ThemeProvider as EmotionThemeProvider } from '@emotion/react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ThemeProvider } from "@mui/material";
+import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-import App from 'src/layouts/AppWithLayout';
+import App from "src/layouts/AppWithLayout";
 import myTheme from "src/styles/theme";
 import customTheme from "src/styles/customTheme";
-import reportWebVitals from 'src/reportWebVitals';
-import './styles/styles.scss'
-
-
+import reportWebVitals from "src/reportWebVitals";
+import "./styles/styles.scss";
 
 const rootElement = document.getElementById("root")!; // non null assertion operator tells TS that element will always exist - may need to explicetly type instead when using some eslint extensions
 const root = createRoot(rootElement);
@@ -27,7 +25,7 @@ const queryClient = new QueryClient({
 });
 
 root.render(
-  <QueryClientProvider client={queryClient} >
+  <QueryClientProvider client={queryClient}>
     <StrictMode>
       <Router>
         <ThemeProvider theme={customTheme}>

@@ -1,18 +1,18 @@
-import axios from 'axios';
-import { allKeysToSnake, allKeysToCamel } from 'src/utils/structure';
+import axios from "axios";
+import { allKeysToSnake, allKeysToCamel } from "src/utils/structure";
 
-const baseUrl: string = 'http://localhost:4000';
+const baseUrl: string = "http://localhost:4000";
 
 type ReqParams = {
   method?: string;
   endpoint: string;
   variables?: any;
   keysToSnake?: boolean;
-}
+};
 
 export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
   const url = baseUrl + endpoint;
-  
+
   const { data } = await axios.get(url, {
     headers: {
       Accept: "application/json",
@@ -35,11 +35,11 @@ async function apiMutate<T>({ method, endpoint, variables, keysToSnake = true }:
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        // "X-CSRF-Token": 
+        // "X-CSRF-Token":
       },
-      data: keysToSnake ? allKeysToSnake(variables) : variables
+      data: keysToSnake ? allKeysToSnake(variables) : variables,
     })
-    .catch((errorObject) => {
+    .catch(errorObject => {
       const { response } = errorObject;
       const responseData = allKeysToCamel(response.data);
       const normalizedError = {
@@ -48,34 +48,34 @@ async function apiMutate<T>({ method, endpoint, variables, keysToSnake = true }:
       };
       return Promise.reject(normalizedError);
     });
-  
+
   return allKeysToCamel(data);
 }
 
 export async function apiPost<T>({ endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
 
-  return await apiMutate({ method: "post", endpoint: url, variables, keysToSnake});
+  return await apiMutate({ method: "post", endpoint: url, variables, keysToSnake });
 }
 
 export async function apiPut<T>({ endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
 
-  return await apiMutate({ method: "put", endpoint: url, variables, keysToSnake});
+  return await apiMutate({ method: "put", endpoint: url, variables, keysToSnake });
 }
 
 export async function apiDelete<T>({ endpoint, variables }: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
 
   const { data } = await axios.request({
-      method: "delete",
-      url: url,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      data: allKeysToSnake(variables),
-    });
+    method: "delete",
+    url: url,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    data: allKeysToSnake(variables),
+  });
 
   return allKeysToCamel(data);
 }

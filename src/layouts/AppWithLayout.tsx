@@ -1,28 +1,28 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 
-import PublicLayout from 'src/layouts/PublicLayout';
-import AdminLayout from 'src/layouts/AdminLayout';
-import AdminPage from 'src/components/AdminPage';
-import LandingPage from 'src/components/LandingPage';
-import SearchPage from 'src/components/SearchPage';
+import PublicLayout from "src/layouts/PublicLayout";
+import AdminLayout from "src/layouts/AdminLayout";
+import AdminPage from "src/components/AdminPage";
+import LandingPage from "src/components/LandingPage";
+import SearchPage from "src/components/SearchPage";
 
 type Page = {
-  path: string,
-  component: React.FC,
-  layout: React.FC<{ children: React.ReactNode }>
-}
+  path: string;
+  component: React.FC;
+  layout: React.FC<{ children: React.ReactNode }>;
+};
 
 const pages: Page[] = [
   // Public pages
   {
-    path: '/',
+    path: "/",
     component: LandingPage,
-    layout: PublicLayout
+    layout: PublicLayout,
   },
   {
-    path: '/search',
+    path: "/search",
     component: SearchPage,
-    layout: PublicLayout
+    layout: PublicLayout,
   },
   // {
   //   exact: true,
@@ -38,27 +38,28 @@ const pages: Page[] = [
   //   layout: AuthLayout
   // }
   {
-    path: '/admin',
+    path: "/admin",
     component: AdminPage,
-    layout: AdminLayout
-  }
+    layout: AdminLayout,
+  },
 ];
 
 const App: React.FC = () => {
   return (
     <Routes>
       {pages.map((page, index) => (
-        <Route 
+        <Route
           key={index}
           path={page.path}
-          element={(
+          element={
             <page.layout>
               <page.component />
             </page.layout>
-          )}/>
+          }
+        />
       ))}
     </Routes>
-  )
-}
+  );
+};
 
 export default App;

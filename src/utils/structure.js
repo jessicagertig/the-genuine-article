@@ -1,9 +1,9 @@
-import camelCase from 'lodash/camelCase';
-import snakeCase from 'lodash/snakeCase';
-import forEach from 'lodash/forEach';
-import isPlainObject from 'lodash/isPlainObject';
-import isArray from 'lodash/isArray';
-import has from 'lodash/has';
+import camelCase from "lodash/camelCase";
+import snakeCase from "lodash/snakeCase";
+import forEach from "lodash/forEach";
+import isPlainObject from "lodash/isPlainObject";
+import isArray from "lodash/isArray";
+import has from "lodash/has";
 
 // export const failureResultToErrorsArray = (object) => {
 //   // console.warn('[stucture] failureResultToErrorsArray object', object.errors);
@@ -39,12 +39,12 @@ import has from 'lodash/has';
 
 // recursive
 export const allKeysToCamel = (obj, modifyValues = {}) => {
-  const simpleKeysToCamel = (object) => {
+  const simpleKeysToCamel = object => {
     if (!isPlainObject(object)) {
       return object;
     }
     const newObject = {};
-    forEach(Object.keys(object), (key) => {
+    forEach(Object.keys(object), key => {
       if (has(modifyValues, key)) {
         newObject[camelCase(key)] = modifyValues[key](object[key]);
       } else {
@@ -54,9 +54,9 @@ export const allKeysToCamel = (obj, modifyValues = {}) => {
     return newObject;
   };
 
-  const simpleCollectionToCamel = (collection) => {
+  const simpleCollectionToCamel = collection => {
     const newCollection = [];
-    forEach(collection, (object) => {
+    forEach(collection, object => {
       newCollection.push(simpleKeysToCamel(object));
     });
     return newCollection;
@@ -94,12 +94,12 @@ export const allKeysToCamel = (obj, modifyValues = {}) => {
 // };
 
 export const allKeysToSnake = (obj, modifyValues = {}) => {
-  const simpleKeysToSnake = (object) => {
+  const simpleKeysToSnake = object => {
     if (!isPlainObject(object)) {
       return object;
     }
     const newObject = {};
-    forEach(Object.keys(object), (key) => {
+    forEach(Object.keys(object), key => {
       if (has(modifyValues, key)) {
         newObject[snakeCase(key)] = modifyValues[key](object[key]);
       } else {
@@ -109,9 +109,9 @@ export const allKeysToSnake = (obj, modifyValues = {}) => {
     return newObject;
   };
 
-  const simpleCollectionToSnake = (collection) => {
+  const simpleCollectionToSnake = collection => {
     const newCollection = [];
-    forEach(collection, (object) => {
+    forEach(collection, object => {
       newCollection.push(simpleKeysToSnake(object));
     });
     return newCollection;

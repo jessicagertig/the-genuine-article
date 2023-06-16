@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import Footer from 'src/components/shared/Footer';
-import NavBar from 'src/components/shared/NavBar';
+import Footer from "src/components/shared/Footer";
+import NavBar from "src/components/shared/NavBar";
 
 interface PublicLayoutProps {
   children: React.ReactNode;
@@ -13,11 +13,11 @@ interface PublicLayoutProps {
 const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   return (
     <Styled.PageContainer>
-      <NavBar backgroundColor='#D3D9E5'/>
+      <NavBar backgroundColor="#D3D9E5" />
       {children}
     </Styled.PageContainer>
   );
-}
+};
 
 export default AdminLayout;
 
@@ -27,7 +27,7 @@ export default AdminLayout;
 let Styled: any;
 Styled = {};
 
-Styled.PageContainer = styled.div((props) => {
+Styled.PageContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminContainer;

@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 // blue_gray: {
 //   100: "#D3D9E5",// nav background- info light
@@ -11,25 +11,24 @@ import { createTheme } from '@mui/material/styles';
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: '#223F7C',
-      light: '#2F579C',
-      dark: '#172a4f',
+      main: "#223F7C",
+      light: "#2F579C",
+      dark: "#172a4f",
     },
     secondary: {
-      main: '#FBE9EF',
-      light: '#F0A6BD',
-      dark: '#EC79A9',
+      main: "#FBE9EF",
+      light: "#F0A6BD",
+      dark: "#EC79A9",
     },
     error: {
-      light: '#DA2929',
-      main: '#C42121',
-      dark: '#831616',
+      light: "#DA2929",
+      main: "#C42121",
+      dark: "#831616",
     },
   },
   typography: {
-    fontFamily: 'Bellota Text, sans-serif'
-  }
+    fontFamily: "Bellota Text, sans-serif",
+  },
 });
 
 export default customTheme;
-

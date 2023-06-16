@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-export const StyledSearchResults = styled.div((props) => {
+export const StyledSearchResults = styled.div(props => {
   const t = props.theme;
   return css`
     label: SearchResults;

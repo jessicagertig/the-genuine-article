@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-
-export const StyledGarmentCard = styled.div((props) => {
+export const StyledGarmentCard = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentCard;
@@ -12,23 +11,23 @@ export const StyledGarmentCard = styled.div((props) => {
     color: ${t.color.blue_gray[200]};
     background-color: ${t.color.blue[700]};
     display: flex;
-    flex-direction: column;  
+    flex-direction: column;
 
     ${t.mq.md} {
       ${t.m(4)};
       width: 296px;
-      height: 456px;  
+      height: 456px;
     }
   `;
 });
 
-export const StyledGarmentCardText = styled.div((props) => {
+export const StyledGarmentCardText = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentCardMainText;
     display: flex;
     flex-direction: column;
-    ${[t.ml(2), t.pl('px')]}
+    ${[t.ml(2), t.pl("px")]}
 
     h6 {
       ${t.text.p}
@@ -37,7 +36,7 @@ export const StyledGarmentCardText = styled.div((props) => {
       font-weight: 700;
       line-height: 48px;
     }
-    
+
     p {
       color: ${t.color.white};
       font-size: 16px;
@@ -47,7 +46,7 @@ export const StyledGarmentCardText = styled.div((props) => {
   `;
 });
 
-export const StyledGarmentCardImage = styled.div((props) => {
+export const StyledGarmentCardImage = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentCardImage;
@@ -59,7 +58,7 @@ export const StyledGarmentCardImage = styled.div((props) => {
 
     ${t.mq.md} {
       width: 280px;
-      height: 341px; 
+      height: 341px;
     }
 
     img {

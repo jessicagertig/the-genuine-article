@@ -1,39 +1,27 @@
 import { css, Theme } from "@emotion/react";
 
-type Space = {[key: string | 'auto' | 'px' ]: string}
+type Space = { [key: string | "auto" | "px"]: string };
 
 const color = {
-  data: [
-    "#fd7f6f", 
-    "#7eb0d5", 
-    "#b2e061", 
-    "#bd7ebe", 
-    "#ffb55a", 
-    "#ffee65", 
-    "#beb9db", 
-    "#fdcce5", 
-    "#8bd3c7",
-    
-  ],
+  data: ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#ffee65", "#beb9db", "#fdcce5", "#8bd3c7"],
   white: "#FFFFFF",
   gray: {
     100: "#FAFAFA",
     200: "#AFBBCF",
-
   },
   black: "#000000",
   blue: {
-    100: "#2F579C",//primary light
-    400: "#223F7C",//primary dark
-    700: "#172a4f",//primary main
+    100: "#2F579C", //primary light
+    400: "#223F7C", //primary dark
+    700: "#172a4f", //primary main
   },
   red: {
     300: "#DA2929", //error light
     400: "#C42121", //error main
-    500: "#831616" //error dark
+    500: "#831616", //error dark
   },
   blue_gray: {
-    100: "#D3D9E5",// nav background- info light
+    100: "#D3D9E5", // nav background- info light
     200: "#BFC9D9", // secondary text - info light
     400: "#899AB8", //form text and underline info main
     600: "#4C5F80", // info dark
@@ -42,8 +30,8 @@ const color = {
   pink: {
     200: "#FBE9EF", // secondary light
     400: "#F0A6BD", // secondary main
-    600: "#EC79A9" // secondary dark
-  } 
+    600: "#EC79A9", // secondary dark
+  },
 };
 
 const space: Space = {
@@ -84,7 +72,7 @@ const typeScale = {
     font-size: 0.75rem;
   `,
   xs: css`
-  font-size: 0.825rem;
+    font-size: 0.825rem;
   `,
   sm: css`
     font-size: 0.875rem;
@@ -118,186 +106,186 @@ const breakpoints: { [index: string]: number } = {
 };
 
 const mq = Object.keys(breakpoints)
-  .map((key) => [key, breakpoints[key]] as [string, number])
+  .map(key => [key, breakpoints[key]] as [string, number])
   .reduce((prev, [key, breakpoint]) => {
     prev[key] = `@media (min-width: ${breakpoint}px)`;
     return prev;
   }, {} as { [index: string]: string });
 
 const theme: Theme = {
-    color,
-    space,
-    mq,
-  
-    // Size
-    h: function(size: number) {
-      return css`
-        height: ${space[size.toString()]};
-      `;
-    },
-    w: function(size: number) {
-      return css`
-        width: ${space[size.toString()]};
-      `;
-    },
-  
-    // Position
-    l: function(size: Space) {
-      return css`
-        left: ${spaceFromSize(size)};
-      `;
-    },
-    r: function(size: Space) {
-      return css`
-        right: ${spaceFromSize(size)};
-      `;
-    },
-    t: function(size: Space) {
-      return css`
-        top: ${spaceFromSize(size)};
-      `;
-    },
-    b: function(size: Space) {
-      return css`
-        bottom: ${spaceFromSize(size)};
-      `;
-    },
-  
-    // Margins
-    m: function(size: Space) {
-      return css`
-        margin: ${spaceFromSize(size)};
-      `;
-    },
-    ml: function(size: Space) {
-      return css`
-        margin-left: ${spaceFromSize(size)};
-      `;
-    },
-    mr: function(size: Space) {
-      return css`
-        margin-right: ${spaceFromSize(size)};
-      `;
-    },
-    mt: function(size: Space) {
-      return css`
-        margin-top: ${spaceFromSize(size)};
-      `;
-    },
-    mb: function(size: Space) {
-      return css`
-        margin-bottom: ${spaceFromSize(size)};
-      `;
-    },
-    mx: function(size: Space) {
-      return css`
-        margin-left: ${spaceFromSize(size)};
-        margin-right: ${spaceFromSize(size)};
-      `;
-    },
-    my: function(size: Space) {
-      return css`
-        margin-top: ${spaceFromSize(size)};
-        margin-bottom: ${spaceFromSize(size)};
-      `;
-    },
-  
-    // Padding
-    p: function(size: number) {
-      return css`
-        padding: ${space[size.toString()]};
-      `;
-    },
-    pl: function(size: number) {
-      return css`
-        padding-left: ${space[size.toString()]};
-      `;
-    },
-    pr: function(size: number) {
-      return css`
-        padding-right: ${space[size.toString()]};
-      `;
-    },
-    pt: function(size: number) {
-      return css`
-        padding-top: ${space[size.toString()]};
-      `;
-    },
-    pb: function(size: number) {
-      return css`
-        padding-bottom: ${space[size.toString()]};
-      `;
-    },
-    px: function(size: number) {
-      var sizeKey = size.toString();
-      return css`
-        padding-left: ${space[sizeKey]};
-        padding-right: ${space[sizeKey]};
-      `;
-    },
-    py: function(size: number) {
-      var sizeKey = size.toString();
-      return css`
-        padding-top: ${space[sizeKey]};
-        padding-bottom: ${space[sizeKey]};
-      `;
-    },
+  color,
+  space,
+  mq,
 
-    text: {
-      ...typeScale,
-  
-      // Font Weights
-      normal: css`
-        font-weight: 400;
-      `,
-      medium: css`
-        font-weight: 500;
-      `,
-      semibold: css`
-        font-weight: 600;
-      `,
-      bold: css`
-        font-weight: 700;
-      `,
-      heavy: css`
-        font-weight: 800;
-      `,
-      // Font Colors
-      primary: css`
+  // Size
+  h: function (size: number) {
+    return css`
+      height: ${space[size.toString()]};
+    `;
+  },
+  w: function (size: number) {
+    return css`
+      width: ${space[size.toString()]};
+    `;
+  },
+
+  // Position
+  l: function (size: Space) {
+    return css`
+      left: ${spaceFromSize(size)};
+    `;
+  },
+  r: function (size: Space) {
+    return css`
+      right: ${spaceFromSize(size)};
+    `;
+  },
+  t: function (size: Space) {
+    return css`
+      top: ${spaceFromSize(size)};
+    `;
+  },
+  b: function (size: Space) {
+    return css`
+      bottom: ${spaceFromSize(size)};
+    `;
+  },
+
+  // Margins
+  m: function (size: Space) {
+    return css`
+      margin: ${spaceFromSize(size)};
+    `;
+  },
+  ml: function (size: Space) {
+    return css`
+      margin-left: ${spaceFromSize(size)};
+    `;
+  },
+  mr: function (size: Space) {
+    return css`
+      margin-right: ${spaceFromSize(size)};
+    `;
+  },
+  mt: function (size: Space) {
+    return css`
+      margin-top: ${spaceFromSize(size)};
+    `;
+  },
+  mb: function (size: Space) {
+    return css`
+      margin-bottom: ${spaceFromSize(size)};
+    `;
+  },
+  mx: function (size: Space) {
+    return css`
+      margin-left: ${spaceFromSize(size)};
+      margin-right: ${spaceFromSize(size)};
+    `;
+  },
+  my: function (size: Space) {
+    return css`
+      margin-top: ${spaceFromSize(size)};
+      margin-bottom: ${spaceFromSize(size)};
+    `;
+  },
+
+  // Padding
+  p: function (size: number) {
+    return css`
+      padding: ${space[size.toString()]};
+    `;
+  },
+  pl: function (size: number) {
+    return css`
+      padding-left: ${space[size.toString()]};
+    `;
+  },
+  pr: function (size: number) {
+    return css`
+      padding-right: ${space[size.toString()]};
+    `;
+  },
+  pt: function (size: number) {
+    return css`
+      padding-top: ${space[size.toString()]};
+    `;
+  },
+  pb: function (size: number) {
+    return css`
+      padding-bottom: ${space[size.toString()]};
+    `;
+  },
+  px: function (size: number) {
+    var sizeKey = size.toString();
+    return css`
+      padding-left: ${space[sizeKey]};
+      padding-right: ${space[sizeKey]};
+    `;
+  },
+  py: function (size: number) {
+    var sizeKey = size.toString();
+    return css`
+      padding-top: ${space[sizeKey]};
+      padding-bottom: ${space[sizeKey]};
+    `;
+  },
+
+  text: {
+    ...typeScale,
+
+    // Font Weights
+    normal: css`
+      font-weight: 400;
+    `,
+    medium: css`
+      font-weight: 500;
+    `,
+    semibold: css`
+      font-weight: 600;
+    `,
+    bold: css`
+      font-weight: 700;
+    `,
+    heavy: css`
+      font-weight: 800;
+    `,
+    // Font Colors
+    primary: css`
       color: ${color.black};
-      `,
-      secondary: css`
+    `,
+    secondary: css`
       color: ${color.blue[400]};
-      `,
-      // Headings
-      h1: css`
-        font-weight: 900;
-        ${typeScale.xxxxl};
-      `,
-      h2: css`
-        font-weight: 800;
-        ${typeScale.xxl};
-      `,
-      h3: css`
-        font-weight: 700;
-        ${typeScale.xl};
-      `,
-      h4: css`
-        font-weight: 700;
-        ${typeScale.lg};
-      `,
-      h5: css`
-        font-weight: 700;
-        ${typeScale.base};
-      `,
-      h6: css`
-        font-weight: 700;
-        ${typeScale.sm};
-      `,
-      p: css`
-        font-weight: 400;
-        ${typeScale.base};
-      `,
+    `,
+    // Headings
+    h1: css`
+      font-weight: 900;
+      ${typeScale.xxxxl};
+    `,
+    h2: css`
+      font-weight: 800;
+      ${typeScale.xxl};
+    `,
+    h3: css`
+      font-weight: 700;
+      ${typeScale.xl};
+    `,
+    h4: css`
+      font-weight: 700;
+      ${typeScale.lg};
+    `,
+    h5: css`
+      font-weight: 700;
+      ${typeScale.base};
+    `,
+    h6: css`
+      font-weight: 700;
+      ${typeScale.sm};
+    `,
+    p: css`
+      font-weight: 400;
+      ${typeScale.base};
+    `,
   },
 
   rounded: {
@@ -313,4 +301,4 @@ const theme: Theme = {
   },
 };
 
-export default theme
+export default theme;

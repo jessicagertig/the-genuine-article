@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 
-import GarmentCard from 'src/components/SearchPage/GarmentCard';
-import { StyledSearchResults } from 'src/components/SearchPage/styles/StyledSearchResults';
-import { GarmentData } from 'src/types';
+import GarmentCard from "src/components/SearchPage/GarmentCard";
+import { StyledSearchResults } from "src/components/SearchPage/styles/StyledSearchResults";
+import { GarmentData } from "src/types";
 
 interface SearchResultsProps {
-  garments: GarmentData[],
-  isLoading: boolean,
-  error: any
+  garments: GarmentData[];
+  isLoading: boolean;
+  error: any;
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({ garments, isLoading, error }) => {
-  console.log("data", garments)
+  console.log("data", garments);
   if (isLoading) {
-    return <h2>"Loading..."</h2>
+    return <h2>"Loading..."</h2>;
   }
 
   return (
@@ -24,7 +24,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ garments, isLoading, erro
         ))}
       </StyledSearchResults>
     </>
-  )
-}
+  );
+};
 
-export default SearchResults
+export default SearchResults;

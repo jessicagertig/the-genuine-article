@@ -29,7 +29,6 @@ export interface GarmentState {
   itemMaterials: any[] | null;
 }
 
-
 export interface Garment {
   itemInfo: ItemInfo;
   colors: String[];
@@ -68,7 +67,7 @@ export interface GarmentData extends ItemInfo {
 //   {"material_id": 29 }
 // ]
 
-//result of get by item id 
+//result of get by item id
 // {
 //     "info": {
 //       "id": 3,
@@ -90,7 +89,6 @@ export interface GarmentData extends ItemInfo {
 //   "materials": [],
 //   "image_urls": null
 // }
-
 
 //one item in the get all items return
 // {

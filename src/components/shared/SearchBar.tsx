@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-type Props = {}
+type Props = {};
 
 function SearchBar(props: Props) {
-  return (
-    <div>SearchBar</div>
-  )
+  return <div>SearchBar</div>;
 }
 
-export default SearchBar
+export default SearchBar;

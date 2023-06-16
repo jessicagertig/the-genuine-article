@@ -1,12 +1,12 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import { css } from '@emotion/react';
+import React from "react";
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 type Props = {
   titleText?: string;
   descriptionText?: string;
   children?: React.ReactNode;
-}
+};
 
 const PublicHeader = (props: Props) => {
   //will be a container for the page title, description, and any other "children" components I want to add
@@ -16,17 +16,17 @@ const PublicHeader = (props: Props) => {
       <Styled.Description>{props.descriptionText}</Styled.Description>
       {props.children}
     </Styled.Heading>
-  )
+  );
 };
 
-export default PublicHeader
+export default PublicHeader;
 
 // Styled Components
 // =======================================================
-let Styled: any
-Styled = {}
+let Styled: any;
+Styled = {};
 
-Styled.Heading = styled.div((props) => {
+Styled.Heading = styled.div(props => {
   const t = props.theme;
   return css`
     label: Heading;
@@ -41,10 +41,10 @@ Styled.Heading = styled.div((props) => {
     ${t.mq.xl} {
       height: 260px;
     }
-  `
-})
+  `;
+});
 
-Styled.Title = styled.h1((props) => {
+Styled.Title = styled.h1(props => {
   const t = props.theme;
   return css`
     label: Title;
@@ -57,10 +57,10 @@ Styled.Title = styled.h1((props) => {
     ${t.mq.xl} {
       font-size: 2.5rem;
     }
-  `
-})
+  `;
+});
 
-Styled.Description = styled.p((props) => {
+Styled.Description = styled.p(props => {
   const t = props.theme;
   return css`
     label: Description;
@@ -71,6 +71,6 @@ Styled.Description = styled.p((props) => {
 
     ${t.mq.xl} {
       ${t.text.xl}
-      } 
-  `
-})
+    }
+  `;
+});

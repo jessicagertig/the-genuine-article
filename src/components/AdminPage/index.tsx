@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import { Autocomplete, TextField } from "@mui/material";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { ItemInfo } from "src/types";
 import {
@@ -11,18 +12,18 @@ import {
   garmentTitleOptions,
   Option,
 } from "src/utils/lookups";
+import { dateToString, stringToDate } from "src/utils/formHelpers";
 
 type Props = {};
 
 const AdminPage = (props: Props) => {
-  const [colors, setColors] = React.useState([]);
-  const [materials, setMaterials] = React.useState([]);
+  const [colors, setColors] = React.useState<Option[]>([]);
+  const [materials, setMaterials] = React.useState<Option[]>([]);
 
   const initialState: ItemInfo = {
     garmentTitle: garmentTitleOptions[0].label, //Material UI type
-    garmentType: "",
-    beginYear: 1800,
-    endYear: undefined,
+    beginYear: "1800",
+    endYear: null,
     decade: "",
     secondaryDecade: "",
     cultureCountry: null,
@@ -38,7 +39,6 @@ const AdminPage = (props: Props) => {
 
   const {
     garmentTitle,
-    garmentType,
     beginYear,
     endYear,
     decade,
@@ -52,6 +52,12 @@ const AdminPage = (props: Props) => {
     description,
   } = state;
 
+  React.useEffect(() => {
+    console.log("STATE", state);
+    console.log("COLORS", colors);
+    console.log("MATERIALS", materials);
+  }, [state, colors, materials]);
+
   const handleTextInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     name: string
@@ -59,14 +65,29 @@ const AdminPage = (props: Props) => {
     setState({ ...state, [name]: event.target.value });
   };
 
-  const handleSelectInputChange = (
+  const handleSingleSelectInputChange = (
     event: React.SyntheticEvent,
-    value: any,
-    name: string
+    name: string,
+    value: any
   ) => {
-    console.log("EVENT SELECT", event.currentTarget);
-    console.log("VALUE", value);
-    console.log("NAME", name);
+    setState({ ...state, [name]: value });
+  };
+
+  const handleMultiSelectInputChange = (
+    event: React.SyntheticEvent,
+    name: string,
+    value: any
+  ) => {
+    if (name === "colors") {
+      setColors(value);
+    } else if (name === "materials") {
+      setMaterials(value);
+    }
+  };
+
+  const handleDateInputChange = (value: any, name: string, unit: any) => {
+    const dateString = dateToString(unit, value);
+    setState({ ...state, [name]: dateString });
   };
 
   type Field = {
@@ -77,10 +98,11 @@ const AdminPage = (props: Props) => {
     required: boolean;
     error: any;
     options?: Option[];
+    unit?: string;
   };
 
   console.log("coloroptions", colorOptions);
-  //kinds = singleSelect, multiSelect, text, textArea
+  //kinds = singleSelect, multiSelect, text, textArea, date
   const formFields = [
     {
       kind: "singleSelect",
@@ -92,12 +114,13 @@ const AdminPage = (props: Props) => {
       error: false,
     },
     {
-      kind: "text",
-      name: "garmentType",
-      label: "Garment Type",
-      value: garmentType,
+      kind: "date",
+      name: "beginYear",
+      label: "Begin Year",
+      value: stringToDate("year", beginYear),
       required: false,
       error: false,
+      unit: "year",
     },
     {
       kind: "textArea",
@@ -128,7 +151,7 @@ const AdminPage = (props: Props) => {
   ];
 
   const formFieldNodes = formFields.map((field: Field) => {
-    const { kind, label, name, required, error, options, value } = field;
+    const { kind, label, name, required, error, options, value, unit } = field;
     if (kind === "singleSelect") {
       return (
         <Autocomplete
@@ -147,8 +170,8 @@ const AdminPage = (props: Props) => {
               error={error}
             />
           )}
-          onChange={(event, value) =>
-            handleSelectInputChange(event, value, name)
+          onInputChange={(event, value) =>
+            handleSingleSelectInputChange(event, name, value)
           }
         />
       );
@@ -172,7 +195,7 @@ const AdminPage = (props: Props) => {
           )}
           multiple={true}
           onChange={(event, value) =>
-            handleSelectInputChange(event, value, name)
+            handleMultiSelectInputChange(event, name, value)
           }
         />
       );
@@ -205,10 +228,39 @@ const AdminPage = (props: Props) => {
           error={error}
         />
       );
+    } else if (kind === "date") {
+      return (
+        <DatePicker
+          value={value}
+          views={["year"]}
+          slots={{
+            textField: TextField,
+          }}
+          slotProps={{
+            textField: {
+              label: label,
+              name: name,
+              required: required,
+              variant: "filled",
+            },
+          }}
+          onChange={value => handleDateInputChange(value, name, unit)}
+          minDate={stringToDate("year", "1790")}
+          maxDate={stringToDate("year", "1910")}
+        />
+      );
     } else {
       return null;
     }
   });
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const colorIds = colors.length > 0 ? colors.map(color => color.value) : [];
+    const materialIds =
+      materials.length > 0 ? materials.map(material => material.value) : [];
+    // handleSubmit({itemInfo: state, itemColors: colors, itemMaterials: materials })
+  };
 
   return (
     <Styled.AdminPageContainer>

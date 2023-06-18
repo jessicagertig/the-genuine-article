@@ -1,8 +1,7 @@
 export interface ItemInfo {
   id?: number;
   garmentTitle: string;
-  garmentType: string;
-  beginYear: number;
+  beginYear: string;
   endYear?: number | null;
   decade?: string | null;
   secondaryDecade?: string | null;

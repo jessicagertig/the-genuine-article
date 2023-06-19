@@ -21,18 +21,19 @@ const AdminPage = (props: Props) => {
   const [materials, setMaterials] = React.useState<Option[]>([]);
 
   const initialState: ItemInfo = {
-    garmentTitle: garmentTitleOptions[0].label, //Material UI type
-    beginYear: "1800",
+    //required items are set to strings or empty strings
+    garmentTitle: "",
+    beginYear: "1790",
     endYear: null,
-    decade: "",
-    secondaryDecade: "",
+    decade: null,
+    secondaryDecade: null,
     cultureCountry: null,
-    collection: null,
+    collection: "",
     creator: null,
     collectionUrl: "",
     source: null,
-    itemCollectionNo: null,
-    description: "",
+    itemCollectionNo: "",
+    description: null,
   };
 
   const [state, setState] = React.useState(initialState);
@@ -120,7 +121,7 @@ const AdminPage = (props: Props) => {
       name: "beginYear",
       label: "Begin Year",
       value: stringToDate("year", beginYear),
-      required: false,
+      required: true,
       error: false,
       unit: "year",
     },
@@ -128,7 +129,7 @@ const AdminPage = (props: Props) => {
       kind: "date",
       name: "endYear",
       label: "End Year",
-      value: stringToDate("year", endYear),
+      value: endYear ? stringToDate("year", endYear) : null,
       required: false,
       error: false,
       unit: "year",
@@ -197,7 +198,7 @@ const AdminPage = (props: Props) => {
       name: "collection",
       label: "Museum/Collection",
       value: collection,
-      required: false,
+      required: true,
       error: false,
     },
     {
@@ -213,7 +214,7 @@ const AdminPage = (props: Props) => {
       name: "collectionUrl",
       label: "Source Link",
       value: collectionUrl,
-      required: false,
+      required: true,
       error: false,
     },
     {
@@ -229,7 +230,7 @@ const AdminPage = (props: Props) => {
       name: "itemCollectionNo",
       label: "Institution Item Number",
       value: itemCollectionNo,
-      required: false,
+      required: true,
       error: false,
     },
   ];
@@ -242,6 +243,7 @@ const AdminPage = (props: Props) => {
       if (kind === "singleSelect") {
         return (
           <Autocomplete
+            key={name}
             disablePortal={true}
             id={name}
             options={options as Option[]}
@@ -265,6 +267,7 @@ const AdminPage = (props: Props) => {
       } else if (kind === "multiSelect") {
         return (
           <Autocomplete
+            key={name}
             disablePortal={true}
             id={name}
             options={options as Option[]}
@@ -290,6 +293,7 @@ const AdminPage = (props: Props) => {
         const firstChildStyle = name === "decade" ? { mr: 2 } : {};
         return (
           <TextField
+            key={name}
             label={label}
             name={name}
             id={name}
@@ -304,6 +308,7 @@ const AdminPage = (props: Props) => {
       } else if (kind === "textArea") {
         return (
           <TextField
+            key={name}
             label={label}
             value={value}
             id={name}
@@ -320,6 +325,7 @@ const AdminPage = (props: Props) => {
         const firstChildStyle = index === 0 ? { mr: 2 } : {};
         return (
           <DatePicker
+            key={name}
             value={value}
             views={["year"]}
             sx={{...defaultStyle, ...firstChildStyle}}

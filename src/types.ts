@@ -1,16 +1,16 @@
 export interface ItemInfo {
   id?: number;
-  garmentTitle: string;
-  beginYear: string;
+  garmentTitle: string; //required
+  beginYear: string; //required
   endYear: string | null;
   decade: string | null;
   secondaryDecade: string | null;
   cultureCountry: string | null;
-  collection: string | null;
-  collectionUrl: string;
+  collection: string; //required
+  collectionUrl: string; //required
   creator: string | null;
   source: string | null;
-  itemCollectionNo: string | null;
+  itemCollectionNo: string; //required
   description: string | null;
 }
 

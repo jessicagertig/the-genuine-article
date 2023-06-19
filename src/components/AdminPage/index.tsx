@@ -101,7 +101,6 @@ const AdminPage = (props: Props) => {
     unit?: string;
   };
 
-  console.log("coloroptions", colorOptions);
   //kinds = singleSelect, multiSelect, text, textArea, date
   const formFields = [
     {
@@ -110,7 +109,7 @@ const AdminPage = (props: Props) => {
       label: "Title",
       options: garmentTitleOptions,
       value: garmentTitle,
-      required: false,
+      required: true,
       error: false,
     },
     {
@@ -123,10 +122,35 @@ const AdminPage = (props: Props) => {
       unit: "year",
     },
     {
-      kind: "textArea",
-      name: "description",
-      label: "Description",
-      value: description,
+      kind: "date",
+      name: "endYear",
+      label: "End Year",
+      value: stringToDate("year", endYear),
+      required: false,
+      error: false,
+      unit: "year",
+    },
+    {
+      kind: "text",
+      name: "decade",
+      label: "Decade",
+      value: decade,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "text",
+      name: "secondaryDecade",
+      label: "Secondary Decade",
+      value: secondaryDecade,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "text",
+      name: "cultureCountry",
+      label: "Culture/Country",
+      value: cultureCountry,
       required: false,
       error: false,
     },
@@ -145,6 +169,54 @@ const AdminPage = (props: Props) => {
       label: "Materials",
       options: materialOptions,
       value: materials,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "textArea",
+      name: "description",
+      label: "Description",
+      value: description,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "text",
+      name: "collection",
+      label: "Museum/Collection",
+      value: collection,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "text",
+      name: "creator",
+      label: "Designer/Maker",
+      value: creator,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "text",
+      name: "collectionUrl",
+      label: "Source Link",
+      value: collectionUrl,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "text",
+      name: "source",
+      label: "Credit Line/Source",
+      value: source,
+      required: false,
+      error: false,
+    },
+    {
+      kind: "text",
+      name: "itemCollectionNo",
+      label: "Instituation Item Number",
+      value: itemCollectionNo,
       required: false,
       error: false,
     },

@@ -2,16 +2,16 @@ export interface ItemInfo {
   id?: number;
   garmentTitle: string;
   beginYear: string;
-  endYear?: number | null;
-  decade?: string | null;
-  secondaryDecade?: string | null;
-  cultureCountry?: string | null;
-  collection?: string | null;
+  endYear: string | null;
+  decade: string | null;
+  secondaryDecade: string | null;
+  cultureCountry: string | null;
+  collection: string | null;
   collectionUrl: string;
-  creator?: string | null;
-  source?: string | null;
-  itemCollectionNo?: string | null;
-  description?: string | null;
+  creator: string | null;
+  source: string | null;
+  itemCollectionNo: string | null;
+  description: string | null;
 }
 
 export interface ImageUrls {
@@ -57,14 +57,8 @@ export interface GarmentData extends ItemInfo {
 //   "item_collection_no": "2009.300.683pf",
 //   "description": "Test entry."
 // },
-// "item_colors": [
-//   {"color_id": 22 }
-// ],
-// "item_materials": [
-//   {"material_id": 1 },
-//   {"material_id": 13 },
-//   {"material_id": 29 }
-// ]
+// "item_colors": [ 22 ],
+// "item_materials": [ 1, 13, 29 ]
 
 //result of get by item id
 // {

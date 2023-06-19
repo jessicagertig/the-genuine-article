@@ -235,9 +235,10 @@ const AdminPage = (props: Props) => {
   ];
 
   const buildFormFieldNodes = (fields: Field[]) =>
-    fields.map((field: Field) => {
+    fields.map((field: Field, index: number) => {
       const { kind, label, name, required, error, options, value, unit } =
         field;
+      const defaultStyle = { my: 1, width:"100%" };
       if (kind === "singleSelect") {
         return (
           <Autocomplete
@@ -245,7 +246,7 @@ const AdminPage = (props: Props) => {
             id={name}
             options={options as Option[]}
             getOptionLabel={(option: Option) => option.label}
-            sx={{ m: 1, width: 300 }}
+            sx={defaultStyle}
             renderInput={params => (
               <TextField
                 {...params}
@@ -268,7 +269,7 @@ const AdminPage = (props: Props) => {
             id={name}
             options={options as Option[]}
             getOptionLabel={(option: Option) => option.label}
-            sx={{ m: 1, width: 300 }}
+            sx={defaultStyle}
             renderInput={params => (
               <TextField
                 {...params}
@@ -286,13 +287,14 @@ const AdminPage = (props: Props) => {
           />
         );
       } else if (kind === "text") {
+        const firstChildStyle = name === "decade" ? { mr: 2 } : {};
         return (
           <TextField
             label={label}
             name={name}
             id={name}
             value={value}
-            sx={{ m: 1, width: 300 }}
+            sx={{...defaultStyle, ...firstChildStyle}}
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
@@ -307,7 +309,7 @@ const AdminPage = (props: Props) => {
             id={name}
             multiline={true}
             minRows={4}
-            sx={{ m: 1, width: 300 }}
+            sx={defaultStyle}
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
@@ -315,10 +317,12 @@ const AdminPage = (props: Props) => {
           />
         );
       } else if (kind === "date") {
+        const firstChildStyle = index === 0 ? { mr: 2 } : {};
         return (
           <DatePicker
             value={value}
             views={["year"]}
+            sx={{...defaultStyle, ...firstChildStyle}}
             slots={{
               textField: TextField,
             }}
@@ -371,27 +375,37 @@ const AdminPage = (props: Props) => {
       <Styled.AdminPageHeader>
         <h2>ADD NEW GARMENT</h2>
       </Styled.AdminPageHeader>
-      <form onSubmit={handleSubmit}>
-        <section>
-          <div>{buildFormFieldNodes(titleFormField)}</div>
-          <div>{buildFormFieldNodes(dateFormFields)}</div>
-          <div>{buildFormFieldNodes(decadeFormFields)}</div>
-          {buildFormFieldNodes(leftFormFields)}
-        </section>
-        <section>
-          {buildFormFieldNodes(rightFormFields)}
-          <div>
+      <Styled.Form onSubmit={handleSubmit}>
+        <Styled.FormSection>
+          <Styled.FormFields>
+            {buildFormFieldNodes(titleFormField)}
+          </Styled.FormFields>
+          <Styled.FormDateFields>
+            {buildFormFieldNodes(dateFormFields)}
+          </Styled.FormDateFields>
+          <Styled.FormDateFields>
+            {buildFormFieldNodes(decadeFormFields)}
+          </Styled.FormDateFields>
+          <Styled.FormFields>
+            {buildFormFieldNodes(leftFormFields)}
+          </Styled.FormFields>
+        </Styled.FormSection>
+        <Styled.FormSection>
+          <Styled.FormFields>
+            {buildFormFieldNodes(rightFormFields)}
+          </Styled.FormFields>
+          <Styled.ButtonContainer>
             <Button
               type="submit"
               variant="outlined"
               color="primary"
-              sx={{ ml: 1, mr: 2, mb: 2, mt: 20 }}
+              sx={{ my: 1, width: "100%" }}
             >
               Submit
             </Button>
-          </div>
-        </section>
-      </form>
+          </Styled.ButtonContainer>
+        </Styled.FormSection>
+      </Styled.Form>
     </Styled.AdminPageContainer>
   );
 };
@@ -429,5 +443,51 @@ Styled.AdminPageHeader = styled.div(props => {
       font-weight: 700;
       color: ${t.color.blue[700]};
     }
+  `;
+});
+
+Styled.Form = styled.form(props => {
+  const t = props.theme;
+  return css`
+    label: AdminPageForm;
+    margin: 2% 6% 6% 6%;
+    width: 88%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  `;
+});
+
+Styled.FormSection = styled.section(props => {
+  const t = props.theme;
+  return css`
+    label: AdminPageFormSection;
+    margin: 1%;
+    width: 46%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  `;
+});
+
+Styled.FormDateFields = styled.div`
+  label: AdminPageFormDateSection;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`;
+
+Styled.FormFields = styled.div`
+  label: AdminPageTitleField;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+Styled.ButtonContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: AdminPageFormSubmitButton;
+    width: 100%;
   `;
 });

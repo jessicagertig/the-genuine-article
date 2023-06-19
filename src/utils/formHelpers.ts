@@ -18,3 +18,16 @@ export const dateToString = (unit: Unit, date: Dayjs): string => {
     return date.format();
   }
 };
+
+/* takes a shallow object with some values that are empty strings */
+export const convertEmptyStringsToNull = <T extends Record<string, any>>(
+  object: T
+): T => {
+  const newObj: T = { ...object };
+  for (const key in object) {
+    if (newObj.hasOwnProperty(key) && newObj[key] === "") {
+      newObj[key] = null!;
+    }
+  }
+  return newObj;
+};

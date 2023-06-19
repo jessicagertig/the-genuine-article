@@ -12,7 +12,7 @@ import {
   garmentTitleOptions,
   Option,
 } from "src/utils/lookups";
-import { dateToString, stringToDate } from "src/utils/formHelpers";
+import { dateToString, stringToDate, convertEmptyStringsToNull } from "src/utils/formHelpers";
 
 type Props = {};
 
@@ -24,16 +24,16 @@ const AdminPage = (props: Props) => {
     //required items are set to strings or empty strings
     garmentTitle: "",
     beginYear: "1790",
-    endYear: null,
-    decade: null,
-    secondaryDecade: null,
-    cultureCountry: null,
+    endYear: "",
+    decade: "",
+    secondaryDecade: "",
+    cultureCountry: "",
     collection: "",
-    creator: null,
+    creator: "",
     collectionUrl: "",
-    source: null,
+    source: "",
     itemCollectionNo: "",
-    description: null,
+    description: "",
   };
 
   const [state, setState] = React.useState(initialState);
@@ -373,6 +373,9 @@ const AdminPage = (props: Props) => {
     itemColors: number[];
     itemMaterials: number[];
   }) => {
+    const info = convertEmptyStringsToNull(itemInfo)
+    const submitObject = {itemInfo: info, itemColors: itemColors, itemMaterials: itemMaterials}
+    console.log("SUBMIT OBJECT", submitObject)
     //TODO: create react-query hook for post request
   };
 

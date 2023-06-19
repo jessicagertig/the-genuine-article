@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, TextField, Button } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import { ItemInfo } from "src/types";
@@ -326,12 +326,30 @@ const AdminPage = (props: Props) => {
     }
   });
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const colorIds = colors.length > 0 ? colors.map(color => color.value) : [];
-    const materialIds =
+    const info = state;
+    const colorIds: number[] =
+      colors.length > 0 ? colors.map(color => color.value) : [];
+    const materialIds: number[] =
       materials.length > 0 ? materials.map(material => material.value) : [];
-    // handleSubmit({itemInfo: state, itemColors: colors, itemMaterials: materials })
+    onSubmitItem({
+      itemInfo: info,
+      itemColors: colorIds,
+      itemMaterials: materialIds,
+    });
+  };
+
+  const onSubmitItem = ({
+    itemInfo,
+    itemColors,
+    itemMaterials,
+  }: {
+    itemInfo: ItemInfo;
+    itemColors: number[];
+    itemMaterials: number[];
+  }) => {
+    //TODO: create react-query hook for post request
   };
 
   return (
@@ -339,7 +357,17 @@ const AdminPage = (props: Props) => {
       <Styled.AdminPageHeader>
         <h2>ADD NEW GARMENT</h2>
       </Styled.AdminPageHeader>
-      <form>{formFieldNodes}</form>
+      <form onSubmit={handleSubmit}>
+        {formFieldNodes}
+        <Button
+          type="submit"
+          variant="outlined"
+          color="primary"
+          sx={{ ml: 1, mr: 2, mb: 2, mt: 20 }}
+        >
+          Submit
+        </Button>
+      </form>
     </Styled.AdminPageContainer>
   );
 };

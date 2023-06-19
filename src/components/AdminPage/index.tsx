@@ -102,7 +102,7 @@ const AdminPage = (props: Props) => {
   };
 
   //kinds = singleSelect, multiSelect, text, textArea, date
-  const formFields = [
+  const titleFormField = [
     {
       kind: "singleSelect",
       name: "garmentTitle",
@@ -112,6 +112,9 @@ const AdminPage = (props: Props) => {
       required: true,
       error: false,
     },
+  ];
+
+  const dateFormFields = [
     {
       kind: "date",
       name: "beginYear",
@@ -130,6 +133,9 @@ const AdminPage = (props: Props) => {
       error: false,
       unit: "year",
     },
+  ];
+
+  const decadeFormFields = [
     {
       kind: "text",
       name: "decade",
@@ -146,6 +152,9 @@ const AdminPage = (props: Props) => {
       required: false,
       error: false,
     },
+  ];
+
+  const leftFormFields = [
     {
       kind: "text",
       name: "cultureCountry",
@@ -180,6 +189,9 @@ const AdminPage = (props: Props) => {
       required: false,
       error: false,
     },
+  ];
+
+  const rightFormFields = [
     {
       kind: "text",
       name: "collection",
@@ -215,116 +227,118 @@ const AdminPage = (props: Props) => {
     {
       kind: "text",
       name: "itemCollectionNo",
-      label: "Instituation Item Number",
+      label: "Institution Item Number",
       value: itemCollectionNo,
       required: false,
       error: false,
     },
   ];
 
-  const formFieldNodes = formFields.map((field: Field) => {
-    const { kind, label, name, required, error, options, value, unit } = field;
-    if (kind === "singleSelect") {
-      return (
-        <Autocomplete
-          disablePortal={true}
-          id={name}
-          options={options as Option[]}
-          getOptionLabel={(option: Option) => option.label}
-          sx={{ m: 1, width: 300 }}
-          renderInput={params => (
-            <TextField
-              {...params}
-              label={label}
-              name={name}
-              required={required}
-              variant="filled"
-              error={error}
-            />
-          )}
-          onInputChange={(event, value) =>
-            handleSingleSelectInputChange(event, name, value)
-          }
-        />
-      );
-    } else if (kind === "multiSelect") {
-      return (
-        <Autocomplete
-          disablePortal={true}
-          id={name}
-          options={options as Option[]}
-          getOptionLabel={(option: Option) => option.label}
-          sx={{ m: 1, width: 300 }}
-          renderInput={params => (
-            <TextField
-              {...params}
-              label={label}
-              name={name}
-              required={required}
-              variant="filled"
-              error={error}
-            />
-          )}
-          multiple={true}
-          onChange={(event, value) =>
-            handleMultiSelectInputChange(event, name, value)
-          }
-        />
-      );
-    } else if (kind === "text") {
-      return (
-        <TextField
-          label={label}
-          name={name}
-          id={name}
-          value={value}
-          sx={{ m: 1, width: 300 }}
-          onChange={event => handleTextInputChange(event, name)}
-          variant="filled"
-          required={required}
-          error={error}
-        />
-      );
-    } else if (kind === "textArea") {
-      return (
-        <TextField
-          label={label}
-          value={value}
-          id={name}
-          multiline={true}
-          minRows={4}
-          sx={{ m: 1, width: 300 }}
-          onChange={event => handleTextInputChange(event, name)}
-          variant="filled"
-          required={required}
-          error={error}
-        />
-      );
-    } else if (kind === "date") {
-      return (
-        <DatePicker
-          value={value}
-          views={["year"]}
-          slots={{
-            textField: TextField,
-          }}
-          slotProps={{
-            textField: {
-              label: label,
-              name: name,
-              required: required,
-              variant: "filled",
-            },
-          }}
-          onChange={value => handleDateInputChange(value, name, unit)}
-          minDate={stringToDate("year", "1790")}
-          maxDate={stringToDate("year", "1910")}
-        />
-      );
-    } else {
-      return null;
-    }
-  });
+  const buildFormFieldNodes = (fields: Field[]) =>
+    fields.map((field: Field) => {
+      const { kind, label, name, required, error, options, value, unit } =
+        field;
+      if (kind === "singleSelect") {
+        return (
+          <Autocomplete
+            disablePortal={true}
+            id={name}
+            options={options as Option[]}
+            getOptionLabel={(option: Option) => option.label}
+            sx={{ m: 1, width: 300 }}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label={label}
+                name={name}
+                required={required}
+                variant="filled"
+                error={error}
+              />
+            )}
+            onInputChange={(event, value) =>
+              handleSingleSelectInputChange(event, name, value)
+            }
+          />
+        );
+      } else if (kind === "multiSelect") {
+        return (
+          <Autocomplete
+            disablePortal={true}
+            id={name}
+            options={options as Option[]}
+            getOptionLabel={(option: Option) => option.label}
+            sx={{ m: 1, width: 300 }}
+            renderInput={params => (
+              <TextField
+                {...params}
+                label={label}
+                name={name}
+                required={required}
+                variant="filled"
+                error={error}
+              />
+            )}
+            multiple={true}
+            onChange={(event, value) =>
+              handleMultiSelectInputChange(event, name, value)
+            }
+          />
+        );
+      } else if (kind === "text") {
+        return (
+          <TextField
+            label={label}
+            name={name}
+            id={name}
+            value={value}
+            sx={{ m: 1, width: 300 }}
+            onChange={event => handleTextInputChange(event, name)}
+            variant="filled"
+            required={required}
+            error={error}
+          />
+        );
+      } else if (kind === "textArea") {
+        return (
+          <TextField
+            label={label}
+            value={value}
+            id={name}
+            multiline={true}
+            minRows={4}
+            sx={{ m: 1, width: 300 }}
+            onChange={event => handleTextInputChange(event, name)}
+            variant="filled"
+            required={required}
+            error={error}
+          />
+        );
+      } else if (kind === "date") {
+        return (
+          <DatePicker
+            value={value}
+            views={["year"]}
+            slots={{
+              textField: TextField,
+            }}
+            slotProps={{
+              textField: {
+                label: label,
+                name: name,
+                required: required,
+                variant: "filled",
+              },
+            }}
+            onChange={value => handleDateInputChange(value, name, unit)}
+            minDate={stringToDate("year", "1790")}
+            maxDate={stringToDate("year", "1910")}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -358,15 +372,25 @@ const AdminPage = (props: Props) => {
         <h2>ADD NEW GARMENT</h2>
       </Styled.AdminPageHeader>
       <form onSubmit={handleSubmit}>
-        {formFieldNodes}
-        <Button
-          type="submit"
-          variant="outlined"
-          color="primary"
-          sx={{ ml: 1, mr: 2, mb: 2, mt: 20 }}
-        >
-          Submit
-        </Button>
+        <section>
+          <div>{buildFormFieldNodes(titleFormField)}</div>
+          <div>{buildFormFieldNodes(dateFormFields)}</div>
+          <div>{buildFormFieldNodes(decadeFormFields)}</div>
+          {buildFormFieldNodes(leftFormFields)}
+        </section>
+        <section>
+          {buildFormFieldNodes(rightFormFields)}
+          <div>
+            <Button
+              type="submit"
+              variant="outlined"
+              color="primary"
+              sx={{ ml: 1, mr: 2, mb: 2, mt: 20 }}
+            >
+              Submit
+            </Button>
+          </div>
+        </section>
       </form>
     </Styled.AdminPageContainer>
   );

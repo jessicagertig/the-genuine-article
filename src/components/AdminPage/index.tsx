@@ -374,11 +374,24 @@ const AdminPage = (props: Props) => {
     itemMaterials: number[]
   ): void => {
     const info = convertEmptyStringsToNull(itemInfo);
-    createGarment({
-      itemInfo: info,
-      itemColors: itemColors,
-      itemMaterials: itemMaterials,
-    });
+    createGarment(
+      {
+        itemInfo: info,
+        itemColors: itemColors,
+        itemMaterials: itemMaterials,
+      },
+      {
+        onSuccess: () => {
+          setState(initialState);
+          setColors([]);
+          setMaterials([]);
+        },
+        onError: (error: any) => {
+          const message = error && error.data ? error.data.message : "";
+          console.log("Request Error:", message)
+        }
+      }
+    );
   };
 
   return (

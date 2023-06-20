@@ -46,13 +46,13 @@ async function apiMutate<T>({
     })
     .catch(errorObject => {
       console.log("ERROR", errorObject);
-      // const { response } = errorObject;
-      // const responseData = allKeysToCamel(response.data);
-      // const normalizedError = {
-      //   ...response,
-      //   data: responseData,
-      // };
-      return Promise.reject();
+      const { response } = errorObject;
+      const responseData = allKeysToCamel(response.data);
+      const normalizedError = {
+        ...response,
+        data: responseData,
+      };
+      return Promise.reject(normalizedError);
     });
 
   return allKeysToCamel(data);

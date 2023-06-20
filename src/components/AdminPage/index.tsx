@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 
-import { ItemInfo, GarmentState } from "src/types";
+import { ItemInfo } from "src/types";
 import {
   colorOptions,
   materialOptions,
@@ -28,6 +28,7 @@ type Props = {};
 
 const AdminPage = (props: Props) => {
   const { mutate: createGarment } = useCreateGarment();
+  const formRef = React.useRef<HTMLFormElement | null>(null);
 
   const [colors, setColors] = React.useState<Option[]>([]);
   const [materials, setMaterials] = React.useState<Option[]>([]);
@@ -278,6 +279,7 @@ const AdminPage = (props: Props) => {
         return (
           <StyledAutocomplete
             key={name}
+            value={value}
             disablePortal={true}
             id={name}
             options={options as Option[]}
@@ -360,6 +362,9 @@ const AdminPage = (props: Props) => {
 
   const handleClickSubmit = (event: React.FormEvent<Element>) => {
     event.preventDefault();
+    if (formRef && formRef.current) {
+      formRef.current.reportValidity();
+    }
     const info = state;
     const colorIds: number[] =
       colors.length > 0 ? colors.map(color => color.value) : [];
@@ -388,8 +393,8 @@ const AdminPage = (props: Props) => {
         },
         onError: (error: any) => {
           const message = error && error.data ? error.data.message : "";
-          console.log("Request Error:", message)
-        }
+          console.log("Request Error:", message);
+        },
       }
     );
   };
@@ -399,7 +404,7 @@ const AdminPage = (props: Props) => {
       <Styled.AdminPageHeader>
         <h2>ADD NEW GARMENT</h2>
       </Styled.AdminPageHeader>
-      <Styled.Form onSubmit={handleClickSubmit}>
+      <Styled.Form onSubmit={handleClickSubmit} ref={formRef}>
         <Styled.FormSection>
           <Styled.FormFields>
             {buildFormFieldNodes(titleFormField)}
@@ -501,8 +506,7 @@ Styled.FormFields = styled.div`
   flex-direction: column;
 `;
 
-Styled.ButtonContainer = styled.div(props => {
-  const t = props.theme;
+Styled.ButtonContainer = styled.div(() => {
   return css`
     label: AdminPageFormSubmitButton;
     width: 100%;

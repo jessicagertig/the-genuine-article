@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-
-import { Autocomplete, TextField, Button } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import TextField from "@mui/material/TextField";
 
 import { ItemInfo } from "src/types";
 import {
@@ -12,7 +10,17 @@ import {
   garmentTitleOptions,
   Option,
 } from "src/utils/lookups";
-import { dateToString, stringToDate, convertEmptyStringsToNull } from "src/utils/formHelpers";
+import {
+  dateToString,
+  stringToDate,
+  convertEmptyStringsToNull,
+} from "src/utils/formHelpers";
+import OutlinedButton from "src/components/shared/OutlinedButton";
+import {
+  StyledAutocomplete,
+  StyledTextField,
+  StyledDatePicker,
+} from "src/components/AdminPage/StyledFields";
 
 type Props = {};
 
@@ -239,16 +247,14 @@ const AdminPage = (props: Props) => {
     fields.map((field: Field, index: number) => {
       const { kind, label, name, required, error, options, value, unit } =
         field;
-      const defaultStyle = { my: 1, width:"100%" };
       if (kind === "singleSelect") {
         return (
-          <Autocomplete
+          <StyledAutocomplete
             key={name}
             disablePortal={true}
             id={name}
             options={options as Option[]}
-            getOptionLabel={(option: Option) => option.label}
-            sx={defaultStyle}
+            getOptionLabel={(option: unknown) => (option as Option).label}
             renderInput={params => (
               <TextField
                 {...params}
@@ -266,13 +272,12 @@ const AdminPage = (props: Props) => {
         );
       } else if (kind === "multiSelect") {
         return (
-          <Autocomplete
+          <StyledAutocomplete
             key={name}
             disablePortal={true}
             id={name}
             options={options as Option[]}
-            getOptionLabel={(option: Option) => option.label}
-            sx={defaultStyle}
+            getOptionLabel={(option: unknown) => (option as Option).label}
             renderInput={params => (
               <TextField
                 {...params}
@@ -292,13 +297,13 @@ const AdminPage = (props: Props) => {
       } else if (kind === "text") {
         const firstChildStyle = name === "decade" ? { mr: 2 } : {};
         return (
-          <TextField
+          <StyledTextField
             key={name}
             label={label}
             name={name}
             id={name}
             value={value}
-            sx={{...defaultStyle, ...firstChildStyle}}
+            sx={firstChildStyle}
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
@@ -307,14 +312,13 @@ const AdminPage = (props: Props) => {
         );
       } else if (kind === "textArea") {
         return (
-          <TextField
+          <StyledTextField
             key={name}
             label={label}
             value={value}
             id={name}
             multiline={true}
             minRows={4}
-            sx={defaultStyle}
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
@@ -324,11 +328,11 @@ const AdminPage = (props: Props) => {
       } else if (kind === "date") {
         const firstChildStyle = index === 0 ? { mr: 2 } : {};
         return (
-          <DatePicker
+          <StyledDatePicker
             key={name}
             value={value}
             views={["year"]}
-            sx={{...defaultStyle, ...firstChildStyle}}
+            sx={firstChildStyle}
             slots={{
               textField: TextField,
             }}
@@ -350,7 +354,7 @@ const AdminPage = (props: Props) => {
       }
     });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleClickSubmit = (event: React.FormEvent<Element>) => {
     event.preventDefault();
     const info = state;
     const colorIds: number[] =
@@ -373,9 +377,13 @@ const AdminPage = (props: Props) => {
     itemColors: number[];
     itemMaterials: number[];
   }) => {
-    const info = convertEmptyStringsToNull(itemInfo)
-    const submitObject = {itemInfo: info, itemColors: itemColors, itemMaterials: itemMaterials}
-    console.log("SUBMIT OBJECT", submitObject)
+    const info = convertEmptyStringsToNull(itemInfo);
+    const submitObject = {
+      itemInfo: info,
+      itemColors: itemColors,
+      itemMaterials: itemMaterials,
+    };
+    console.log("SUBMIT OBJECT", submitObject);
     //TODO: create react-query hook for post request
   };
 
@@ -384,7 +392,7 @@ const AdminPage = (props: Props) => {
       <Styled.AdminPageHeader>
         <h2>ADD NEW GARMENT</h2>
       </Styled.AdminPageHeader>
-      <Styled.Form onSubmit={handleSubmit}>
+      <Styled.Form onSubmit={handleClickSubmit}>
         <Styled.FormSection>
           <Styled.FormFields>
             {buildFormFieldNodes(titleFormField)}
@@ -404,14 +412,7 @@ const AdminPage = (props: Props) => {
             {buildFormFieldNodes(rightFormFields)}
           </Styled.FormFields>
           <Styled.ButtonContainer>
-            <Button
-              type="submit"
-              variant="outlined"
-              color="primary"
-              sx={{ my: 1, width: "100%" }}
-            >
-              Submit
-            </Button>
+            <OutlinedButton type="submit" onClick={handleClickSubmit}>Submit</OutlinedButton>
           </Styled.ButtonContainer>
         </Styled.FormSection>
       </Styled.Form>

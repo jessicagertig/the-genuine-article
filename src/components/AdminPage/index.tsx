@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 
-import { ItemInfo } from "src/types";
+import { ItemInfo, GarmentState } from "src/types";
 import {
   colorOptions,
   materialOptions,
@@ -22,9 +22,13 @@ import {
   StyledDatePicker,
 } from "src/components/AdminPage/StyledFields";
 
+import { useCreateGarment } from "src/queryHooks/useGarments";
+
 type Props = {};
 
 const AdminPage = (props: Props) => {
+  const { mutate: createGarment } = useCreateGarment();
+
   const [colors, setColors] = React.useState<Option[]>([]);
   const [materials, setMaterials] = React.useState<Option[]>([]);
 
@@ -361,30 +365,20 @@ const AdminPage = (props: Props) => {
       colors.length > 0 ? colors.map(color => color.value) : [];
     const materialIds: number[] =
       materials.length > 0 ? materials.map(material => material.value) : [];
-    onSubmitItem({
-      itemInfo: info,
-      itemColors: colorIds,
-      itemMaterials: materialIds,
-    });
+    handleSubmitItem(info, colorIds, materialIds);
   };
 
-  const onSubmitItem = ({
-    itemInfo,
-    itemColors,
-    itemMaterials,
-  }: {
-    itemInfo: ItemInfo;
-    itemColors: number[];
-    itemMaterials: number[];
-  }) => {
+  const handleSubmitItem = (
+    itemInfo: ItemInfo,
+    itemColors: number[],
+    itemMaterials: number[]
+  ): void => {
     const info = convertEmptyStringsToNull(itemInfo);
-    const submitObject = {
+    createGarment({
       itemInfo: info,
       itemColors: itemColors,
       itemMaterials: itemMaterials,
-    };
-    console.log("SUBMIT OBJECT", submitObject);
-    //TODO: create react-query hook for post request
+    });
   };
 
   return (
@@ -412,7 +406,9 @@ const AdminPage = (props: Props) => {
             {buildFormFieldNodes(rightFormFields)}
           </Styled.FormFields>
           <Styled.ButtonContainer>
-            <OutlinedButton type="submit" onClick={handleClickSubmit}>Submit</OutlinedButton>
+            <OutlinedButton type="submit" onClick={handleClickSubmit}>
+              Submit
+            </OutlinedButton>
           </Styled.ButtonContainer>
         </Styled.FormSection>
       </Styled.Form>
@@ -456,8 +452,7 @@ Styled.AdminPageHeader = styled.div(props => {
   `;
 });
 
-Styled.Form = styled.form(props => {
-  const t = props.theme;
+Styled.Form = styled.form(() => {
   return css`
     label: AdminPageForm;
     margin: 2% 6% 6% 6%;
@@ -468,8 +463,7 @@ Styled.Form = styled.form(props => {
   `;
 });
 
-Styled.FormSection = styled.section(props => {
-  const t = props.theme;
+Styled.FormSection = styled.section(() => {
   return css`
     label: AdminPageFormSection;
     margin: 1%;

@@ -24,8 +24,8 @@ export interface ImageUrls {
 
 export interface GarmentState {
   itemInfo: ItemInfo;
-  itemColors: any[] | null;
-  itemMaterials: any[] | null;
+  itemColors: number[];
+  itemMaterials: number[];
 }
 
 export interface Garment {

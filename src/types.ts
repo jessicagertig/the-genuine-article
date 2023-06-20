@@ -1,18 +1,17 @@
 export interface ItemInfo {
   id?: number;
-  garmentTitle: string;
-  garmentType: string;
-  beginYear: number;
-  endYear?: number | null;
-  decade?: string | null;
-  secondaryDecade?: string | null;
-  cultureCountry?: string | null;
-  collection?: string | null;
-  collectionUrl: string;
-  creator?: string | null;
-  source?: string | null;
-  itemCollectionNo?: string | null;
-  description?: string | null;
+  garmentTitle: string; //required
+  beginYear: string; //required
+  endYear: string | null;
+  decade: string | null;
+  secondaryDecade: string | null;
+  cultureCountry: string | null;
+  collection: string; //required
+  collectionUrl: string; //required
+  creator: string | null;
+  source: string | null;
+  itemCollectionNo: string; //required
+  description: string | null;
 }
 
 export interface ImageUrls {
@@ -25,8 +24,8 @@ export interface ImageUrls {
 
 export interface GarmentState {
   itemInfo: ItemInfo;
-  itemColors: any[] | null;
-  itemMaterials: any[] | null;
+  itemColors: number[];
+  itemMaterials: number[];
 }
 
 export interface Garment {
@@ -58,14 +57,8 @@ export interface GarmentData extends ItemInfo {
 //   "item_collection_no": "2009.300.683pf",
 //   "description": "Test entry."
 // },
-// "item_colors": [
-//   {"color_id": 22 }
-// ],
-// "item_materials": [
-//   {"material_id": 1 },
-//   {"material_id": 13 },
-//   {"material_id": 29 }
-// ]
+// "item_colors": [ 22 ],
+// "item_materials": [ 1, 13, 29 ]
 
 //result of get by item id
 // {

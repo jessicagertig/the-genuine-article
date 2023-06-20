@@ -25,8 +25,13 @@ export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
 
 // apiMutate used in apiPost and apiPut
 
-async function apiMutate<T>({ method, endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
-  const url = baseUrl + endpoint;
+async function apiMutate<T>({
+  method,
+  endpoint,
+  variables,
+  keysToSnake = true,
+}: ReqParams): Promise<T> {
+  const url: string = baseUrl + endpoint;
 
   const { data } = await axios
     .request({
@@ -40,6 +45,7 @@ async function apiMutate<T>({ method, endpoint, variables, keysToSnake = true }:
       data: keysToSnake ? allKeysToSnake(variables) : variables,
     })
     .catch(errorObject => {
+      console.log("ERROR", errorObject);
       const { response } = errorObject;
       const responseData = allKeysToCamel(response.data);
       const normalizedError = {
@@ -52,19 +58,36 @@ async function apiMutate<T>({ method, endpoint, variables, keysToSnake = true }:
   return allKeysToCamel(data);
 }
 
-export async function apiPost<T>({ endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
-  const url: string = baseUrl + endpoint;
-
-  return await apiMutate({ method: "post", endpoint: url, variables, keysToSnake });
+export async function apiPost<T>({
+  endpoint,
+  variables,
+  keysToSnake = true,
+}: ReqParams): Promise<T> {
+  return await apiMutate({
+    method: "post",
+    endpoint: endpoint,
+    variables,
+    keysToSnake,
+  });
 }
 
-export async function apiPut<T>({ endpoint, variables, keysToSnake = true }: ReqParams): Promise<T> {
-  const url: string = baseUrl + endpoint;
-
-  return await apiMutate({ method: "put", endpoint: url, variables, keysToSnake });
+export async function apiPut<T>({
+  endpoint,
+  variables,
+  keysToSnake = true,
+}: ReqParams): Promise<T> {
+  return await apiMutate({
+    method: "put",
+    endpoint: endpoint,
+    variables,
+    keysToSnake,
+  });
 }
 
-export async function apiDelete<T>({ endpoint, variables }: ReqParams): Promise<T> {
+export async function apiDelete<T>({
+  endpoint,
+  variables,
+}: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
 
   const { data } = await axios.request({

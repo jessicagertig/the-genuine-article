@@ -1,8 +1,25 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  QueryClient,
+} from "react-query";
 import { apiGet, apiPost } from "./api";
+import { GarmentState } from "src/types";
 
 const getGarments = async () => {
   return await apiGet({ endpoint: "/items" });
+};
+
+const createGarment = async ({
+  itemInfo,
+  itemColors,
+  itemMaterials,
+}: GarmentState) => {
+  return await apiPost({
+    endpoint: "/items",
+    variables: { itemInfo, itemColors, itemMaterials },
+  });
 };
 
 /* Hooks
@@ -20,4 +37,22 @@ function useGarments(): {
   });
 }
 
-export { useGarments };
+function useCreateGarment(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  const queryClient: QueryClient = useQueryClient();
+  return useMutation(createGarment, {
+    onSuccess: (
+      data, variables
+    ) => {
+      console.log("VARIABLES", variables)
+      console.log("DATA", data)
+      queryClient.invalidateQueries(["garments"]);
+    },
+  });
+}
+
+export { useGarments, useCreateGarment };

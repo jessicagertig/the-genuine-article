@@ -11,7 +11,7 @@ type Props = {
 };
 
 function GarmentCard({ garment }: Props) {
-  const url = garment && garment.imageUrls ? garment.imageUrls.largeUrl : undefined;
+  const url = garment && garment.imageUrls ? garment.imageUrls.displayUrl : undefined;
   return (
     <StyledGarmentCard>
       <StyledGarmentCardImage>
@@ -19,8 +19,7 @@ function GarmentCard({ garment }: Props) {
       </StyledGarmentCardImage>
       <StyledGarmentCardText>
         <h6>{garment?.garmentTitle}</h6>
-        <p>{garment?.beginYear}</p>
-        <p>{garment?.cultureCountry}</p>
+        <p>c. {garment?.beginYear}</p>
       </StyledGarmentCardText>
     </StyledGarmentCard>
   );

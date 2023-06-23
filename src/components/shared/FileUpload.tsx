@@ -9,11 +9,6 @@ interface FileUploadProps {}
 
 const FileUpload = (props: FileUploadProps) => {
   return (
-    <TextField
-      variant="standard"
-      type="text"
-      InputProps={{
-        endAdornment: (
           <IconButton component="label">
             <FileUploadIcon />
             <Input
@@ -24,9 +19,6 @@ const FileUpload = (props: FileUploadProps) => {
               name="[licenseFile]"
             />
           </IconButton>
-        ),
-      }}
-    />
   );
 };
 

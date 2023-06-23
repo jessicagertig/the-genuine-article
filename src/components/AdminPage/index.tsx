@@ -16,18 +16,23 @@ import {
   convertEmptyStringsToNull,
 } from "src/utils/formHelpers";
 import OutlinedButton from "src/components/shared/OutlinedButton";
+import TextButton from "src/components/shared/TextButton";
 import {
   StyledAutocomplete,
   StyledTextField,
   StyledDatePicker,
 } from "src/components/AdminPage/StyledFields";
 
+import ImageUploadModal from './ImageUploadModal';
+
 import { useCreateGarment } from "src/queryHooks/useGarments";
+import { useModalContext } from "src/context/ModalContext";
 
 type Props = {};
 
 const AdminPage = (props: Props) => {
   const { mutate: createGarment } = useCreateGarment();
+  const { openModal, removeModal } = useModalContext();
   const formRef = React.useRef<HTMLFormElement | null>(null);
 
   const [colors, setColors] = React.useState<Option[]>([]);
@@ -103,6 +108,12 @@ const AdminPage = (props: Props) => {
     const dateString = dateToString(unit, value);
     setState({ ...state, [name]: dateString });
   };
+
+  const handleClickOpen = () => {
+    const modal = <ImageUploadModal onCancel={() => removeModal()} />
+
+    openModal(modal)
+  }
 
   type Field = {
     kind: string;
@@ -422,6 +433,9 @@ const AdminPage = (props: Props) => {
         <Styled.FormSection>
           <Styled.FormFields>
             {buildFormFieldNodes(rightFormFields)}
+            <TextButton type="button" onClick={handleClickOpen} hasEndIcon={true}>
+              Upload main image
+            </TextButton>
           </Styled.FormFields>
           <Styled.ButtonContainer>
             <OutlinedButton type="submit" onClick={handleClickSubmit}>

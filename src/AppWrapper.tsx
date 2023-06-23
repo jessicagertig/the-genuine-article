@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
+import { ModalProvider } from 'src/context/ModalContext';
+
 import myTheme from "src/styles/theme";
 import customTheme from "src/styles/customTheme";
 
@@ -27,7 +29,9 @@ const AppWrapper = <P extends {}>(WrappedComponent: React.ComponentType<P>): Rea
           <ThemeProvider theme={customTheme}>
             <EmotionThemeProvider theme={myTheme}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <WrappedComponent {...props} />
+                <ModalProvider>
+                  <WrappedComponent {...props} />
+                </ModalProvider>
               </LocalizationProvider>
             </EmotionThemeProvider>
           </ThemeProvider>

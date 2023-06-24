@@ -110,7 +110,7 @@ const AdminPage = (props: Props) => {
   };
 
   const handleClickOpen = () => {
-    const modal = <ImageUploadModal onCancel={() => removeModal()} />
+    const modal = <ImageUploadModal onCancel={() => removeModal()} id={22} />
 
     openModal(modal)
   }

@@ -7,6 +7,7 @@ type ReqParams = {
   method?: string;
   endpoint: string;
   variables?: any;
+  contentType?: string;
   keysToSnake?: boolean;
 };
 
@@ -29,6 +30,7 @@ async function apiMutate<T>({
   method,
   endpoint,
   variables,
+  contentType = "application/json",
   keysToSnake = true,
 }: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
@@ -38,8 +40,8 @@ async function apiMutate<T>({
       method,
       url: url,
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: contentType,
+        "Content-Type": contentType
         // "X-CSRF-Token":
       },
       data: keysToSnake ? allKeysToSnake(variables) : variables,
@@ -47,7 +49,7 @@ async function apiMutate<T>({
     .catch(errorObject => {
       console.log("ERROR", errorObject);
       const { response } = errorObject;
-      const responseData = allKeysToCamel(response.data);
+      const responseData = response?.data ? allKeysToCamel(response.data) : null;
       const normalizedError = {
         ...response,
         data: responseData,
@@ -61,12 +63,14 @@ async function apiMutate<T>({
 export async function apiPost<T>({
   endpoint,
   variables,
+  contentType = "application/json",
   keysToSnake = true,
 }: ReqParams): Promise<T> {
   return await apiMutate({
     method: "post",
-    endpoint: endpoint,
+    endpoint,
     variables,
+    contentType,
     keysToSnake,
   });
 }
@@ -74,12 +78,14 @@ export async function apiPost<T>({
 export async function apiPut<T>({
   endpoint,
   variables,
+  contentType = "application/json",
   keysToSnake = true,
 }: ReqParams): Promise<T> {
   return await apiMutate({
     method: "put",
-    endpoint: endpoint,
+    endpoint,
     variables,
+    contentType,
     keysToSnake,
   });
 }

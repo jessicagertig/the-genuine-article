@@ -12,6 +12,7 @@
     "@emotion/core": "^11.0.0",
     "@emotion/react": "^11.0.0-rc.0",
     "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.5",
     "@mui/x-date-pickers": "^6.8.0",
     "@types/jest": "^29.5.1",

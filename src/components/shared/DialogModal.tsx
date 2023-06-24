@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,25 +9,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 interface CustomFormDialogProps extends DialogProps {
   dialogTitle: string;
   dialogMessage?: string;
-  confirmButtonText?: string;
+  confirmButton?: React.ReactNode;
   onCancel: () => void;
-  onConfirm?: () => void;
   open: boolean;
 }
 
 const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
-  const { dialogMessage, dialogTitle, confirmButtonText, onCancel, onConfirm, children } = props;
   console.log("DialogModalProps", props)
+  
+  const { dialogMessage, dialogTitle, confirmButton, onCancel, children } = props;
 
   const handleClose = () => {
     onCancel();
-    // setOpen(false);
   };
 
-  const handleConfirm = () => {
-    onConfirm?.();
-    // setOpen(false);
-  }
 
   return (
     <div>
@@ -41,7 +36,7 @@ const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleConfirm}>{confirmButtonText}</Button>
+          {confirmButton ? confirmButton : null}
         </DialogActions>
       </Dialog>
     </div>

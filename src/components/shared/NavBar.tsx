@@ -1,29 +1,76 @@
+import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { NavLink } from "react-router-dom";
-import logo from "src/assets/BonnetLogo.png";
+import Menu from '@mui/material/Menu';
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from '@mui/icons-material/Menu';
+
+import logo from "src/assets/HeaderLogo.png";
+import bonnetLogo from "src/assets/BonnetLogo.png";
+import NavMenuItem from "src/components/shared/NavMenuItem";
 
 type Props = {
   backgroundColor?: string;
 };
 
 const NavBar = ({ backgroundColor }: Props) => {
-  const title = (
-    <Styled.TitleContainer>
-      <Styled.Title>The Genuine</Styled.Title>
-      <Styled.Title>
-        <span>Article</span>
-      </Styled.Title>
-    </Styled.TitleContainer>
-  );
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  type Link = {
+    name: string;
+    path: string;
+  }
+
+  const links: Link[] = [
+    { name: "Home", path: "/"},
+    { name: "Garments", path: "/search"},
+    { name: "Admin", path: "/admin"},
+  ]
+
+  const menu = (
+      <Styled.MenuContainer>
+        <IconButton component="button"       
+          id="icon-menu-button"
+          aria-controls={open ? 'nav-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClick}
+          sx={{ "& .MuiIconButton-root": {color: "#172a4f"}}}
+        >
+          <MenuIcon sx={{color: "#172a4f", fill: "#172a4f"}}/>
+        </IconButton>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+        {links.map(link =>
+          <NavMenuItem onClose={handleClose} name={link.name} to={link.path} key={link.name}/>
+        )}
+        </Menu>
+      </Styled.MenuContainer>
+    );
 
   return (
     <Styled.NavBarContainer style={{ background: backgroundColor }}>
       <Styled.Container>
         <Styled.LogoContainer>
-          <img src={logo} alt="bonnet logo" />
+          <Styled.LargeLogo src={logo} alt="bonnet logo" />
+          <Styled.SmallLogo src={bonnetLogo} alt="bonnet logo" />
         </Styled.LogoContainer>
-        {title}
       </Styled.Container>
       <Styled.Container>
         <Styled.LinksContainer>
@@ -31,6 +78,7 @@ const NavBar = ({ backgroundColor }: Props) => {
           <Styled.NavLink to="/search">Search</Styled.NavLink>
           <Styled.NavLink to="/admin">Admin</Styled.NavLink>
         </Styled.LinksContainer>
+        {menu}
       </Styled.Container>
     </Styled.NavBarContainer>
   );
@@ -57,11 +105,11 @@ Styled.NavBarContainer = styled.div(props => {
     padding-right: 8%;
     padding-left: 8%;
 
-    ${t.mq.xl} {
+    ${t.mq.lg} {
       height: 90px;
     }
 
-    ${t.mq.xxl} {
+    ${t.mq.xl} {
       height: 125px;
     }
   `;
@@ -73,12 +121,39 @@ Styled.Container = styled.div(props => {
     label: NavBarItems;
     width: 50%;
 
-    ${t.mq.lg} {
+    ${t.mq.md} {
       width: 40%;
     }
-    ${t.mq.xxl} {
-      width: 34%;
+    ${t.mq.xl} {
+      width: 33%;
     }
+    ${t.mq.xxl} {
+      width: 25%;
+    }
+  `;
+});
+
+Styled.LargeLogo = styled.img(props => {
+  const t = props.theme;
+  return css`
+  label: NavBarLargeLogo;
+  display: none;
+
+  ${t.mq.lg} {
+    display: block;
+  }
+  `;
+});
+
+Styled.SmallLogo = styled.img(props => {
+  const t = props.theme;
+  return css`
+  label: NavBarSmallLogo;
+  display: block;
+
+  ${t.mq.lg} {
+    display: none;
+  }
   `;
 });
 
@@ -86,44 +161,16 @@ Styled.LogoContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: NavBarLogo;
-    width: 90px;
-    height: 90px;
+    width: auto;
+    height: 50px;
 
-    ${t.mq.xxl} {
-      height: 120px;
-      width: 120px;
-    }
-  `;
-});
-
-Styled.TitleContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: NavBarTitle;
-    width: 170px;
-    display: none;
-    ${[t.pb(8), t.pt(3)]}
-
-    span {
-      ${[t.pl(3)]}
+    ${t.mq.lg} {
+      height: 90px;
     }
 
-    ${t.mq.xxl} {
-      display: block;
+    ${t.mq.xl} {
+      height: 110px;
     }
-  `;
-});
-
-Styled.Title = styled.h1(props => {
-  const t = props.theme;
-  return css`
-    label: NavBarTitleText;
-    ${t.text.h1};
-
-    font-size: 1.8rem;
-    color: ${t.color.blue[400]};
-    line-height: 35px;
-    letter-spacing: 0.05rem;
   `;
 });
 
@@ -131,9 +178,7 @@ Styled.LinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
   label: NavBarLinks
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: none;
   width: 100%;
 
   a {
@@ -142,6 +187,12 @@ Styled.LinksContainer = styled.div(props => {
 
   a.active {
     color: ${t.color.red[500]};
+  }
+
+  ${t.mq.lg} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   `;
 });
@@ -152,7 +203,8 @@ Styled.NavLink = styled(NavLink)(props => {
     ${t.text.h2};
     ${[t.py(1), t.px(2), t.pb(12), t.rounded.sm]}
     label: NavBarLink;
-    font-size: 1.45rem;
+    display: none;
+    font-size: 1.25rem;
     font-weight: 900;
     transition: font-size 0.2s ease;
     font-family: "Bellota Text", cursive;
@@ -160,33 +212,24 @@ Styled.NavLink = styled(NavLink)(props => {
     &:hover {
       cursor: pointer;
       color: ${t.color.red[500]};
-      font-size: 1.46rem;
+      font-size: 1.4rem;
+    }
+
+    ${t.mq.lg} {
+      display: block;
     }
   `;
 });
 
-// Styled.Link = styled(Link)((props) => {
-//   const t: any = props.theme;
-//   return css`
-//     ${[t.h(8), t.w(8), t.rounded.sm]}
-//     label: NavBarLink;
-//     display: flex;
-//     flex-shrink: 0;
-//     justify-content: center;
-//     align-items: center;
-//     transition: background-color 0.2s ease;
-//     font-family: 'Bellota Text', cursive;
+Styled.MenuContainer = styled.div(props => {
+  const t: any = props.theme;
+  return css`
+  label: NavMenuContainer;
+  display: block;
 
-//     &:visited,
-//     &:link {
-//       ${t.text.h2};
-//       color: ${t.color.red[400]};
-//       letter-spacing: 0.05rem;
-//     }
+  ${t.mq.lg} {
+    display: none;
+  }
+  `;
+});
 
-//     &:hover {
-//       color: ${t.color.red[500]};
-//       background-color: ${t.color.pink[200]};
-//     }
-//   `;
-// });

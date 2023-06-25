@@ -27,7 +27,6 @@ Styled.LandingPageContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: LandingPageContainer;
-    ${t.pt(6)}
     width: 100%;
     display: flex;
     flex-direction: column;

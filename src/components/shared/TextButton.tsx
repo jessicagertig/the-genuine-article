@@ -1,22 +1,41 @@
 import React from "react";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/system";
-import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-
-const CustomTextButton = styled(Button)(() => ({
-  width: "100%",
-  fontWeight: "bold",
-}));
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
 
 interface CustomTextButtonProps extends ButtonProps {
   onClick: (event: React.MouseEvent | React.FormEvent) => void;
   hasEndIcon?: boolean;
+  styles?: Object;
+  iconType?: string;
 }
 
 const TextButton: React.FC<CustomTextButtonProps> = props => {
-  const { hasEndIcon } = props
+  const { hasEndIcon, iconType, styles } = props;
+
+  const defaultStyles = { width: "100%", fontWeight: "bold" };
+
+  const finalStyles = styles
+    ? Object.assign(defaultStyles, styles)
+    : defaultStyles;
+
+  const CustomTextButton = styled(Button)(() => finalStyles);
+
+  const icon =
+    iconType === "image" ? (
+      <ImageOutlinedIcon />
+    ) : iconType === "upload" ? (
+      <FileUploadOutlinedIcon />
+    ) : null;
+
   return (
-    <CustomTextButton variant="text" color="primary" onClick={props.onClick} endIcon={hasEndIcon ? <ImageOutlinedIcon/> : null}>
+    <CustomTextButton
+      variant="text"
+      color="primary"
+      onClick={props.onClick}
+      endIcon={hasEndIcon ? icon : null}
+    >
       {props.children}
     </CustomTextButton>
   );

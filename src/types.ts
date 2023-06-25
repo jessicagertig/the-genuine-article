@@ -1,5 +1,4 @@
 export interface ItemInfo {
-  id?: number;
   garmentTitle: string; //required
   beginYear: string; //required
   endYear: string | null;
@@ -12,6 +11,10 @@ export interface ItemInfo {
   source: string | null;
   itemCollectionNo: string; //required
   description: string | null;
+}
+
+export interface ItemInfoData extends ItemInfo {
+  id: number;
 }
 
 export interface ImageUrls {
@@ -30,15 +33,16 @@ export interface GarmentState {
 
 export interface Garment {
   itemInfo: ItemInfo;
-  colors: String[];
-  materials: String[];
+  colors: string[];
+  materials: string[];
   imageUrls: {} | null;
 }
 
-export interface GarmentData extends ItemInfo {
-  colors: String[];
-  materials: String[];
-  imageUrls: ImageUrls;
+// format of each item returned from get garments
+export interface GarmentData extends ItemInfoData {
+  colors: string[];
+  materials: string[];
+  imageUrls: ImageUrls | null;
 }
 
 // for POST request

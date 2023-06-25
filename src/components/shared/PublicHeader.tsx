@@ -38,7 +38,7 @@ Styled.Heading = styled.div(props => {
     align-items: center;
     background: rgba(211, 217, 229, 0.5);
 
-    ${t.mq.xl} {
+    ${t.mq.lg} {
       height: 260px;
     }
   `;
@@ -53,10 +53,6 @@ Styled.Title = styled.h1(props => {
     font-weight: 600;
     color: ${t.color.blue[400]};
     letter-spacing: 0.07rem;
-
-    ${t.mq.xl} {
-      font-size: 2.5rem;
-    }
   `;
 });
 
@@ -68,9 +64,5 @@ Styled.Description = styled.p(props => {
     font-size: 1.187rem;
     color: ${t.color.blue_gray[700]};
     text-align: center;
-
-    ${t.mq.xl} {
-      ${t.text.xl}
-    }
   `;
 });

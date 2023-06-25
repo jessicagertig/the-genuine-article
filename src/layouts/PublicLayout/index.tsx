@@ -31,7 +31,6 @@ Styled.PageContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: LandingPageContainer;
-    ${t.pt(6)}
     width: 100%;
     height: 100%;
     display: block;

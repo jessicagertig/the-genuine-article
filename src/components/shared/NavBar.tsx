@@ -29,7 +29,7 @@ const NavBar = ({ backgroundColor }: Props) => {
         <Styled.LinksContainer>
           <Styled.NavLink to="/">Home</Styled.NavLink>
           <Styled.NavLink to="/search">Search</Styled.NavLink>
-          <Styled.NavLink to="/about">About</Styled.NavLink>
+          <Styled.NavLink to="/admin">Admin</Styled.NavLink>
         </Styled.LinksContainer>
       </Styled.Container>
     </Styled.NavBarContainer>

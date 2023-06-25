@@ -25,11 +25,9 @@ export default SearchPage;
 let Styled: any;
 Styled = {};
 
-Styled.SearchPageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.SearchPageContainer = styled.div(() => {
   return css`
     label: SearchPageContainer;
-    ${t.pt(6)}
     width: 100%;
     display: flex;
     flex-direction: column;

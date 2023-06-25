@@ -11,7 +11,7 @@ export const StyledGarmentCard = styled.div(props => {
     display: flex;
     flex-direction: column;
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       ${t.m(4)};
       width: 296px;
       height: 444px;
@@ -56,7 +56,7 @@ export const StyledGarmentCardImage = styled.div(props => {
     background-color: ${t.color.white};
     display: block;
     
-    ${t.mq.md} {
+    ${t.mq.sm} {
       width: 296px;
       height: 341px;
     }

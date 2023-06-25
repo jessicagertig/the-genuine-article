@@ -98,11 +98,11 @@ const typeScale = {
 };
 
 const breakpoints: { [index: string]: number } = {
-  sm: 320,
-  md: 480,
-  lg: 640,
-  xl: 768,
-  xxl: 1024,
+  sm: 480,
+  md: 640,
+  lg: 768,
+  xl: 1024,
+  xxl: 1200,
 };
 
 const mq = Object.keys(breakpoints)

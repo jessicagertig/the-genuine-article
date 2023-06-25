@@ -47,11 +47,9 @@ export default AdminPage;
 let Styled: any;
 Styled = {};
 
-Styled.AdminPageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.AdminPageContainer = styled.div(() => {
   return css`
     label: AdminPageContainer;
-    ${t.pt(6)}
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -59,8 +57,7 @@ Styled.AdminPageContainer = styled.div(props => {
   `;
 });
 
-Styled.AdminPageHeader = styled.div(props => {
-  const t = props.theme;
+Styled.AdminPageHeader = styled.div(() => {
   return css`
     label: AdminPageHeader;
     width: 100%;
@@ -91,8 +88,7 @@ Styled.AdminPageTitle = styled.div(props => {
   `;
 });
 
-Styled.ButtonContainer = styled.div(props => {
-  const t = props.theme;
+Styled.ButtonContainer = styled.div(() => {
   return css`
     label: GarmentPageButtonContainer;
     padding-right: 24px;

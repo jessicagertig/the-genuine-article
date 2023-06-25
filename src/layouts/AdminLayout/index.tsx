@@ -13,7 +13,7 @@ interface PublicLayoutProps {
 const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   return (
     <Styled.PageContainer>
-      <NavBar backgroundColor="#D3D9E5" />
+      <NavBar backgroundColor="rgba(211, 217, 229, 0.5)" />
       {children}
     </Styled.PageContainer>
   );
@@ -31,7 +31,6 @@ Styled.PageContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminContainer;
-    ${t.pt(6)}
     width: 100%;
     height: 100%;
     display: block;

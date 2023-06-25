@@ -5,6 +5,7 @@ import AdminLayout from "src/layouts/AdminLayout";
 import AdminPage from "src/components/AdminPage";
 import LandingPage from "src/components/LandingPage";
 import SearchPage from "src/components/SearchPage";
+import GarmentPage from "src/components/AdminPage/GarmentPage";
 
 type Page = {
   path: string;
@@ -40,6 +41,11 @@ const pages: Page[] = [
   {
     path: "/admin",
     component: AdminPage,
+    layout: AdminLayout,
+  },
+  {
+    path: "/admin/garment",
+    component: GarmentPage,
     layout: AdminLayout,
   },
 ];

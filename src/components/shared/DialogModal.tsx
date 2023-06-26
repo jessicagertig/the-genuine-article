@@ -27,7 +27,7 @@ const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
   return (
     <div>
       <Dialog open={props.open} onClose={handleClose} maxWidth="lg">
-        <DialogTitle>{dialogTitle}</DialogTitle>
+        <DialogTitle sx={{textAlign: "center", color: "#223F7C"}}>{dialogTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText>
             {dialogMessage}

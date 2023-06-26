@@ -9,13 +9,19 @@ type Props = {
 };
 
 const PublicHeader = (props: Props) => {
+  const { titleText, descriptionText, children } = props;
   //will be a container for the page title, description, and any other "children" components I want to add
   return (
-    <Styled.Heading>
-      <Styled.Title>{props.titleText}</Styled.Title>
-      <Styled.Description>{props.descriptionText}</Styled.Description>
-      {props.children}
-    </Styled.Heading>
+    <>
+      <Styled.Heading>
+        <Styled.Title>{titleText}</Styled.Title>
+      </Styled.Heading>
+      {descriptionText || children ? (<Styled.Container>
+        <Styled.Description>{descriptionText}</Styled.Description>
+        {children}
+      </Styled.Container>
+      ) : null}
+    </>
   );
 };
 
@@ -30,16 +36,16 @@ Styled.Heading = styled.div(props => {
   const t = props.theme;
   return css`
     label: Heading;
-    ${[t.pt(10), t.px(0)]}
+    ${[t.pt(8), t.px(0)]}
     width: 100%;
-    height: 200px;
+    height: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     background: rgba(211, 217, 229, 0.5);
 
     ${t.mq.lg} {
-      height: 260px;
+      height: 150px;
     }
   `;
 });
@@ -49,10 +55,28 @@ Styled.Title = styled.h1(props => {
   return css`
     label: Title;
     ${[t.pb(8)]}
-    font-size: 2rem;
-    font-weight: 600;
+    font-size: 1.375rem;
     color: ${t.color.blue[400]};
     letter-spacing: 0.07rem;
+    text-transform: uppercase;
+
+    ${t.mq.lg} {
+      font-size: 1.65rem;
+    }
+  `;
+});
+
+Styled.Container = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: ContentContainer;
+    ${[t.pt(2), t.px(0)]}
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(211, 217, 229, 0.5);
   `;
 });
 

@@ -58,7 +58,7 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
     <OutlinedButton onClick={handleConfirm}>Upload now</OutlinedButton>
   );
 
-  const title = "Select Image";
+  const title = "UPLOAD MAIN IMAGE";
 
   return (
     <>

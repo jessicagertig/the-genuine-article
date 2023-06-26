@@ -18,22 +18,20 @@ const AdminPage = (props: Props) => {
 
   return (
     <Styled.AdminPageContainer>
+      <Styled.ButtonContainer>
+        <OutlinedButton
+          onClick={handleOnClick}
+          styles={{
+            maxWidth: "130px",
+            paddingRight: "8px",
+            paddingLeft: "8px",
+          }}
+        >
+          Add garment
+        </OutlinedButton>
+      </Styled.ButtonContainer>
       <Styled.AdminPageHeader>
-        <Styled.AdminPageTitle>
-          <h2>Garments</h2>
-        </Styled.AdminPageTitle>
-        <Styled.ButtonContainer>
-          <OutlinedButton
-            onClick={handleOnClick}
-            styles={{
-              maxWidth: "130px",
-              paddingRight: "8px",
-              paddingLeft: "8px",
-            }}
-          >
-            Add garment
-          </OutlinedButton>
-        </Styled.ButtonContainer>
+        <h2>GARMENTS</h2>
       </Styled.AdminPageHeader>
       <GarmentsTable />
     </Styled.AdminPageContainer>
@@ -57,33 +55,22 @@ Styled.AdminPageContainer = styled.div(() => {
   `;
 });
 
-Styled.AdminPageHeader = styled.div(() => {
+Styled.AdminPageHeader = styled.div(props => {
+  const t = props.theme;
   return css`
+    ${t.pt(6)}
     label: AdminPageHeader;
     width: 100%;
     height: 48px;
     margin-bottom: 24px;
     display: flex;
-    justify-content: space-between;
-  `;
-});
-
-Styled.AdminPageTitle = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: AdminPageTitle;
-    width: 60%;
-    height: 48px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    justify-content: center;
 
     h2 {
       font-family: "bellota text";
       font-size: 24px;
       font-weight: 700;
       color: ${t.color.blue[700]};
-      text-transform: uppercase;
     }
   `;
 });
@@ -91,9 +78,10 @@ Styled.AdminPageTitle = styled.div(props => {
 Styled.ButtonContainer = styled.div(() => {
   return css`
     label: GarmentPageButtonContainer;
+    padding-top: 24px;
     padding-right: 24px;
     display: flex;
     justify-content: flex-end;
-    width: 40%;
+    width: 100%;
   `;
 });

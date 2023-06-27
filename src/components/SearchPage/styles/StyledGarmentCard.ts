@@ -6,16 +6,11 @@ export const StyledGarmentCard = styled.div(props => {
   return css`
     label: GarmentCard;
     ${t.rounded.md};
-    width: 100%;
-    height: 100%;
+    width: 296px;
+    height: 444px; //true visual height of image
     display: flex;
     flex-direction: column;
-
-    ${t.mq.sm} {
-      ${t.m(4)};
-      width: 296px;
-      height: 444px;
-    }
+    ${t.m(4)};
   `;
 });
 
@@ -46,21 +41,19 @@ export const StyledGarmentCardText = styled.div(props => {
   `;
 });
 
+// image height is viaually full height of card
+// but setting it to 340px allows the text to display as an overlay
+// seems like a hack 
 export const StyledGarmentCardImage = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentCardImage;
     ${[t.mx(0), t.mt(0), t.rounded.md]};
-    width: 100%;
-    height: 100%;
+    width: 296px;
+    height: 340px;
     background-color: ${t.color.white};
     display: block;
     
-    ${t.mq.sm} {
-      width: 296px;
-      height: 341px;
-    }
-
     img {
       ${t.rounded.md};
       max-width: 100%;

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
-import OutlinedButton from "src/components/shared/OutlinedButton";
+import SecondaryNav from "src/components/shared/SecondaryNav";
 
 import GarmentsTable from "./GarmentsTable";
 
@@ -18,22 +18,14 @@ const AdminPage = (props: Props) => {
 
   return (
     <Styled.AdminPageContainer>
-      <Styled.ButtonContainer>
-        <OutlinedButton
-          onClick={handleOnClick}
-          styles={{
-            maxWidth: "130px",
-            paddingRight: "8px",
-            paddingLeft: "8px",
-          }}
-        >
-          Add garment
-        </OutlinedButton>
-      </Styled.ButtonContainer>
-      <Styled.AdminPageHeader>
-        <h2>GARMENTS</h2>
-      </Styled.AdminPageHeader>
-      <GarmentsTable />
+      <SecondaryNav
+        toPath="/admin/garment"
+        toText="Add"
+        pageTitle="Garments"
+      />
+      <Styled.GarmentsTableContainer>
+        <GarmentsTable />
+      </Styled.GarmentsTableContainer>
     </Styled.AdminPageContainer>
   );
 };
@@ -48,7 +40,6 @@ Styled = {};
 Styled.AdminPageContainer = styled.div(() => {
   return css`
     label: AdminPageContainer;
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -85,3 +76,17 @@ Styled.ButtonContainer = styled.div(() => {
     width: 100%;
   `;
 });
+
+Styled.GarmentsTableContainer = styled.div((props) => {
+  const t = props.theme;
+  return css`
+    label: GarmentPageTableContainer;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    ${t.mq.lg} {
+      width: 88%;
+    }
+    `;
+  });

@@ -402,9 +402,6 @@ const GarmentForm = (props: Props) => {
 
   return (
     <Styled.GarmentFormContainer>
-      <Styled.GarmentFormHeader>
-        <h2>ADD NEW GARMENT</h2>
-      </Styled.GarmentFormHeader>
       <Styled.Form onSubmit={handleClickSubmit} ref={formRef}>
         <Styled.FormSection>
           <Styled.FormFields>
@@ -450,24 +447,6 @@ Styled.GarmentFormContainer = styled.div(props => {
     width: 100%;
     display: flex;
     flex-direction: column;
-  `;
-});
-
-Styled.GarmentFormHeader = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: GarmentFormHeader;
-    width: 100%;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-
-    h2 {
-      font-family: "bellota text";
-      font-size: 24px;
-      font-weight: 700;
-      color: ${t.color.blue[700]};
-    }
   `;
 });
 

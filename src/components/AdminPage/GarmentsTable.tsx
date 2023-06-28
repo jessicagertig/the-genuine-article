@@ -33,7 +33,7 @@ const columns: Column[] = [
   { id: "beginYear", label: "Begin Year" },
   { id: "cultureCountry", label: "Culture/Country" },
   { id: "collection", label: "Collection/Museum" },
-  { id: "collectionUrl", label: "Source Url" },
+  { id: "collectionUrl", label: "Url" },
   { id: "addImageButton", label: "" },
 ];
 
@@ -87,7 +87,7 @@ const GarmentsTable = (props: GarmentsTableProps) => {
     const hasImage = garment.imageUrls ? true : false;
     const sourceLink = (
       <a href={garment.collectionUrl} target="_blank">
-        View link
+        View
       </a>
     );
 
@@ -140,12 +140,10 @@ const GarmentsTable = (props: GarmentsTableProps) => {
     <Paper
       sx={{
         width: "100%",
-        maxWidth: "900px",
+        maxWidth: "1000px",
         display: "flex",
         flexDirection: "column",
-        overflow: "hidden",
-        marginLeft: "20px",
-        marginRight: "20px", 
+        overflow: "hidden", 
       }}
     >
       <TableContainer sx={{ maxHeight: 440 }}>

@@ -1,4 +1,7 @@
 import React from "react";
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,6 +12,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
 import TextButton from "src/components/shared/TextButton";
+import LoadingBar from "src/components/shared/Loading";
 import { useGarments } from "src/queryHooks/useGarments";
 import { useModalContext } from "src/context/ModalContext";
 import { GarmentData } from "src/types";
@@ -124,7 +128,12 @@ const GarmentsTable = (props: GarmentsTableProps) => {
   }, [garments]);
 
   if (isLoading || !garments) {
-    return <h2>Loading...</h2>;
+    return (
+      <Styled.LoadingContainer>
+        <h2>Loading...</h2>
+        <LoadingBar />
+      </Styled.LoadingContainer>
+    )
   }
 
   return (
@@ -196,3 +205,30 @@ const GarmentsTable = (props: GarmentsTableProps) => {
 };
 
 export default GarmentsTable;
+
+// Styled Components
+// =======================================================
+let Styled: any;
+Styled = {};
+
+Styled.LoadingContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: LoadingContainer;
+    ${t.mb(10)}
+    width: 50%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+
+    h2 {
+      font-family: "bellota text";
+      font-size: 1.25rem;
+      color: #172a4f;
+      ${t.m(4)}
+    }
+  `;
+});

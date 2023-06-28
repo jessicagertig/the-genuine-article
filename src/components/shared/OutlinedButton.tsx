@@ -3,17 +3,20 @@ import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/system";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import AddIcon from '@mui/icons-material/Add';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 interface CustomOutlinedButtonProps extends ButtonProps {
   onClick: (event: React.MouseEvent | React.FormEvent) => void;
   hasEndIcon?: boolean;
+  hasStartIcon?: boolean;
   styles?: Object;
   iconType?: string;
   buttonSize?: "small" | "medium" | "large";
 }
 
 const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
-  const { hasEndIcon, styles, iconType, buttonSize } = props;
+  const { hasEndIcon, hasStartIcon, styles, iconType, buttonSize } = props;
 
   const defaultStyles = {
     width: "100%",
@@ -33,7 +36,11 @@ const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
       <ImageOutlinedIcon />
     ) : iconType === "upload" ? (
       <FileUploadOutlinedIcon />
-    ) : null;
+    ) : iconType === "add" ? (
+      <AddIcon />
+    ) : iconType === "back" ? (
+      <ArrowBackIcon />
+      ) : null;
 
   return (
     <CustomOutlinedButton
@@ -42,6 +49,7 @@ const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
       onClick={props.onClick}
       size={buttonSize ? buttonSize : "medium"}
       endIcon={hasEndIcon ? icon : null}
+      startIcon={hasStartIcon ? icon : null}
     >
       {props.children}
     </CustomOutlinedButton>

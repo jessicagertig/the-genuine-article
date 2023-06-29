@@ -23,7 +23,7 @@ export default AdminGarmentPage;
 let Styled: any;
 Styled = {};
 
-Styled.AdminGarmentPage_Container = styled.div(props => {
+Styled.GarmentPageContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentPageContainer;

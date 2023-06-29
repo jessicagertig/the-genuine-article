@@ -11,6 +11,10 @@ export const StyledGarmentCard = styled.div(props => {
     display: flex;
     flex-direction: column;
     ${t.m(4)};
+    
+    &:hover {
+      cursor: pointer;
+    }
   `;
 });
 

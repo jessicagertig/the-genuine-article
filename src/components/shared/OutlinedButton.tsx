@@ -3,8 +3,8 @@ import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/system";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
-import AddIcon from '@mui/icons-material/Add';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AddIcon from "@mui/icons-material/Add";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface CustomOutlinedButtonProps extends ButtonProps {
   onClick: (event: React.MouseEvent | React.FormEvent) => void;
@@ -40,7 +40,7 @@ const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
       <AddIcon />
     ) : iconType === "back" ? (
       <ArrowBackIcon />
-      ) : null;
+    ) : null;
 
   return (
     <CustomOutlinedButton

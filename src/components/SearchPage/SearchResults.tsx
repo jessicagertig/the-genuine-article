@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 
 import GarmentCard from "src/components/SearchPage/GarmentCard";
 import LoadingBar from "src/components/shared/Loading";
@@ -13,22 +14,41 @@ interface SearchResultsProps {
   error: any;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({ garments, isLoading, error }) => {
+const SearchResults: React.FC<SearchResultsProps> = ({
+  garments,
+  isLoading,
+  error,
+}) => {
+  const navigate = useNavigate();
+
   console.log("data", garments);
+
+  const handleOnClick = (
+    e: React.MouseEvent<HTMLDivElement>,
+    garmentId: number
+  ): void => {
+    e.preventDefault();
+    navigate(`/search/garment/${garmentId}`);
+  };
+
   if (isLoading || !garments) {
     return (
       <Styled.LoadingContainer>
         <h2>Loading...</h2>
         <LoadingBar />
       </Styled.LoadingContainer>
-    )
+    );
   }
 
   return (
     <>
       <StyledSearchResults>
         {garments?.map((garment: any, index: number) => (
-          <GarmentCard key={index} garment={garment} />
+          <GarmentCard
+            key={index}
+            garment={garment}
+            handleClick={handleOnClick}
+          />
         ))}
       </StyledSearchResults>
     </>

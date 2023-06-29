@@ -1,28 +1,17 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
 
 import SecondaryNav from "src/components/shared/SecondaryNav";
 
 import GarmentsTable from "./GarmentsTable";
 
-type Props = {};
+interface AdminPageProps {}
 
-const AdminPage = (props: Props) => {
-  const navigate = useNavigate();
-
-  const handleOnClick = () => {
-    navigate("/admin/garment");
-  };
-
+const AdminPage: React.FC<AdminPageProps> = props => {
   return (
     <Styled.AdminPageContainer>
-      <SecondaryNav
-        toPath="/admin/garment"
-        toText="Add"
-        pageTitle="Garments"
-      />
+      <SecondaryNav toPath="/admin/garment" toText="Add" pageTitle="Garments" />
       <Styled.GarmentsTableContainer>
         <GarmentsTable />
       </Styled.GarmentsTableContainer>
@@ -77,7 +66,7 @@ Styled.ButtonContainer = styled.div(() => {
   `;
 });
 
-Styled.GarmentsTableContainer = styled.div((props) => {
+Styled.GarmentsTableContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentPageTableContainer;
@@ -88,5 +77,5 @@ Styled.GarmentsTableContainer = styled.div((props) => {
     ${t.mq.lg} {
       width: 88%;
     }
-    `;
-  });
+  `;
+});

@@ -39,7 +39,7 @@ const columns: Column[] = [
 
 interface GarmentsTableProps {}
 
-const GarmentsTable = (props: GarmentsTableProps) => {
+const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const { data: garments, isLoading, error } = useGarments();
 
   const { openModal, removeModal } = useModalContext();
@@ -86,7 +86,7 @@ const GarmentsTable = (props: GarmentsTableProps) => {
     const materialsList = convertArray(garment.materials);
     const hasImage = garment.imageUrls ? true : false;
     const sourceLink = (
-      <a href={garment.collectionUrl} target="_blank">
+      <a href={garment.collectionUrl} target="_blank" rel="noreferrer">
         View
       </a>
     );
@@ -133,7 +133,7 @@ const GarmentsTable = (props: GarmentsTableProps) => {
         <h2>Loading...</h2>
         <LoadingBar />
       </Styled.LoadingContainer>
-    )
+    );
   }
 
   return (
@@ -143,7 +143,7 @@ const GarmentsTable = (props: GarmentsTableProps) => {
         maxWidth: "1000px",
         display: "flex",
         flexDirection: "column",
-        overflow: "hidden", 
+        overflow: "hidden",
       }}
     >
       <TableContainer sx={{ maxHeight: 440 }}>

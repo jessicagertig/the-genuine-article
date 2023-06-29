@@ -6,16 +6,21 @@ import {
 } from "src/components/SearchPage/styles/StyledGarmentCard";
 import { GarmentData } from "src/types";
 
-type Props = {
+interface GarmentCardProps {
   garment: GarmentData;
-};
+  handleClick: (
+    event: React.MouseEvent<HTMLDivElement>,
+    garmentId: number
+  ) => void;
+}
 
-function GarmentCard({ garment }: Props) {
-  const url = garment && garment.imageUrls ? garment.imageUrls.displayUrl : undefined;
+const GarmentCard: React.FC<GarmentCardProps> = ({ garment, handleClick }) => {
+  const url =
+    garment && garment.imageUrls ? garment.imageUrls.displayUrl : undefined;
   return (
-    <StyledGarmentCard>
+    <StyledGarmentCard onClick={event => handleClick(event, garment?.id)}>
       <StyledGarmentCardImage>
-        <img src={url} alt={garment?.garmentTitle} />
+        <img src={url} alt={garment ? garment?.garmentTitle : "garment"} />
       </StyledGarmentCardImage>
       <StyledGarmentCardText>
         <h6>{garment?.garmentTitle}</h6>
@@ -23,6 +28,6 @@ function GarmentCard({ garment }: Props) {
       </StyledGarmentCardText>
     </StyledGarmentCard>
   );
-}
+};
 
 export default GarmentCard;

@@ -5,7 +5,8 @@ import AdminLayout from "src/layouts/AdminLayout";
 import AdminPage from "src/components/AdminPage";
 import LandingPage from "src/components/LandingPage";
 import SearchPage from "src/components/SearchPage";
-import GarmentPage from "src/components/AdminPage/GarmentPage";
+import GarmentPage from "src/components/Garment/GarmentPage";
+import AdminGarmentPage from "src/components/AdminPage/AdminGarmentPage";
 
 type Page = {
   path: string;
@@ -24,6 +25,11 @@ const pages: Page[] = [
     path: "/search",
     component: SearchPage,
     layout: PublicLayout,
+  },
+  {
+    path: "/search/garment/:garmentId",
+    component: GarmentPage,
+    layout: AdminLayout,
   },
   // {
   //   exact: true,
@@ -45,7 +51,7 @@ const pages: Page[] = [
   },
   {
     path: "/admin/garment",
-    component: GarmentPage,
+    component: AdminGarmentPage,
     layout: AdminLayout,
   },
 ];

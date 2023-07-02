@@ -3,13 +3,12 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 
-import { ItemInfo, GarmentData } from "src/types";
+import { ItemInfo } from "src/types";
 import {
   returnConvertedMenus,
   Option,
   dateToString,
   stringToDate,
-  convertEmptyStringsToNull,
 } from "src/utils/formHelpers";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import {
@@ -19,14 +18,24 @@ import {
 } from "src/components/AdminPage/StyledFields";
 
 import { useMenus } from "src/queryHooks/useMenus";
-import { useCreateGarment } from "src/queryHooks/useGarments";
 
 interface GarmentFormProps {
-  garment?: GarmentData | undefined;
+  garmentInfo: Partial<ItemInfo>;
+  colors?: Option[];
+  materials?: Option[];
+  onSubmit: (event: React.FormEvent<Element>) => void;
+  onGarmentChange: (garmentInfo: Partial<ItemInfo>) => void;
+  onColorsChange: (colors: Option[]) => void;
+  onMaterialsChange: (materials: Option[]) => void;
+  loading: boolean;
 }
 
-const GarmentForm: React.FC<GarmentFormProps> = ({ garment }) => {
-  const { mutate: createGarment } = useCreateGarment();
+const GarmentForm: React.FC<GarmentFormProps> = ({
+  garmentInfo,
+  colors,
+  materials,
+  ...props
+}) => {
   const { data: menus, isLoading: isLoadingMenus } = useMenus();
 
   const formRef = React.useRef<HTMLFormElement | null>(null);
@@ -36,26 +45,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({ garment }) => {
   );
   const [materialOptions, setMaterialOptions] = React.useState<any[]>([]);
   const [colorOptions, setColorOptions] = React.useState<any[]>([]);
-
-  const [colors, setColors] = React.useState<Option[]>([]);
-  const [materials, setMaterials] = React.useState<Option[]>([]);
-
-  const initialState: ItemInfo = {
-    garmentTitle: garment ? garment.garmentTitle : "",
-    beginYear: garment ? garment.beginYear : "",
-    endYear: garment ? garment.endYear : "",
-    decade: garment ? garment.decade : "",
-    secondaryDecade: garment ? garment.secondaryDecade : "",
-    cultureCountry: garment ? garment.cultureCountry : "",
-    collection: garment ? garment.collection : "",
-    creator: garment ? garment.creator : "",
-    collectionUrl: garment ? garment.collectionUrl : "",
-    source: garment ? garment.source : "",
-    itemCollectionNo: garment ? garment.itemCollectionNo : "",
-    description: garment ? garment.description : "",
-  };
-
-  const [state, setState] = React.useState(initialState);
 
   const {
     garmentTitle,
@@ -70,13 +59,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({ garment }) => {
     source,
     itemCollectionNo,
     description,
-  } = state;
-
-  React.useEffect(() => {
-    if (garment) {
-      setState(initialState);
-    }
-  }, [garment, initialState, setColors, setMaterials]);
+  } = garmentInfo;
 
   React.useEffect(() => {
     if (menus) {
@@ -87,36 +70,41 @@ const GarmentForm: React.FC<GarmentFormProps> = ({ garment }) => {
     }
   }, [menus, setColorOptions, setMaterialOptions, setGarmentTitleOptions]);
 
+  // garmentInfo
   const handleTextInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    name: string
+    name: any
   ) => {
-    setState({ ...state, [name]: event.target.value });
+    const value = event.target.value;
+    props.onGarmentChange({ [name]: value });
   };
 
+  // garmentTitle (garmentInfo)
   const handleSingleSelectInputChange = (
     event: React.SyntheticEvent,
     name: string,
     value: any
   ) => {
-    setState({ ...state, [name]: value });
+    props.onGarmentChange({ [name]: value });
   };
 
+  // colors or materials
   const handleMultiSelectInputChange = (
     event: React.SyntheticEvent,
     name: string,
     value: any
   ) => {
     if (name === "colors") {
-      setColors(value);
+      props.onColorsChange(value);
     } else if (name === "materials") {
-      setMaterials(value);
+      props.onMaterialsChange(value);
     }
   };
 
+  // endYear or begingYear (garmentInfo)
   const handleDateInputChange = (value: any, name: string, unit: any) => {
     const dateString = dateToString(unit, value);
-    setState({ ...state, [name]: dateString });
+    props.onGarmentChange({ [name]: dateString });
   };
 
   type Field = {
@@ -375,48 +363,9 @@ const GarmentForm: React.FC<GarmentFormProps> = ({ garment }) => {
       }
     });
 
-  const handleClickSubmit = (event: React.FormEvent<Element>) => {
-    event.preventDefault();
-    if (formRef && formRef.current) {
-      formRef.current.reportValidity();
-    }
-    const info = state;
-    const colorIds: number[] =
-      colors.length > 0 ? colors.map(color => color.value) : [];
-    const materialIds: number[] =
-      materials.length > 0 ? materials.map(material => material.value) : [];
-    handleSubmitItem(info, colorIds, materialIds);
-  };
-
-  const handleSubmitItem = (
-    itemInfo: ItemInfo,
-    itemColors: number[],
-    itemMaterials: number[]
-  ): void => {
-    const info = convertEmptyStringsToNull(itemInfo);
-    createGarment(
-      {
-        itemInfo: info,
-        itemColors: itemColors,
-        itemMaterials: itemMaterials,
-      },
-      {
-        onSuccess: () => {
-          setState(initialState);
-          setColors([]);
-          setMaterials([]);
-        },
-        onError: (error: any) => {
-          const message = error && error.data ? error.data.message : "";
-          console.log("Request Error:", message);
-        },
-      }
-    );
-  };
-
   return (
     <Styled.GarmentFormContainer>
-      <Styled.Form onSubmit={handleClickSubmit} ref={formRef}>
+      <Styled.Form onSubmit={props.onSubmit} ref={formRef}>
         <Styled.FormSection>
           <Styled.FormFields>
             {buildFormFieldNodes(titleFormField)}
@@ -435,11 +384,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({ garment }) => {
           <Styled.FormFields>
             {buildFormFieldNodes(rightFormFields)}
           </Styled.FormFields>
-          <Styled.ButtonContainer>
-            <OutlinedButton type="submit" onClick={handleClickSubmit}>
-              Submit
-            </OutlinedButton>
-          </Styled.ButtonContainer>
         </Styled.FormSection>
       </Styled.Form>
     </Styled.GarmentFormContainer>

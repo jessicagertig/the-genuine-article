@@ -2,13 +2,19 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+import Button from "@mui/material/Button";
+
 import { GarmentData } from "src/types";
+import OutlinedButton from "src/components/shared/OutlinedButton";
+import IconButton from "@mui/material/IconButton";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 
 interface GarmentPageProps {
   garment: GarmentData | undefined;
+  admin?: boolean;
 }
 
-const GarmentPage: React.FC<GarmentPageProps> = ({ garment }) => {
+const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
   type Item = {
     name: string;
     value: any;
@@ -60,6 +66,19 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment }) => {
       })
     : [];
 
+  const onClickEditImages = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  };
+
+  const onClickEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  };
+
+  const onClickDelete = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    console.log("Clicked!!!");
+  };
+
   return (
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
@@ -70,12 +89,34 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment }) => {
           />
         </Styled.DisplayedImage>
         <Styled.ThumbGallery></Styled.ThumbGallery>
+        <Styled.ButtonContainer>
+          {admin ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={event => onClickEditImages(event)}
+            >
+              Edit Images
+            </Button>
+          ) : null}
+        </Styled.ButtonContainer>
       </Styled.ImagesSection>
       <Styled.InfoSection>
-        <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
+        <Styled.InfoHeader>
+          <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
+          <Styled.IconButtonContainer>
+            {admin ? (
+              <IconButton color="primary" onClick={event => onClickEdit(event)}>
+                <BorderColorOutlinedIcon />
+              </IconButton>
+            ) : null}
+          </Styled.IconButtonContainer>
+        </Styled.InfoHeader>
         <Styled.InfoContent>{itemNodes}</Styled.InfoContent>
-        <Styled.EditButtonContainer></Styled.EditButtonContainer>
       </Styled.InfoSection>
+      <Styled.ButtonContainer>
+        <OutlinedButton onClick={onClickDelete}>Delete Garment</OutlinedButton>
+      </Styled.ButtonContainer>
     </Styled.GarmentContainer>
   );
 };
@@ -166,6 +207,16 @@ Styled.InfoSection = styled.section(props => {
   `;
 });
 
+Styled.InfoHeader = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Garment_InfoHeader;
+    display: flex;
+    margin-left: 20%;
+    width: 60%;
+  `;
+});
+
 Styled.InfoTitle = styled.h2(props => {
   const t = props.theme;
   return css`
@@ -175,6 +226,14 @@ Styled.InfoTitle = styled.h2(props => {
     font-size: 1.25rem;
     text-transform: uppercase;
     text-align: center;
+  `;
+});
+
+Styled.IconButtonContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Garment_InfoHeader;
+    width: 20%;
   `;
 });
 
@@ -212,7 +271,7 @@ Styled.InfoItem = styled.div(props => {
   `;
 });
 
-Styled.EditButtonContainer = styled.div(props => {
+Styled.ButtonContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Garment_EditButtonContainer

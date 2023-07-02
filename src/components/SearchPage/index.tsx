@@ -6,13 +6,15 @@ import SearchResults from "src/components/SearchPage/SearchResults";
 
 import { useGarments } from "src/queryHooks/useGarments";
 
-type Props = {};
+interface SearchPageProps {
 
-const SearchPage = (props: Props) => {
+}
+
+const SearchPage: React.FC<SearchPageProps> = props => {
   const { data: garments, isLoading, error } = useGarments();
   return (
     <Styled.SearchPageContainer>
-      <PublicHeader titleText="Search Garments" />
+      <PublicHeader titleText="Garments" />
       <SearchResults garments={garments} isLoading={isLoading} error={error} />
     </Styled.SearchPageContainer>
   );

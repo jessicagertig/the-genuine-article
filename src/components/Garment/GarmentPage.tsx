@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import { useParams } from "react-router-dom";
 
 import SecondaryNav from "src/components/shared/SecondaryNav";
-import GarmentContent from "src/components/shared/GarmentContent";
+import GarmentContent from "src/components/Garment/GarmentContent";
 import { GarmentData } from "src/types";
 
 import { useGarment } from "src/queryHooks/useGarments";
@@ -35,7 +35,7 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
 
   return (
     <Styled.GarmentPageContainer>
-      <SecondaryNav backPath="/search" pageTitle="" />
+      <SecondaryNav backPath="/search" pageTitle={garment ? garment.garmentTitle : ""} />
       <GarmentContent garment={garmentData} />
     </Styled.GarmentPageContainer>
   );

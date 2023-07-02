@@ -7,7 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface CustomOutlinedButtonProps extends ButtonProps {
-  onClick: (event: React.MouseEvent | React.FormEvent) => void;
+  onClick: (event: React.SyntheticEvent) => void;
   hasEndIcon?: boolean;
   hasStartIcon?: boolean;
   styles?: Object;

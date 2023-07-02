@@ -3,14 +3,10 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 
-import { ItemInfo } from "src/types";
+import { ItemInfo, GarmentData } from "src/types";
 import {
-  colorOptions,
-  materialOptions,
-  garmentTitleOptions,
+  returnConvertedMenus,
   Option,
-} from "src/utils/lookups";
-import {
   dateToString,
   stringToDate,
   convertEmptyStringsToNull,
@@ -22,32 +18,41 @@ import {
   StyledDatePicker,
 } from "src/components/AdminPage/StyledFields";
 
+import { useMenus } from "src/queryHooks/useMenus";
 import { useCreateGarment } from "src/queryHooks/useGarments";
 
+interface GarmentFormProps {
+  garment?: GarmentData | undefined;
+}
 
-type Props = {};
-
-const GarmentForm = (props: Props) => {
+const GarmentForm: React.FC<GarmentFormProps> = ({ garment }) => {
   const { mutate: createGarment } = useCreateGarment();
+  const { data: menus, isLoading: isLoadingMenus } = useMenus();
+
   const formRef = React.useRef<HTMLFormElement | null>(null);
+
+  const [garmentTitleOptions, setGarmentTitleOptions] = React.useState<any[]>(
+    []
+  );
+  const [materialOptions, setMaterialOptions] = React.useState<any[]>([]);
+  const [colorOptions, setColorOptions] = React.useState<any[]>([]);
 
   const [colors, setColors] = React.useState<Option[]>([]);
   const [materials, setMaterials] = React.useState<Option[]>([]);
 
   const initialState: ItemInfo = {
-    //required items are set to strings or empty strings
-    garmentTitle: "",
-    beginYear: "1790",
-    endYear: "",
-    decade: "",
-    secondaryDecade: "",
-    cultureCountry: "",
-    collection: "",
-    creator: "",
-    collectionUrl: "",
-    source: "",
-    itemCollectionNo: "",
-    description: "",
+    garmentTitle: garment ? garment.garmentTitle : "",
+    beginYear: garment ? garment.beginYear : "",
+    endYear: garment ? garment.endYear : "",
+    decade: garment ? garment.decade : "",
+    secondaryDecade: garment ? garment.secondaryDecade : "",
+    cultureCountry: garment ? garment.cultureCountry : "",
+    collection: garment ? garment.collection : "",
+    creator: garment ? garment.creator : "",
+    collectionUrl: garment ? garment.collectionUrl : "",
+    source: garment ? garment.source : "",
+    itemCollectionNo: garment ? garment.itemCollectionNo : "",
+    description: garment ? garment.description : "",
   };
 
   const [state, setState] = React.useState(initialState);
@@ -68,10 +73,19 @@ const GarmentForm = (props: Props) => {
   } = state;
 
   React.useEffect(() => {
-    console.log("STATE", state);
-    console.log("COLORS", colors);
-    console.log("MATERIALS", materials);
-  }, [state, colors, materials]);
+    if (garment) {
+      setState(initialState);
+    }
+  }, [garment, initialState, setColors, setMaterials]);
+
+  React.useEffect(() => {
+    if (menus) {
+      const convertedMenus = returnConvertedMenus(menus);
+      setColorOptions(convertedMenus["colorMenu"]);
+      setMaterialOptions(convertedMenus["materialsMenu"]);
+      setGarmentTitleOptions(convertedMenus["garmentTitlesMenu"]);
+    }
+  }, [menus, setColorOptions, setMaterialOptions, setGarmentTitleOptions]);
 
   const handleTextInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -134,7 +148,7 @@ const GarmentForm = (props: Props) => {
       kind: "date",
       name: "beginYear",
       label: "Begin Year",
-      value: stringToDate("year", beginYear),
+      value: beginYear ? stringToDate("year", beginYear) : null,
       required: true,
       error: false,
       unit: "year",

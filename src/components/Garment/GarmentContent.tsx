@@ -213,7 +213,7 @@ Styled.InfoSection = styled.section(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoSection;
-    ${[t.p(0)]}
+    ${[t.p(0), t.mb(6)]}
     width: 100%;
     max-width: 900px;
     display: flex;
@@ -223,7 +223,8 @@ Styled.InfoSection = styled.section(props => {
     background-color: rgba(211, 217, 229, 0.2);
 
     ${t.mq.md} {
-      margin: 2% 6%;
+      margin-right: 6%;
+      margin-left: 6%;
       width: 88%;
       ${[t.p(4)]}
     }
@@ -235,8 +236,7 @@ Styled.HeaderContainer = styled.div`
   width: 100%;
 `
 
-Styled.InfoTitleContainer = styled.div(props => {
-  const t = props.theme;
+Styled.InfoTitleContainer = styled.div(() => {
   return css`
     label: Garment_InfoHeader;
     display: flex;
@@ -259,8 +259,7 @@ Styled.InfoTitle = styled.h2(props => {
   `;
 });
 
-Styled.IconButtonContainer = styled.div(props => {
-  const t = props.theme;
+Styled.IconButtonContainer = styled.div(() => {
   return css`
     label: Garment_InfoButton;
     display: flex;

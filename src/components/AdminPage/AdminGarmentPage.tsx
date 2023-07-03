@@ -48,11 +48,9 @@ export default AdminGarmentPage;
 let Styled: any;
 Styled = {};
 
-Styled.GarmentPageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.GarmentPageContainer = styled.div(() => {
   return css`
     label: GarmentPageContainer;
-    ${t.pt(6)}
     display: flex;
     flex-direction: column;
     align-items: center;

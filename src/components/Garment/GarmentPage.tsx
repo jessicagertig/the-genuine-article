@@ -16,8 +16,6 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
     undefined
   );
   const { garmentId } = useParams();
-
-  console.log("GARMENT ID", garmentId);
   const idToNumber = garmentId ? parseInt(garmentId, 10) : undefined;
 
   const {
@@ -35,8 +33,8 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
 
   return (
     <Styled.GarmentPageContainer>
-      <SecondaryNav backPath="/search" pageTitle={garment ? garment.garmentTitle : ""} />
-      <GarmentContent garment={garmentData} />
+      <SecondaryNav backPath="/garments" pageTitle={garment ? garment.garmentTitle : ""} />
+      <GarmentContent garment={garmentData}/>
     </Styled.GarmentPageContainer>
   );
 };

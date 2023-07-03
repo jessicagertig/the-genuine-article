@@ -28,7 +28,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     garmentId: number
   ): void => {
     e.preventDefault();
-    navigate(`/search/garment/${garmentId}`);
+    navigate(`/garments/garment/${garmentId}`);
   };
 
   if (isLoading || !garments) {

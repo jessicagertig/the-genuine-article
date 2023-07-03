@@ -36,7 +36,7 @@ const AdminGarmentPage: React.FC<AdminGarmentPageProps> = () => {
   return (
     <Styled.GarmentPageContainer>
       <SecondaryNav backPath="/admin" pageTitle={garment ? garment.garmentTitle : ""} />
-      <GarmentContent garment={garmentData} />
+      <GarmentContent garment={garmentData} admin={true}/>
     </Styled.GarmentPageContainer>
   );
 };

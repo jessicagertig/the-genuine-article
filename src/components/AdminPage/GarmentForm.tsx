@@ -5,15 +5,10 @@ import TextField from "@mui/material/TextField";
 
 import { ItemInfo } from "src/types";
 import {
-  colorOptions,
-  materialOptions,
-  garmentTitleOptions,
+  returnConvertedMenus,
   Option,
-} from "src/utils/lookups";
-import {
   dateToString,
   stringToDate,
-  convertEmptyStringsToNull,
 } from "src/utils/formHelpers";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import {
@@ -22,42 +17,39 @@ import {
   StyledDatePicker,
 } from "src/components/AdminPage/StyledFields";
 
-import { useCreateGarment } from "src/queryHooks/useGarments";
+import { useMenus } from "src/queryHooks/useMenus";
 
+interface GarmentFormProps {
+  garmentInfo: Partial<ItemInfo>;
+  colors?: Option[];
+  materials?: Option[];
+  onSubmit: (event: React.FormEvent<Element>) => void;
+  onGarmentChange: (garmentInfo: Partial<ItemInfo>) => void;
+  onColorsChange: (colors: Option[]) => void;
+  onMaterialsChange: (materials: Option[]) => void;
+  loading: boolean;
+}
 
-type Props = {};
+const GarmentForm: React.FC<GarmentFormProps> = ({
+  garmentInfo,
+  colors,
+  materials,
+  ...props
+}) => {
+  const { data: menus, isLoading: isLoadingMenus } = useMenus();
 
-const GarmentForm = (props: Props) => {
-  const { mutate: createGarment } = useCreateGarment();
   const formRef = React.useRef<HTMLFormElement | null>(null);
 
-  const [colors, setColors] = React.useState<Option[]>([]);
-  const [materials, setMaterials] = React.useState<Option[]>([]);
-
-  const initialState: ItemInfo = {
-    //required items are set to strings or empty strings
-    garmentTitle: "",
-    beginYear: "1790",
-    endYear: "",
-    decade: "",
-    secondaryDecade: "",
-    cultureCountry: "",
-    collection: "",
-    creator: "",
-    collectionUrl: "",
-    source: "",
-    itemCollectionNo: "",
-    description: "",
-  };
-
-  const [state, setState] = React.useState(initialState);
+  const [garmentTitleOptions, setGarmentTitleOptions] = React.useState<any[]>(
+    []
+  );
+  const [materialOptions, setMaterialOptions] = React.useState<any[]>([]);
+  const [colorOptions, setColorOptions] = React.useState<any[]>([]);
 
   const {
     garmentTitle,
     beginYear,
     endYear,
-    decade,
-    secondaryDecade,
     cultureCountry,
     collection,
     creator,
@@ -65,44 +57,52 @@ const GarmentForm = (props: Props) => {
     source,
     itemCollectionNo,
     description,
-  } = state;
+  } = garmentInfo;
 
   React.useEffect(() => {
-    console.log("STATE", state);
-    console.log("COLORS", colors);
-    console.log("MATERIALS", materials);
-  }, [state, colors, materials]);
+    if (menus) {
+      const convertedMenus = returnConvertedMenus(menus);
+      setColorOptions(convertedMenus["colorMenu"]);
+      setMaterialOptions(convertedMenus["materialsMenu"]);
+      setGarmentTitleOptions(convertedMenus["garmentTitlesMenu"]);
+    }
+  }, [menus, setColorOptions, setMaterialOptions, setGarmentTitleOptions]);
 
+  // garmentInfo
   const handleTextInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    name: string
+    name: any
   ) => {
-    setState({ ...state, [name]: event.target.value });
+    const value = event.target.value;
+    props.onGarmentChange({ [name]: value });
   };
 
+  // garmentTitle (garmentInfo)
   const handleSingleSelectInputChange = (
     event: React.SyntheticEvent,
     name: string,
     value: any
   ) => {
-    setState({ ...state, [name]: value });
+    props.onGarmentChange({ [name]: value });
   };
 
+  // colors or materials
   const handleMultiSelectInputChange = (
     event: React.SyntheticEvent,
     name: string,
     value: any
   ) => {
     if (name === "colors") {
-      setColors(value);
+      props.onColorsChange(value);
     } else if (name === "materials") {
-      setMaterials(value);
+      props.onMaterialsChange(value);
     }
   };
 
+  // endYear or begingYear (garmentInfo)
   const handleDateInputChange = (value: any, name: string, unit: any) => {
     const dateString = dateToString(unit, value);
-    setState({ ...state, [name]: dateString });
+    props.onGarmentChange({ [name]: dateString });
   };
 
   type Field = {
@@ -134,7 +134,7 @@ const GarmentForm = (props: Props) => {
       kind: "date",
       name: "beginYear",
       label: "Begin Year",
-      value: stringToDate("year", beginYear),
+      value: beginYear ? stringToDate("year", beginYear) : null,
       required: true,
       error: false,
       unit: "year",
@@ -147,25 +147,6 @@ const GarmentForm = (props: Props) => {
       required: false,
       error: false,
       unit: "year",
-    },
-  ];
-
-  const decadeFormFields = [
-    {
-      kind: "text",
-      name: "decade",
-      label: "Decade",
-      value: decade,
-      required: false,
-      error: false,
-    },
-    {
-      kind: "text",
-      name: "secondaryDecade",
-      label: "Secondary Decade",
-      value: secondaryDecade,
-      required: false,
-      error: false,
     },
   ];
 
@@ -302,7 +283,6 @@ const GarmentForm = (props: Props) => {
           />
         );
       } else if (kind === "text") {
-        const firstChildStyle = name === "decade" ? { mr: 2 } : {};
         return (
           <StyledTextField
             key={name}
@@ -310,7 +290,6 @@ const GarmentForm = (props: Props) => {
             name={name}
             id={name}
             value={value}
-            sx={firstChildStyle}
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
@@ -361,57 +340,15 @@ const GarmentForm = (props: Props) => {
       }
     });
 
-  const handleClickSubmit = (event: React.FormEvent<Element>) => {
-    event.preventDefault();
-    if (formRef && formRef.current) {
-      formRef.current.reportValidity();
-    }
-    const info = state;
-    const colorIds: number[] =
-      colors.length > 0 ? colors.map(color => color.value) : [];
-    const materialIds: number[] =
-      materials.length > 0 ? materials.map(material => material.value) : [];
-    handleSubmitItem(info, colorIds, materialIds);
-  };
-
-  const handleSubmitItem = (
-    itemInfo: ItemInfo,
-    itemColors: number[],
-    itemMaterials: number[]
-  ): void => {
-    const info = convertEmptyStringsToNull(itemInfo);
-    createGarment(
-      {
-        itemInfo: info,
-        itemColors: itemColors,
-        itemMaterials: itemMaterials,
-      },
-      {
-        onSuccess: () => {
-          setState(initialState);
-          setColors([]);
-          setMaterials([]);
-        },
-        onError: (error: any) => {
-          const message = error && error.data ? error.data.message : "";
-          console.log("Request Error:", message);
-        },
-      }
-    );
-  };
-
   return (
     <Styled.GarmentFormContainer>
-      <Styled.Form onSubmit={handleClickSubmit} ref={formRef}>
+      <Styled.Form onSubmit={props.onSubmit} ref={formRef}>
         <Styled.FormSection>
           <Styled.FormFields>
             {buildFormFieldNodes(titleFormField)}
           </Styled.FormFields>
           <Styled.FormDateFields>
             {buildFormFieldNodes(dateFormFields)}
-          </Styled.FormDateFields>
-          <Styled.FormDateFields>
-            {buildFormFieldNodes(decadeFormFields)}
           </Styled.FormDateFields>
           <Styled.FormFields>
             {buildFormFieldNodes(leftFormFields)}
@@ -421,11 +358,6 @@ const GarmentForm = (props: Props) => {
           <Styled.FormFields>
             {buildFormFieldNodes(rightFormFields)}
           </Styled.FormFields>
-          <Styled.ButtonContainer>
-            <OutlinedButton type="submit" onClick={handleClickSubmit}>
-              Submit
-            </OutlinedButton>
-          </Styled.ButtonContainer>
         </Styled.FormSection>
       </Styled.Form>
     </Styled.GarmentFormContainer>
@@ -450,25 +382,39 @@ Styled.GarmentFormContainer = styled.div(props => {
   `;
 });
 
-Styled.Form = styled.form(() => {
+Styled.Form = styled.form(props => {
+  const t = props.theme;
   return css`
     label: GarmentForm;
-    margin: 2% 6% 6% 6%;
-    width: 88%;
+    margin: 0%;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    
+    ${t.mq.md} {
+      margin: 0% 6% 0% 6%;
+      width: 88%;
+      flex-direction: row;
+      justify-content: space-between;
+    }
   `;
 });
 
-Styled.FormSection = styled.section(() => {
+Styled.FormSection = styled.section(props => {
+  const t = props.theme;
   return css`
     label: GarmentFormSection;
-    margin: 1%;
-    width: 46%;
+    margin: 0%;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: flex-start;
+    
+    ${t.mq.md} {
+      width: 46%;
+    }
   `;
 });
 

@@ -22,12 +22,12 @@ const pages: Page[] = [
     layout: PublicLayout,
   },
   {
-    path: "/search",
+    path: "/garments",
     component: SearchPage,
     layout: PublicLayout,
   },
   {
-    path: "/search/garment/:garmentId",
+    path: "/garments/garment/:garmentId",
     component: GarmentPage,
     layout: AdminLayout,
   },
@@ -50,7 +50,7 @@ const pages: Page[] = [
     layout: AdminLayout,
   },
   {
-    path: "/admin/garment",
+    path: "/admin/garment/:garmentId",
     component: AdminGarmentPage,
     layout: AdminLayout,
   },

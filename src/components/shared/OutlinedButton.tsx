@@ -7,16 +7,17 @@ import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface CustomOutlinedButtonProps extends ButtonProps {
-  onClick: (event: React.MouseEvent | React.FormEvent) => void;
+  onClick: (event: React.SyntheticEvent) => void;
   hasEndIcon?: boolean;
   hasStartIcon?: boolean;
   styles?: Object;
   iconType?: string;
   buttonSize?: "small" | "medium" | "large";
+  color?: "secondary" | "warning" | "error";
 }
 
 const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
-  const { hasEndIcon, hasStartIcon, styles, iconType, buttonSize } = props;
+  const { hasEndIcon, hasStartIcon, styles, iconType, buttonSize, color } = props;
 
   const defaultStyles = {
     width: "100%",
@@ -45,7 +46,7 @@ const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
   return (
     <CustomOutlinedButton
       variant="outlined"
-      color="primary"
+      color={color ? color : "primary"}
       onClick={props.onClick}
       size={buttonSize ? buttonSize : "medium"}
       endIcon={hasEndIcon ? icon : null}

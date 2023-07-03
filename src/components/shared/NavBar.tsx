@@ -32,7 +32,7 @@ const NavBar = ({ backgroundColor }: Props) => {
 
   const links: Link[] = [
     { name: "Home", path: "/"},
-    { name: "Garments", path: "/search"},
+    { name: "Garments", path: "/garments"},
     { name: "Admin", path: "/admin"},
   ]
 
@@ -75,7 +75,7 @@ const NavBar = ({ backgroundColor }: Props) => {
       <Styled.Container>
         <Styled.LinksContainer>
           <Styled.NavLink to="/">Home</Styled.NavLink>
-          <Styled.NavLink to="/search">Search</Styled.NavLink>
+          <Styled.NavLink to="/garments">Garments</Styled.NavLink>
           <Styled.NavLink to="/admin">Admin</Styled.NavLink>
         </Styled.LinksContainer>
         {menu}

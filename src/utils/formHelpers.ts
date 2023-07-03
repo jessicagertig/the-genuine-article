@@ -31,3 +31,69 @@ export const convertEmptyStringsToNull = <T extends Record<string, any>>(
   }
   return newObj;
 };
+
+// menu helpers
+
+export type Option = { value: number; label: string };
+
+type MenusName = "colorMenu" | "materialsMenu" | "garmentTitlesMenu";
+
+type Color = { id: number; color: string };
+type Material = { id: number; material: string };
+type Title = { id: number; garmentTitle: string };
+
+type Menus = {
+  "colorMenu": Color[];
+  "materialsMenu": Material[];
+  "garmentTitlesMenu": Title[];
+};
+
+export type ConvertedMenus = {
+  colorMenu: Option[];
+  materialsMenu: Option[];
+  garmentTitlesMenu: Option[];
+}
+
+export const returnConvertedMenus = (menus: Menus) => {
+  const names: MenusName[] = ["colorMenu", "materialsMenu", "garmentTitlesMenu"]
+  let menusObject = {
+    colorMenu: [] as Option[],
+    materialsMenu: [] as Option[],
+    garmentTitlesMenu: [] as Option[],
+  }
+  if (menus as Menus) {
+    names.map(name => {
+      const menu = menus[name];
+      const newMenu = convertObjectToOptions(menu, name)
+      menusObject[name] = newMenu
+    })
+  }
+  return menusObject;
+};
+
+export const convertObjectToOptions = (optionsArray: any[], name: string) => {
+  let convertedOptions: any[] = [];
+  if (name === "colors" || name === "colorMenu") {
+    convertedOptions= optionsArray.map((item: Color) => {
+      const newItem = { value: 0, label: "" };
+      newItem.value = item.id;
+      newItem.label = item.color;
+      return newItem;
+    });
+  } else if (name === "materials" || name === "materialsMenu") {
+    convertedOptions = optionsArray.map((item: Material) => {
+      const newItem = { value: 0, label: "" };
+      newItem.value = item.id;
+      newItem.label = item.material;
+      return newItem;
+    });
+  } else if (name === "garmentTitlesMenu") {
+    convertedOptions = optionsArray.map((item: Title) => {
+      const newItem = { value: 0, label: "" };
+      newItem.value = item.id;
+      newItem.label = item.garmentTitle;
+      return newItem;
+    });
+  }
+  return convertedOptions;
+};

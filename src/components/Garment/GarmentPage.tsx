@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import { useParams } from "react-router-dom";
 
 import SecondaryNav from "src/components/shared/SecondaryNav";
-import GarmentContent from "src/components/shared/GarmentContent";
+import GarmentContent from "src/components/Garment/GarmentContent";
 import { GarmentData } from "src/types";
 
 import { useGarment } from "src/queryHooks/useGarments";
@@ -16,8 +16,6 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
     undefined
   );
   const { garmentId } = useParams();
-
-  console.log("GARMENT ID", garmentId);
   const idToNumber = garmentId ? parseInt(garmentId, 10) : undefined;
 
   const {
@@ -35,8 +33,8 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
 
   return (
     <Styled.GarmentPageContainer>
-      <SecondaryNav backPath="/search" pageTitle="" />
-      <GarmentContent garment={garmentData} />
+      <SecondaryNav backPath="/garments" pageTitle={garment ? garment.garmentTitle : ""} />
+      <GarmentContent garment={garmentData}/>
     </Styled.GarmentPageContainer>
   );
 };
@@ -48,11 +46,9 @@ export default GarmentPage;
 let Styled: any;
 Styled = {};
 
-Styled.GarmentPageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.GarmentPageContainer = styled.div(() => {
   return css`
     label: GarmentPageContainer;
-    ${t.pt(6)}
     display: flex;
     flex-direction: column;
     align-items: center;

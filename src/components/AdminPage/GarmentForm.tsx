@@ -50,8 +50,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     garmentTitle,
     beginYear,
     endYear,
-    decade,
-    secondaryDecade,
     cultureCountry,
     collection,
     creator,
@@ -149,25 +147,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       required: false,
       error: false,
       unit: "year",
-    },
-  ];
-
-  const decadeFormFields = [
-    {
-      kind: "text",
-      name: "decade",
-      label: "Decade",
-      value: decade,
-      required: false,
-      error: false,
-    },
-    {
-      kind: "text",
-      name: "secondaryDecade",
-      label: "Secondary Decade",
-      value: secondaryDecade,
-      required: false,
-      error: false,
     },
   ];
 
@@ -304,7 +283,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
           />
         );
       } else if (kind === "text") {
-        const firstChildStyle = name === "decade" ? { mr: 2 } : {};
         return (
           <StyledTextField
             key={name}
@@ -312,7 +290,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             name={name}
             id={name}
             value={value}
-            sx={firstChildStyle}
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
@@ -373,9 +350,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
           <Styled.FormDateFields>
             {buildFormFieldNodes(dateFormFields)}
           </Styled.FormDateFields>
-          <Styled.FormDateFields>
-            {buildFormFieldNodes(decadeFormFields)}
-          </Styled.FormDateFields>
           <Styled.FormFields>
             {buildFormFieldNodes(leftFormFields)}
           </Styled.FormFields>
@@ -408,25 +382,39 @@ Styled.GarmentFormContainer = styled.div(props => {
   `;
 });
 
-Styled.Form = styled.form(() => {
+Styled.Form = styled.form(props => {
+  const t = props.theme;
   return css`
     label: GarmentForm;
-    margin: 2% 6% 6% 6%;
-    width: 88%;
+    margin: 0%;
+    width: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    
+    ${t.mq.md} {
+      margin: 0% 6% 0% 6%;
+      width: 88%;
+      flex-direction: row;
+      justify-content: space-between;
+    }
   `;
 });
 
-Styled.FormSection = styled.section(() => {
+Styled.FormSection = styled.section(props => {
+  const t = props.theme;
   return css`
     label: GarmentFormSection;
-    margin: 1%;
-    width: 46%;
+    margin: 0%;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    align-items: flex-start;
+    
+    ${t.mq.md} {
+      width: 46%;
+    }
   `;
 });
 

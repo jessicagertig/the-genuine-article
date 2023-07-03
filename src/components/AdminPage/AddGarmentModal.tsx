@@ -25,8 +25,6 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
     garmentTitle: "",
     beginYear: "",
     endYear: "",
-    decade: "",
-    secondaryDecade: "",
     cultureCountry: "",
     collection: "",
     creator: "",

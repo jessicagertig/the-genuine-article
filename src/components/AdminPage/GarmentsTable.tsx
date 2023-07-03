@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -30,10 +31,10 @@ interface Column {
 const columns: Column[] = [
   { id: "id", label: "Id" },
   { id: "garmentTitle", label: "Garment Title" },
-  { id: "beginYear", label: "Begin Year" },
-  { id: "cultureCountry", label: "Culture/Country" },
-  { id: "collection", label: "Collection/Museum" },
+  { id: "beginYear", label: "Year" },
+  { id: "colors", label: "Colors" },
   { id: "collectionUrl", label: "Url" },
+  { id: "hasImage", label: "Image" },
   { id: "addImageButton", label: "" },
 ];
 
@@ -48,11 +49,25 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
   const [rows, setRows] = React.useState<any[]>([]);
 
+  const navigate = useNavigate();
+
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleOnClick = (garmentId: number): void => {
+  const handleRowClick = (
+    event: React.SyntheticEvent,
+    garmentId: number
+  ): void => {
+    event.preventDefault();
+    navigate(`/admin/garment/${garmentId}`);
+  };
+
+  const handleButtonClick = (
+    event: React.SyntheticEvent,
+    garmentId: number
+  ): void => {
+    event.stopPropagation();
     const modal = (
       <ImageUploadModal onCancel={() => removeModal()} id={garmentId} />
     );
@@ -77,14 +92,14 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     collectionUrl: React.ReactNode;
     colors: string;
     materials: string;
-    hasImage: boolean;
+    hasImage: string;
     addImageButton: React.ReactNode;
   }
 
   const formatData = (garment: GarmentData): FormattedData => {
     const colorsList = convertArray(garment.colors);
     const materialsList = convertArray(garment.materials);
-    const hasImage = garment.imageUrls ? true : false;
+    const hasImage = garment.imageUrls ? "yes" : "none";
     const sourceLink = (
       <a href={garment.collectionUrl} target="_blank" rel="noreferrer">
         View
@@ -95,12 +110,12 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     const addImageButton = (
       <TextButton
         type="button"
-        onClick={() => handleOnClick(garment.id)}
+        onClick={event => handleButtonClick(event, garment.id)}
         hasEndIcon={true}
         iconType="image"
         styles={buttonStyles}
       >
-        Add image
+        Add
       </TextButton>
     );
 
@@ -154,7 +169,10 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ fontWeight: "bold" }}
+                  sx={{
+                    fontWeight: "bold",
+                    borderBottom: "1px solid rgb(180 180 180)",
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -166,7 +184,13 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map(row => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                  <TableRow
+                    hover
+                    onClick={event => handleRowClick(event, row.id)}
+                    tabIndex={-1}
+                    key={row.id}
+                    sx={{ "&:hover": { cursor: "pointer" } }}
+                  >
                     {columns.map(column => {
                       const value = row[column.id];
                       return (

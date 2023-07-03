@@ -101,10 +101,14 @@ Styled.SecondaryNavHeader = styled.div(props => {
   const t = props.theme;
   return css`
     label: SecondaryNavHeader;
-    width: 60%;
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    ${t.mq.md} {
+      width: 60%;
+    }
 
     h2 {
       font-family: "bellota text";
@@ -112,24 +116,35 @@ Styled.SecondaryNavHeader = styled.div(props => {
       font-weight: 700;
       color: ${t.color.blue[700]};
       text-transform: uppercase;
+      text-align: center;
     }
   `;
 });
 
-Styled.LeftButtonContainer = styled.div(() => {
+Styled.LeftButtonContainer = styled.div(props => {
+  const t = props.theme;
   return css`
     label: GarmentPageButtonContainer;
     display: flex;
     justify-content: flex-start;
-    width: 20%;
+    width: 25%;
+
+    ${t.mq.md} {
+      width: 20%;
+    }
   `;
 });
 
-Styled.RightButtonContainer = styled.div(() => {
+Styled.RightButtonContainer = styled.div(props => {
+  const t = props.theme;
   return css`
     label: GarmentPageButtonContainer;
     display: flex;
     justify-content: flex-end;
-    width: 20%;
+    width: 25%;
+
+    ${t.mq.md} {
+      width: 20%;
+    }
   `;
 });

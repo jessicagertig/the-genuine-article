@@ -98,6 +98,7 @@ const typeScale = {
 };
 
 const breakpoints: { [index: string]: number } = {
+  xs: 365,
   sm: 480,
   md: 640,
   lg: 768,

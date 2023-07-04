@@ -8,6 +8,9 @@ import { GarmentData } from "src/types";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import IconButton from "@mui/material/IconButton";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import EditGarmentModal from "src/components/AdminPage/EditGarmentModal";
+
+import { useModalContext } from "src/context/ModalContext";
 
 interface GarmentPageProps {
   garment: GarmentData | undefined;
@@ -15,6 +18,12 @@ interface GarmentPageProps {
 }
 
 const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
+  const { openModal, removeModal } = useModalContext();
+  const garmentTitleOption = {
+    value: garment?.garmentTitleId,
+    label: garment?.garmentTitle,
+  };
+
   type Item = {
     name: string;
     value: any;
@@ -70,8 +79,17 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
     e.preventDefault();
   };
 
-  const onClickEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleClickEdit = (event: React.SyntheticEvent): void => {
+    event.preventDefault();
+    const modal = (
+      <EditGarmentModal
+        onCancel={() => removeModal()}
+        garment={garment}
+        garmentTitleOption={garmentTitleOption}
+      />
+    );
+
+    openModal(modal);
   };
 
   const onClickDelete = (event: React.SyntheticEvent) => {
@@ -103,12 +121,15 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
       </Styled.ImagesSection>
       <Styled.InfoSection>
         <Styled.HeaderContainer>
-        <Styled.InfoTitleContainer>
-          <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
-        </Styled.InfoTitleContainer>
+          <Styled.InfoTitleContainer>
+            <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
+          </Styled.InfoTitleContainer>
           <Styled.IconButtonContainer>
             {admin ? (
-              <IconButton color="primary" onClick={event => onClickEdit(event)}>
+              <IconButton
+                color="primary"
+                onClick={event => handleClickEdit(event)}
+              >
                 <BorderColorOutlinedIcon />
               </IconButton>
             ) : null}
@@ -118,7 +139,9 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
       </Styled.InfoSection>
       <Styled.DeleteButtonContainer>
         {admin ? (
-          <OutlinedButton color="error" onClick={onClickDelete}>Delete Garment</OutlinedButton>
+          <OutlinedButton color="error" onClick={onClickDelete}>
+            Delete Garment
+          </OutlinedButton>
         ) : null}
       </Styled.DeleteButtonContainer>
     </Styled.GarmentContainer>
@@ -167,12 +190,12 @@ Styled.DisplayedImage = styled.div(props => {
     }
 
     img {
-        width: 100vw;
-        
-        ${t.mq.xs} {
-          width: 500px;
-          height: 609px;
-        }
+      width: 100vw;
+
+      ${t.mq.xs} {
+        width: 500px;
+        height: 609px;
+      }
     }
   `;
 });
@@ -233,7 +256,7 @@ Styled.InfoSection = styled.section(props => {
 Styled.HeaderContainer = styled.div`
   label: Garment_InfoHeaderContainer
   width: 100%;
-`
+`;
 
 Styled.InfoTitleContainer = styled.div(props => {
   const t = props.theme;
@@ -315,7 +338,6 @@ Styled.ButtonContainer = styled.div(props => {
     align-items: center;
   `;
 });
-
 
 Styled.DeleteButtonContainer = styled.div(props => {
   const t = props.theme;

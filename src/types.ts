@@ -11,20 +11,10 @@ export interface ItemInfo {
   description: string;
 }
 
-export interface ItemInfoData {
+export interface ItemInfoData extends ItemInfo {
   id: number;
-  garmentTitle: string; //required
-  beginYear: string; //required
-  endYear: string | null;
-  decade: string | null;
-  secondaryDecade: string | null;
-  cultureCountry: string | null;
-  collection: string; //required
-  collectionUrl: string; //required
-  creator: string | null;
-  source: string | null;
-  itemCollectionNo: string; //required
-  description: string | null;
+  decade: string;
+  secondaryDecade: string;
 }
 
 export interface ImageUrls {
@@ -50,6 +40,7 @@ export interface Garment {
 
 // format of each item returned from get garments
 export interface GarmentData extends ItemInfoData {
+  garmentTitleId: number;
   colors: string[];
   materials: string[];
   imageUrls: ImageUrls | null;

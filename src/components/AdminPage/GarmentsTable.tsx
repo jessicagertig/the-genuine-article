@@ -47,7 +47,6 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
 
   const [page, setPage] = React.useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
-  const [rows, setRows] = React.useState<any[]>([]);
 
   const navigate = useNavigate();
 
@@ -94,6 +93,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     materials: string;
     hasImage: string;
     addImageButton: React.ReactNode;
+    [key: string]: number | string | React.ReactNode;
   }
 
   const formatData = (garment: GarmentData): FormattedData => {
@@ -133,13 +133,14 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     };
   };
 
-  React.useEffect(() => {
+  const rows = React.useMemo(() => {
     if (garments) {
       const tableRows: FormattedData[] = garments?.map((garment: GarmentData) =>
         formatData(garment)
       );
-      setRows(tableRows);
+      return tableRows;
     }
+    return [];
   }, [garments]);
 
   if (isLoading || !garments) {

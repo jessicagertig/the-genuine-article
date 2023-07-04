@@ -10,7 +10,6 @@ import {
   dateToString,
   stringToDate,
 } from "src/utils/formHelpers";
-import OutlinedButton from "src/components/shared/OutlinedButton";
 import {
   StyledAutocomplete,
   StyledTextField,
@@ -21,6 +20,7 @@ import { useMenus } from "src/queryHooks/useMenus";
 
 interface GarmentFormProps {
   garmentInfo: Partial<ItemInfo>;
+  defaultGarmentTitleOption?: Option;
   colors?: Option[];
   materials?: Option[];
   onSubmit: (event: React.FormEvent<Element>) => void;
@@ -32,6 +32,7 @@ interface GarmentFormProps {
 
 const GarmentForm: React.FC<GarmentFormProps> = ({
   garmentInfo,
+  defaultGarmentTitleOption,
   colors,
   materials,
   ...props
@@ -58,7 +59,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     itemCollectionNo,
     description,
   } = garmentInfo;
-
+  
   React.useEffect(() => {
     if (menus) {
       const convertedMenus = returnConvertedMenus(menus);
@@ -83,6 +84,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     name: string,
     value: any
   ) => {
+    console.log("change value", value)
     props.onGarmentChange({ [name]: value });
   };
 
@@ -240,6 +242,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             key={name}
             disablePortal={true}
             id={name}
+            defaultValue={defaultGarmentTitleOption}
             options={options as Option[]}
             getOptionLabel={(option: unknown) => (option as Option).label}
             renderInput={params => (

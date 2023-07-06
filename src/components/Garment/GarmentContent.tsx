@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 import { GarmentData } from "src/types";
 import OutlinedButton from "src/components/shared/OutlinedButton";
@@ -12,14 +13,17 @@ import EditGarmentModal from "src/components/AdminPage/EditGarmentModal";
 import ConfirmModal from "src/components/shared/ConfirmModal"
 
 import { useModalContext } from "src/context/ModalContext";
+import { useDeleteGarment } from "src/queryHooks/useGarments";
 
-interface GarmentPageProps {
+interface GarmentContentProps {
   garment: GarmentData | undefined;
   admin?: boolean;
 }
 
-const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
+const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
+  const navigate = useNavigate();
   const { openModal, removeModal } = useModalContext();
+  const { mutate: deleteGarment } = useDeleteGarment();
   const garmentTitleOption = {
     value: garment?.garmentTitleId,
     label: garment?.garmentTitle,
@@ -112,7 +116,22 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
 
   function handleDeleteGarment(garmentId: number | null): void {
     if (garmentId) {
-
+      deleteGarment(
+        {
+          itemId: garmentId,
+        },
+        {
+          onSuccess: (data: any) => {
+            console.log("Success deleting garment. Data:", data);
+            removeModal();
+            navigate(`/admin`);
+          },
+          onError: (error: any) => {
+            const message = error && error.data ? error.data.message : "";
+            console.log("Request Error:", message);
+          },
+        }
+      );
     }
   }
 
@@ -167,7 +186,7 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
   );
 };
 
-export default GarmentPage;
+export default GarmentContent;
 
 // Styled Components
 // =======================================================

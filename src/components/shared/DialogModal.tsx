@@ -16,6 +16,7 @@ interface CustomFormDialogProps extends DialogProps {
   onCancel: () => void;
   open: boolean;
   full?: boolean;
+  responsiveFullscreen?: boolean;
 }
 
 const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
@@ -28,6 +29,7 @@ const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
     onCancel,
     children,
     full,
+    responsiveFullscreen,
   } = props;
 
   const handleClose = () => {
@@ -41,16 +43,19 @@ const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
         onClose={handleClose}
         maxWidth="xl"
         fullWidth={full ? full : false}
+        fullScreen={responsiveFullscreen ? responsiveFullscreen : false}
+        aria-labelledby="dialog-modal-title"
+        aria-describedby="dialog-modal-description"
       >
-        <DialogTitle sx={{ textAlign: "center", color: "#223F7C" }}>
+        <DialogTitle  id="dialog-modal-title" sx={{ textAlign: "center", color: "#223F7C" }}>
           {dialogTitle}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>{dialogMessage}</DialogContentText>
+          <DialogContentText id="dialog-modal-description">{dialogMessage}</DialogContentText>
           {children}
         </DialogContent>
         <Styled.ButtonsContainer full={full}>
-          <DialogActions sx={{width: "100%"}}>
+          <DialogActions sx={{ width: "100%" }}>
             <Styled.Button full={full}>
               <TextButton onClick={handleClose}>Cancel</TextButton>
             </Styled.Button>
@@ -80,10 +85,10 @@ Styled.ButtonsContainer = styled.div((props: any) => {
     justify-content: center;
     margin: 2%;
     
-    ${t.mq.md} {
+    ${t.mq.sm} {
         justify-content: flex-end;
         width: ${props.full ? "88%" : "100%"};
-        margin: ${props.full ? "0% 10% 2% 2%" : "2%"};
+        margin: ${props.full ? "0% 10% 2% 2%" : "0"};
       }
     }
   `;
@@ -91,12 +96,12 @@ Styled.ButtonsContainer = styled.div((props: any) => {
 
 Styled.Button = styled.div((props: any) => {
   const t = props.theme;
-  
+
   return css`
     label: DialogButton;
     width: ${props.full ? "50%" : "100%"};
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       width: ${props.full ? "20%" : "100%"};
       justify-content: flex-end;
     }

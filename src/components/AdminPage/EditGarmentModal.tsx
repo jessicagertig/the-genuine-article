@@ -1,4 +1,6 @@
 import React from "react";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import DialogModal from "src/components/shared/DialogModal";
@@ -25,6 +27,8 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
   garmentTitleOption,
   ...props
 }) => {
+  const theme = useTheme();
+  const fullscreen = useMediaQuery(theme.breakpoints.down('md'))
   const { modalOpen } = useModalContext();
   const { mutate: updateGarment, isLoading: isLoadingUpdateGarment } =
     useUpdateGarment();
@@ -143,6 +147,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
       onCancel={props.onCancel}
       full={true}
       confirmButton={submitButton}
+      responsiveFullscreen={fullscreen}
     >
       <GarmentForm
         garmentInfo={infoState}

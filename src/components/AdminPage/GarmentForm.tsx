@@ -59,7 +59,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     itemCollectionNo,
     description,
   } = garmentInfo;
-  
+
   React.useEffect(() => {
     if (menus) {
       const convertedMenus = returnConvertedMenus(menus);
@@ -84,7 +84,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     name: string,
     value: any
   ) => {
-    console.log("change value", value)
+    console.log("change value", value);
     props.onGarmentChange({ [name]: value });
   };
 
@@ -394,8 +394,8 @@ Styled.Form = styled.form(props => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    ${t.mq.md} {
+
+    ${t.mq.sm} {
       margin: 0% 6% 0% 6%;
       width: 88%;
       flex-direction: row;
@@ -414,8 +414,8 @@ Styled.FormSection = styled.section(props => {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    
-    ${t.mq.md} {
+
+    ${t.mq.sm} {
       width: 46%;
     }
   `;

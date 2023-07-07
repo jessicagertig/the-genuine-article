@@ -3,22 +3,27 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 import { GarmentData } from "src/types";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import IconButton from "@mui/material/IconButton";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import EditGarmentModal from "src/components/AdminPage/EditGarmentModal";
+import ConfirmModal from "src/components/shared/ConfirmModal"
 
 import { useModalContext } from "src/context/ModalContext";
+import { useDeleteGarment } from "src/queryHooks/useGarments";
 
-interface GarmentPageProps {
+interface GarmentContentProps {
   garment: GarmentData | undefined;
   admin?: boolean;
 }
 
-const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
+const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
+  const navigate = useNavigate();
   const { openModal, removeModal } = useModalContext();
+  const { mutate: deleteGarment } = useDeleteGarment();
   const garmentTitleOption = {
     value: garment?.garmentTitleId,
     label: garment?.garmentTitle,
@@ -92,10 +97,43 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
     openModal(modal);
   };
 
-  const onClickDelete = (event: React.SyntheticEvent) => {
+  const handleClickDelete = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    console.log("Clicked!!!");
+    const garmentId = garment ? garment.id : null;
+    const modal = (
+      <ConfirmModal
+        onCancel={() => removeModal()}
+        onConfirm={() => handleDeleteGarment(garmentId)}
+        titleText="Confirm Deletion?"
+        descriptionText="Are you sure you want to delete this garment? This action cannot be undone.  This garment and all its information will permanantly deleted."
+        confirmText="DELETE"
+        danger={true}
+      />
+    )
+
+    openModal(modal);
   };
+
+  function handleDeleteGarment(garmentId: number | null): void {
+    if (garmentId) {
+      deleteGarment(
+        {
+          itemId: garmentId,
+        },
+        {
+          onSuccess: (data: any) => {
+            console.log("Success deleting garment. Data:", data);
+            removeModal();
+            navigate(`/admin`);
+          },
+          onError: (error: any) => {
+            const message = error && error.data ? error.data.message : "";
+            console.log("Request Error:", message);
+          },
+        }
+      );
+    }
+  }
 
   return (
     <Styled.GarmentContainer>
@@ -139,7 +177,7 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
       </Styled.InfoSection>
       <Styled.DeleteButtonContainer>
         {admin ? (
-          <OutlinedButton color="error" onClick={onClickDelete}>
+          <OutlinedButton color="error" onClick={handleClickDelete}>
             Delete Garment
           </OutlinedButton>
         ) : null}
@@ -148,7 +186,7 @@ const GarmentPage: React.FC<GarmentPageProps> = ({ garment, admin }) => {
   );
 };
 
-export default GarmentPage;
+export default GarmentContent;
 
 // Styled Components
 // =======================================================
@@ -181,20 +219,25 @@ Styled.DisplayedImage = styled.div(props => {
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     width: 100vw;
-    height: 400px;
+    min-height: 300px;
     flex-shrink: 1;
 
     ${t.mq.xs} {
       width: 500px;
       height: 609px;
+      min-height: 609px;
     }
 
     img {
       width: 100vw;
+      max-width: 480px;
+      max-height: 575px;
 
       ${t.mq.xs} {
         width: 500px;
         height: 609px;
+        max-width: 500px;
+        max-height: 609px;
       }
     }
   `;
@@ -245,7 +288,7 @@ Styled.InfoSection = styled.section(props => {
     border-radius: 8px;
     background-color: rgba(211, 217, 229, 0.2);
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       margin-right: 6%;
       margin-left: 6%;
       width: 88%;

@@ -16,10 +16,11 @@ const PublicHeader = (props: Props) => {
       <Styled.Heading>
         <Styled.Title>{titleText}</Styled.Title>
       </Styled.Heading>
-      {descriptionText || children ? (<Styled.Container>
-        <Styled.Description>{descriptionText}</Styled.Description>
-        {children}
-      </Styled.Container>
+      {descriptionText || children ? (
+        <Styled.Container>
+          <Styled.Description>{descriptionText}</Styled.Description>
+          {children}
+        </Styled.Container>
       ) : null}
     </>
   );
@@ -44,7 +45,7 @@ Styled.Heading = styled.div(props => {
     align-items: center;
     background: rgba(211, 217, 229, 0.5);
 
-    ${t.mq.lg} {
+    ${t.mq.md} {
       height: 150px;
     }
   `;
@@ -60,7 +61,7 @@ Styled.Title = styled.h1(props => {
     letter-spacing: 0.07rem;
     text-transform: uppercase;
 
-    ${t.mq.lg} {
+    ${t.mq.md} {
       font-size: 1.65rem;
     }
   `;

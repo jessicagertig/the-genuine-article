@@ -5,21 +5,18 @@ import { css } from "@emotion/react";
 import SecondaryNav from "src/components/shared/SecondaryNav";
 import GarmentsTable from "src/components/AdminPage/GarmentsTable";
 import AddGarmentModal from "src/components/AdminPage/AddGarmentModal";
-import OutlinedButton from 'src/components/shared/OutlinedButton';
+import OutlinedButton from "src/components/shared/OutlinedButton";
 
-import { useModalContext } from 'src/context/ModalContext';
+import { useModalContext } from "src/context/ModalContext";
 
 interface AdminPageProps {}
 
 const AdminPage: React.FC<AdminPageProps> = props => {
-
   const { openModal, removeModal } = useModalContext();
 
   const handleClickAdd = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    const modal = (
-      <AddGarmentModal onCancel={() => removeModal()} />
-    );
+    const modal = <AddGarmentModal onCancel={() => removeModal()} />;
 
     openModal(modal);
   };
@@ -29,16 +26,16 @@ const AdminPage: React.FC<AdminPageProps> = props => {
       <SecondaryNav pageTitle="Garments" />
       <Styled.ButtonContainer>
         <OutlinedButton
-              hasStartIcon={true}
-              iconType="add"
-              onClick={handleClickAdd}
-              styles={{
-                maxWidth: "100px",
-                paddingRight: "8px",
-                paddingLeft: "8px",
-              }}
-            >
-            Add
+          hasStartIcon={true}
+          iconType="add"
+          onClick={handleClickAdd}
+          styles={{
+            maxWidth: "100px",
+            paddingRight: "8px",
+            paddingLeft: "8px",
+          }}
+        >
+          Add
         </OutlinedButton>
       </Styled.ButtonContainer>
       <Styled.GarmentsTableContainer>
@@ -103,7 +100,7 @@ Styled.GarmentsTableContainer = styled.div(props => {
     display: flex;
     justify-content: center;
 
-    ${t.mq.lg} {
+    ${t.mq.md} {
       width: 88%;
     }
   `;

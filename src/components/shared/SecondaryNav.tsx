@@ -11,11 +11,11 @@ type Props = {
   toText?: string;
   closePath?: string;
   actions?: React.ReactNode;
-  pageTitle: string; 
+  pageTitle: string;
 };
 
 const SecondaryNav = (props: Props) => {
-  const { backPath, toPath, toText, closePath, actions, pageTitle } = props
+  const { backPath, toPath, toText, closePath, actions, pageTitle } = props;
   const navigate = useNavigate();
 
   const handleClickBack = () => {
@@ -28,7 +28,7 @@ const SecondaryNav = (props: Props) => {
     if (toPath !== undefined) {
       navigate(toPath);
     }
-  }
+  };
 
   return (
     <Styled.SecondaryNavContainer>
@@ -78,7 +78,7 @@ export default SecondaryNav;
 let Styled: any;
 Styled = {};
 
-Styled.SecondaryNavContainer = styled.div((props) => {
+Styled.SecondaryNavContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: SecondaryNavContainer;
@@ -89,7 +89,7 @@ Styled.SecondaryNavContainer = styled.div((props) => {
     display: flex;
     height: 48px;
 
-    ${t.mq.xxl} {
+    ${t.mq.xl} {
       margin-right: 6%;
       margin-left: 6%;
       width: 88%;
@@ -106,7 +106,7 @@ Styled.SecondaryNavHeader = styled.div(props => {
     justify-content: center;
     align-items: center;
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       width: 60%;
     }
 
@@ -129,7 +129,7 @@ Styled.LeftButtonContainer = styled.div(props => {
     justify-content: flex-start;
     width: 25%;
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       width: 20%;
     }
   `;
@@ -143,7 +143,7 @@ Styled.RightButtonContainer = styled.div(props => {
     justify-content: flex-end;
     width: 25%;
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       width: 20%;
     }
   `;

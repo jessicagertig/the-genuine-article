@@ -2,74 +2,78 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import TextButton from "src/components/shared/TextButton";
 import Dialog, { DialogProps } from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-interface CustomFormDialogProps extends DialogProps {
-  dialogTitle: string;
-  dialogMessage?: string;
-  confirmButton?: React.ReactNode;
+import OutlinedButton from "src/components/shared/OutlinedButton";
+import TextButton from "src/components/shared/TextButton";
+
+import { useModalContext } from "src/context/ModalContext";
+
+interface ConfirmModalProps extends Omit<DialogProps, 'open'> {
   onCancel: () => void;
-  open: boolean;
-  full?: boolean;
+  onConfirm: () => void;
+  confirmText?: string;
+  titleText: string;
+  descriptionText: string;
+  danger?: boolean;
   responsiveFullscreen?: boolean;
 }
 
-const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
-  console.log("DialogModalProps", props);
+const ConfirmModal: React.FC<ConfirmModalProps> = props => {
+  const { modalOpen } = useModalContext();
+  const { confirmText, titleText, descriptionText, danger, responsiveFullscreen } = props;
 
-  const {
-    dialogMessage,
-    dialogTitle,
-    confirmButton,
-    onCancel,
-    children,
-    full,
-    responsiveFullscreen,
-  } = props;
 
-  const handleClose = () => {
-    onCancel();
+  const handleConfirm = async () => {
+    props.onConfirm();
+    props.onCancel(); //removes modal
   };
 
+  const handleClose = () => {
+    props.onCancel();
+  };
+
+  const confirmButtonColor = danger ? "error" : undefined;
+  const confirmButton = (
+    <OutlinedButton onClick={handleConfirm} color={confirmButtonColor}>
+      {confirmText ? confirmText : "Confirm"}
+    </OutlinedButton>
+  );
+
   return (
-    <div>
+    <>
       <Dialog
-        open={props.open}
+        open={modalOpen}
         onClose={handleClose}
-        maxWidth="xl"
-        fullWidth={full ? full : false}
         fullScreen={responsiveFullscreen ? responsiveFullscreen : false}
         aria-labelledby="dialog-modal-title"
         aria-describedby="dialog-modal-description"
+        maxWidth="xs"
       >
-        <DialogTitle  id="dialog-modal-title" sx={{ textAlign: "center", color: "#223F7C" }}>
-          {dialogTitle}
+        <DialogTitle  id="dialog-modal-title" sx={{ color: "#223F7C", textTransform: "uppercase" }}>
+          {titleText}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="dialog-modal-description">{dialogMessage}</DialogContentText>
-          {children}
+        <DialogContent sx={{ minHeight: "100px" }}>
+          <DialogContentText id="dialog-modal-description" sx={{ color: "#223F7C", textWrap: "whitespace"}}>{descriptionText}</DialogContentText>
         </DialogContent>
-        <Styled.ButtonsContainer full={full}>
+        <Styled.ButtonsContainer>
           <DialogActions sx={{ width: "100%" }}>
-            <Styled.Button full={full}>
+            <Styled.Button>
               <TextButton onClick={handleClose}>Cancel</TextButton>
             </Styled.Button>
-            {confirmButton ? (
-              <Styled.Button full={full}>{confirmButton}</Styled.Button>
-            ) : null}
+            <Styled.Button>{confirmButton}</Styled.Button>
           </DialogActions>
         </Styled.ButtonsContainer>
       </Dialog>
-    </div>
+    </>
   );
 };
 
-export default DialogModal;
+export default ConfirmModal;
 
 // Styled Components
 // =======================================================
@@ -87,8 +91,8 @@ Styled.ButtonsContainer = styled.div((props: any) => {
     
     ${t.mq.sm} {
         justify-content: flex-end;
-        width: ${props.full ? "88%" : "100%"};
-        margin: ${props.full ? "0% 10% 2% 2%" : "0"};
+        width: 100%;
+        margin: 0;
       }
     }
   `;
@@ -99,10 +103,9 @@ Styled.Button = styled.div((props: any) => {
 
   return css`
     label: DialogButton;
-    width: ${props.full ? "50%" : "100%"};
+    width: 100%;
 
     ${t.mq.sm} {
-      width: ${props.full ? "20%" : "100%"};
       justify-content: flex-end;
     }
   `;

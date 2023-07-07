@@ -4,10 +4,10 @@ import {
   useQueryClient,
   QueryClient,
 } from "react-query";
-import { apiGet, apiPost, apiPut } from "./api";
+import { apiGet, apiPost, apiPut, apiDelete } from "./api";
 import { GarmentState } from "src/types";
 
-type GetGarmentParam = { itemId: number | undefined };
+type GarmentParam = { itemId: number | undefined };
 
 interface UpdateGarmentParams extends GarmentState {
   itemId: number;
@@ -17,7 +17,7 @@ const getGarments = async () => {
   return await apiGet({ endpoint: "/items" });
 };
 
-const getGarment = async ({ itemId }: GetGarmentParam) => {
+const getGarment = async ({ itemId }: GarmentParam) => {
   if (itemId !== undefined) {
     return await apiGet({ endpoint: `/items/${itemId}` });
   }
@@ -46,6 +46,15 @@ const updateGarment = async ({
   });
 };
 
+const deleteGarment = async ({ itemId }: GarmentParam) => {
+  if (itemId !== undefined) {
+    return await apiDelete({
+      endpoint: `/items/${itemId}`,
+      variables: {},
+    });
+  }
+};
+
 /* Hooks
 --===================================================-- */
 
@@ -61,7 +70,7 @@ function useGarments(): {
   });
 }
 
-function useGarment({ itemId }: GetGarmentParam): {
+function useGarment({ itemId }: GarmentParam): {
   status: any;
   data: any;
   error: any;
@@ -106,4 +115,26 @@ function useUpdateGarment(): {
   });
 }
 
-export { useGarments, useGarment, useCreateGarment, useUpdateGarment };
+function useDeleteGarment(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  const queryClient: QueryClient = useQueryClient();
+  return useMutation(deleteGarment, {
+    onSuccess: (data, variables) => {
+      console.log("DATA", data);
+      queryClient.invalidateQueries(["garments"]);
+      queryClient.invalidateQueries(["garment"]);
+    },
+  });
+}
+
+export {
+  useGarments,
+  useGarment,
+  useCreateGarment,
+  useUpdateGarment,
+  useDeleteGarment,
+};

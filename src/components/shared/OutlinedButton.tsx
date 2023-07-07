@@ -17,7 +17,7 @@ interface CustomOutlinedButtonProps extends ButtonProps {
 }
 
 const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
-  const { hasEndIcon, hasStartIcon, styles, iconType, buttonSize, color } = props;
+  const { hasEndIcon, hasStartIcon, styles, iconType, buttonSize, color, disabled } = props;
 
   const defaultStyles = {
     width: "100%",
@@ -51,6 +51,7 @@ const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
       size={buttonSize ? buttonSize : "medium"}
       endIcon={hasEndIcon ? icon : null}
       startIcon={hasStartIcon ? icon : null}
+      disabled={disabled}
     >
       {props.children}
     </CustomOutlinedButton>

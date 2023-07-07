@@ -25,7 +25,7 @@ const FileUpload = (props: FileUploadProps) => {
 
   return (
     <Styled.ButtonContainer>
-      <Button variant="text" onClick={handleClick} endIcon={<FileUploadIcon />}>
+      <Button variant="text" onClick={handleClick}  sx={{fontSize: "1.125rem", fontWeight: "bold"}} endIcon={<FileUploadIcon />}>
         Select File
       </Button>
       <Input
@@ -52,7 +52,6 @@ Styled.ButtonContainer = styled.div(props => {
   return css`
     label: ButtonContainer;
     ${t.p(6)}
-    width: 100%;
     display: flex;
     flex-direction: column;
   `;

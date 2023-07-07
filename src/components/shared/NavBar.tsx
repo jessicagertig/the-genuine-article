@@ -2,9 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { NavLink } from "react-router-dom";
-import Menu from '@mui/material/Menu';
+import Menu from "@mui/material/Menu";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from '@mui/icons-material/Menu';
+import MenuIcon from "@mui/icons-material/Menu";
 
 import logo from "src/assets/HeaderLogo.png";
 import bonnetLogo from "src/assets/BonnetLogo.png";
@@ -15,7 +15,6 @@ type Props = {
 };
 
 const NavBar = ({ backgroundColor }: Props) => {
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,41 +27,47 @@ const NavBar = ({ backgroundColor }: Props) => {
   type Link = {
     name: string;
     path: string;
-  }
+  };
 
   const links: Link[] = [
-    { name: "Home", path: "/"},
-    { name: "Garments", path: "/garments"},
-    { name: "Admin", path: "/admin"},
-  ]
+    { name: "Home", path: "/" },
+    { name: "Garments", path: "/garments" },
+    { name: "Admin", path: "/admin" },
+  ];
 
   const menu = (
-      <Styled.MenuContainer>
-        <IconButton component="button"       
-          id="icon-menu-button"
-          aria-controls={open ? 'nav-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}
-          sx={{ "& .MuiIconButton-root": {color: "#172a4f"}}}
-        >
-          <MenuIcon sx={{color: "#172a4f", fill: "#172a4f"}}/>
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-        >
-        {links.map(link =>
-          <NavMenuItem onClose={handleClose} name={link.name} to={link.path} key={link.name}/>
-        )}
-        </Menu>
-      </Styled.MenuContainer>
-    );
+    <Styled.MenuContainer>
+      <IconButton
+        component="button"
+        id="icon-menu-button"
+        aria-controls={open ? "nav-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        onClick={handleClick}
+        sx={{ "& .MuiIconButton-root": { color: "#172a4f" } }}
+      >
+        <MenuIcon sx={{ color: "#172a4f", fill: "#172a4f" }} />
+      </IconButton>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        {links.map(link => (
+          <NavMenuItem
+            onClose={handleClose}
+            name={link.name}
+            to={link.path}
+            key={link.name}
+          />
+        ))}
+      </Menu>
+    </Styled.MenuContainer>
+  );
 
   return (
     <Styled.NavBarContainer style={{ background: backgroundColor }}>
@@ -105,11 +110,11 @@ Styled.NavBarContainer = styled.div(props => {
     padding-right: 8%;
     padding-left: 8%;
 
-    ${t.mq.lg} {
+    ${t.mq.md} {
       height: 90px;
     }
 
-    ${t.mq.xl} {
+    ${t.mq.lg} {
       height: 125px;
     }
   `;
@@ -121,13 +126,13 @@ Styled.Container = styled.div(props => {
     label: NavBarItems;
     width: 50%;
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       width: 40%;
     }
-    ${t.mq.xl} {
+    ${t.mq.lg} {
       width: 33%;
     }
-    ${t.mq.xxl} {
+    ${t.mq.xl} {
       width: 25%;
     }
   `;
@@ -136,24 +141,24 @@ Styled.Container = styled.div(props => {
 Styled.LargeLogo = styled.img(props => {
   const t = props.theme;
   return css`
-  label: NavBarLargeLogo;
-  display: none;
+    label: NavBarLargeLogo;
+    display: none;
 
-  ${t.mq.lg} {
-    display: block;
-  }
+    ${t.mq.md} {
+      display: block;
+    }
   `;
 });
 
 Styled.SmallLogo = styled.img(props => {
   const t = props.theme;
   return css`
-  label: NavBarSmallLogo;
-  display: block;
+    label: NavBarSmallLogo;
+    display: block;
 
-  ${t.mq.lg} {
-    display: none;
-  }
+    ${t.mq.md} {
+      display: none;
+    }
   `;
 });
 
@@ -164,11 +169,11 @@ Styled.LogoContainer = styled.div(props => {
     width: auto;
     height: 50px;
 
-    ${t.mq.lg} {
+    ${t.mq.md} {
       height: 90px;
     }
 
-    ${t.mq.xl} {
+    ${t.mq.lg} {
       height: 110px;
     }
   `;
@@ -189,7 +194,7 @@ Styled.LinksContainer = styled.div(props => {
     color: ${t.color.red[500]};
   }
 
-  ${t.mq.lg} {
+  ${t.mq.md} {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -215,7 +220,7 @@ Styled.NavLink = styled(NavLink)(props => {
       font-size: 1.4rem;
     }
 
-    ${t.mq.lg} {
+    ${t.mq.md} {
       display: block;
     }
   `;
@@ -224,12 +229,11 @@ Styled.NavLink = styled(NavLink)(props => {
 Styled.MenuContainer = styled.div(props => {
   const t: any = props.theme;
   return css`
-  label: NavMenuContainer;
-  display: block;
+    label: NavMenuContainer;
+    display: block;
 
-  ${t.mq.lg} {
-    display: none;
-  }
+    ${t.mq.md} {
+      display: none;
+    }
   `;
 });
-

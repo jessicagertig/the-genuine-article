@@ -1,17 +1,16 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import PublicHeader from "src/components/shared/PublicHeader";
+import Header from "src/components/LandingPage/Header";
+import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
 
 type Props = {};
 
 const LandingPage = (props: Props) => {
   return (
     <Styled.LandingPageContainer>
-      <PublicHeader
-        titleText="The Genuine Article"
-        descriptionText="A collection of images of original historical clothing from the 19th century "
-      />
+      <Header />
+      <GarmentOfTheDay />
     </Styled.LandingPageContainer>
   );
 };

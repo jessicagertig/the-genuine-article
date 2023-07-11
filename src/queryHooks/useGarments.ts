@@ -17,6 +17,10 @@ const getGarments = async () => {
   return await apiGet({ endpoint: "/items" });
 };
 
+const getDailyGarment = async () => {
+  return await apiGet({ endpoint: `/items/daily` });
+};
+
 const getGarment = async ({ itemId }: GarmentParam) => {
   if (itemId !== undefined) {
     return await apiGet({ endpoint: `/items/${itemId}` });
@@ -67,6 +71,18 @@ function useGarments(): {
 } {
   return useQuery(["garments"], () => getGarments(), {
     refetchOnWindowFocus: false,
+  });
+}
+
+function useDailyGarment(): {
+  status: any;
+  data: any;
+  error: any;
+  isFetching: boolean;
+  isLoading: boolean;
+} {
+  return useQuery(["dailyGarment"], () => {
+    return getDailyGarment();
   });
 }
 
@@ -133,6 +149,7 @@ function useDeleteGarment(): {
 
 export {
   useGarments,
+  useDailyGarment,
   useGarment,
   useCreateGarment,
   useUpdateGarment,

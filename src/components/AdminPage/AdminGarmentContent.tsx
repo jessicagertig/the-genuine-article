@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 
 import { GarmentData } from "src/types";
@@ -56,31 +55,43 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
           const listToString = list.length > 0 ? list.join(", ") : "";
           return (
             <Styled.InfoItem key={item.name}>
-              <span>{item.name}</span>
-              <p>{listToString}</p>
+            <p><span>{item.name}:   </span>
+              {listToString}</p>
             </Styled.InfoItem>
           );
         } else if (item.name === "Link") {
           return (
             <Styled.InfoItem key={item.name}>
-              <span>{item.name}</span>
-              <a href={item.value} target="_blank" rel="noreferrer">
-                {item.value}
-              </a>
+              <p>
+                <span>{item.name}:   </span>
+                <a href={item.value} target="_blank" rel="noreferrer">
+                  view original website
+                </a>
+              </p>
             </Styled.InfoItem>
           );
-        } else {
+        } else if (item.name === "Description") {
+          const lines = item.value.split("\n");
+          console.log("LINES", lines)
           return (
             <Styled.InfoItem key={item.name}>
               <span>{item.name}</span>
-              <p>{item.value}</p>
+              {lines.map((line: string, index: number) => 
+                <p key={index} className="description">{line}</p>
+              )}
+            </Styled.InfoItem>
+          )
+        } else {
+          return (
+            <Styled.InfoItem key={item.name}>
+              <p><span>{item.name}:   </span>{item.value}</p>
             </Styled.InfoItem>
           );
         }
       })
     : [];
 
-  const onClickEditImages = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickEditImages = (e: React.SyntheticEvent) => {
     e.preventDefault();
   };
 
@@ -147,34 +158,34 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
         <Styled.ThumbGallery></Styled.ThumbGallery>
         <Styled.ButtonContainer>
           {admin ? (
-            <Button
-              variant="contained"
-              color="primary"
+            <OutlinedButton
               onClick={event => onClickEditImages(event)}
             >
               Edit Images
-            </Button>
+            </OutlinedButton>
           ) : null}
         </Styled.ButtonContainer>
       </Styled.ImagesSection>
-      <Styled.InfoSection>
-        <Styled.HeaderContainer>
-          <Styled.InfoTitleContainer>
-            <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
-          </Styled.InfoTitleContainer>
-          <Styled.IconButtonContainer>
-            {admin ? (
-              <IconButton
-                color="primary"
-                onClick={event => handleClickEdit(event)}
-              >
-                <BorderColorOutlinedIcon />
-              </IconButton>
-            ) : null}
-          </Styled.IconButtonContainer>
-        </Styled.HeaderContainer>
-        <Styled.InfoContent>{itemNodes}</Styled.InfoContent>
-      </Styled.InfoSection>
+      <Styled.DetailsSection>
+        <Styled.InfoContainer>
+          <Styled.HeaderContainer>
+            <Styled.InfoTitleContainer>
+              <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
+            </Styled.InfoTitleContainer>
+            <Styled.IconButtonContainer>
+              {admin ? (
+                <IconButton
+                  sx={{ color: "white" }}
+                  onClick={event => handleClickEdit(event)}
+                >
+                  <BorderColorOutlinedIcon />
+                </IconButton>
+              ) : null}
+            </Styled.IconButtonContainer>
+          </Styled.HeaderContainer>
+          <Styled.InfoContent>{itemNodes}</Styled.InfoContent>
+        </Styled.InfoContainer>
+      </Styled.DetailsSection>
       <Styled.DeleteButtonContainer>
         {admin ? (
           <OutlinedButton color="error" onClick={handleClickDelete}>
@@ -275,24 +286,34 @@ Styled.ThumbImage = styled.div(props => {
   `;
 });
 
-Styled.InfoSection = styled.section(props => {
+Styled.DetailsSection = styled.section(props => {
+  const t = props.theme;
+  return css`
+  label: Garment_DetailsSection;
+  ${t.pt(4)}
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  `;
+});
+
+Styled.InfoContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoSection;
-    ${[t.p(0), t.mb(6)]}
+    ${[t.p(4), t.mb(6)]}
     width: 100%;
     max-width: 900px;
     display: flex;
     flex-direction: column;
-    border: 1px solid ${t.color.blue_gray[700]};
+    background-color: ${t.color.blue[700]};
     border-radius: 8px;
-    background-color: rgba(211, 217, 229, 0.2);
 
     ${t.mq.sm} {
       margin-right: 6%;
       margin-left: 6%;
       width: 88%;
-      ${[t.p(4)]}
+      ${[t.p(8)]}
     }
   `;
 });
@@ -318,7 +339,7 @@ Styled.InfoTitle = styled.h2(props => {
     label: Garment_InfoTitle;
     ${[t.pt(2)]}
     font-family: "bellota text";
-    color: ${t.color.blue_gray[700]};
+    color: white;
     font-size: 1.25rem;
     text-transform: uppercase;
     text-align: center;
@@ -353,12 +374,13 @@ Styled.InfoItem = styled.div(props => {
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: ${t.color.blue_gray[700]};
-    font-size: 1rem;
+    color: white;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
     font-family: "bellota text";
 
     span {
-      font-weight: 800;
+      color: ${t.color.blue_gray[200]};
     }
 
     a {
@@ -366,6 +388,10 @@ Styled.InfoItem = styled.div(props => {
       &:hover {
         text-decoration: underline;
       }
+    }
+
+    .description {
+      ${t.mb(2)}
     }
   `;
 });

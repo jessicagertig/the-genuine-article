@@ -12,7 +12,6 @@ interface PublicLayoutProps {
 const PublicLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   return (
     <Styled.PageContainer>
-      <NavBar backgroundColor="white" />
       {children}
       <Footer />
     </Styled.PageContainer>
@@ -30,10 +29,10 @@ Styled = {};
 Styled.PageContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: LandingPageContainer;
+    label: PublicPageContainer;
     width: 100%;
     height: 100%;
     display: block;
-    overflow-y: scroll;
+    overflow: hidden;
   `;
 });

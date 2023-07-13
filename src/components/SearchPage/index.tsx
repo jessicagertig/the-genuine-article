@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 
 import PublicHeader from "src/components/shared/PublicHeader";
 import SearchResults from "src/components/SearchPage/SearchResults";
+import NavBar from "src/components/shared/NavBar";
 
 import { useGarments } from "src/queryHooks/useGarments";
 
@@ -14,6 +15,7 @@ const SearchPage: React.FC<SearchPageProps> = props => {
   const { data: garments, isLoading, error } = useGarments();
   return (
     <Styled.SearchPageContainer>
+      <NavBar backgroundColor="white" />
       <PublicHeader titleText="Garments" />
       <SearchResults garments={garments} isLoading={isLoading} error={error} />
     </Styled.SearchPageContainer>

@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import { useScroll, animated, useSpring } from "@react-spring/web";
 
 import NavBar from "src/components/shared/NavBar";
-import Header from "src/components/LandingPage/Header";
+import Main from "src/components/LandingPage/Main";
 import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
 import Bounce from "src/components/shared/Bounce";
 
@@ -37,7 +37,7 @@ const LandingPage = (props: Props) => {
   return (
     <Styled.LandingPageContainer ref={containerRef}>
       <NavBar backgroundColor="white" />
-      <Header />
+      <Main />
       <Bounce />
       <GarmentOfTheDay />
     </Styled.LandingPageContainer>
@@ -57,8 +57,7 @@ Styled.LandingPageContainer = styled.div(props => {
     label: LandingPageContainer;
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    display: block;
     overflow-y: scroll;
   `;
 });

@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import { useParams } from "react-router-dom";
 
 import SecondaryNav from "src/components/shared/SecondaryNav";
-import GarmentContent from "src/components/Garment/GarmentContent";
+import GarmentContent from "src/components/AdminPage/AdminGarmentContent";
 import { GarmentData } from "src/types";
 
 import { useGarment } from "src/queryHooks/useGarments";
@@ -35,8 +35,11 @@ const AdminGarmentPage: React.FC<AdminGarmentPageProps> = () => {
 
   return (
     <Styled.GarmentPageContainer>
-      <SecondaryNav backPath="/admin" pageTitle={garment ? garment.garmentTitle : ""} />
-      <GarmentContent garment={garmentData} admin={true}/>
+      <SecondaryNav
+        backPath="/admin"
+        pageTitle={garment ? garment.garmentTitle : ""}
+      />
+      <GarmentContent garment={garmentData} admin={true} />
     </Styled.GarmentPageContainer>
   );
 };

@@ -1,17 +1,22 @@
+import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import PublicHeader from "src/components/shared/PublicHeader";
+import NavBar from "src/components/shared/NavBar";
+import Main from "src/components/LandingPage/Main";
+import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
 
 type Props = {};
 
 const LandingPage = (props: Props) => {
+  const containerRef = React.useRef<HTMLDivElement>(null!);
+
   return (
-    <Styled.LandingPageContainer>
-      <PublicHeader
-        titleText="The Genuine Article"
-        descriptionText="A collection of images of original historical clothing from the 19th century "
-      />
+    <Styled.LandingPageContainer ref={containerRef}>
+      <NavBar backgroundColor="white" />
+      <Main />
+      
+      <GarmentOfTheDay />
     </Styled.LandingPageContainer>
   );
 };
@@ -28,7 +33,8 @@ Styled.LandingPageContainer = styled.div(props => {
   return css`
     label: LandingPageContainer;
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    height: 100%;
+    display: block;
+    overflow-y: scroll;
   `;
 });

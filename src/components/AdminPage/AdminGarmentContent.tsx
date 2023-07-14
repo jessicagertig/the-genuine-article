@@ -2,22 +2,42 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+import { useNavigate } from "react-router-dom";
+
 import { GarmentData } from "src/types";
+import OutlinedButton from "src/components/shared/OutlinedButton";
 import IconButton from "@mui/material/IconButton";
-import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
-import Link from "@mui/material/Link";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import EditGarmentModal from "src/components/AdminPage/EditGarmentModal";
+import ConfirmModal from "src/components/shared/ConfirmModal"
+
+import { useModalContext } from "src/context/ModalContext";
+import { useDeleteGarment } from "src/queryHooks/useGarments";
 
 interface GarmentContentProps {
   garment: GarmentData | undefined;
+  admin?: boolean;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
+const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
+  const navigate = useNavigate();
+  const { openModal, removeModal } = useModalContext();
+  const { mutate: deleteGarment } = useDeleteGarment();
+  const garmentTitleOption = {
+    value: garment?.garmentTitleId,
+    label: garment?.garmentTitle,
+  };
+
   type Item = {
     name: string;
     value: any;
   };
 
   const items: Item[] = [
+    { name: "Title", value: garment?.garmentTitle },
+    { name: "Date", value: garment?.beginYear },
+    { name: "Decade", value: garment?.decade },
+    { name: "Culture/Country", value: garment?.cultureCountry },
     { name: "Materials", value: garment?.materials },
     { name: "Colors", value: garment?.colors },
     { name: "Museum/Collection", value: garment?.collection },
@@ -25,6 +45,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
     { name: "Designer/Maker", value: garment?.creator },
     { name: "Credit Line/Source", value: garment?.source },
     { name: "Collection No.", value: garment?.itemCollectionNo },
+    { name: "Description", value: garment?.description },
   ];
 
   const itemNodes: JSX.Element[] = garment
@@ -34,48 +55,96 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
           const listToString = list.length > 0 ? list.join(", ") : "";
           return (
             <Styled.InfoItem key={item.name}>
-              <p>
-                <span>{item.name}: </span> {listToString}
-              </p>
+            <p><span>{item.name}:   </span>
+              {listToString}</p>
             </Styled.InfoItem>
           );
         } else if (item.name === "Link") {
           return (
             <Styled.InfoItem key={item.name}>
               <p>
-                <span>{item.name}: </span>
+                <span>{item.name}:   </span>
                 <a href={item.value} target="_blank" rel="noreferrer">
-                  {item.value}
+                  view original website
                 </a>
               </p>
             </Styled.InfoItem>
           );
+        } else if (item.name === "Description") {
+          const lines = item.value.split("\n");
+          console.log("LINES", lines)
+          return (
+            <Styled.InfoItem key={item.name}>
+              <span>{item.name}</span>
+              {lines.map((line: string, index: number) => 
+                <p key={index} className="description">{line}</p>
+              )}
+            </Styled.InfoItem>
+          )
         } else {
           return (
             <Styled.InfoItem key={item.name}>
-              <p>
-                <span>{item.name}: </span>
-                {item.value}
-              </p>
+              <p><span>{item.name}:   </span>{item.value}</p>
             </Styled.InfoItem>
           );
         }
       })
     : [];
 
-  const itemDescription = () => {
-    const item: Item = { name: "Description", value: garment?.description };
-    const lines = item.value ? item.value.split("\n") : [];
-    return (
-      <Styled.InfoItem key={item.name}>
-        {lines.map((line: string, index: number) => (
-          <p key={index} className="description">
-            {line}
-          </p>
-        ))}
-      </Styled.InfoItem>
-    );
+  const onClickEditImages = (e: React.SyntheticEvent) => {
+    e.preventDefault();
   };
+
+  const handleClickEdit = (event: React.SyntheticEvent): void => {
+    event.preventDefault();
+    const modal = (
+      <EditGarmentModal
+        onCancel={() => removeModal()}
+        garment={garment}
+        garmentTitleOption={garmentTitleOption}
+      />
+    );
+
+    openModal(modal);
+  };
+
+  const handleClickDelete = (event: React.SyntheticEvent): void => {
+    event.preventDefault();
+    const garmentId = garment ? garment.id : null;
+    const modal = (
+      <ConfirmModal
+        onCancel={() => removeModal()}
+        onConfirm={() => handleDeleteGarment(garmentId)}
+        titleText="Confirm Deletion?"
+        descriptionText="Are you sure you want to delete this garment? This action cannot be undone.  This garment and all its information will permanantly deleted."
+        confirmText="DELETE"
+        danger={true}
+      />
+    )
+
+    openModal(modal);
+  };
+
+  function handleDeleteGarment(garmentId: number | null): void {
+    if (garmentId) {
+      deleteGarment(
+        {
+          itemId: garmentId,
+        },
+        {
+          onSuccess: (data: any) => {
+            console.log("Success deleting garment. Data:", data);
+            removeModal();
+            navigate(`/admin`);
+          },
+          onError: (error: any) => {
+            const message = error && error.data ? error.data.message : "";
+            console.log("Request Error:", message);
+          },
+        }
+      );
+    }
+  }
 
   return (
     <Styled.GarmentContainer>
@@ -87,42 +156,43 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
           />
         </Styled.DisplayedImage>
         <Styled.ThumbGallery></Styled.ThumbGallery>
+        <Styled.ButtonContainer>
+          {admin ? (
+            <OutlinedButton
+              onClick={event => onClickEditImages(event)}
+            >
+              Edit Images
+            </OutlinedButton>
+          ) : null}
+        </Styled.ButtonContainer>
       </Styled.ImagesSection>
-      <Styled.InfoSection>
+      <Styled.DetailsSection>
         <Styled.InfoContainer>
           <Styled.HeaderContainer>
             <Styled.InfoTitleContainer>
-              <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
+              <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
             </Styled.InfoTitleContainer>
             <Styled.IconButtonContainer>
-              <Link
-                target="_blank"
-                href={garment?.collectionUrl}
-                rel="noreferrer"
-              >
-                <IconButton sx={{ color: "white" }}>
-                  <OpenInNewOutlinedIcon />
+              {admin ? (
+                <IconButton
+                  sx={{ color: "white" }}
+                  onClick={event => handleClickEdit(event)}
+                >
+                  <BorderColorOutlinedIcon />
                 </IconButton>
-              </Link>
+              ) : null}
             </Styled.IconButtonContainer>
           </Styled.HeaderContainer>
-          <Styled.InfoContent>
-            <Styled.InfoItem>
-              <p className="culture">{garment?.cultureCountry}</p>
-            </Styled.InfoItem>
-            <Styled.InfoItem>
-              <p className="date">c. {garment?.beginYear}</p>
-            </Styled.InfoItem>
-            <Styled.Description>{itemDescription()}</Styled.Description>
-          </Styled.InfoContent>
-          <Styled.InfoContent>
-            <Styled.Subheader>
-              <h3>Details</h3>
-            </Styled.Subheader>
-            {itemNodes}
-          </Styled.InfoContent>
+          <Styled.InfoContent>{itemNodes}</Styled.InfoContent>
         </Styled.InfoContainer>
-      </Styled.InfoSection>
+      </Styled.DetailsSection>
+      <Styled.DeleteButtonContainer>
+        {admin ? (
+          <OutlinedButton color="error" onClick={handleClickDelete}>
+            Delete Garment
+          </OutlinedButton>
+        ) : null}
+      </Styled.DeleteButtonContainer>
     </Styled.GarmentContainer>
   );
 };
@@ -216,15 +286,14 @@ Styled.ThumbImage = styled.div(props => {
   `;
 });
 
-Styled.InfoSection = styled.section(props => {
+Styled.DetailsSection = styled.section(props => {
   const t = props.theme;
   return css`
-    label: Garment_InfoSection;
-    ${t.py(20)}
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    background-color: ${t.color.blue[700]};
+  label: Garment_DetailsSection;
+  ${t.pt(4)}
+  width: 100%;
+  display: flex;
+  justify-content: center;
   `;
 });
 
@@ -237,13 +306,14 @@ Styled.InfoContainer = styled.div(props => {
     max-width: 900px;
     display: flex;
     flex-direction: column;
-    background-color: 
+    background-color: ${t.color.blue[700]};
     border-radius: 8px;
 
     ${t.mq.sm} {
       margin-right: 6%;
       margin-left: 6%;
       width: 88%;
+      ${[t.p(8)]}
     }
   `;
 });
@@ -257,9 +327,9 @@ Styled.InfoTitleContainer = styled.div(() => {
   return css`
     label: Garment_InfoHeader;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    margin-left: 20%;
     width: 60%;
-    margin-right: 20%;
   `;
 });
 
@@ -267,17 +337,18 @@ Styled.InfoTitle = styled.h2(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoTitle;
-    ${[t.py(2), t.pl(4)]}
-    font-family: "goudy";
+    ${[t.pt(2)]}
+    font-family: "bellota text";
     color: white;
-    font-size: 1.75rem;
-    font-weight: 200;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    text-align: center;
   `;
 });
 
 Styled.IconButtonContainer = styled.div(() => {
   return css`
-    label: Garment_InfoIconButton;
+    label: Garment_InfoButton;
     display: flex;
     justify-content: flex-end;
     width: 20%;
@@ -288,35 +359,10 @@ Styled.InfoContent = styled.div(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoContent;
-    ${t.pt(2)}
+    ${t.pt(1)}
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-  `;
-});
-
-Styled.Description = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Garment_Description;
-    ${[t.pb(6), t.pt(2)]}
-    width: 100%;
-    border-bottom: 1px solid white;
-  `;
-});
-
-Styled.Subheader = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Garment_DetailsSubheader;
-    width: 100%;
-
-    h3 {
-      ${[t.pt(8), t.pb(4), t.px(4)]}
-      color: white;
-      font-family: "bellota text";
-      font-size: 1.375rem;
-    }
   `;
 });
 
@@ -324,6 +370,7 @@ Styled.InfoItem = styled.div(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoItem;
+    ${[t.p(2), t.mb(1)]}
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -343,17 +390,30 @@ Styled.InfoItem = styled.div(props => {
       }
     }
 
-    p {
-      ${[t.py(2), t.px(4)]}
+    .description {
+      ${t.mb(2)}
     }
+  `;
+});
 
-    .culture {
-      ${t.py(0)}
-      font-style: italic;
-    }
+Styled.ButtonContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Garment_EditButtonContainer
+    ${[t.mx(1), t.mt(1), t.mb(6)]}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
+});
 
-    .date {
-      ${t.pt(0)}
-    }
+Styled.DeleteButtonContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Garment_EditButtonContainer
+    ${[t.mt(2), t.mb(40)]}
+    display: flex;
+    justify-content: center;
+    align-items: center;
   `;
 });

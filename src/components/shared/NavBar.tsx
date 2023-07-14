@@ -113,10 +113,6 @@ Styled.NavBarContainer = styled.div(props => {
     ${t.mq.md} {
       height: 90px;
     }
-
-    ${t.mq.lg} {
-      height: 125px;
-    }
   `;
 });
 
@@ -171,10 +167,6 @@ Styled.LogoContainer = styled.div(props => {
 
     ${t.mq.md} {
       height: 90px;
-    }
-
-    ${t.mq.lg} {
-      height: 110px;
     }
   `;
 });

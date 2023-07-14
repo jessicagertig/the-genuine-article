@@ -33,8 +33,11 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
 
   return (
     <Styled.GarmentPageContainer>
-      <SecondaryNav backPath="/garments" pageTitle={garment ? garment.garmentTitle : ""} />
-      <GarmentContent garment={garmentData}/>
+      <SecondaryNav
+        backPath="/garments"
+        pageTitle={garment ? garment.garmentTitle : ""}
+      />
+      <GarmentContent garment={garmentData} />
     </Styled.GarmentPageContainer>
   );
 };
@@ -50,6 +53,7 @@ Styled.GarmentPageContainer = styled.div(() => {
   return css`
     label: GarmentPageContainer;
     display: flex;
+    height: 100%;
     flex-direction: column;
     align-items: center;
   `;

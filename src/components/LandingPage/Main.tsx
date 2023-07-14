@@ -56,10 +56,6 @@ Styled.HomeContainer = styled.div(props => {
     ${t.mq.md} {
       height: calc(100vh - 90px);
     }
-
-    ${t.mq.xl} {
-      height: calc(100vh - 125px);
-    }
   `;
 });
 
@@ -74,12 +70,6 @@ Styled.BackgroundContainer = styled.div(props => {
     top: 0;
     width: 100%;
     z-index: 1;
-
-    ${t.mq.md} {
-    }
-
-    ${t.mq.xl} {
-    }
   `;
 });
 
@@ -162,12 +152,10 @@ Styled.ButtonContainer = styled.div(props => {
   return css`
     label: ButtonContainer;
     display: block;
-    bottom: 75px;
-    left: 50%;
+    bottom: 39px;
     position: absolute;
     z-index: 2;
-
-    ${t.mq.md} {
-    }
+    width: 75px;
+    height: 75px;
   `;
 });

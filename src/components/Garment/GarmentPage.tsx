@@ -53,6 +53,7 @@ Styled.GarmentPageContainer = styled.div(() => {
   return css`
     label: GarmentPageContainer;
     display: flex;
+    height: 100%;
     flex-direction: column;
     align-items: center;
   `;

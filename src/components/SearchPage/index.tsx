@@ -33,6 +33,7 @@ Styled.SearchPageContainer = styled.div(() => {
   return css`
     label: SearchPageContainer;
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;

@@ -220,7 +220,7 @@ Styled.InfoSection = styled.section(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoSection;
-    ${t.pt(4)}
+    ${t.py(20)}
     width: 100%;
     display: flex;
     justify-content: center;

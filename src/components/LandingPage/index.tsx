@@ -7,7 +7,6 @@ import { useScroll, animated, useSpring } from "@react-spring/web";
 import NavBar from "src/components/shared/NavBar";
 import Main from "src/components/LandingPage/Main";
 import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
-import Bounce from "src/components/shared/Bounce";
 
 type Props = {};
 
@@ -38,7 +37,7 @@ const LandingPage = (props: Props) => {
     <Styled.LandingPageContainer ref={containerRef}>
       <NavBar backgroundColor="white" />
       <Main />
-      <Bounce />
+      
       <GarmentOfTheDay />
     </Styled.LandingPageContainer>
   );

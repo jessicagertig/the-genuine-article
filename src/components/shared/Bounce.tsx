@@ -10,7 +10,7 @@ const BouncingComponent: React.FC = () => {
     loop: { reverse: true },
   });
 
-  return <animated.div style={{ ...style, width: "70px", height: "70px" }} ><ExpandMoreIcon sx={{ fontSize: "65px" }}/></animated.div>;
+  return <animated.div style={{ ...style, width: "70px", height: "70px" }} ><ExpandMoreIcon sx={{ fontSize: "65px", color: "white" }}/></animated.div>;
 };
 
 export default BouncingComponent;

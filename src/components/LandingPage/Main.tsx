@@ -2,6 +2,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+import Bounce from "src/components/shared/Bounce";
+
 interface MainProps {}
 
 const Main: React.FC<MainProps> = () => {
@@ -20,11 +22,12 @@ const Main: React.FC<MainProps> = () => {
         <Styled.TextContainer>
           <span>of</span>
           <p>
-          Genuine articles of clothing from the 19th century.
+          Genuine articles of clothing from the 19th century
           </p>
         </Styled.TextContainer>
       </Styled.ContentContainer>
       <Styled.ButtonContainer>
+        <Bounce />
       </Styled.ButtonContainer>
     </Styled.HomeContainer>
   );
@@ -43,6 +46,7 @@ Styled.HomeContainer = styled.div(props => {
     label: HomeContainer;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     height: calc(100vh - 50px);
     width: 100%;
@@ -95,27 +99,33 @@ Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: HomeHeaderTextContainer;
+    ${[t.pt(8), t.pb(10), t.mb(20)]}
+    display: block;
     z-index: 2;
     position: relative;
     width: 100%;
-    display: block;
-
-    &:first-child {
-      marging-top: 76px;
-    }
-
-    ${t.mq.md} {
-    }
+    text-align: center;
+    background-color: rgba(0,0,0,.5);
   `;
 });
 
 Styled.HeaderText = styled.div(props => {
   const t = props.theme;
   return css`
+
+  ${[t.py(4)]}
+
   h3 {
     font-family: "bellota text";
-    color: #172a4f;
+    color: white;
     font-size: 1.75rem;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+
+    ${t.mq.sm} {
+      font-size: 2rem;
+    }
   }
   `
 })
@@ -124,14 +134,25 @@ Styled.TextContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: TextContainer;
-
+    color: white;
+    
     ${t.mq.md} {
     }
-
+    
+    span {
+      font-family: "goudy";
+      font-style: italic;
+      font-size: 1.75rem;
+      line-height: 2.25rem;
+      padding-top: 8px;
+      padding-bottom: 16px;
+    }
+    
     p {
       font-family: "bellota text";
-      font-size: 1rem;
-      color: white;
+      font-size: 1.25rem;
+      padding-top: 8px;
+      padding-bottom: 8px;
     }
   `;
 });
@@ -140,13 +161,13 @@ Styled.ButtonContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: ButtonContainer;
-    display: flex;
-    height: 24%;
-    padding-top: 2%;
+    display: block;
+    bottom: 75px;
+    left: 50%;
+    position: absolute;
+    z-index: 2;
 
     ${t.mq.md} {
-      height: 26%;
-      padding-top: 0;
     }
   `;
 });

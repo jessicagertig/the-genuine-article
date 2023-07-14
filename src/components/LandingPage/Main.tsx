@@ -44,15 +44,17 @@ Styled.HomeContainer = styled.div(props => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    height: calc(100vh - 50px);
     width: 100%;
     position: relative;
     z-index: 1;
 
     ${t.mq.md} {
+      height: calc(100vh - 90px);
     }
 
-    ${t.mq.lg} {
+    ${t.mq.xl} {
+      height: calc(100vh - 125px);
     }
   `;
 });

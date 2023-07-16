@@ -10,11 +10,12 @@ import logo from "src/assets/HeaderLogo.png";
 import bonnetLogo from "src/assets/BonnetLogo.png";
 import NavMenuItem from "src/components/shared/NavMenuItem";
 
-type Props = {
+interface NavBarProps {
   backgroundColor?: string;
+  shadow?: boolean;
 };
 
-const NavBar = ({ backgroundColor }: Props) => {
+const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +71,7 @@ const NavBar = ({ backgroundColor }: Props) => {
   );
 
   return (
-    <Styled.NavBarContainer style={{ background: backgroundColor }}>
+    <Styled.NavBarContainer style={{ background: backgroundColor }} shadow={shadow} >
       <Styled.Container>
         <Styled.LogoContainer>
           <Styled.LargeLogo src={logo} alt="bonnet logo" />
@@ -96,12 +97,11 @@ export default NavBar;
 let Styled: any;
 Styled = {};
 
-Styled.NavBarContainer = styled.div(props => {
+Styled.NavBarContainer = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: NavBar;
     ${t.py(6)}
-    position: sticky;
     width: 100%;
     height: 50px;
     display: flex;
@@ -109,6 +109,8 @@ Styled.NavBarContainer = styled.div(props => {
     align-items: center;
     padding-right: 8%;
     padding-left: 8%;
+    box-shadow: ${props.shadow ? "0 0px 15px rgba(211, 217, 229, 0.7)" : ""};
+    z-index: 2;
 
     ${t.mq.md} {
       height: 90px;

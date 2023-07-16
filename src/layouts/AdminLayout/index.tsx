@@ -13,7 +13,7 @@ interface PublicLayoutProps {
 const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   return (
     <Styled.PageContainer>
-      <NavBar backgroundColor="rgba(211, 217, 229, 0.5)" />
+      <NavBar backgroundColor="rgba(211, 217, 229, 0.5)" shadow={false} />
       {children}
     </Styled.PageContainer>
   );

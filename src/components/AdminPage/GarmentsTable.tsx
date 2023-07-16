@@ -54,6 +54,12 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     setPage(newPage);
   };
 
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const newAmount = Number(event?.target?.value)
+    setRowsPerPage(newAmount);
+    setPage(0);
+  };
+
   const handleRowClick = (
     event: React.SyntheticEvent,
     garmentId: number
@@ -162,7 +168,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
         overflow: "hidden",
       }}
     >
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 640 }}>
         <Table stickyHeader aria-label="garments table">
           <TableHead>
             <TableRow>
@@ -215,13 +221,13 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
         </Table>
       </TableContainer>
       <TablePagination
-        // rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[5, 10, 15]}
         component="div"
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
-        // onRowsPerPageChange={handleChangeRowsPerPage}
+        onRowsPerPageChange={(event) => handleChangeRowsPerPage(event)}
       />
     </Paper>
   );

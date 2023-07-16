@@ -163,5 +163,9 @@ Styled.ButtonContainer = styled.div(props => {
     z-index: 2;
     width: 75px;
     height: 75px;
+
+    &:hover {
+      cursor: pointer;
+    }
   `;
 });

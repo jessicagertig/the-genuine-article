@@ -75,18 +75,27 @@ Styled.ImageSection = styled.section(() => {
 });
 
 Styled.DisplayedImage = styled.div((props: any) => {
+  const t = props.theme;
   const heightInVh = props.height/(props.height * 0.01)
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     width: auto;
-    height: calc(${heightInVh}vh - 140px);
+    height: calc(${heightInVh}vh - 160px);
     flex-shrink: 1;
 
     img {
       width: auto;
-      height: calc(${heightInVh}vh - 140px);
+      height: calc(${heightInVh}vh - 160px);
+
+      ${t.mq.xs} {
+        height: calc(${heightInVh}vh - 120px);
+      }
+    }
+
+    ${t.mq.xs} {
+      height: calc(${heightInVh}vh - 120px);
     }
   `;
 });

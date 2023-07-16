@@ -62,7 +62,7 @@ Styled.HomeContainer = styled.div((props: any) => {
     z-index: 1;
 
     ${t.mq.md} {
-      height: calc(100vh - 90px);
+      height: calc(${heightInVh}vh - 90px);
     }
   `;
 });
@@ -160,7 +160,7 @@ Styled.ButtonContainer = styled.div(props => {
   return css`
     label: ButtonContainer;
     display: block;
-    bottom: 39px;
+    bottom: 60px;
     position: absolute;
     z-index: 2;
     width: 75px;
@@ -168,6 +168,10 @@ Styled.ButtonContainer = styled.div(props => {
 
     &:hover {
       cursor: pointer;
+    }
+
+    ${t.mq.xs} {
+      bottom: 40px;
     }
   `;
 });

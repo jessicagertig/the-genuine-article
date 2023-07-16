@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import { ModalProvider } from 'src/context/ModalContext';
+import { WindowSizeProvider } from 'src/context/WindowSizeContext';
 
 import myTheme from "src/styles/theme";
 import customTheme from "src/styles/customTheme";
@@ -29,9 +30,11 @@ const AppWrapper = <P extends {}>(WrappedComponent: React.ComponentType<P>): Rea
           <ThemeProvider theme={customTheme}>
             <EmotionThemeProvider theme={myTheme}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <ModalProvider>
-                  <WrappedComponent {...props} />
-                </ModalProvider>
+                <WindowSizeProvider>
+                  <ModalProvider>
+                    <WrappedComponent {...props} />
+                  </ModalProvider>
+                </WindowSizeProvider>
               </LocalizationProvider>
             </EmotionThemeProvider>
           </ThemeProvider>

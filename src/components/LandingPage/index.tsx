@@ -6,9 +6,12 @@ import NavBar from "src/components/shared/NavBar";
 import Main from "src/components/LandingPage/Main";
 import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
 
+import { useWindowSizeContext } from 'src/context/WindowSizeContext';
+
 type Props = {};
 
 const LandingPage = () => {
+  const { dimensions: { height }} = useWindowSizeContext();
   const scrollRef = React.useRef<HTMLDivElement>(null!);
 
   React.useEffect(() => {
@@ -18,9 +21,9 @@ const LandingPage = () => {
   return (
     <Styled.LandingPageContainer>
       <NavBar backgroundColor="white" />
-      <Main scrollRef={scrollRef} />
+      <Main scrollRef={scrollRef} windowHeight={height} />
       <Styled.RefContainer ref={scrollRef}>
-        <GarmentOfTheDay />
+        <GarmentOfTheDay windowHeight={height} />
       </Styled.RefContainer>
     </Styled.LandingPageContainer>
   );

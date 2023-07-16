@@ -12,15 +12,32 @@ type Props = {
   closePath?: string;
   actions?: React.ReactNode;
   pageTitle: string;
+  pageNumber?: number;
 };
 
 const SecondaryNav = (props: Props) => {
-  const { backPath, toPath, toText, closePath, actions, pageTitle } = props;
+  const {
+    backPath,
+    toPath,
+    toText,
+    closePath,
+    actions,
+    pageTitle,
+    pageNumber,
+  } = props;
   const navigate = useNavigate();
 
   const handleClickBack = () => {
     if (backPath !== undefined) {
-      navigate(backPath);
+      if (pageNumber !== undefined) {
+        navigate(backPath, {
+          state: {
+            pageNo: pageNumber,
+          },
+        });
+      } else {
+        navigate(backPath);
+      }
     }
   };
 

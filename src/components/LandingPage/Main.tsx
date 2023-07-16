@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from "react";
+import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
@@ -6,9 +6,10 @@ import Bounce from "src/components/shared/Bounce";
 
 interface MainProps {
   scrollRef: React.RefObject<HTMLDivElement>;
+  windowHeight: number;
 }
 
-const Main: React.ForwardRefRenderFunction<any, MainProps> = ({ scrollRef }, ref) => {
+const Main: React.ForwardRefRenderFunction<any, MainProps> = ({ scrollRef, windowHeight }, ref) => {
   const imageUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/blueRoseDress1800.jpeg`;
 
   const handleClickScrollTeaser = () => {
@@ -16,7 +17,7 @@ const Main: React.ForwardRefRenderFunction<any, MainProps> = ({ scrollRef }, ref
   }
 
   return (
-    <Styled.HomeContainer>
+    <Styled.HomeContainer height={windowHeight}>
       <Styled.BackgroundContainer>
         <Styled.Image src={imageUrl}>
         </Styled.Image>
@@ -46,21 +47,22 @@ export default forwardRef(Main);
 let Styled: any;
 Styled = {};
 
-Styled.HomeContainer = styled.div(props => {
+Styled.HomeContainer = styled.div((props: any) => {
   const t = props.theme;
+  const heightInVh = props.height/(props.height * 0.01)
   return css`
     label: HomeContainer;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 50px);
+    height: calc(${heightInVh}vh - 50px);
     width: 100%;
     position: relative;
     z-index: 1;
 
     ${t.mq.md} {
-      height: calc(100vh - 90px);
+      height: calc(${heightInVh}vh - 90px);
     }
   `;
 });
@@ -95,13 +97,17 @@ Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: HomeHeaderTextContainer;
-    ${[t.pt(8), t.pb(10), t.mb(20)]}
+    ${[t.pt(8), t.pb(10), t.mb(28)]}
     display: block;
     z-index: 2;
     position: relative;
     width: 100%;
     text-align: center;
     background-color: rgba(0,0,0,.5);
+
+    ${t.mq.xs} {
+      ${t.mb(20)}
+    }
   `;
 });
 
@@ -158,7 +164,7 @@ Styled.ButtonContainer = styled.div(props => {
   return css`
     label: ButtonContainer;
     display: block;
-    bottom: 39px;
+    bottom: 64px;
     position: absolute;
     z-index: 2;
     width: 75px;
@@ -166,6 +172,10 @@ Styled.ButtonContainer = styled.div(props => {
 
     &:hover {
       cursor: pointer;
+    }
+
+    ${t.mq.xs} {
+      bottom: 40px;
     }
   `;
 });

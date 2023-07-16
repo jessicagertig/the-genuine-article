@@ -15,7 +15,7 @@ const SearchPage: React.FC<SearchPageProps> = props => {
   const { data: garments, isLoading, error } = useGarments();
   return (
     <Styled.SearchPageContainer>
-      <NavBar backgroundColor="white" />
+      <NavBar backgroundColor="white" shadow={true} />
       <PublicHeader titleText="Garments" />
       <SearchResults garments={garments} isLoading={isLoading} error={error} />
     </Styled.SearchPageContainer>

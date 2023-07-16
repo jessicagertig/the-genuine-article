@@ -4,21 +4,23 @@ import { css } from "@emotion/react";
 
 import { useDailyGarment } from "src/queryHooks/useGarments";
 
-interface HomeContentProps {}
+interface HomeContentProps {
+  windowHeight: number;
+}
 
-const HomeContent: React.FC<HomeContentProps> = () => {
+const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
 
   const { data: garment } = useDailyGarment();
 
   const imageUrl = garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
 
   return (
-    <Styled.HomeContentContainer>
+    <Styled.HomeContentContainer height={windowHeight}>
       <Styled.ContentTitleContainer>
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
       <Styled.ImageSection>
-        <Styled.DisplayedImage>
+        <Styled.DisplayedImage height={windowHeight}>
           <img
             src={imageUrl}
             alt={garment ? garment.garmentTitle : "garment"}
@@ -36,14 +38,14 @@ export default HomeContent;
 let Styled: any;
 Styled = {};
 
-Styled.HomeContentContainer = styled.div(props => {
-  const t = props.theme;
+Styled.HomeContentContainer = styled.div((props: any) => {
+  const heightInVh = props.height/(props.height * 0.01)
   return css`
     label: HomeContentContainer;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
+    height: ${heightInVh}vh;
   `;
 });
 
@@ -72,19 +74,28 @@ Styled.ImageSection = styled.section(() => {
   `;
 });
 
-Styled.DisplayedImage = styled.div(props => {
+Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
+  const heightInVh = props.height/(props.height * 0.01)
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     width: auto;
-    height: calc(100vh - 140px);
+    height: calc(${heightInVh}vh - 160px);
     flex-shrink: 1;
 
     img {
       width: auto;
-      height: calc(100vh - 140px);
+      height: calc(${heightInVh}vh - 160px);
+
+      ${t.mq.xs} {
+        height: calc(${heightInVh}vh - 120px);
+      }
+    }
+
+    ${t.mq.xs} {
+      height: calc(${heightInVh}vh - 120px);
     }
   `;
 });

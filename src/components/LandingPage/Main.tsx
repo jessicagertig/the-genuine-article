@@ -97,13 +97,17 @@ Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: HomeHeaderTextContainer;
-    ${[t.pt(8), t.pb(10), t.mb(20)]}
+    ${[t.pt(8), t.pb(10), t.mb(28)]}
     display: block;
     z-index: 2;
     position: relative;
     width: 100%;
     text-align: center;
     background-color: rgba(0,0,0,.5);
+
+    ${t.mq.xs} {
+      ${t.mb(20)}
+    }
   `;
 });
 
@@ -160,7 +164,7 @@ Styled.ButtonContainer = styled.div(props => {
   return css`
     label: ButtonContainer;
     display: block;
-    bottom: 60px;
+    bottom: 64px;
     position: absolute;
     z-index: 2;
     width: 75px;

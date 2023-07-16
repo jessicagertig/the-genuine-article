@@ -8,15 +8,20 @@ import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
 
 type Props = {};
 
-const LandingPage = (props: Props) => {
-  const containerRef = React.useRef<HTMLDivElement>(null!);
+const LandingPage = () => {
+  const scrollRef = React.useRef<HTMLDivElement>(null!);
+
+  React.useEffect(() => {
+    console.log("REF", scrollRef)
+  }, [scrollRef])
 
   return (
-    <Styled.LandingPageContainer ref={containerRef}>
+    <Styled.LandingPageContainer>
       <NavBar backgroundColor="white" />
-      <Main />
-      
-      <GarmentOfTheDay />
+      <Main scrollRef={scrollRef} />
+      <Styled.RefContainer ref={scrollRef}>
+        <GarmentOfTheDay />
+      </Styled.RefContainer>
     </Styled.LandingPageContainer>
   );
 };
@@ -38,3 +43,9 @@ Styled.LandingPageContainer = styled.div(props => {
     overflow-y: scroll;
   `;
 });
+
+Styled.RefContainer = styled.div`
+  label: RefContainer;
+  width: 100%;
+  height: fit-content;
+`

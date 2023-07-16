@@ -43,7 +43,6 @@ Styled.Heading = styled.div(props => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: rgba(211, 217, 229, 0.5);
 
     ${t.mq.md} {
       height: 150px;

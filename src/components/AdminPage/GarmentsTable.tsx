@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -49,13 +49,22 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (location?.state?.pageNo !== undefined) {
+      setPage(location.state.pageNo)
+    }
+  }, [])
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const newAmount = Number(event?.target?.value)
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const newAmount = Number(event?.target?.value);
     setRowsPerPage(newAmount);
     setPage(0);
   };
@@ -65,7 +74,11 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     garmentId: number
   ): void => {
     event.preventDefault();
-    navigate(`/admin/garment/${garmentId}`);
+    navigate(`/admin/garment/${garmentId}`, {
+      state: {
+        pageNo: page,
+      },
+    });
   };
 
   const handleButtonClick = (
@@ -227,7 +240,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
-        onRowsPerPageChange={(event) => handleChangeRowsPerPage(event)}
+        onRowsPerPageChange={event => handleChangeRowsPerPage(event)}
       />
     </Paper>
   );

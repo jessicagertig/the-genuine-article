@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import SecondaryNav from "src/components/shared/SecondaryNav";
 import GarmentContent from "src/components/AdminPage/AdminGarmentContent";
@@ -13,12 +13,14 @@ interface AdminGarmentPageProps {}
 
 const AdminGarmentPage: React.FC<AdminGarmentPageProps> = () => {
   const { garmentId } = useParams();
+  const location = useLocation();
   const [garmentData, setGarmentData] = React.useState<GarmentData | undefined>(
     undefined
   );
 
   console.log("GARMENT ID", garmentId);
   const idToNumber = garmentId ? parseInt(garmentId, 10) : undefined;
+  const pageNo = location?.state?.pageNo;
 
   const {
     data: garment,
@@ -38,6 +40,7 @@ const AdminGarmentPage: React.FC<AdminGarmentPageProps> = () => {
       <SecondaryNav
         backPath="/admin"
         pageTitle={garment ? garment.garmentTitle : ""}
+        pageNumber={pageNo}
       />
       <GarmentContent garment={garmentData} admin={true} />
     </Styled.GarmentPageContainer>

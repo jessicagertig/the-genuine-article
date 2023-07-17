@@ -104,6 +104,12 @@ const breakpoints: { [index: string]: number } = {
   md: 768,
   lg: 1024,
   xl: 1200,
+  xxl: 1600,
+  //below are specifically for handling garment columns
+  gsm: 735,
+  gmd: 1063,
+  glg: 1391,
+  gxl: 1719,
 };
 
 const mq = Object.keys(breakpoints)

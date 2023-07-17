@@ -21,6 +21,7 @@ const AdminGarmentPage: React.FC<AdminGarmentPageProps> = () => {
   console.log("GARMENT ID", garmentId);
   const idToNumber = garmentId ? parseInt(garmentId, 10) : undefined;
   const pageNo = location?.state?.pageNo;
+  const rowsNo = location?.state?.rowsNo;
 
   const {
     data: garment,
@@ -41,6 +42,7 @@ const AdminGarmentPage: React.FC<AdminGarmentPageProps> = () => {
         backPath="/admin"
         pageTitle={garment ? garment.garmentTitle : ""}
         pageNumber={pageNo}
+        rowsNumber={rowsNo}
       />
       <GarmentContent garment={garmentData} admin={true} />
     </Styled.GarmentPageContainer>

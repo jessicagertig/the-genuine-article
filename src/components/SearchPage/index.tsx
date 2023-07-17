@@ -1,23 +1,20 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import PublicHeader from "src/components/shared/PublicHeader";
 import SearchResults from "src/components/SearchPage/SearchResults";
+import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
 
-import { useGarments } from "src/queryHooks/useGarments";
+interface SearchPageProps {}
+// TODO: add Search here? 
+// If so conditionally render garments list if no search results 
+// otherwise render search results
 
-interface SearchPageProps {
-
-}
-
-const SearchPage: React.FC<SearchPageProps> = props => {
-  const { data: garments, isLoading, error } = useGarments();
+const SearchPage: React.FC<SearchPageProps> = () => {
   return (
     <Styled.SearchPageContainer>
       <NavBar backgroundColor="white" shadow={true} />
-      <PublicHeader titleText="Garments" />
-      <SearchResults garments={garments} isLoading={isLoading} error={error} />
+      <GarmentsList />
     </Styled.SearchPageContainer>
   );
 };

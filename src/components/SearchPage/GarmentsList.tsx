@@ -5,54 +5,58 @@ import { useNavigate } from "react-router-dom";
 
 import Pagination from "@mui/material/Pagination";
 
+import PublicHeader from "src/components/shared/PublicHeader";
 import GarmentCard from "src/components/SearchPage/GarmentCard";
 import LoadingBar from "src/components/shared/Loading";
 import { GarmentData } from "src/types";
-import { useInfiniteGarments, usePageCount } from "src/queryHooks/useGarments";
+import { usePaginatedGarments } from "src/queryHooks/useGarments";
 
 interface GarmentsListProps {}
 
 const GarmentsList: React.FC<GarmentsListProps> = () => {
+  const scrollRef = React.useRef<HTMLDivElement>(null!);
   
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteGarments();
-  const { data: count } = usePageCount(15)
   // const garments = data?.pages.flatMap((page: any) => page) ?? [];
-
+  
   const [pageNo, setPageNo] = React.useState(1);
   const [garments, setGarments] = React.useState<GarmentData[]>([]);
   const [pageCount, setPageCount] = React.useState(0);
+  const [hasMore, setHasMore] = React.useState(false);
   
-  const disabled = pageCount === 0 || pageCount === undefined;
+  const { data, isFetching, isLoading, isPreviousData } = usePaginatedGarments(pageNo);
+
+  // const disabled = !hasMore;
   const navigate = useNavigate();
 
   console.log("data", data);
-  const fetchingNextPage = (isFetchingNextPage as boolean)
+  // const fetchingNextPage = (isFetchingNextPage as boolean)
   React.useEffect(() => {
-    if (data && data.pages) {
-      setGarments(data.pages[pageNo - 1]);
+    if (data) {
+      setGarments(data.items);
+      setPageCount(data.pages);
+      setHasMore(data.hasMore);
     }
-  }, [data, pageNo]);
-
-  React.useEffect(() => {
-    if (count) {
-      setPageCount(count)
-    }
-  }, [count]);
+  }, [data]);
 
   const handleChangePage = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
+    const diffPage = value !== pageNo;
     setPageNo(value);
+    console.log("diffPage", diffPage)
+    if (diffPage && scrollRef?.current) {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
   };
 
   const handleClickPage = () => {
-    const pagesFetched = data && data?.pages ? data?.pages?.length : 1000;
-    const newPageExists = hasNextPage && pagesFetched < pageCount;
+    // const pagesFetched = data && data?.pages ? data?.pages?.length : 1000;
+    // const newPageExists = hasNextPage && pagesFetched < pageCount;
 
-    if (newPageExists && !fetchingNextPage) {
-      fetchNextPage()
-    }
+    // if (newPageExists && !fetchingNextPage) {
+    //   fetchNextPage()
+    // }
   }
 
   const handleOnClick = (
@@ -63,37 +67,41 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
     navigate(`/garments/garment/${garmentId}`);
   };
 
-  if (!data) {
-    return (
-      <Styled.LoadingContainer>
-        <h2>Loading...</h2>
-        <LoadingBar />
-      </Styled.LoadingContainer>
-    );
-  }
+  const loadingState = !data && (isLoading || isFetching )
 
   return (
     <Styled.GarmentsListContainer>
-      <Styled.GarmentsList>
-        {garments?.map((garment: any, index: number) => (
-          <GarmentCard
-            key={index}
-            garment={garment}
-            handleClick={handleOnClick}
-          />
-        ))}
-      </Styled.GarmentsList>
-      <Styled.PaginationContainer>
-        <Pagination
-          count={pageCount}
-          disabled={disabled}
-          page={pageNo}
-          onChange={handleChangePage}
-          onClick={handleClickPage}
-          variant="outlined"
-          shape="rounded"
-        />
-      </Styled.PaginationContainer>
+      <div ref={scrollRef} />
+      <PublicHeader titleText="Garments" />
+      {loadingState ? (
+        <Styled.LoadingContainer>
+          <h2>Loading...</h2>
+          <LoadingBar />
+        </Styled.LoadingContainer>
+      ) : (
+        <>
+          <Styled.GarmentsList>
+            {garments?.map((garment: any, index: number) => (
+              <GarmentCard
+                key={index}
+                garment={garment}
+                handleClick={handleOnClick}
+              />
+            ))}
+            <Styled.Filler />
+          </Styled.GarmentsList>
+          <Styled.PaginationContainer>
+            <Pagination
+              count={pageCount}
+              page={pageNo}
+              onChange={handleChangePage}
+              onClick={handleClickPage}
+              variant="outlined"
+              shape="rounded"
+            />
+          </Styled.PaginationContainer>
+        </>
+      )}
     </Styled.GarmentsListContainer>
   );
 };
@@ -148,6 +156,37 @@ Styled.GarmentsList = styled.div(props => {
     flex-flow: row wrap;
   `;
 });
+
+Styled.Filler = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: FillerCard;
+    ${t.rounded.md};
+    width: 296px;
+    height: 444px; //true visual height of image
+    display: none;
+    ${t.m(4)};
+
+    // 2 columns
+    ${t.mq.gsm} {
+      display: flex;
+    }
+    // 3 columns
+    ${t.mq.gmd} {
+      display: none;
+    }
+    // 4 columns
+    ${t.mq.glg} {
+      display: flex;
+    }
+    
+    // 5 columns
+    ${t.mq.gxl} {
+      display: none;
+    }
+  `;
+});
+
 
 Styled.PaginationContainer = styled.div(props => {
   const t = props.theme;

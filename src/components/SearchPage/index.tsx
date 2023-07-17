@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import PublicHeader from "src/components/shared/PublicHeader";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
@@ -15,7 +14,6 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   return (
     <Styled.SearchPageContainer>
       <NavBar backgroundColor="white" shadow={true} />
-      <PublicHeader titleText="Garments" />
       <GarmentsList />
     </Styled.SearchPageContainer>
   );

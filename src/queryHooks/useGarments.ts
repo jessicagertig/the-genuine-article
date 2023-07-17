@@ -89,9 +89,11 @@ function usePaginatedGarments(page: number): {
   error: any;
   isFetching: boolean;
   isLoading: boolean;
+  isPreviousData: any;
 } {
   return useQuery(["garmentsPages", page], () => getPaginatedGarments(page), {
     refetchOnWindowFocus: false,
+    keepPreviousData: true
   });
 }
 

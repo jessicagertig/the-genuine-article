@@ -5,19 +5,14 @@ import PublicHeader from "src/components/shared/PublicHeader";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import NavBar from "src/components/shared/NavBar";
 
-import { useGarments } from "src/queryHooks/useGarments";
+interface SearchPageProps {}
 
-interface SearchPageProps {
-
-}
-
-const SearchPage: React.FC<SearchPageProps> = props => {
-  const { data: garments, isLoading, error } = useGarments();
+const SearchPage: React.FC<SearchPageProps> = () => {
   return (
     <Styled.SearchPageContainer>
       <NavBar backgroundColor="white" shadow={true} />
       <PublicHeader titleText="Garments" />
-      <SearchResults garments={garments} isLoading={isLoading} error={error} />
+      <SearchResults />
     </Styled.SearchPageContainer>
   );
 };

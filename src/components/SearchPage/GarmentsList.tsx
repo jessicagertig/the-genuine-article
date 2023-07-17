@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import Pagination from "@mui/material/Pagination";
 
@@ -27,8 +27,15 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
 
   // const disabled = !hasMore;
   const navigate = useNavigate();
+  const location = useLocation();
 
   console.log("data", data);
+
+  React.useEffect(() => {
+    if (location?.state && location.state.pageNo) {
+      setPageNo(location.state.pageNo)
+    }
+  }, []);
   // const fetchingNextPage = (isFetchingNextPage as boolean)
   React.useEffect(() => {
     if (data) {
@@ -64,7 +71,11 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
     garmentId: number
   ): void => {
     e.preventDefault();
-    navigate(`/garments/garment/${garmentId}`);
+        navigate(`/garments/garment/${garmentId}`, {
+      state: {
+        pageNo: pageNo,
+      },
+    });
   };
 
   const loadingState = !data && (isLoading || isFetching )

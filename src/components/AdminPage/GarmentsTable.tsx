@@ -52,6 +52,9 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const location = useLocation();
 
   React.useEffect(() => {
+    if (location?.state?.rowsNo !== undefined) {
+      setRowsPerPage(location.state.rowsNo)
+    }
     if (location?.state?.pageNo !== undefined) {
       setPage(location.state.pageNo)
     }
@@ -77,6 +80,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     navigate(`/admin/garment/${garmentId}`, {
       state: {
         pageNo: page,
+        rowsNo: rowsPerPage,
       },
     });
   };

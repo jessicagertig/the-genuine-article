@@ -3,6 +3,7 @@ import {
   useQuery,
   useQueryClient,
   QueryClient,
+  useInfiniteQuery
 } from "react-query";
 import { apiGet, apiPost, apiPut, apiDelete } from "./api";
 import { GarmentState } from "src/types";
@@ -15,6 +16,14 @@ interface UpdateGarmentParams extends GarmentState {
 
 const getGarments = async () => {
   return await apiGet({ endpoint: "/items" });
+};
+
+const getPaginatedGarments = async (page = 1, limit = 15) => {
+  return await apiGet({ endpoint: `/items/list?page=${page}&limit=${limit}` });
+};
+
+const getPageCount = async (limit = 15) => {
+  return await apiGet({ endpoint: `/items/pages?limit=${limit}` });
 };
 
 const getDailyGarment = async () => {
@@ -72,6 +81,56 @@ function useGarments(): {
   return useQuery(["garments"], () => getGarments(), {
     refetchOnWindowFocus: false,
   });
+}
+
+function usePaginatedGarments(page: number): {
+  status: any;
+  data: any;
+  error: any;
+  isFetching: boolean;
+  isLoading: boolean;
+} {
+  return useQuery(["garmentsPages", page], () => getPaginatedGarments(page), {
+    refetchOnWindowFocus: false,
+  });
+}
+
+function usePageCount(limit: number): {
+  status: any;
+  data: any;
+  error: any;
+  isFetching: boolean;
+  isLoading: boolean;
+} {
+  return useQuery(["pageCount"], () => getPageCount(limit), {
+    refetchOnWindowFocus: false,
+  });
+}
+
+function useInfiniteGarments(): {
+  data: any;
+  error: any;
+  isFetching: boolean;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetchingNextPage?: string | boolean; // isFetchingMore
+  fetchNextPage: () => any; // fetchMore
+  hasNextPage?: boolean; // canFetchMore
+} {
+  // const queryClient = useQueryClient();
+  return useInfiniteQuery(
+  ["paginatedGarments"],
+  ({ pageParam = 1 }) => getPaginatedGarments(pageParam),
+    {
+      // ...queryOptions,
+      // onSettled: () => {
+      //   queryClient.invalidateQueries("notificationsHasUnread");
+      // },
+      getNextPageParam: (lastPage, allPages) => {
+        return allPages.length + 1;
+      },
+    },
+  );
 }
 
 function useDailyGarment(): {
@@ -154,4 +213,7 @@ export {
   useCreateGarment,
   useUpdateGarment,
   useDeleteGarment,
+  usePaginatedGarments,
+  useInfiniteGarments,
+  usePageCount,
 };

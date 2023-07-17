@@ -3,16 +3,20 @@ import { css } from "@emotion/react";
 
 import PublicHeader from "src/components/shared/PublicHeader";
 import SearchResults from "src/components/SearchPage/SearchResults";
+import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
 
 interface SearchPageProps {}
+// TODO: add Search here? 
+// If so conditionally render garments list if no search results 
+// otherwise render search results
 
 const SearchPage: React.FC<SearchPageProps> = () => {
   return (
     <Styled.SearchPageContainer>
       <NavBar backgroundColor="white" shadow={true} />
       <PublicHeader titleText="Garments" />
-      <SearchResults />
+      <GarmentsList />
     </Styled.SearchPageContainer>
   );
 };

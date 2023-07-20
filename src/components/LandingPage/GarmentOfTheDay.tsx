@@ -2,6 +2,14 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
+
+import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
+
+import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
 
 interface HomeContentProps {
@@ -9,10 +17,27 @@ interface HomeContentProps {
 }
 
 const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
-
+  const { openModal, removeModal } = useModalContext();
   const { data: garment } = useDailyGarment();
 
+  const theme = useTheme();
+  const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
+
   const imageUrl = garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
+
+  const handleZoom = () => {
+    const modal = (
+      <GarmentZoomModal
+        onClose={() => removeModal()}
+        garmentTitle={garment?.garmentTitle}
+        imageUrl={imageUrl}
+        responsiveFullscreen={fullscreen}
+        windowHeight={windowHeight}
+      />
+    );
+
+    openModal(modal);
+  }
 
   return (
     <Styled.HomeContentContainer height={windowHeight}>
@@ -25,6 +50,16 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
             src={imageUrl}
             alt={garment ? garment.garmentTitle : "garment"}
           />
+          <div>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={handleZoom}
+              aria-label="zoom"
+            >
+              <ZoomOutMapOutlinedIcon />
+            </IconButton>
+          </div>
         </Styled.DisplayedImage>
       </Styled.ImageSection>
     </Styled.HomeContentContainer>
@@ -81,9 +116,14 @@ Styled.DisplayedImage = styled.div((props: any) => {
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
+    position: relative;
     width: auto;
     height: calc(${heightInVh}vh - 160px);
     flex-shrink: 1;
+
+    ${t.mq.xs} {
+      height: calc(${heightInVh}vh - 120px);
+    }
 
     img {
       width: auto;
@@ -94,8 +134,18 @@ Styled.DisplayedImage = styled.div((props: any) => {
       }
     }
 
-    ${t.mq.xs} {
-      height: calc(${heightInVh}vh - 120px);
+    div {
+      display: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
     }
+
+    &:hover {
+      div {
+        display: block;
+      }
+    }
+
   `;
 });

@@ -11,14 +11,39 @@ import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
+import useImageDimensions from "src/hooks/useImageDimensions";
 
 interface HomeContentProps {
   windowHeight: number;
+  windowWidth: number;
 }
 
-const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
+const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) => {
   const { openModal, removeModal } = useModalContext();
   const { data: garment } = useDailyGarment();
+
+  const [imageLoaded, setImageLoaded] = React.useState(false);
+  const [dimensions, setDimensions] = React.useState({
+    height: 0,
+    width: 0,
+  });
+
+  const { maxHeight, maxWidth } = useImageDimensions({imageLoaded, dimensions})
+  const imgRef = React.useRef<HTMLImageElement>(null!);
+
+  const onLoad = () => {
+    setImageLoaded(true);
+    setDimensions({
+      height: imgRef.current.naturalHeight,
+      width: imgRef.current.naturalWidth,
+    });
+  };
+
+  React.useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      onLoad();
+    }
+  });
 
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -32,7 +57,6 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
         garmentTitle={garment?.garmentTitle}
         imageUrl={imageUrl}
         responsiveFullscreen={fullscreen}
-        windowHeight={windowHeight}
       />
     );
 
@@ -40,15 +64,17 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   }
 
   return (
-    <Styled.HomeContentContainer height={windowHeight}>
+    <Styled.HomeContentContainer height={maxHeight}>
       <Styled.ContentTitleContainer>
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
       <Styled.ImageSection>
-        <Styled.DisplayedImage height={windowHeight}>
+        <Styled.DisplayedImage height={maxHeight}>
           <img
+            ref={imgRef}
             src={imageUrl}
             alt={garment ? garment.garmentTitle : "garment"}
+            onLoad={onLoad}
           />
           <div>
             <IconButton

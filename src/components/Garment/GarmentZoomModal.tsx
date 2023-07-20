@@ -11,6 +11,7 @@ import Grow from "@mui/material/Grow";
 import { TransitionProps } from "@mui/material/transitions";
 
 import { useModalContext } from "src/context/ModalContext";
+import useImageDimensions from "src/hooks/useImageDimensions";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -26,19 +27,18 @@ interface GarmentZoomModalProps extends Omit<DialogProps, "open"> {
   responsiveFullscreen: boolean;
   garmentTitle: string;
   imageUrl: string;
-  windowHeight: number;
 }
 
 const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
-  const { responsiveFullscreen, garmentTitle, imageUrl, windowHeight } = props;
+  const { responsiveFullscreen, garmentTitle, imageUrl } = props;
   const { modalOpen } = useModalContext();
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [dimensions, setDimensions] = React.useState({
     height: 0,
     width: 0,
   });
-  const [maxWidth, setMaxWidth] = React.useState(0);
 
+  const { maxHeight, maxWidth } = useImageDimensions({imageLoaded, dimensions})
   const imgRef = React.useRef<HTMLImageElement>(null!);
 
   const onLoad = () => {
@@ -49,20 +49,11 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
     });
   };
 
-  const ratio = imageLoaded ? dimensions.width / dimensions.height : 0.82;
-
   React.useEffect(() => {
     if (imgRef.current && imgRef.current.complete) {
       onLoad();
     }
   });
-
-  React.useEffect(() => {
-    if (imageLoaded) {
-      const calcWidth = windowHeight * ratio;
-      setMaxWidth(calcWidth);
-    }
-  }, [dimensions, windowHeight, ratio, imageLoaded]);
 
   const handleClose = () => {
     props.onClose();
@@ -79,13 +70,19 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
         PaperProps={{
           sx: {
             width: maxWidth,
-            height: windowHeight,
-            maxHeight: windowHeight,
+            height: maxHeight,
+            maxHeight: maxHeight,
             overflow: "hidden",
           },
         }}
       >
-        <AppBar sx={{ position: "relative", backgroundColor: "transparent", boxShadow: "none" }}>
+        <AppBar
+          sx={{
+            position: "relative",
+            backgroundColor: "transparent",
+            boxShadow: "none",
+          }}
+        >
           <Toolbar>
             <IconButton
               edge="start"
@@ -97,7 +94,7 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Styled.DisplayedImage height={windowHeight}>
+        <Styled.DisplayedImage height={maxHeight} width={maxWidth}>
           <img
             ref={imgRef}
             src={imageUrl}
@@ -123,12 +120,12 @@ Styled.DisplayedImage = styled.div((props: any) => {
     background-color: rgba(211, 217, 229, 0.2);
     display: flex;
     position: absolute;
-    width: auto;
+    width: ${props.width}px;
     height: ${props.height}px;
     flex-shrink: 1;
 
     img {
-      width: auto;
+      width: ${props.width}px;
       height: ${props.height}px;
     }
   `;

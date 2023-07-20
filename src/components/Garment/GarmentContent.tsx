@@ -15,10 +15,9 @@ import { useModalContext } from "src/context/ModalContext";
 
 interface GarmentContentProps {
   garment: GarmentData | undefined;
-  windowHeight: number;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = ({ garment, windowHeight }) => {
+const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
   const { openModal, removeModal } = useModalContext();
 
   const theme = useTheme();
@@ -98,7 +97,6 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, windowHeight }
         garmentTitle={garment?.garmentTitle ? garment.garmentTitle : ""}
         imageUrl={imageUrl}
         responsiveFullscreen={fullscreen}
-        windowHeight={windowHeight}
       />
     );
 

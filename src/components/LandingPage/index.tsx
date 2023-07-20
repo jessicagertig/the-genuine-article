@@ -5,13 +5,14 @@ import { css } from "@emotion/react";
 import NavBar from "src/components/shared/NavBar";
 import Main from "src/components/LandingPage/Main";
 import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
+// import Search from "src/components/SearchPage/Search";
 
 import { useWindowSizeContext } from 'src/context/WindowSizeContext';
 
-type Props = {};
+interface LandingPageProps {};
 
-const LandingPage = () => {
-  const { dimensions: { height }} = useWindowSizeContext();
+const LandingPage: React.FC<LandingPageProps> = props => {
+  const { dimensions: { height, width }} = useWindowSizeContext();
   const scrollRef = React.useRef<HTMLDivElement>(null!);
 
   React.useEffect(() => {
@@ -23,8 +24,11 @@ const LandingPage = () => {
       <NavBar backgroundColor="white" />
       <Main scrollRef={scrollRef} windowHeight={height} />
       <Styled.RefContainer ref={scrollRef}>
-        <GarmentOfTheDay windowHeight={height} />
+        <GarmentOfTheDay windowHeight={height} windowWidth={width} />
       </Styled.RefContainer>
+      {/* <Styled.SearchContainer>
+        <Search />
+      </Styled.SearchContainer> */}
     </Styled.LandingPageContainer>
   );
 };
@@ -51,4 +55,12 @@ Styled.RefContainer = styled.div`
   label: RefContainer;
   width: 100%;
   height: fit-content;
+`
+Styled.SearchContainer = styled.div`
+  label: SearchContainer;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
 `

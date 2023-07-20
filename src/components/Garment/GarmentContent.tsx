@@ -2,16 +2,28 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import { GarmentData } from "src/types";
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 import IconButton from "@mui/material/IconButton";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
+import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
 import Link from "@mui/material/Link";
+
+import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
+import { GarmentData } from "src/types";
+import { useModalContext } from "src/context/ModalContext";
 
 interface GarmentContentProps {
   garment: GarmentData | undefined;
+  windowHeight: number;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
+const GarmentContent: React.FC<GarmentContentProps> = ({ garment, windowHeight }) => {
+  const { openModal, removeModal } = useModalContext();
+
+  const theme = useTheme();
+  const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
+  
   type Item = {
     name: string;
     value: any;
@@ -77,6 +89,22 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
     );
   };
 
+  const handleZoom = () => {
+    const imageUrl = garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
+
+    const modal = (
+      <GarmentZoomModal
+        onClose={() => removeModal()}
+        garmentTitle={garment?.garmentTitle ? garment.garmentTitle : ""}
+        imageUrl={imageUrl}
+        responsiveFullscreen={fullscreen}
+        windowHeight={windowHeight}
+      />
+    );
+
+    openModal(modal);
+  }
+
   return (
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
@@ -84,6 +112,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
           <img
             src={garment?.imageUrls?.largeUrl}
             alt={garment ? garment.garmentTitle : "garment"}
+            onClick={handleZoom}
           />
         </Styled.DisplayedImage>
         <Styled.ThumbGallery></Styled.ThumbGallery>
@@ -159,6 +188,7 @@ Styled.DisplayedImage = styled.div(props => {
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
+    position: relative;
     width: 100vw;
     min-height: 300px;
     flex-shrink: 1;
@@ -180,6 +210,10 @@ Styled.DisplayedImage = styled.div(props => {
         max-width: 500px;
         max-height: 609px;
       }
+    }
+
+    &:hover {
+      cursor: pointer;
     }
   `;
 });

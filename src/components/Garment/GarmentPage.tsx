@@ -9,9 +9,15 @@ import { GarmentData } from "src/types";
 
 import { useGarment } from "src/queryHooks/useGarments";
 
+import { useWindowSizeContext } from "src/context/WindowSizeContext";
+
 interface GarmentPageProps {}
 
 const GarmentPage: React.FC<GarmentPageProps> = () => {
+  const {
+    dimensions: { height },
+  } = useWindowSizeContext();
+
   const [garmentData, setGarmentData] = React.useState<GarmentData | undefined>(
     undefined
   );
@@ -41,7 +47,7 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
         pageTitle={garment ? garment.garmentTitle : ""}
         pageNumber={pageNo}
       />
-      <GarmentContent garment={garmentData} />
+      <GarmentContent garment={garmentData} windowHeight={height} />
     </Styled.GarmentPageContainer>
   );
 };

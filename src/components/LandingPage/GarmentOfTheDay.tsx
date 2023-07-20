@@ -64,7 +64,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
   }
 
   return (
-    <Styled.HomeContentContainer height={maxHeight}>
+    <Styled.HomeContentContainer height={windowHeight}>
       <Styled.ContentTitleContainer>
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>

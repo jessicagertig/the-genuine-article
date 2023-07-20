@@ -18,12 +18,7 @@ const Transition = React.forwardRef(function Transition(
   },
   ref: React.Ref<unknown>
 ) {
-  return (
-    <Grow
-      ref={ref}
-      {...props}
-    />
-  );
+  return <Grow ref={ref} {...props} />;
 });
 
 interface GarmentZoomModalProps extends Omit<DialogProps, "open"> {
@@ -67,7 +62,7 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
       const calcWidth = windowHeight * ratio;
       setMaxWidth(calcWidth);
     }
-  }, [dimensions]);
+  }, [dimensions, windowHeight, ratio, imageLoaded]);
 
   const handleClose = () => {
     props.onClose();
@@ -81,7 +76,14 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
         open={modalOpen}
         onClose={handleClose}
         TransitionComponent={Transition}
-        PaperProps={{ sx: { width: maxWidth, height: windowHeight, maxHeight: windowHeight} }}
+        PaperProps={{
+          sx: {
+            width: maxWidth,
+            height: windowHeight,
+            maxHeight: windowHeight,
+            overflow: "hidden",
+          },
+        }}
       >
         <AppBar sx={{ position: "relative", backgroundColor: "transparent", boxShadow: "none" }}>
           <Toolbar>
@@ -116,26 +118,18 @@ let Styled: any;
 Styled = {};
 
 Styled.DisplayedImage = styled.div((props: any) => {
-  const t = props.theme;
-  const heightInVh = props.height/(props.height * 0.01)
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.2);
     display: flex;
     position: absolute;
     width: auto;
-    height: ${heightInVh}vh;
+    height: ${props.height}px;
     flex-shrink: 1;
-
-    // ${t.mq.xs} {
-    // }
 
     img {
       width: auto;
-      height: ${heightInVh}vh;
-
-      // ${t.mq.xs} {
-      // }
+      height: ${props.height}px;
     }
   `;
 });

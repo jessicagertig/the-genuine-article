@@ -29,7 +29,7 @@ const pages: Page[] = [
   {
     path: "/garments/garment/:garmentId",
     component: GarmentPage,
-    layout: AdminLayout,
+    layout: PublicLayout,
   },
   // {
   //   exact: true,

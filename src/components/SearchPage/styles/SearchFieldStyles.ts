@@ -1,36 +1,34 @@
-import { alpha } from "@mui/system";
-
 export const mainSearchStyles = {
-    width: "100%",
+    width: "calc(100% - 48px)",
     margin: "8px 0",
     "& .MuiOutlinedInput-root": {
-      color: "rgba(34, 63, 124, 1)",
+      color: "rgba(23, 42, 79, 0.9)",
       backgroundColor: "white",
       "& .MuiOutlinedInput-notchedOutline": {
-        border: `2px solid rgba(34, 63, 124, 0.7)`,
+        border: `2px solid rgba(23, 42, 79, 0.9)`,
+        borderRadius: "4px 0 0 4px",
       },
       "&:hover .MuiOutlinedInput-notchedOutline": {
-        border: `2px solid rgba(34, 63, 124, 0.7)`,
+        border: `2px solid rgba(23, 42, 79, 0.9)`,
       },
       // "&.Mui-focusVisible, &.Mui-active": {
-      //   border: `2px solid rgba(34, 63, 124, 0.7)`,
+      //   border: `2px solid rgba(23, 42, 79, 0.9)`,
       // }
     },
     "& .MuiOutlinedInput-root.Mui-focused": {
-      backgroundColor: "rgba(175, 187, 207, 0.2)",
+      backgroundColor: "rgba(175, 187, 207, 0.1)",
     },
     "& .MuiIconButton-root": {
-      color: `rgba(34, 63, 124, 0.7)`,
-      backgroundColor: "white",
+      color: `rgba(23, 42, 79, 0.9)`,
       "&:hover": {
-        color: `rgba(34, 63, 124, 1)`,
+        color: `rgba(23, 42, 79, 0.9)`,
       },
     },
     "& input:-webkit-autofill": {
-      WebkitTextFillColor: "rgba(34, 63, 124, 0.7)",
+      WebkitTextFillColor: "rgba(23, 42, 79, 0.9)",
     },
     "& input:-internal-autofill-selected": {
-      backgroundColor: "rgba(175, 187, 207, 0.2)",
-      border: "2px solid rgba(175, 187, 207, 0.2)",
+      backgroundColor: "rgba(175, 187, 207, 0.1)",
+      border: "2px solid rgba(175, 187, 207, 0.1)",
     },
 };

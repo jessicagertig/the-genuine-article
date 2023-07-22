@@ -44,24 +44,18 @@ const SearchBar: React.FC<SearchProps> = ({
 
   return (
     <Styled.Form onSubmit={handleSubmitSearch}>
-      <FormControl sx={{ width: "100%"}}>
+      <FormControl sx={{ width: "100%", display: "flex", flexDirection: "row"}}>
         <TextField
+          size="medium"
           variant="outlined"
           value={searchTerm}
           onChange={handleChange}
           sx={styles}
+          placeholder="Search by keyword"
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton
-                  aria-label="trigger-search"
-                  type="submit"
-                  onClick={handleSubmitSearch}
-                >
-                  <SearchOutlinedIcon />
-                </IconButton>
-              </InputAdornment>
-            ),
+            style: {
+              height: "40px"
+            },
             endAdornment: (
               <InputAdornment position="end" style={{ display: showClearIcon }}>
                 <IconButton
@@ -74,6 +68,19 @@ const SearchBar: React.FC<SearchProps> = ({
             ),
           }}
         />
+        <Styled.ButtonContainer>
+          <IconButton
+            aria-label="trigger-search"
+            type="submit"
+            sx={{ color: "white", mx: "4px" }}
+            onClick={handleSubmitSearch}
+          >
+            <SearchOutlinedIcon />
+            {/* <Styled.Text>
+              Search
+            </Styled.Text> */}
+          </IconButton>
+        </Styled.ButtonContainer>
       </FormControl>
     </Styled.Form>
   );
@@ -88,7 +95,31 @@ Styled = {};
 
 Styled.Form = styled.form(() => {
   return css`
-    label: SearchPageContainer;
+    label: SearchBar_Container;
     width: 100%;
   `;
 });
+
+Styled.ButtonContainer = styled.div(() => {
+  return css`
+    label: SearchBar_ButtonContainer;
+    width: 48px;
+    height: 40px;
+    margin: 8px 0;
+    border-radius: 0 4px 4px 0;
+    background-color: rgba(23, 42, 79, 0.9); 
+    border-bottom: 2px solid rgba(23, 42, 79, 0.9);
+    border-top: 2px solidrgba(23, 42, 79, 0.9);
+    border-right: 2px solid rgba(23, 42, 79, 0.9);
+  `;
+});
+
+Styled.Text = styled.p(() => {
+  return css`
+    label: SearchBar_Text;
+    height: 52px;
+    margin: 8px 8px;
+    font-family: "bellota text";
+    font-size: 1.5rem;
+  `;
+})

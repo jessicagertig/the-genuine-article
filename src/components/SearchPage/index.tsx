@@ -197,7 +197,7 @@ Styled.TextContainer = styled.div(props => {
     display: none;
     justify-content: flex-start;
 
-    ${t.mq.md} {
+    ${t.mq.gmd} {
       display: flex;
     }
 
@@ -238,6 +238,12 @@ Styled.SearchBarContainer = styled.div(props => {
     label: GarmentsContainer;
     display: flex;
     width: 100%;
+
+    ${t.mq.gsm} {
+      width: 90%;
+      margin-right: 5%;
+      margin-left: 5%;
+    }
 
     ${t.mq.gmd} {
       width: 80%;

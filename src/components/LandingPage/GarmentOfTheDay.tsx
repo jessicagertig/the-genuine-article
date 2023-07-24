@@ -4,6 +4,7 @@ import { css } from "@emotion/react";
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
 
@@ -71,6 +72,9 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
       <Styled.ImageSection>
+        {noImage || !imageLoaded ? (
+        <Skeleton variant="rectangular" width="calc((100vh - 160px) * 0.82)" height="calc(100vh - 160px)" sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}/>
+        ) : null }
         <Styled.DisplayedImage height={maxHeight} noImage={noImage}>
           <img
             ref={imgRef}
@@ -140,10 +144,11 @@ Styled.ImageSection = styled.section(() => {
 Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height/(props.height * 0.01)
+  const display = props.noImage ? "none" : "flex";
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
-    display: flex;
+    display: ${display};
     position: relative;
     width: auto;
     height: calc(${heightInVh}vh - 160px);

@@ -76,9 +76,6 @@ const SearchBar: React.FC<SearchProps> = ({
             onClick={handleSubmitSearch}
           >
             <SearchOutlinedIcon />
-            {/* <Styled.Text>
-              Search
-            </Styled.Text> */}
           </IconButton>
         </Styled.ButtonContainer>
       </FormControl>
@@ -113,13 +110,3 @@ Styled.ButtonContainer = styled.div(() => {
     border-right: 2px solid rgba(23, 42, 79, 0.9);
   `;
 });
-
-Styled.Text = styled.p(() => {
-  return css`
-    label: SearchBar_Text;
-    height: 52px;
-    margin: 8px 8px;
-    font-family: "bellota text";
-    font-size: 1.5rem;
-  `;
-})

@@ -28,7 +28,7 @@ function useGarmentsSearch(query: string, enabled = false): {
 } {
   const queryClient = useQueryClient();
   return useInfiniteQuery(
-  ["searchGarments"],
+  ["searchGarments", query],
   ({ pageParam = 1 }) => getGarmentsSearch({ query, page: pageParam }),
     { 
       enabled: enabled,

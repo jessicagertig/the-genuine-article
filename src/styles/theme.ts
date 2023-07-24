@@ -106,10 +106,10 @@ const breakpoints: { [index: string]: number } = {
   xl: 1200,
   xxl: 1600,
   //below are specifically for handling garment columns
-  gsm: 735,
-  gmd: 1063,
-  glg: 1391,
-  gxl: 1719,
+  gsm: 735, //2 columns
+  gmd: 1107, // 3 columns
+  glg: 1544, //4 columns
+  gxl: 1909, // 5 columns
 };
 
 const mq = Object.keys(breakpoints)

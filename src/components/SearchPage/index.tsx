@@ -239,16 +239,16 @@ Styled.SearchBarContainer = styled.div(props => {
     display: flex;
     width: 100%;
 
-    ${t.mq.gsm} {
+    ${t.mq.md} {
+      width: 96%;
+      margin-right: 2%;
+      margin-left: 2%;
+    }
+
+    ${t.mq.xl} {
       width: 90%;
       margin-right: 5%;
       margin-left: 5%;
-    }
-
-    ${t.mq.gmd} {
-      width: 80%;
-      margin-right: 10%;
-      margin-left: 10%;
     }
   `;
 });

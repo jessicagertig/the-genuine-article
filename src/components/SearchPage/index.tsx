@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
 import LoadingBar from "src/components/shared/Loading";
-import LoadMoreTrigger from "src/components/SearchPage/LoadMoreTrigger";
+// import LoadMoreTrigger from "src/components/SearchPage/LoadMoreTrigger";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import SearchBar from "src/components/shared/SearchBar";
 import { GarmentData } from "src/types";

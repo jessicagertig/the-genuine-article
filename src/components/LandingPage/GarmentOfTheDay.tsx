@@ -148,7 +148,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
-    display: ${display};
+    display: flex;
     position: relative;
     width: auto;
     height: calc(${heightInVh}vh - 160px);

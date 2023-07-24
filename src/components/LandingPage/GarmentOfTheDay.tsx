@@ -4,6 +4,7 @@ import { css } from "@emotion/react";
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
 
@@ -40,6 +41,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
   };
 
   React.useEffect(() => {
+    console.log("IMAGE REF", imgRef)
     if (imgRef.current && imgRef.current.complete) {
       onLoad();
     }
@@ -49,6 +51,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
   const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const imageUrl = garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
+  const noImage = imageUrl === "" || imageUrl === undefined
 
   const handleZoom = () => {
     const modal = (
@@ -61,7 +64,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
     );
 
     openModal(modal);
-  }
+  };
 
   return (
     <Styled.HomeContentContainer height={windowHeight}>
@@ -69,7 +72,10 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
       <Styled.ImageSection>
-        <Styled.DisplayedImage height={maxHeight}>
+        {noImage || !imageLoaded ? (
+        <Skeleton variant="rectangular" width="calc((100vh - 160px) * 0.82)" height="calc(100vh - 160px)" sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}/>
+        ) : null }
+        <Styled.DisplayedImage height={maxHeight} noImage={noImage}>
           <img
             ref={imgRef}
             src={imageUrl}
@@ -138,14 +144,16 @@ Styled.ImageSection = styled.section(() => {
 Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height/(props.height * 0.01)
+  const display = props.noImage ? "none" : "flex";
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
-    display: flex;
+    display: ${display};
     position: relative;
     width: auto;
     height: calc(${heightInVh}vh - 160px);
     flex-shrink: 1;
+    border-radius: 8px;
 
     ${t.mq.xs} {
       height: calc(${heightInVh}vh - 120px);
@@ -154,6 +162,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
     img {
       width: auto;
       height: calc(${heightInVh}vh - 160px);
+      border-radius: 8px;
 
       ${t.mq.xs} {
         height: calc(${heightInVh}vh - 120px);

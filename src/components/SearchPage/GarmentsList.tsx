@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import Pagination from "@mui/material/Pagination";
 
-import PublicHeader from "src/components/shared/PublicHeader";
 import GarmentCard from "src/components/SearchPage/GarmentCard";
 import LoadingBar from "src/components/shared/Loading";
 import { GarmentData } from "src/types";
@@ -15,8 +14,6 @@ interface GarmentsListProps {}
 
 const GarmentsList: React.FC<GarmentsListProps> = () => {
   const scrollRef = React.useRef<HTMLDivElement>(null!);
-  
-  // const garments = data?.pages.flatMap((page: any) => page) ?? [];
   
   const [pageNo, setPageNo] = React.useState(1);
   const [garments, setGarments] = React.useState<GarmentData[]>([]);
@@ -36,7 +33,7 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
       setPageNo(location.state.pageNo)
     }
   }, []);
-  // const fetchingNextPage = (isFetchingNextPage as boolean)
+
   React.useEffect(() => {
     if (data) {
       setGarments(data.items);
@@ -57,15 +54,6 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
     }
   };
 
-  const handleClickPage = () => {
-    // const pagesFetched = data && data?.pages ? data?.pages?.length : 1000;
-    // const newPageExists = hasNextPage && pagesFetched < pageCount;
-
-    // if (newPageExists && !fetchingNextPage) {
-    //   fetchNextPage()
-    // }
-  }
-
   const handleOnClick = (
     e: React.MouseEvent<HTMLDivElement>,
     garmentId: number
@@ -83,7 +71,6 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
   return (
     <Styled.GarmentsListContainer>
       <div ref={scrollRef} />
-      <PublicHeader titleText="Garments" />
       {loadingState ? (
         <Styled.LoadingContainer>
           <h2>Loading...</h2>
@@ -106,7 +93,6 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
               count={pageCount}
               page={pageNo}
               onChange={handleChangePage}
-              onClick={handleClickPage}
               variant="outlined"
               shape="rounded"
             />

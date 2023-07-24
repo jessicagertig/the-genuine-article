@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useParams, useLocation } from "react-router-dom";
 
+import NavBar from "src/components/shared/NavBar";
 import SecondaryNav from "src/components/shared/SecondaryNav";
 import GarmentContent from "src/components/Garment/GarmentContent";
 import { GarmentData } from "src/types";
@@ -36,12 +37,13 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
 
   return (
     <Styled.GarmentPageContainer>
+      <NavBar backgroundColor="white" shadow={true} />
       <SecondaryNav
         backPath="/garments"
         pageTitle={garment ? garment.garmentTitle : ""}
         pageNumber={pageNo}
       />
-      <GarmentContent garment={garmentData} />
+      <GarmentContent garment={garmentData} loading={garmentIsLoading} />
     </Styled.GarmentPageContainer>
   );
 };
@@ -56,9 +58,10 @@ Styled = {};
 Styled.GarmentPageContainer = styled.div(() => {
   return css`
     label: GarmentPageContainer;
-    display: flex;
+    width: 100%;
     height: 100%;
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    overflow-y: scroll;
   `;
 });

@@ -4,9 +4,11 @@ import { css } from "@emotion/react";
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import Skeleton from '@mui/material/Skeleton';
+
 import IconButton from "@mui/material/IconButton";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
-import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
+// import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
 import Link from "@mui/material/Link";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
@@ -15,14 +17,36 @@ import { useModalContext } from "src/context/ModalContext";
 
 interface GarmentContentProps {
   garment: GarmentData | undefined;
+  loading: boolean;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
+const GarmentContent: React.FC<GarmentContentProps> = ({ garment, loading }) => {
   const { openModal, removeModal } = useModalContext();
 
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
-  
+
+  const imgRef = React.useRef<HTMLImageElement>(null!);
+  const [imageLoaded, setImageLoaded] = React.useState(false);
+  const [dimensions, setDimensions] = React.useState({
+    height: 0,
+    width: 0,
+  });
+
+  const onLoad = () => {
+    setImageLoaded(true);
+    setDimensions({
+      height: imgRef.current.naturalHeight,
+      width: imgRef.current.naturalWidth,
+    });
+  };
+
+  React.useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      onLoad();
+    }
+  }, [imgRef]);
+
   type Item = {
     name: string;
     value: any;
@@ -106,11 +130,15 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment }) => {
   return (
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
+        {loading || !imageLoaded ? <Skeleton variant="rectangular" width="calc((100vh - 160px) * 0.82)" height="calc(100vh - 160px)" sx={{ bgcolor: "rgba(211, 217, 229, 0.9)", borderRadius: "8px", my: "32px" }}/> 
+        : null}
         <Styled.DisplayedImage>
           <img
             src={garment?.imageUrls?.largeUrl}
             alt={garment ? garment.garmentTitle : "garment"}
             onClick={handleZoom}
+            ref={imgRef}
+            onLoad={onLoad}
           />
         </Styled.DisplayedImage>
         <Styled.ThumbGallery></Styled.ThumbGallery>
@@ -180,8 +208,9 @@ Styled.ImagesSection = styled.section(() => {
   `;
 });
 
-Styled.DisplayedImage = styled.div(props => {
+Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
+  console.log("props.imageLoaded", props.imageLoaded)
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
@@ -190,6 +219,7 @@ Styled.DisplayedImage = styled.div(props => {
     width: 100vw;
     min-height: 300px;
     flex-shrink: 1;
+    border-radius: 6px;
 
     ${t.mq.xs} {
       width: 500px;

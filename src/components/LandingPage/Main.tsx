@@ -20,6 +20,7 @@ const Main: React.ForwardRefRenderFunction<any, MainProps> = ({ scrollRef, windo
     <Styled.HomeContainer height={windowHeight}>
       <Styled.BackgroundContainer>
         <Styled.Image src={imageUrl}>
+          <img src={imageUrl} />
         </Styled.Image>
       </Styled.BackgroundContainer>
       <Styled.ContentContainer>
@@ -81,7 +82,17 @@ Styled.BackgroundContainer = styled.div(props => {
   `;
 });
 
-Styled.Image = styled.span((props: any) => {
+Styled.InvisibleImage = styled.div((props: any) => {
+  return css`
+    display: none;
+    img {
+      display: none;
+    }
+  `;
+});
+
+
+Styled.Image = styled.div((props: any) => {
   return css`
     background-image: url(${props.src});
     background-attachment: fixed;
@@ -90,6 +101,10 @@ Styled.Image = styled.span((props: any) => {
     display: block;
     height: 100%;
     width: 100%;
+
+    img {
+      display: none;
+    }
   `;
 });
 

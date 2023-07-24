@@ -3,57 +3,22 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
-import Pagination from "@mui/material/Pagination";
-
 import GarmentCard from "src/components/SearchPage/GarmentCard";
 import LoadingBar from "src/components/shared/Loading";
 import { GarmentData } from "src/types";
-import { useInfiniteGarments, usePageCount } from "src/queryHooks/useGarments";
 
-interface SearchResultsProps {}
+interface SearchResultsProps {
+  garments: GarmentData[];
+  isLoading: boolean;
+}
 
-const SearchResults: React.FC<SearchResultsProps> = () => {
-  
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteGarments();
-  const { data: count } = usePageCount(15)
-  // const garments = data?.pages.flatMap((page: any) => page) ?? [];
-
-  const [pageNo, setPageNo] = React.useState(1);
-  const [garments, setGarments] = React.useState<GarmentData[]>([]);
-  const [pageCount, setPageCount] = React.useState(0);
-  
-  const disabled = pageCount === 0 || pageCount === undefined;
+const SearchResults: React.FC<SearchResultsProps> = ({
+  garments,
+  isLoading,
+}) => {
   const navigate = useNavigate();
 
-  console.log("data", data);
-  const fetchingNextPage = (isFetchingNextPage as boolean)
-  React.useEffect(() => {
-    if (data && data.pages) {
-      setGarments(data.pages[pageNo - 1]);
-    }
-  }, [data]);
-
-  React.useEffect(() => {
-    if (count) {
-      setPageCount(count)
-    }
-  }, [count]);
-
-  const handleChangePage = (
-    event: React.ChangeEvent<unknown>,
-    value: number
-  ) => {
-    setPageNo(value);
-  };
-
-  const handleClickPage = () => {
-    const pagesFetched = data && data?.pages ? data?.pages?.length : 1000;
-    const newPageExists = hasNextPage && pagesFetched < pageCount;
-
-    if (newPageExists && !fetchingNextPage) {
-      fetchNextPage()
-    }
-  }
+  console.log("data", garments);
 
   const handleOnClick = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -63,7 +28,7 @@ const SearchResults: React.FC<SearchResultsProps> = () => {
     navigate(`/garments/garment/${garmentId}`);
   };
 
-  if (!data) {
+  if (isLoading || !garments) {
     return (
       <Styled.LoadingContainer>
         <h2>Loading...</h2>
@@ -73,7 +38,7 @@ const SearchResults: React.FC<SearchResultsProps> = () => {
   }
 
   return (
-    <Styled.GarmentsListContainer>
+    <Styled.SearchResultsContainer>
       <Styled.SearchResults>
         {garments?.map((garment: any, index: number) => (
           <GarmentCard
@@ -83,18 +48,7 @@ const SearchResults: React.FC<SearchResultsProps> = () => {
           />
         ))}
       </Styled.SearchResults>
-      <Styled.PaginationContainer>
-        <Pagination
-          count={pageCount}
-          disabled={disabled}
-          page={pageNo}
-          onChange={handleChangePage}
-          onClick={handleClickPage}
-          variant="outlined"
-          shape="rounded"
-        />
-      </Styled.PaginationContainer>
-    </Styled.GarmentsListContainer>
+    </Styled.SearchResultsContainer>
   );
 };
 
@@ -105,9 +59,9 @@ export default SearchResults;
 let Styled: any;
 Styled = {};
 
-Styled.GarmentsListContainer = styled.div(() => {
+Styled.SearchResultsContainer = styled.div(() => {
   return css`
-    label: GarmentsListContainer;
+    label: SearchResultsContainer;
     width: 100%;
     height: 100%;
     display: flex;
@@ -148,18 +102,3 @@ Styled.SearchResults = styled.div(props => {
     flex-flow: row wrap;
   `;
 });
-
-
-Styled.PaginationContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: PaginationContainer;
-    ${[t.py(12), t.mb(8)]}
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-self: center;
-  `;
-});
-

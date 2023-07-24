@@ -200,10 +200,10 @@ function useDeleteGarment(): {
 } {
   const queryClient: QueryClient = useQueryClient();
   return useMutation(deleteGarment, {
-    onSuccess: (data, variables) => {
+    onSuccess: (data: any, variables: any) => {
       console.log("DATA", data);
       queryClient.invalidateQueries(["garments"]);
-      queryClient.invalidateQueries(["garment"]);
+      // queryClient.invalidateQueries(["garment", data.id]);
     },
   });
 }

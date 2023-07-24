@@ -21,7 +21,6 @@ export interface ImageUrls {
   mainImageUrl: string;
   largeUrl: string;
   displayUrl: string;
-  smallUrl: string;
   thumbUrl: string;
 }
 
@@ -31,12 +30,12 @@ export interface GarmentState {
   itemMaterials: number[];
 }
 
-export interface Garment {
-  itemInfo: ItemInfo;
-  colors: string[];
-  materials: string[];
-  imageUrls: {} | null;
-}
+// export interface Garment {
+//   itemInfo: ItemInfo;
+//   colors: string[];
+//   materials: string[];
+//   imageUrls: {} | null;
+// }
 
 // format of each item returned from get garments
 export interface GarmentData extends ItemInfoData {

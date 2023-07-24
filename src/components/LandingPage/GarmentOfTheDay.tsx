@@ -45,7 +45,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
     if (imgRef.current && imgRef.current.complete) {
       onLoad();
     }
-  });
+  }, [imgRef]);
 
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down('md'));

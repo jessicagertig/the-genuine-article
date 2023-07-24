@@ -43,7 +43,7 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
         pageTitle={garment ? garment.garmentTitle : ""}
         pageNumber={pageNo}
       />
-      <GarmentContent garment={garmentData} />
+      <GarmentContent garment={garmentData} loading={garmentIsLoading} />
     </Styled.GarmentPageContainer>
   );
 };

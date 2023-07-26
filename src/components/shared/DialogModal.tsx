@@ -30,6 +30,7 @@ const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
     children,
     full,
     responsiveFullscreen,
+    maxWidth,
   } = props;
 
   const handleClose = () => {
@@ -41,7 +42,7 @@ const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
       <Dialog
         open={props.open}
         onClose={handleClose}
-        maxWidth="xl"
+        maxWidth={maxWidth ? maxWidth : "xl"}
         fullWidth={full ? full : false}
         fullScreen={responsiveFullscreen ? responsiveFullscreen : false}
         aria-labelledby="dialog-modal-title"

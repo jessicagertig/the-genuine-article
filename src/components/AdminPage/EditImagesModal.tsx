@@ -171,6 +171,9 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
             onClick={handleClickDelete}
             disabled={!hasImage}
           >
+            <Styled.Text>
+              Delete Image
+            </Styled.Text>
             <DeleteOutlinedIcon sx={{ color: "red" }} />
           </IconButton>
         </Styled.ActionsContainer>
@@ -246,8 +249,83 @@ Styled.ActionsContainer = styled.div((props: any) => {
     label: PreviewImageContainer;
     ${t.pr(6)}
     width: 100%;
-    height: 100%;
+    height: 50%;
     display: flex;
-    justify-content: center;
+    max-width: 250px;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    > div {
+      padding-bottom: 0;
+    }
+
+    ${t.mq.md} {
+      flex-direction: row;
+      justify-content: center;
+      max-width: unset;
+    }
   `;
 });
+
+Styled.Text = styled.p((props) => {
+  const t = props.theme;
+  return css`
+    label: DeleteButtonText;
+    display: block;
+    line-height: 1.75;
+    text-transform: uppercase;
+    min-width: 64px;
+    padding: 5px;
+    border-radius: 4px;
+    color: red;
+    font-size: 1.125rem;
+    font-weight: 700;
+
+    ${t.mq.md} {
+      display: none;
+    }
+  `
+})
+
+// display: -webkit-inline-box;
+// display: -webkit-inline-flex;
+// display: -ms-inline-flexbox;
+// display: inline-flex;
+// -webkit-align-items: center;
+// -webkit-box-align: center;
+// -ms-flex-align: center;
+// align-items: center;
+// -webkit-box-pack: center;
+// -ms-flex-pack: center;
+// -webkit-justify-content: center;
+// justify-content: center;
+// position: relative;
+// box-sizing: border-box;
+// -webkit-tap-highlight-color: transparent;
+// background-color: transparent;
+// outline: 0;
+// border: 0;
+// margin: 0;
+// border-radius: 0;
+// padding: 0;
+// cursor: pointer;
+// -webkit-user-select: none;
+// -moz-user-select: none;
+// -ms-user-select: none;
+// user-select: none;
+// vertical-align: middle;
+// -moz-appearance: none;
+// -webkit-appearance: none;
+// -webkit-text-decoration: none;
+// text-decoration: none;
+// color: inherit;
+// font-family: Bellota Text,sans-serif;
+// line-height: 1.75;
+// text-transform: uppercase;
+// min-width: 64px;
+// padding: 5px 15px;
+// border-radius: 4px;
+// -webkit-transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+// transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+// }

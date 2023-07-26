@@ -8,10 +8,13 @@ import FileUploadIcon from "@mui/icons-material/FileUploadOutlined";
 interface FileUploadProps {
   handleChangeInput: (event: React.BaseSyntheticEvent) => void;
   fileName: string | undefined;
+  variantType?: "text" | "outlined" | "contained";
 }
 
 const FileUpload = (props: FileUploadProps) => {
   console.log("FileUploadProps", props);
+  const { fileName, variantType } = props;
+  const buttonVariant = variantType ? variantType : "text";
 
   const { handleChangeInput } = props;
 
@@ -25,7 +28,7 @@ const FileUpload = (props: FileUploadProps) => {
 
   return (
     <Styled.ButtonContainer>
-      <Button variant="text" onClick={handleClick}  sx={{fontSize: "1.125rem", fontWeight: "bold"}} endIcon={<FileUploadIcon />}>
+      <Button variant={buttonVariant} onClick={handleClick}  sx={{fontSize: "1.125rem", fontWeight: "bold" }} endIcon={<FileUploadIcon />}>
         Select File
       </Button>
       <Input

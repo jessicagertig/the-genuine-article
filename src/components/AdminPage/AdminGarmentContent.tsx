@@ -9,7 +9,8 @@ import OutlinedButton from "src/components/shared/OutlinedButton";
 import IconButton from "@mui/material/IconButton";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import EditGarmentModal from "src/components/AdminPage/EditGarmentModal";
-import ConfirmModal from "src/components/shared/ConfirmModal"
+import EditImagesModal from "src/components/AdminPage/EditImagesModal";
+import ConfirmModal from "src/components/shared/ConfirmModal";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useDeleteGarment } from "src/queryHooks/useGarments";
@@ -55,15 +56,17 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
           const listToString = list.length > 0 ? list.join(", ") : "";
           return (
             <Styled.InfoItem key={item.name}>
-            <p><span>{item.name}:   </span>
-              {listToString}</p>
+              <p>
+                <span>{item.name}: </span>
+                {listToString}
+              </p>
             </Styled.InfoItem>
           );
         } else if (item.name === "Link") {
           return (
             <Styled.InfoItem key={item.name}>
               <p>
-                <span>{item.name}:   </span>
+                <span>{item.name}: </span>
                 <a href={item.value} target="_blank" rel="noreferrer">
                   view original website
                 </a>
@@ -71,20 +74,25 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
             </Styled.InfoItem>
           );
         } else if (item.name === "Description") {
-          const lines = item.value.split("\n");
-          console.log("LINES", lines)
+          const lines = item.value ? item.value.split("\n") : "";
+          console.log("LINES", lines);
           return (
             <Styled.InfoItem key={item.name}>
               <span>{item.name}</span>
-              {lines.map((line: string, index: number) => 
-                <p key={index} className="description">{line}</p>
-              )}
+              {lines.map((line: string, index: number) => (
+                <p key={index} className="description">
+                  {line}
+                </p>
+              ))}
             </Styled.InfoItem>
-          )
+          );
         } else {
           return (
             <Styled.InfoItem key={item.name}>
-              <p><span>{item.name}:   </span>{item.value}</p>
+              <p>
+                <span>{item.name}: </span>
+                {item.value}
+              </p>
             </Styled.InfoItem>
           );
         }
@@ -93,6 +101,14 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
 
   const onClickEditImages = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    const modal = (
+      <EditImagesModal
+        onCancel={() => removeModal()}
+        garment={garment}
+      />
+    );
+
+    openModal(modal);
   };
 
   const handleClickEdit = (event: React.SyntheticEvent): void => {
@@ -120,7 +136,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
         confirmText="DELETE"
         danger={true}
       />
-    )
+    );
 
     openModal(modal);
   };
@@ -158,9 +174,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
         <Styled.ThumbGallery></Styled.ThumbGallery>
         <Styled.ButtonContainer>
           {admin ? (
-            <OutlinedButton
-              onClick={event => onClickEditImages(event)}
-            >
+            <OutlinedButton onClick={event => onClickEditImages(event)}>
               Edit Images
             </OutlinedButton>
           ) : null}
@@ -289,11 +303,11 @@ Styled.ThumbImage = styled.div(props => {
 Styled.DetailsSection = styled.section(props => {
   const t = props.theme;
   return css`
-  label: Garment_DetailsSection;
-  ${t.pt(4)}
-  width: 100%;
-  display: flex;
-  justify-content: center;
+    label: Garment_DetailsSection;
+    ${t.pt(4)}
+    width: 100%;
+    display: flex;
+    justify-content: center;
   `;
 });
 

@@ -3,16 +3,16 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 
 import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
-import LoadingBar from "src/components/shared/Loading";
-// import LoadMoreTrigger from "src/components/SearchPage/LoadMoreTrigger";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import SearchBar from "src/components/shared/SearchBar";
 import { GarmentData } from "src/types";
-import { useGarmentsSearch } from "src/queryHooks/useSearch";
+import { useGarmentsKeywordSearch } from "src/queryHooks/useSearch";
 import { mainSearchStyles } from "src/components/SearchPage/styles/SearchFieldStyles";
+
 interface SearchPageProps {}
 
 const SearchPage: React.FC<SearchPageProps> = () => {
@@ -24,25 +24,25 @@ const SearchPage: React.FC<SearchPageProps> = () => {
 
   const {
     data,
-    refetch,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isLoading,
     error,
-  } = useGarmentsSearch(searchQuery, enabled);
+  } = useGarmentsKeywordSearch(searchQuery, enabled);
 
-  console.log("data", data);
+  console.log("Data in index:", data);
+  console.log("Search results:", searchResults);
 
   const fetchingNextPage = isFetchingNextPage as boolean;
 
   React.useEffect(() => {
     if (data && data.pages) {
-      const garmentResults = data?.pages.flatMap((page: any) => page) ?? [];
+      const garmentResults =
+        data?.pages.flatMap((page: any) => page.data) ?? [];
       setSearchResults(garmentResults);
     }
-    console.log("has results", hasResults);
-  }, [data]);
+  }, [data, setSearchResults]);
 
   React.useEffect(() => {
     if (searchResults.length > 0) {
@@ -50,12 +50,12 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     } else {
       setHasResults(false);
     }
-  }, [searchResults, setHasResults]);
+  }, [data, searchResults, setHasResults]);
 
   const handleOnChange = (value: string) => {
     console.log("value", value);
     if (value === "") {
-      setSearchQuery(value)
+      setSearchQuery(value);
     }
     setSearchValue(value);
   };
@@ -67,17 +67,21 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const handleSubmitSearch = () => {
     setEnabled(true);
     setSearchQuery(searchValue);
-    refetch();
   };
 
-  // if (isLoading) {
-  //   return (
-  //     <Styled.LoadingContainer>
-  //       <h2>Loading...</h2>
-  //       <LoadingBar />
-  //     </Styled.LoadingContainer>
-  //   );
-  // }
+  const handleClickLoadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  const buttonStyles = {
+    width: "120px",
+    fontWeight: "bold",
+    border: "1px solid",
+    margin: "4px",
+    color: "#899AB8",
+  }
 
   return (
     <Styled.SearchPageContainer>
@@ -85,9 +89,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
       <Styled.SearchContainer>
         <Styled.SearchHeaderContainer>
           <Styled.TextContainer>
-            <h2>
-              Search Garments
-            </h2>
+            <h2>Search Garments</h2>
           </Styled.TextContainer>
           <Styled.SearchBarContainer>
             <SearchBar
@@ -98,7 +100,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
             />
           </Styled.SearchBarContainer>
           <Styled.Divider>
-            <Divider sx={{ my: 4, borderColor: "#899AB8" }}/>
+            <Divider sx={{ my: 4, borderColor: "#899AB8" }} />
           </Styled.Divider>
         </Styled.SearchHeaderContainer>
       </Styled.SearchContainer>
@@ -106,17 +108,20 @@ const SearchPage: React.FC<SearchPageProps> = () => {
         {hasResults ? (
           <SearchResults garments={searchResults} isLoading={isLoading} />
         ) : (
-          /* {hasNextPage && !fetchingNextPage && (
-            <LoadMoreTrigger
-              onEnterView={() => {
-                if (hasNextPage) {
-                  fetchNextPage();
-                }
-              }}
-            />
-          )} */
           <GarmentsList />
         )}
+        <Styled.ButtonContainer>
+          {hasResults && hasNextPage && !fetchingNextPage ? (
+            <Button 
+              onClick={handleClickLoadMore}
+              variant="outlined"
+              size="medium"
+              sx={buttonStyles}
+            >
+              Load more
+            </Button>
+          ) : null}
+        </Styled.ButtonContainer>
       </Styled.GarmentsContainer>
     </Styled.SearchPageContainer>
   );
@@ -173,8 +178,8 @@ Styled.SearchContainer = styled.div(props => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-  `
-})
+  `;
+});
 
 Styled.SearchHeaderContainer = styled.div(props => {
   const t = props.theme;
@@ -185,8 +190,8 @@ Styled.SearchHeaderContainer = styled.div(props => {
     display: flex;
     flex-direction: column;
     justify-content: center;
-  `
-})
+  `;
+});
 
 Styled.TextContainer = styled.div(props => {
   const t = props.theme;
@@ -217,26 +222,28 @@ Styled.SearchBarContainer = styled.div(props => {
     ${[t.mb(4)]}
     display: flex;
     justify-content: flex-start;
-    `;
-  });
-  
-  Styled.Divider = styled.div(props => {
-    const t = props.theme;
-    return css`
-      label: DividerContainer;
-      display: none;
-      
-      ${t.mq.glg} {
-        display: block;
-      }
-    `;
-  });
+  `;
+});
 
-  Styled.GarmentsContainer = styled.div(props => {
+Styled.Divider = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: DividerContainer;
+    display: none;
+
+    ${t.mq.glg} {
+      display: block;
+    }
+  `;
+});
+
+Styled.GarmentsContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentsContainer;
     display: flex;
+    flex-direction: column;
+    align-content: center;
     width: 100%;
 
     ${t.mq.md} {
@@ -249,6 +256,35 @@ Styled.SearchBarContainer = styled.div(props => {
       width: 90%;
       margin-right: 5%;
       margin-left: 5%;
+    }
+  `;
+});
+
+Styled.ButtonContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: ButtonContainer;
+    display: flex;
+    justify-content: center;
+    width: 98%;
+
+    > button {
+      width: 90%;
+      height: 40px;
+      margin-right: 5%;
+      margin-left: 5%;
+      margin-top: 24px;
+      margin-bottom: 24px;
+
+      ${t.mq.sm} {
+        width: 50%;
+        margin-right: 25%;
+        margin-left: 25%;
+      }
+  
+      ${t.mq.md} {
+        width: 120px;
+      }
     }
   `;
 });

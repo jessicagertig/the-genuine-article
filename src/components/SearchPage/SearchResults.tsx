@@ -18,7 +18,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  console.log("data", garments);
+  console.log("Loading search results:", isLoading);
 
   const handleOnClick = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -28,26 +28,25 @@ const SearchResults: React.FC<SearchResultsProps> = ({
     navigate(`/garments/garment/${garmentId}`);
   };
 
-  if (isLoading || !garments) {
-    return (
-      <Styled.LoadingContainer>
-        <h2>Loading...</h2>
-        <LoadingBar />
-      </Styled.LoadingContainer>
-    );
-  }
-
   return (
     <Styled.SearchResultsContainer>
-      <Styled.SearchResults>
-        {garments?.map((garment: any, index: number) => (
-          <GarmentCard
-            key={index}
-            garment={garment}
-            handleClick={handleOnClick}
-          />
-        ))}
-      </Styled.SearchResults>
+      {!garments ?
+      (
+        <Styled.LoadingContainer>
+          <h2>Loading...</h2>
+          <LoadingBar />
+        </Styled.LoadingContainer>
+      ) : (
+        <Styled.SearchResults>
+          {garments?.map((garment: any, index: number) => (
+            <GarmentCard
+              key={index}
+              garment={garment}
+              handleClick={handleOnClick}
+            />
+          ))}
+        </Styled.SearchResults>
+      )}
     </Styled.SearchResultsContainer>
   );
 };

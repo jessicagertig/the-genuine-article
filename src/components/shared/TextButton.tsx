@@ -3,9 +3,10 @@ import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/system";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import FileUploadOutlinedIcon from "@mui/icons-material/FileUploadOutlined";
+import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
 interface CustomTextButtonProps extends ButtonProps {
-  onClick: (event: React.MouseEvent | React.FormEvent) => void;
+  onClick?: (event: React.MouseEvent | React.FormEvent) => void;
   hasEndIcon?: boolean;
   styles?: Object;
   iconType?: string;
@@ -27,6 +28,8 @@ const TextButton: React.FC<CustomTextButtonProps> = props => {
       <ImageOutlinedIcon />
     ) : iconType === "upload" ? (
       <FileUploadOutlinedIcon />
+    ) : iconType === "externalLink" ? (
+      <OpenInNewOutlinedIcon />
     ) : null;
 
   return (

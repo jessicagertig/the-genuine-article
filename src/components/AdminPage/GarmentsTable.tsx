@@ -33,7 +33,7 @@ const columns: Column[] = [
   { id: "garmentTitle", label: "Garment Title" },
   { id: "beginYear", label: "Year" },
   { id: "colors", label: "Colors" },
-  { id: "collectionUrl", label: "Url" },
+  { id: "collectionUrl", label: "Source Url" },
   { id: "hasImage", label: "Image" },
   { id: "addImageButton", label: "" },
 ];
@@ -53,12 +53,12 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
 
   React.useEffect(() => {
     if (location?.state?.rowsNo !== undefined) {
-      setRowsPerPage(location.state.rowsNo)
+      setRowsPerPage(location.state.rowsNo);
     }
     if (location?.state?.pageNo !== undefined) {
-      setPage(location.state.pageNo)
+      setPage(location.state.pageNo);
     }
-  }, [])
+  }, []);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -97,6 +97,10 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     openModal(modal);
   };
 
+  const handleLinkClick = (event: React.SyntheticEvent) => {
+    event.stopPropagation();
+  };
+
   const convertArray = (array: string[]): string => {
     let stringList = "";
     if (array.length > 0) {
@@ -114,7 +118,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     collectionUrl: React.ReactNode;
     colors: string;
     materials: string;
-    hasImage: string;
+    hasImage: string | React.ReactNode;
     addImageButton: React.ReactNode;
     [key: string]: number | string | React.ReactNode;
   }
@@ -122,14 +126,37 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const formatData = (garment: GarmentData): FormattedData => {
     const colorsList = convertArray(garment.colors);
     const materialsList = convertArray(garment.materials);
-    const hasImage = garment.imageUrls ? "yes" : "none";
+    const hasImage = garment.imageUrls;
+    const buttonStyles = { padding: "0px", textTransform: "none" };
+    const imagePreview = () => {
+      if (hasImage) {
+        return <Styled.Image src={garment.imageUrls?.thumbUrl} />;
+      } else {
+        return <Styled.Text>none</Styled.Text>;
+      }
+    };
+
     const sourceLink = (
       <a href={garment.collectionUrl} target="_blank" rel="noreferrer">
-        View
+        <TextButton
+          type="button"
+          rel="noreferrer"
+          href={garment.collectionUrl}
+          onClick={e => handleLinkClick(e)}
+          hasEndIcon={true}
+          iconType="externalLink"
+          styles={{
+            padding: "0px",
+            textTransform: "none",
+            width: "60%",
+            minWidth: "36px",
+          }}
+        >
+          View
+        </TextButton>
       </a>
     );
 
-    const buttonStyles = { padding: "0px", textTransform: "none" };
     const addImageButton = (
       <TextButton
         type="button"
@@ -151,7 +178,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
       collectionUrl: sourceLink,
       colors: colorsList,
       materials: materialsList,
-      hasImage: hasImage,
+      hasImage: imagePreview(),
       addImageButton: addImageButton,
     };
   };
@@ -196,6 +223,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                   sx={{
                     fontWeight: "bold",
                     borderBottom: "1px solid rgb(180 180 180)",
+                    fontSize: "1rem",
                   }}
                 >
                   {column.label}
@@ -225,6 +253,9 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
+                            color: "#223F7C",
+                            fontWeight: "bold",
+                            fontSize: "14px",
                           }}
                         >
                           {value}
@@ -278,3 +309,15 @@ Styled.LoadingContainer = styled.div(props => {
     }
   `;
 });
+
+Styled.Image = styled.img`
+  label: ThumbImage;
+  height: 48px;
+  width: auto;
+`;
+
+Styled.Text = styled.p`
+  label: CellText;
+  width: 48px;
+  text-align: center;
+`;

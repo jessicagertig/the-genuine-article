@@ -12,6 +12,7 @@ import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import Link from "@mui/material/Link";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
+import Accordian from "src/components/shared/Accordian";
 import { GarmentData } from "src/types";
 import { useModalContext } from "src/context/ModalContext";
 
@@ -101,13 +102,14 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, loading }) => 
   const itemDescription = () => {
     const item: Item = { name: "Description", value: garment?.description };
     const lines = item.value ? item.value.split("\n") : [];
+    const mainText = lines.map((line: string, index: number) => (
+      <p key={index} className="description">
+        {line}
+      </p>
+    ))
     return (
       <Styled.InfoItem key={item.name}>
-        {lines.map((line: string, index: number) => (
-          <p key={index} className="description">
-            {line}
-          </p>
-        ))}
+        <Accordian text={mainText} />
       </Styled.InfoItem>
     );
   };

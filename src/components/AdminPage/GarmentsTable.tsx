@@ -375,6 +375,11 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                   </TableRow>
                 );
               })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 72 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
           </TableBody>
         </Table>
       </TableContainer>

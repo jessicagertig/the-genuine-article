@@ -37,7 +37,22 @@ const customTheme = createTheme({
       lg: 1024,
       xl: 1200,
     }
-  }
+  },
+  components: {
+    // Name of the component
+    MuiMenuItem: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          color: "#172a4f",
+          "&:hover": {
+            backgroundColor: "rgba(211, 217, 229, 0.5)",
+          }
+        },
+      },
+    },
+  },
 });
 
 export default customTheme;

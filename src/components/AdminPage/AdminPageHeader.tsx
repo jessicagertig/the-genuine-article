@@ -4,21 +4,19 @@ import { css } from "@emotion/react";
 
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
-import ListItem from "@mui/material/ListItem";
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 
-import TextButton from "src/components/shared/TextButton";
-
+import AddGarmentModal from "src/components/AdminPage/AddGarmentModal";
+import { useModalContext } from "src/context/ModalContext";
 
 type Props = {
   pageTitle: string;
 };
 
-const AdminHeader: React.FC<Props> = (props) => {
-  const {
-    pageTitle,
-  } = props;
-
+const AdminHeader: React.FC<Props> = props => {
+  const { pageTitle } = props;
+  const { openModal, removeModal } = useModalContext();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,27 +28,29 @@ const AdminHeader: React.FC<Props> = (props) => {
 
   type Action = {
     name: string;
-    handleOnClick: () => void;
+    handleOnClick: (event: React.SyntheticEvent) => void;
   };
 
-  const handleClickManualAdd = () => {
-    console.log("Clicked Manual Add")
-  }
+  const handleClickManualAdd = (event: React.SyntheticEvent): void => {
+    event.preventDefault();
+    const modal = <AddGarmentModal onCancel={() => removeModal()} />;
+
+    openModal(modal);
+  };
 
   const handleClickUrlAdd = () => {
-    console.log("Clicked Url Add")
-  }
+    console.log("Clicked Url Add");
+  };
 
   const handleClickEditMenus = () => {
-    console.log("Clicked Edit Menus")
-  }
+    console.log("Clicked Edit Menus");
+  };
 
   const actions: Action[] = [
     { name: "Add manually", handleOnClick: handleClickManualAdd },
     { name: "Add by url", handleOnClick: handleClickUrlAdd },
     { name: "Edit menus", handleOnClick: handleClickEditMenus },
   ];
-
 
   const menu = (
     <Styled.MenuContainer>
@@ -61,7 +61,9 @@ const AdminHeader: React.FC<Props> = (props) => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ "& .MuiIconButton-root": { color: "#172a4f" } }}
+        sx={{ px: 1.5, "&:hover": {
+          backgroundColor: "rgba(211, 217, 229, 0.5)",
+        } }}
       >
         <MoreVertOutlinedIcon sx={{ color: "#172a4f", fill: "#172a4f" }} />
       </IconButton>
@@ -73,14 +75,17 @@ const AdminHeader: React.FC<Props> = (props) => {
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
-        sx={{ "& .MuiList-root": { width: "130px"}}}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        sx={{ "& .MuiList-root": { width: "130px" } }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {actions.map(action => (
-          <ListItem sx={{borderBottom: "1px solid grey"}} onClick={action.handleOnClick} component={TextButton} disablePadding key={action.name}>
+          <MenuItem
+            onClick={action.handleOnClick}
+            key={action.name}
+          >
             {action.name}
-          </ListItem>      
+          </MenuItem>
         ))}
       </Menu>
     </Styled.MenuContainer>
@@ -92,9 +97,7 @@ const AdminHeader: React.FC<Props> = (props) => {
         <Styled.AdminHeaderText>
           <h2>{pageTitle}</h2>
         </Styled.AdminHeaderText>
-        <Styled.RightButtonContainer>
-          {menu}
-        </Styled.RightButtonContainer>
+        <Styled.RightButtonContainer>{menu}</Styled.RightButtonContainer>
       </Styled.AdminHeaderContainer>
     </Styled.Container>
   );
@@ -107,13 +110,17 @@ export default AdminHeader;
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div`
-  label: Container;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  border-bottom: 1px solid rgba(211, 217, 229, 1);
-`
+Styled.Container = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Container;
+    ${t.mb(18)}
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 1px solid rgb(211, 217, 229);
+  `;
+});
 
 Styled.AdminHeaderContainer = styled.div(props => {
   const t = props.theme;
@@ -139,13 +146,15 @@ Styled.AdminHeaderText = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminHeader_HeaderText;
-    width: 75%;
+    width: 50%
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 25%;
 
     ${t.mq.sm} {
-      width: 80%;
+      width: 60%;
+      margin-left: 20%;
     }
 
     h2 {

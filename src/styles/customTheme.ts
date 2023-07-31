@@ -52,6 +52,31 @@ const customTheme = createTheme({
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        // Name of the slot
+        option: {
+          // Some CSS
+          color: "#172a4f",
+          "&:hover": {
+            backgroundColor: "rgba(211, 217, 229, 0.5)",
+          }
+        },
+        tag: {
+          // Some CSS
+          color: "#172a4f",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        // Name of the slot
+        root: {
+          // Some CSS
+          color: "#172a4f",
+        },
+      },
+    },
   },
 });
 

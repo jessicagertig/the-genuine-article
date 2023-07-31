@@ -8,6 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 
 import AddGarmentModal from "src/components/AdminPage/AddGarmentModal";
+import AddByUrlModal from "src/components/AdminPage/AddByUrlModal";
 import { useModalContext } from "src/context/ModalContext";
 
 type Props = {
@@ -38,8 +39,11 @@ const AdminHeader: React.FC<Props> = props => {
     openModal(modal);
   };
 
-  const handleClickUrlAdd = () => {
-    console.log("Clicked Url Add");
+  const handleClickUrlAdd = (event: React.SyntheticEvent): void => {
+    event.preventDefault();
+    const modal = <AddByUrlModal onCancel={() => removeModal()} />;
+
+    openModal(modal);
   };
 
   const handleClickEditMenus = () => {
@@ -146,11 +150,16 @@ Styled.AdminHeaderText = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminHeader_HeaderText;
-    width: 50%
+    width: 40%
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-left: 25%;
+    margin-left: 30%;
+
+    ${t.mq.xs} {
+      width: 50%;
+      margin-left: 25%;
+    }
 
     ${t.mq.sm} {
       width: 60%;
@@ -174,7 +183,11 @@ Styled.RightButtonContainer = styled.div(props => {
     label: AdminPageHeader_ButtonContainer;
     display: flex;
     justify-content: flex-end;
-    width: 25%;
+    width: 30%;
+
+    ${t.mq.xs} {
+      width: 25%;
+    }
 
     ${t.mq.sm} {
       width: 20%;
@@ -187,7 +200,11 @@ Styled.MenuContainer = styled.div(props => {
   return css`
     label: AdminPageHeader_MenuContainer;
     display: flex;
-    ${t.mr(4)}
+    ${t.mr(0)}
+
+    ${t.mq.xs} {
+      ${t.mr(4)}
+    }
 
     ${t.mq.lg} {
       ${t.mr(0)}

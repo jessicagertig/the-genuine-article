@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -34,16 +36,6 @@ interface Column {
   format?: (value: number) => string;
 }
 
-const columns: Column[] = [
-  { id: "id", label: "Id" },
-  { id: "garmentTitle", label: "Garment Title" },
-  { id: "beginYear", label: "Year" },
-  { id: "colors", label: "Colors" },
-  { id: "collectionUrl", label: "Source Url" },
-  { id: "hasImage", label: "Image" },
-  { id: "addImageButton", label: "" },
-];
-
 interface GarmentsTableProps {}
 
 const GarmentsTable: React.FC<GarmentsTableProps> = props => {
@@ -57,6 +49,9 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   React.useEffect(() => {
     console.log("LOCATION", location);
     if (location?.state?.rowsNo !== undefined) {
@@ -66,6 +61,25 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
       setPage(location.state.pageNo);
     }
   }, []);
+
+  const smallScreenColumns: Column[] = [
+    { id: "id", label: "Id" },
+    { id: "beginYear", label: "Year" },
+    { id: "collectionUrl", label: "Source Url" },
+    { id: "hasImage", label: "Image" },
+  ];
+
+  const largerScreenColumns: Column[] = [
+    { id: "id", label: "Id" },
+    { id: "garmentTitle", label: "Garment Title" },
+    { id: "beginYear", label: "Year" },
+    { id: "colors", label: "Colors" },
+    { id: "collectionUrl", label: "Source Url" },
+    { id: "hasImage", label: "Image" },
+    { id: "addImageButton", label: "" },
+  ];
+
+  const columns = isSmallScreen ? smallScreenColumns : largerScreenColumns;
 
   interface TablePaginationActionsProps {
     count: number;
@@ -311,7 +325,8 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
-        boxShadow: "0px 2px 1px -1px rgba(23, 42, 79, 0.12), 0px 1px 1px 0px rgba(23, 42, 79, 0.3), 0px 1px 3px 0.5px rgba(23, 42, 79, 0.2)",
+        boxShadow:
+          "0px 2px 1px -1px rgba(23, 42, 79, 0.12), 0px 1px 1px 0px rgba(23, 42, 79, 0.3), 0px 1px 3px 0.5px rgba(23, 42, 79, 0.2)",
       }}
     >
       <TableContainer sx={{ maxHeight: 640 }}>
@@ -375,11 +390,11 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                   </TableRow>
                 );
               })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 72 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 72 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -402,7 +417,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
           },
           "& .MuiTablePagination-displayedRows": {
             width: "84px",
-          }
+          },
         }}
       />
     </Paper>

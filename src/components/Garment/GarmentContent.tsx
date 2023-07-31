@@ -29,17 +29,9 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, loading }) => 
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
   const [imageLoaded, setImageLoaded] = React.useState(false);
-  const [dimensions, setDimensions] = React.useState({
-    height: 0,
-    width: 0,
-  });
 
   const onLoad = () => {
     setImageLoaded(true);
-    setDimensions({
-      height: imgRef.current.naturalHeight,
-      width: imgRef.current.naturalWidth,
-    });
   };
 
   React.useEffect(() => {

@@ -3,7 +3,7 @@ import {
   useQuery,
   useQueryClient,
   QueryClient,
-  useInfiniteQuery
+  useInfiniteQuery,
 } from "react-query";
 import { apiGet, apiPost, apiPut, apiDelete } from "./api";
 import { GarmentState } from "src/types";
@@ -44,6 +44,19 @@ const createGarment = async ({
   return await apiPost({
     endpoint: "/items",
     variables: { itemInfo, itemColors, itemMaterials },
+  });
+};
+
+const createScrapedItem = async ({
+  url,
+  src,
+}: {
+  url: string;
+  src: string;
+}) => {
+  return await apiPost({
+    endpoint: "/items-info",
+    variables: { url, src },
   });
 };
 
@@ -93,7 +106,7 @@ function usePaginatedGarments(page: number): {
 } {
   return useQuery(["garmentsPages", page], () => getPaginatedGarments(page), {
     refetchOnWindowFocus: false,
-    keepPreviousData: true
+    keepPreviousData: true,
   });
 }
 
@@ -121,8 +134,8 @@ function useInfiniteGarments(): {
 } {
   // const queryClient = useQueryClient();
   return useInfiniteQuery(
-  ["paginatedGarments"],
-  ({ pageParam = 1 }) => getPaginatedGarments(pageParam),
+    ["paginatedGarments"],
+    ({ pageParam = 1 }) => getPaginatedGarments(pageParam),
     {
       // ...queryOptions,
       // onSettled: () => {
@@ -131,7 +144,7 @@ function useInfiniteGarments(): {
       getNextPageParam: (lastPage, allPages) => {
         return allPages.length + 1;
       },
-    },
+    }
   );
 }
 
@@ -175,6 +188,22 @@ function useCreateGarment(): {
   });
 }
 
+function useCreateScrapedItem(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  const queryClient: QueryClient = useQueryClient();
+  return useMutation(createScrapedItem, {
+    onSuccess: (data, variables) => {
+      console.log("VARIABLES useCreateScrapedItem:", variables);
+      console.log("DATA iseCreateScrapedItem:", data);
+      queryClient.invalidateQueries(["garments"]);
+    },
+  });
+}
+
 function useUpdateGarment(): {
   mutate: any;
   status: any;
@@ -213,6 +242,7 @@ export {
   useDailyGarment,
   useGarment,
   useCreateGarment,
+  useCreateScrapedItem,
   useUpdateGarment,
   useDeleteGarment,
   usePaginatedGarments,

@@ -89,6 +89,12 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
               color="inherit"
               onClick={handleClose}
               aria-label="close"
+              sx={{
+                backgroundColor: "rgba(23, 42, 79, 0.1)",
+                "&:hover": {
+                  backgroundColor: "rgba(23, 42, 79, 0.2)"
+                }
+              }}
             >
               <CloseOutlinedIcon />
             </IconButton>

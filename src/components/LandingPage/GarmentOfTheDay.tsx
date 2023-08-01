@@ -72,9 +72,9 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
       <Styled.ImageSection>
-        {noImage || !imageLoaded ? (
+        {noImage ? (
         <Skeleton variant="rectangular" width="calc((100vh - 160px) * 0.82)" height="calc(100vh - 160px)" sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}/>
-        ) : null }
+        ) : (
         <Styled.DisplayedImage height={maxHeight} noImage={noImage}>
           <img
             ref={imgRef}
@@ -85,14 +85,21 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
           <div>
             <IconButton
               edge="start"
-              color="inherit"
               onClick={handleZoom}
               aria-label="zoom"
+              sx={{
+                color: "white",
+                backgroundColor: "rgba(23, 42, 79, 0.1)",
+                "&:hover": {
+                  backgroundColor: "rgba(23, 42, 79, 0.2)"
+                }
+              }}
             >
               <ZoomOutMapOutlinedIcon />
             </IconButton>
           </div>
         </Styled.DisplayedImage>
+        )}
       </Styled.ImageSection>
     </Styled.HomeContentContainer>
   );

@@ -66,6 +66,7 @@ const SecondaryNav = (props: Props) => {
 
   const colorStyle = {
     color: "#172a4f",
+    backgroundColor: "rgba(211, 217, 229, 0.2)",
     "&:hover": {
       backgroundColor: "rgba(211, 217, 229, 0.5)",
     },
@@ -89,6 +90,9 @@ const SecondaryNav = (props: Props) => {
       maxWidth: "100px",
       paddingRight: "8px",
       paddingLeft: "8px",
+      "&.MuiButton-outlined": {
+        border: `2px solid rgba(34, 63, 124, .5)`,
+      },
     }}
   >
     Back

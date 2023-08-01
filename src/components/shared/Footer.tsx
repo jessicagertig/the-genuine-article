@@ -8,7 +8,6 @@ const Footer = (props: Props) => {
   return (
     <Styled.FooterContainer>
       <div>
-        <p>Add image here</p>
       </div>
       <div>
         <p>Add links here</p>

@@ -11,9 +11,6 @@ export const mainSearchStyles = {
       "&:hover .MuiOutlinedInput-notchedOutline": {
         border: `2px solid rgba(23, 42, 79, 0.9)`,
       },
-      // "&.Mui-focusVisible, &.Mui-active": {
-      //   border: `2px solid rgba(23, 42, 79, 0.9)`,
-      // }
     },
     "& .MuiOutlinedInput-root.Mui-focused": {
       backgroundColor: "rgba(175, 187, 207, 0.1)",

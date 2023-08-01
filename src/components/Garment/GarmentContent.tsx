@@ -2,9 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import Skeleton from '@mui/material/Skeleton';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Skeleton from "@mui/material/Skeleton";
 
 import IconButton from "@mui/material/IconButton";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
@@ -21,24 +21,12 @@ interface GarmentContentProps {
   loading: boolean;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = ({ garment, loading }) => {
+const GarmentContent: React.FC<GarmentContentProps> = (props) => {
+  const { garment, loading } = props;
   const { openModal, removeModal } = useModalContext();
 
   const theme = useTheme();
-  const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
-
-  const imgRef = React.useRef<HTMLImageElement>(null!);
-  const [imageLoaded, setImageLoaded] = React.useState(false);
-
-  const onLoad = () => {
-    setImageLoaded(true);
-  };
-
-  React.useEffect(() => {
-    if (imgRef.current && imgRef.current.complete) {
-      onLoad();
-    }
-  }, [imgRef]);
+  const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
 
   type Item = {
     name: string;
@@ -98,7 +86,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, loading }) => 
       <p key={index} className="description">
         {line}
       </p>
-    ))
+    ));
     return (
       <Styled.InfoItem key={item.name}>
         <Accordian text={mainText} />
@@ -107,7 +95,8 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, loading }) => 
   };
 
   const handleZoom = () => {
-    const imageUrl = garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
+    const imageUrl =
+      garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
 
     const modal = (
       <GarmentZoomModal
@@ -119,22 +108,31 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, loading }) => 
     );
 
     openModal(modal);
-  }
+  };
 
   return (
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
-        {loading || !imageLoaded ? <Skeleton variant="rectangular" width="calc((100vh - 160px) * 0.82)" height="calc(100vh - 160px)" sx={{ bgcolor: "rgba(211, 217, 229, 0.9)", borderRadius: "8px", my: "32px" }}/> 
-        : null}
-        <Styled.DisplayedImage>
-          <img
-            src={garment?.imageUrls?.largeUrl}
-            alt={garment ? garment.garmentTitle : "garment"}
-            onClick={handleZoom}
-            ref={imgRef}
-            onLoad={onLoad}
+        {loading ? (
+          <Skeleton
+            variant="rectangular"
+            width={fullscreen ? "calc((100vh - 160px) * 0.82)" : "500px"}
+            height={fullscreen ? "calc(100vh - 160px)" : "609px"}
+            sx={{
+              bgcolor: "rgba(211, 217, 229, 0.9)",
+              borderRadius: "8px",
+              my: "32px",
+            }}
           />
-        </Styled.DisplayedImage>
+        ) : (
+          <Styled.DisplayedImage>
+            <img
+              src={garment?.imageUrls?.largeUrl}
+              alt={garment ? garment.garmentTitle : "garment"}
+              onClick={handleZoom}
+            />
+          </Styled.DisplayedImage>
+        )}
         <Styled.ThumbGallery></Styled.ThumbGallery>
       </Styled.ImagesSection>
       <Styled.InfoSection>
@@ -204,14 +202,13 @@ Styled.ImagesSection = styled.section(() => {
 
 Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
-  console.log("props.imageLoaded", props.imageLoaded)
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     position: relative;
     width: 100vw;
-    min-height: 300px;
+    min-height: 575px;
     flex-shrink: 1;
     border-radius: 6px;
 

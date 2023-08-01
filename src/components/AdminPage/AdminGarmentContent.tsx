@@ -244,7 +244,7 @@ Styled.DisplayedImage = styled.div(props => {
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     width: 100vw;
-    min-height: 300px;
+    min-height: 575px;
     flex-shrink: 1;
 
     ${t.mq.xs} {

@@ -37,6 +37,7 @@ const AdminHeader: React.FC<Props> = props => {
     const modal = <AddGarmentModal onCancel={() => removeModal()} />;
 
     openModal(modal);
+    handleClose();
   };
 
   const handleClickUrlAdd = (event: React.SyntheticEvent): void => {
@@ -44,6 +45,7 @@ const AdminHeader: React.FC<Props> = props => {
     const modal = <AddByUrlModal onCancel={() => removeModal()} />;
 
     openModal(modal);
+    handleClose();
   };
 
   const handleClickEditMenus = () => {
@@ -118,7 +120,7 @@ Styled.Container = styled.div(props => {
   const t = props.theme;
   return css`
     label: Container;
-    ${t.mb(18)}
+    ${t.mb(12)}
     display: flex;
     justify-content: center;
     width: 100%;
@@ -130,7 +132,7 @@ Styled.AdminHeaderContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminHeader_Container;
-    ${[t.mb(4), t.mt(6)]}
+    ${[t.mb(3), t.mt(4)]}
     margin-right: 2%;
     margin-left: 2%;
     width: 96%;

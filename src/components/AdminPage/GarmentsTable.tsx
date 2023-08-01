@@ -36,16 +36,18 @@ interface GarmentsTableProps {}
 const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const { data: garments, isLoading, error } = useGarments();
 
-  const { openModal, removeModal } = useModalContext();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const { openModal, removeModal } = useModalContext();
+  
+  const initialRows = isSmallScreen ? 5 : 8;
   const [page, setPage] = React.useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(initialRows);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   React.useEffect(() => {
     console.log("LOCATION", location);

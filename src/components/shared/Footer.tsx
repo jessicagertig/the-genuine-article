@@ -2,13 +2,15 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
+
 type Props = {};
 
 const Footer = (props: Props) => {
   return (
     <Styled.FooterContainer>
       <div>
-        <p>Add image here</p>
+        <img src={bookcaseImage} />
       </div>
       <div>
         <p>Add links here</p>

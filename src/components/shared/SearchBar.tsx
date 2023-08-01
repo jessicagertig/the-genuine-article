@@ -106,7 +106,7 @@ Styled.ButtonContainer = styled.div(() => {
     border-radius: 0 4px 4px 0;
     background-color: rgba(23, 42, 79, 0.9); 
     border-bottom: 2px solid rgba(23, 42, 79, 0.9);
-    border-top: 2px solidrgba(23, 42, 79, 0.9);
+    border-top: 2px solid rgba(23, 42, 79, 0.9);
     border-right: 2px solid rgba(23, 42, 79, 0.9);
   `;
 });

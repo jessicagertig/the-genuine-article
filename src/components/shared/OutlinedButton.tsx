@@ -22,8 +22,13 @@ const OutlinedButton: React.FC<CustomOutlinedButtonProps> = props => {
   const defaultStyles = {
     width: "100%",
     fontWeight: "bold",
-    border: "2px solid",
     margin: "4px",
+    "&.MuiButton-outlined": {
+      border: `2px solid`,
+    },
+    "&:hover.MuiButton-outlined": {
+      border: `2px solid`,
+    },
   };
 
   const finalStyles = styles

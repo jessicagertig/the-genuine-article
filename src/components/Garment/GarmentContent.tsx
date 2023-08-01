@@ -21,10 +21,8 @@ interface GarmentContentProps {
   loading: boolean;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = ({
-  garment,
-  loading,
-}) => {
+const GarmentContent: React.FC<GarmentContentProps> = (props) => {
+  const { garment, loading } = props;
   const { openModal, removeModal } = useModalContext();
 
   const theme = useTheme();

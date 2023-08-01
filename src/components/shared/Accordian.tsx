@@ -24,14 +24,16 @@ const Accordian: React.FC<AccordianProps> = (props) => {
 
   React.useEffect(() => {
     if (textRef && textRef.current) {
-      console.log("Text REF", textRef.current)
-      console.log("scroll height", textRef.current.scrollHeight)
+      // console.log("Text REF", textRef.current)
+      // console.log("scroll height", textRef.current.scrollHeight)
       const scrollHeight = textRef.current.scrollHeight;
-      if (scrollHeight > 150) {
+      const clientHeight = textRef.current.clientHeight;
+      if (scrollHeight > 150 || clientHeight < scrollHeight) {
         setHasOverflow(true)
       } 
     }
-  }, [textRef?.current?.scrollHeight, isOpen])
+    //text must be a dependency or else it will not recalculate
+  }, [textRef?.current?.scrollHeight, text])
 
   const handleClickOpen = (event: React.SyntheticEvent): void => {
     event.preventDefault();
@@ -129,9 +131,6 @@ Styled.Container = styled.div((props: any) => {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    ${t.mq.md} {
-    }
   `;
 });
 
@@ -142,9 +141,6 @@ Styled.AccordianContainer = styled.div((props: any) => {
     position: relative;
     width: 100%;
     height: 100%
-
-    ${t.mq.md} {
-    }
 
     .concealer-inactive {
       display: none;
@@ -185,9 +181,6 @@ Styled.TextContainer = styled.div((props: any) => {
     .active {
       height: 100%;
     }
-
-    ${t.mq.md} {
-    }
   `;
 });
 
@@ -205,9 +198,6 @@ Styled.ButtonsContainer = styled.div((props: any) => {
 
     .active {
       display: flex;
-    }
-
-    ${t.mq.md} {
     }
   `;
 });

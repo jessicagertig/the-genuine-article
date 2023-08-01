@@ -20,9 +20,6 @@ const createRootStyles = (theme: any): any => {
         borderBottom: `1px solid ${alpha(theme.palette.primary.main, 0.66)}`,
       },
     },
-    // "& .MuiIconButton-root": {
-    //   color: `${alpha(theme.palette.primary.main, 0.66)}`
-    // },
     "& input:-webkit-autofill": {
       WebkitTextFillColor: theme.palette.primary.main,
     },

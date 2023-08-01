@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,6 +14,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
+import PaginationActions from "src/components/AdminPage/PaginationActions";
 import TextButton from "src/components/shared/TextButton";
 import LoadingBar from "src/components/shared/Loading";
 import { useGarments } from "src/queryHooks/useGarments";
@@ -28,30 +31,26 @@ interface Column {
   format?: (value: number) => string;
 }
 
-const columns: Column[] = [
-  { id: "id", label: "Id" },
-  { id: "garmentTitle", label: "Garment Title" },
-  { id: "beginYear", label: "Year" },
-  { id: "colors", label: "Colors" },
-  { id: "collectionUrl", label: "Source Url" },
-  { id: "hasImage", label: "Image" },
-  { id: "addImageButton", label: "" },
-];
-
 interface GarmentsTableProps {}
 
 const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const { data: garments, isLoading, error } = useGarments();
 
-  const { openModal, removeModal } = useModalContext();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const { openModal, removeModal } = useModalContext();
+  
+  const initialRows = isSmallScreen ? 5 : 8;
   const [page, setPage] = React.useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(initialRows);
 
   const navigate = useNavigate();
   const location = useLocation();
 
+
   React.useEffect(() => {
+    console.log("LOCATION", location);
     if (location?.state?.rowsNo !== undefined) {
       setRowsPerPage(location.state.rowsNo);
     }
@@ -60,7 +59,29 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     }
   }, []);
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const smallScreenColumns: Column[] = [
+    { id: "id", label: "Id" },
+    { id: "beginYear", label: "Year" },
+    { id: "collectionUrl", label: "Source Url" },
+    { id: "hasImage", label: "Image" },
+  ];
+
+  const largerScreenColumns: Column[] = [
+    { id: "id", label: "Id" },
+    { id: "garmentTitle", label: "Garment Title" },
+    { id: "beginYear", label: "Year" },
+    { id: "colors", label: "Colors" },
+    { id: "collectionUrl", label: "Source Url" },
+    { id: "hasImage", label: "Image" },
+    { id: "addImageButton", label: "" },
+  ];
+
+  const columns = isSmallScreen ? smallScreenColumns : largerScreenColumns;
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
@@ -193,6 +214,9 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     return [];
   }, [garments]);
 
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows = page > 0 ? (1 + page) * rowsPerPage - rows.length : 0;
+
   if (isLoading || !garments) {
     return (
       <Styled.LoadingContainer>
@@ -210,9 +234,11 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
+        boxShadow:
+          "0px 2px 1px -1px rgba(23, 42, 79, 0.12), 0px 1px 1px 0px rgba(23, 42, 79, 0.3), 0px 1px 3px 0.5px rgba(23, 42, 79, 0.2)",
       }}
     >
-      <TableContainer sx={{ maxHeight: 640 }}>
+      <TableContainer sx={{ maxHeight: 702 }}>
         <Table stickyHeader aria-label="garments table">
           <TableHead>
             <TableRow>
@@ -222,8 +248,10 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                   align={column.align}
                   sx={{
                     fontWeight: "bold",
-                    borderBottom: "1px solid rgb(180 180 180)",
+                    borderBottom: "1px solid rgb(211, 217, 229)",
                     fontSize: "1rem",
+                    color: "#172a4f",
+                    pt: 3,
                   }}
                 >
                   {column.label}
@@ -237,11 +265,15 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
               .map(row => {
                 return (
                   <TableRow
-                    hover
                     onClick={event => handleRowClick(event, row.id)}
                     tabIndex={-1}
                     key={row.id}
-                    sx={{ "&:hover": { cursor: "pointer" } }}
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        backgroundColor: "rgba(211, 217, 229, 0.5)",
+                      },
+                    }}
                   >
                     {columns.map(column => {
                       const value = row[column.id];
@@ -256,6 +288,8 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                             color: "#223F7C",
                             fontWeight: "bold",
                             fontSize: "14px",
+                            height: "72px",
+                            py: 1.5,
                           }}
                         >
                           {value}
@@ -265,17 +299,41 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                   </TableRow>
                 );
               })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 72 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 15]}
-        component="div"
+        rowsPerPageOptions={[5, 8, 10, 15]}
+        ActionsComponent={PaginationActions}
         count={rows.length}
         rowsPerPage={rowsPerPage}
         page={page}
+        component="div"
         onPageChange={handleChangePage}
         onRowsPerPageChange={event => handleChangeRowsPerPage(event)}
+        sx={{
+          color: "#172a4f",
+          "& .MuiSelect-icon": {
+            color: "#172a4f",
+          },
+          "& .MuiInputBase-input": {
+            color: "#172a4f",
+          },
+          "& .MuiTablePagination-displayedRows": {
+            width: "84px",
+          },
+          " .MuiTablePagination-selectLabel": {
+            display: isSmallScreen ? "none" : "unset",
+          },
+          "& .MuiTablePagination-toolbar": {
+            pl: isSmallScreen ? "4px" : 2,
+          },
+        }}
       />
     </Paper>
   );

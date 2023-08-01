@@ -3,6 +3,11 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+
 import OutlinedButton from "src/components/shared/OutlinedButton";
 
 type Props = {
@@ -28,6 +33,9 @@ const SecondaryNav = (props: Props) => {
     rowsNumber,
   } = props;
   const navigate = useNavigate();
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClickBack = () => {
     if (backPath !== undefined) {
@@ -56,23 +64,43 @@ const SecondaryNav = (props: Props) => {
     }
   };
 
+  const colorStyle = {
+    color: "#172a4f",
+    "&:hover": {
+      backgroundColor: "rgba(211, 217, 229, 0.5)",
+    },
+  };
+
+  const backIconButton = (
+    <IconButton
+      onClick={handleClickBack}
+      sx={colorStyle}
+    >
+      <ArrowBackIcon/>
+    </IconButton>
+  )
+
+  const backFullButton = (
+    <OutlinedButton
+    hasStartIcon={true}
+    iconType="back"
+    onClick={handleClickBack}
+    styles={{
+      maxWidth: "100px",
+      paddingRight: "8px",
+      paddingLeft: "8px",
+    }}
+  >
+    Back
+  </OutlinedButton>
+  )
+
+  const backButton = isSmallScreen ? backIconButton : backFullButton;
+
   return (
     <Styled.SecondaryNavContainer>
       <Styled.LeftButtonContainer>
-        {backPath ? (
-          <OutlinedButton
-            hasStartIcon={true}
-            iconType="back"
-            onClick={handleClickBack}
-            styles={{
-              maxWidth: "100px",
-              paddingRight: "8px",
-              paddingLeft: "8px",
-            }}
-          >
-            Back
-          </OutlinedButton>
-        ) : null}
+        {backPath ? backButton : null}
       </Styled.LeftButtonContainer>
       <Styled.SecondaryNavHeader>
         <h2>{pageTitle}</h2>
@@ -127,10 +155,14 @@ Styled.SecondaryNavHeader = styled.div(props => {
   const t = props.theme;
   return css`
     label: SecondaryNavHeader;
-    width: 50%;
+    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    ${t.mq.xs} {
+      width: 50%;
+    }
 
     ${t.mq.sm} {
       width: 60%;
@@ -153,7 +185,11 @@ Styled.LeftButtonContainer = styled.div(props => {
     label: GarmentPageButtonContainer;
     display: flex;
     justify-content: flex-start;
-    width: 25%;
+    width: 30%;
+
+    ${t.mq.xs} {
+      width: 25%;
+    }
 
     ${t.mq.sm} {
       width: 20%;
@@ -167,7 +203,11 @@ Styled.RightButtonContainer = styled.div(props => {
     label: GarmentPageButtonContainer;
     display: flex;
     justify-content: flex-end;
-    width: 25%;
+    width: 30%;
+
+    ${t.mq.xs} {
+      width: 25%;
+    }
 
     ${t.mq.sm} {
       width: 20%;

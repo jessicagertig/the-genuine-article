@@ -1,6 +1,6 @@
 import React from "react";
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import DialogModal from "src/components/shared/DialogModal";
@@ -17,9 +17,10 @@ interface AddGarmentModalProps {
 
 const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
   const theme = useTheme();
-  const fullscreen = useMediaQuery(theme.breakpoints.down('md'))
+  const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
   const { modalOpen } = useModalContext();
-  const { mutate: createGarment, isLoading: isLoadingCreateGarment } = useCreateGarment();
+  const { mutate: createGarment, isLoading: isLoadingCreateGarment } =
+    useCreateGarment();
 
   const title = "ADD GARMENT";
 
@@ -39,16 +40,16 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
   });
 
   const handleGarmentChange = (changes: any) => {
-    setInfoState({ ...infoState, ...changes })
-  }
+    setInfoState({ ...infoState, ...changes });
+  };
 
   const handleColorsChange = (changes: any) => {
-    setColors(changes)
-  }
+    setColors(changes);
+  };
 
   const handleMaterialsChange = (changes: any) => {
-    setMaterials(changes)
-  }
+    setMaterials(changes);
+  };
 
   const handleSubmit = (event: React.FormEvent<Element>) => {
     event.preventDefault();
@@ -70,7 +71,7 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
       },
       {
         onSuccess: (data: GarmentData) => {
-          console.log("Success creating garment. Data:", data)
+          console.log("Success creating garment. Data:", data);
           props.onCancel();
         },
         onError: (error: any) => {
@@ -85,7 +86,7 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
     <OutlinedButton type="submit" onClick={handleSubmit}>
       Save
     </OutlinedButton>
-  )
+  );
 
   return (
     <DialogModal

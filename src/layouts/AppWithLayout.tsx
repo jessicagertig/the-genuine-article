@@ -27,7 +27,7 @@ const pages: Page[] = [
     layout: PublicLayout,
   },
   {
-    path: "/garments/garment/:garmentId",
+    path: "/garments/:garmentId",
     component: GarmentPage,
     layout: PublicLayout,
   },
@@ -50,7 +50,7 @@ const pages: Page[] = [
     layout: AdminLayout,
   },
   {
-    path: "/admin/garment/:garmentId",
+    path: "/admin/garments/:garmentId",
     component: AdminGarmentPage,
     layout: AdminLayout,
   },

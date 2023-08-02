@@ -44,7 +44,7 @@ const AdminGarmentPage: React.FC<AdminGarmentPageProps> = () => {
         pageNumber={pageNo}
         rowsNumber={rowsNo}
       />
-      <GarmentContent garment={garmentData} admin={true} />
+      <GarmentContent garment={garmentData} isLoading={garmentIsLoading}/>
     </Styled.GarmentPageContainer>
   );
 };

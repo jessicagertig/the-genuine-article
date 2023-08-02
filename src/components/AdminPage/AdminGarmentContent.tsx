@@ -4,6 +4,11 @@ import { css } from "@emotion/react";
 
 import { useNavigate } from "react-router-dom";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Skeleton from "@mui/material/Skeleton";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+
 import { GarmentData } from "src/types";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import IconButton from "@mui/material/IconButton";
@@ -17,11 +22,16 @@ import { useDeleteGarment } from "src/queryHooks/useGarments";
 
 interface GarmentContentProps {
   garment: GarmentData | undefined;
-  admin?: boolean;
+  isLoading: boolean;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
+const GarmentContent: React.FC<GarmentContentProps> = ({
+  garment,
+  isLoading,
+}) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const { openModal, removeModal } = useModalContext();
   const { mutate: deleteGarment } = useDeleteGarment();
   const garmentTitleOption = {
@@ -33,6 +43,11 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
     name: string;
     value: any;
   };
+
+  const noImage =
+    garment?.imageUrls?.largeUrl === undefined ||
+    garment?.imageUrls === null ||
+    garment?.imageUrls?.largeUrl === "";
 
   const items: Item[] = [
     { name: "Title", value: garment?.garmentTitle },
@@ -102,10 +117,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
   const onClickEditImages = (e: React.SyntheticEvent) => {
     e.preventDefault();
     const modal = (
-      <EditImagesModal
-        onCancel={() => removeModal()}
-        garment={garment}
-      />
+      <EditImagesModal onCancel={() => removeModal()} garment={garment} />
     );
 
     openModal(modal);
@@ -165,19 +177,43 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
   return (
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
-        <Styled.DisplayedImage>
-          <img
-            src={garment?.imageUrls?.largeUrl}
-            alt={garment ? garment.garmentTitle : "garment"}
-          />
-        </Styled.DisplayedImage>
+        {isLoading || noImage ? (
+          <Styled.NoImageContainer role="img" aria-label="image is loading or does not exist">
+            <Skeleton
+              variant="rectangular"
+              width={isSmallScreen ? "calc((100vh - 160px) * 0.82)" : "500px"}
+              height={isSmallScreen ? "calc(100vh - 160px)" : "609px"}
+              sx={{
+                bgcolor: "rgba(211, 217, 229, 0.9)",
+                borderRadius: "8px",
+                my: "32px",
+              }}
+            />
+            <ImageOutlinedIcon
+              sx={{
+                position: "absolute",
+                top: "35%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: "1",
+                fontSize: "4rem",
+                color: "rgba(34, 63, 124, .66)",
+              }}
+            />
+          </Styled.NoImageContainer>
+        ) : (
+          <Styled.DisplayedImage>
+            <img
+              src={garment?.imageUrls?.largeUrl}
+              alt={garment ? garment.garmentTitle : "garment"}
+            />
+          </Styled.DisplayedImage>
+        )}
         <Styled.ThumbGallery></Styled.ThumbGallery>
         <Styled.ButtonContainer>
-          {admin ? (
-            <OutlinedButton onClick={event => onClickEditImages(event)}>
-              Edit Images
-            </OutlinedButton>
-          ) : null}
+          <OutlinedButton onClick={event => onClickEditImages(event)}>
+            Edit Images
+          </OutlinedButton>
         </Styled.ButtonContainer>
       </Styled.ImagesSection>
       <Styled.DetailsSection>
@@ -187,25 +223,21 @@ const GarmentContent: React.FC<GarmentContentProps> = ({ garment, admin }) => {
               <Styled.InfoTitle>Garment Information</Styled.InfoTitle>
             </Styled.InfoTitleContainer>
             <Styled.IconButtonContainer>
-              {admin ? (
-                <IconButton
-                  sx={{ color: "white" }}
-                  onClick={event => handleClickEdit(event)}
-                >
-                  <BorderColorOutlinedIcon />
-                </IconButton>
-              ) : null}
+              <IconButton
+                sx={{ color: "white" }}
+                onClick={event => handleClickEdit(event)}
+              >
+                <BorderColorOutlinedIcon />
+              </IconButton>
             </Styled.IconButtonContainer>
           </Styled.HeaderContainer>
           <Styled.InfoContent>{itemNodes}</Styled.InfoContent>
         </Styled.InfoContainer>
       </Styled.DetailsSection>
       <Styled.DeleteButtonContainer>
-        {admin ? (
-          <OutlinedButton color="error" onClick={handleClickDelete}>
-            Delete Garment
-          </OutlinedButton>
-        ) : null}
+        <OutlinedButton color="error" onClick={handleClickDelete}>
+          Delete Garment
+        </OutlinedButton>
       </Styled.DeleteButtonContainer>
     </Styled.GarmentContainer>
   );
@@ -237,6 +269,14 @@ Styled.ImagesSection = styled.section(() => {
   `;
 });
 
+Styled.NoImageContainer = styled.div(() => {
+  return css`
+    label: Garment_NoImageContainer;
+    display: block;
+    position: relative;
+  `;
+});
+
 Styled.DisplayedImage = styled.div(props => {
   const t = props.theme;
   return css`
@@ -244,7 +284,7 @@ Styled.DisplayedImage = styled.div(props => {
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     width: 100vw;
-    min-height: 575px;
+    max-height: 575px;
     flex-shrink: 1;
 
     ${t.mq.xs} {

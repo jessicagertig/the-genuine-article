@@ -59,7 +59,7 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
     garmentId: number
   ): void => {
     e.preventDefault();
-        navigate(`/garments/garment/${garmentId}`, {
+        navigate(`/garments/${garmentId}`, {
       state: {
         pageNo: pageNo,
       },

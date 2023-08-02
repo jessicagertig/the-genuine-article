@@ -208,7 +208,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
     display: flex;
     position: relative;
     width: 100vw;
-    min-height: 575px;
+    max-height: 575px;
     flex-shrink: 1;
     border-radius: 6px;
 

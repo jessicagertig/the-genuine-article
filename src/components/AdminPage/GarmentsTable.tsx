@@ -98,7 +98,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     garmentId: number
   ): void => {
     event.preventDefault();
-    navigate(`/admin/garment/${garmentId}`, {
+    navigate(`/admin/garments/${garmentId}`, {
       state: {
         pageNo: page,
         rowsNo: rowsPerPage,

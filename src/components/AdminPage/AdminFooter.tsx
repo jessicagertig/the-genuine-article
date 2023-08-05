@@ -3,11 +3,20 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import { NavLink } from "react-router-dom";
+
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+
 import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
+import readingGirlImage from "src/assets/girlWithBook.png";
 
 interface AdminFooterProps {}
 
 const AdminFooter: React.FC<AdminFooterProps> = props => {
+
+  const theme = useTheme();
+  const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+
   type Link = {
     name: string;
     path: string;
@@ -65,7 +74,11 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   return (
     <Styled.MainContainer>
       <Styled.ImageContainer>
-        <img src={bookcaseImage} alt="girls standing by bookcase"/>
+        {isMediumScreen ? (
+          <img src={readingGirlImage} alt="girl standing with book"/>
+        ) : (
+          <img src={bookcaseImage} alt="girls standing by bookcase"/>
+        )}
       </Styled.ImageContainer>
       <Styled.ContentContainer>
         <Styled.ResourceContainer>
@@ -100,16 +113,12 @@ Styled.MainContainer = styled.div(props => {
   return css`
     label: AdminFooter_Container;
     ${[t.pb(8), t.pt(4), t.pl(8)]}
-    height: 700px;
+    height: 550px;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     background-color: rgba(251, 233, 239, 1);
-
-    ${t.mq.sm} {
-      height: 550px;
-    }
   `;
 });
 
@@ -123,21 +132,34 @@ Styled.ImageContainer = styled.div(props => {
     display: none;
     justify-content: flex-start;
     align-items: center;
-    
-    ${t.mq.md} {
+
+    ${t.mq.sm} {
+      height: 500px;
+      width: 25%;
       display: flex;
+    }
+    
+    ${t.mq.lg} {
       margin-top: -100px;
     }
     
     img {
       margin-bottom: 24px;
-      margin-left: 24px;
+      margin-right: 12px;
       height: 600px;
       width: auto;
       display: none;
 
-      ${t.mq.md} {
+      ${t.mq.sm} {
         display: flex;
+        height: 450px;
+        width: auto;
+      }
+
+      ${t.mq.lg} {
+        margin-bottom: 24px;
+        margin-left: 24px;
+        height: 600px;
       }
     }
   `;
@@ -153,7 +175,12 @@ Styled.ContentContainer = styled.div(props => {
     display: flex;
     justify-content: flex-end;
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
+      ${[t.mt(12)]}
+      width: 75%;
+    }
+
+    ${t.mq.lg} {
       width: 66%;
     }
   `;
@@ -171,7 +198,11 @@ Styled.NavLinksContainer = styled.div(props => {
     color: #223F7C;
 
     ${t.mq.sm} {
-      width: 40%;
+      width: 25%;
+    }
+
+    ${t.mq.lg} {
+      width: 34%;
     }
   `;
 });
@@ -180,7 +211,8 @@ Styled.NavLinksContainer = styled.div(props => {
 Styled.ResourceContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_ResourceContainer;
+    label: AdminFooter_ResourceContainer
+    ${t.mt(10)}
     width: 66%;
     display: flex;
     flex-direction: column;

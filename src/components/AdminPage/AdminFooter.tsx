@@ -8,7 +8,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
 import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
-import readingGirlImage from "src/assets/girlWithBook.png";
 
 interface AdminFooterProps {}
 
@@ -31,13 +30,15 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   const styles = {
     transition: "font-size 0.2s ease",
     fontFamily: "Bellota Text",
-    fontSize: "1rem",
-    paddingBottom: "24px",
+    fontSize: "1.125rem",
+    padding: "24px",
+    color: "#831616",
 
     "&:hover": {
       cursor: "pointer",
       backgroundColor: "rgba(211, 217, 229, 0.25)",
-      fontSize: "1.05rem",
+      fontSize: "1.25rem",
+      color: "#C42121",
     },
     "&:visited": {
       color: "#172a4f",
@@ -47,57 +48,74 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
     },
   };
 
-  const externalLinks = [
+  const linksLeft = [
     {name: "The Metropolitan Museum of Art", to: "https://www.metmuseum.org/art/collection/search"},
     {name: "Victoria and Albert Museum", to: "https://www.vam.ac.uk/collections"},
     {name: "Philadeliphia Museum of Art", to: "https://www.philamuseum.org/collection"},
     {name: "The Kyoto Costume Institute", to: "https://www.kci.or.jp/en/archives/digital_archives/"},
     {name: "Los Angeles County Museum of Art", to: "https://collections.lacma.org/"},
+    {name: "The Royal Ontario Museum", to: "https://collections.rom.on.ca/objects"},
+    {name: "Maryland Center for History and Culture", to: "https://www.mdhistory.org/digital-resource/"},
+  ]
+
+  const linksRight = [
     {name: "The Museum at FIT", to: "https://fashionmuseum.fitnyc.edu/objects"},
     {name: "Cincinnati Art Museum", to: "https://www.cincinnatiartmuseum.org/art/explore-the-collection"},
     {name: "The Smithsonian", to: "https://www.si.edu/collections"},
-    {name: "Maryland Center for History and Culture", to: "https://www.mdhistory.org/digital-resource/"},
-    {name: "The Royal Ontario Museum", to: "https://collections.rom.on.ca/objects"},
     {name: "RISD Museum", to: "https://risdmuseum.org/art-design/collection"},
     {name: "Newfields", to: "https://discovernewfields.org/"},
     {name: "UNT Digital Library", to: "https://digital.library.unt.edu/explore/collections/"},
   ]
   
-  const resourceLinks = (
-    externalLinks.map(link => 
+  const resourceLinksLeft = (
+    linksLeft.map(link => 
       <Styled.ResourceLink key={link.name}>
         <a href={link.to} target="_blank" rel="noreferer">{link.name}</a>
       </Styled.ResourceLink>
     )
   )
 
+  const resourceLinksRight = (
+    linksRight.map(link => 
+      <Styled.ResourceLink key={link.name}>
+        <a href={link.to} target="_blank" rel="noreferer">{link.name}</a>
+      </Styled.ResourceLink>
+    )
+  )
+
+
   return (
-    <Styled.MainContainer>
-      <Styled.ImageContainer>
-        {isMediumScreen ? (
-          <img src={readingGirlImage} alt="girl standing with book"/>
-        ) : (
+    <Styled.Container>
+      <Styled.MainContainer>
+        <Styled.ContentContainer>
+          <Styled.NavLinksContainer>
+            {links.map(link => (
+              <NavLink to={link.path} key={link.name} style={styles}>
+                {link.name}
+              </NavLink>
+            ))}
+          </Styled.NavLinksContainer>
+          <Styled.ResourceContainer>
+            <Styled.Title>
+              <h2>External Resources</h2>
+            </Styled.Title>
+            <Styled.LinksSection>
+              <Styled.LeftResourceLinks>
+                {resourceLinksLeft}
+              </Styled.LeftResourceLinks>
+              <Styled.RightResourceLinks>
+                {resourceLinksRight}
+              </Styled.RightResourceLinks>
+            </Styled.LinksSection>
+          </Styled.ResourceContainer>
+        </Styled.ContentContainer>
+        <Styled.ImageContainer>
           <img src={bookcaseImage} alt="girls standing by bookcase"/>
-        )}
-      </Styled.ImageContainer>
-      <Styled.ContentContainer>
-        <Styled.ResourceContainer>
-          <Styled.Title>
-            <h2>Resources</h2>
-          </Styled.Title>
-          <Styled.ResourceLinksContainer>
-            {resourceLinks}
-          </Styled.ResourceLinksContainer>
-        </Styled.ResourceContainer>
-        <Styled.NavLinksContainer>
-          {links.map(link => (
-            <NavLink to={link.path} key={link.name} style={styles}>
-              {link.name}
-            </NavLink>
-          ))}
-        </Styled.NavLinksContainer>
-      </Styled.ContentContainer>
-    </Styled.MainContainer>
+        </Styled.ImageContainer>
+      </Styled.MainContainer>
+      <Styled.BottomBarContainer>
+      </Styled.BottomBarContainer>
+    </Styled.Container>
   );
 };
 
@@ -108,80 +126,52 @@ export default AdminFooter;
 let Styled: any;
 Styled = {};
 
+Styled.Container = styled.div`
+  label: Footer_Container;
+  height: 600px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(251, 233, 239, 0.75);
+`
+
 Styled.MainContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_Container;
-    ${[t.pb(8), t.pt(4), t.pl(8)]}
-    height: 550px;
+    ${[t.pb(1), t.mt(6), t.pl(1)]}
+    height: 500px;
     width: 100%;
+    max-width: 1200px;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    background-color: rgba(251, 233, 239, 1);
   `;
 });
 
-Styled.ImageContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: AdminFooter_ImageContainer;
-    width: 50%;
-    height: 550px;
-    margin-top: 0px;
-    display: none;
-    justify-content: flex-start;
-    align-items: center;
-
-    ${t.mq.sm} {
-      height: 500px;
-      width: 25%;
-      display: flex;
-    }
-    
-    ${t.mq.lg} {
-      margin-top: -100px;
-    }
-    
-    img {
-      margin-bottom: 24px;
-      margin-right: 12px;
-      height: 600px;
-      width: auto;
-      display: none;
-
-      ${t.mq.sm} {
-        display: flex;
-        height: 450px;
-        width: auto;
-      }
-
-      ${t.mq.lg} {
-        margin-bottom: 24px;
-        margin-left: 24px;
-        height: 600px;
-      }
-    }
-  `;
-});
+Styled.BottomBarContainer = styled.div`
+  label: Foot_BottomBarContainer;
+  height: 42px;
+  margin-top: 8px;
+  width: 100%;
+  display: flex;
+  justify-conent: center;
+`
 
 Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_ContentContainer;
-    ${[t.py(4), t.pr(12)]}
+    ${[t.py(1), t.pr(1)]}
     width: 100%;
-    min-height: 250px;
+    height: 500px;
     display: flex;
-    justify-content: flex-end;
-
-    ${t.mq.sm} {
-      ${[t.mt(12)]}
-      width: 75%;
-    }
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     ${t.mq.lg} {
-      width: 66%;
+      width: 60%;
     }
   `;
 });
@@ -189,35 +179,34 @@ Styled.ContentContainer = styled.div(props => {
 Styled.NavLinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_Container;
-    ${[t.pb(8), t.pt(4), t.pl(8)]}
-    width: 50%;
+    label: AdminFooter_NavLinksContainer;
+    ${[t.pb(0), t.pt(0)]}
+    width: 70%;
+    margin-right: 15%;
+    margin-left: 15%;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    justify-content: center;
     color: #223F7C;
 
     ${t.mq.sm} {
-      width: 25%;
     }
 
     ${t.mq.lg} {
-      width: 34%;
     }
   `;
 });
-
 
 Styled.ResourceContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_ResourceContainer
-    ${t.mt(10)}
-    width: 66%;
+    ${t.mt(0)}
+    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    max-height: 550px;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
   `;
 });
 
@@ -225,39 +214,53 @@ Styled.Title = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_TitleContainer;
-    ${[t.pb(2), t.pt(4), t.pl(8)]}
+    ${[t.pb(0), t.pt(0), t.pl(0)]}
     width: 100%;
     display: flex;
 
     h2 {
-        ${t.pl(2)}
+        ${t.pl(0)}
         width: 300px;
         font-size: 1.125rem;
         line-height: 1.5rem; 
-        font-weight: bold;
         font-family: bellota text;
         color: #172a4f;
         border-bottom: 1px solid red;
+        text-align: center;
       }
   `;
 });
 
+Styled.LinksSection = styled.div`
+  label: Footer_ResourceLinksSection;
+  display: flex;
+  width: 100%;
+  height: 150px;
+`
 
-Styled.ResourceLinksContainer = styled.div(props => {
+Styled.LeftResourceLinks = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_Container;
-    ${[t.pb(8), t.pl(8)]}
-    width: 100%;
+    label: Footer_LeftResourceLinksContainer;
+    ${[t.pr(0), t.pl(0)]}
+    min-width: 200px;
+    width: 60%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    max-height: 500px;
-    flex-wrap: nowrap;
+  `;
+});
 
-    ${t.mq.sm} {
-      flex-wrap: wrap;
-    }
+Styled.RightResourceLinks = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Footer_RightResourceLinksContainer;
+    ${[t.pr(0), t.pl(0)]}
+    min-width: 133px;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   `;
 });
 
@@ -265,9 +268,10 @@ Styled.ResourceLink = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_ExternalLink;
-    ${[t.py(1), t.pr(12), t.pl(2)]}
+    ${[t.py(0), t.pr(0), t.pl(0)]}
     color: #223F7C;
-    font-size: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
 
     a {
       font-family: "Bellota Text";
@@ -277,12 +281,38 @@ Styled.ResourceLink = styled.div(props => {
       }
     }
 
-    ${t.mq.md} {
+    ${t.mq.lg} {
       font-size: 1rem;
       line-height: 1.375rem;
     }
   `;
 });
 
+Styled.ImageContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: AdminFooter_ImageContainer;
+    width: 40%;
+    height: 500px;
+    display: none;
+    justify-content: flex-start;
+    align-items: center;
+
+    ${t.mq.lg} {
+      display: flex;
+    }
+    
+    img {
+      ${[t.mr(4)]}
+      height: 500px;
+      width: auto;
+      display: none;
+
+      ${t.mq.lg} {
+        display: block;
+      }
+    }
+  `;
+});
 
 // when image is added use media query to set its display to none when smaller screen

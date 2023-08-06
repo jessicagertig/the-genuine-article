@@ -209,8 +209,13 @@ Styled.DisplayedImage = styled.div((props: any) => {
     position: relative;
     width: 100vw;
     max-height: 575px;
-    flex-shrink: 1;
+    min-height: 375px;
     border-radius: 6px;
+    flex-shrink: 1;
+
+    ${t.mq.xxs} {
+      min-height: 420px;
+    }
 
     ${t.mq.xs} {
       width: 500px;

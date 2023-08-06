@@ -32,18 +32,7 @@ Styled.AdminPageContainer = styled.div(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 100px;
-  `;
-});
-
-Styled.ButtonContainer = styled.div(() => {
-  return css`
-    label: GarmentPageButtonContainer;
-    padding-right: 24px;
-    padding-bottom: 24px;
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
+    margin-bottom: 50px;
   `;
 });
 

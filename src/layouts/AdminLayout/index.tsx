@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import AdminFooter from "src/components/AdminPage/AdminFooter";
+import Footer from "src/components/shared/Footer";
 import NavBar from "src/components/shared/NavBar";
 
 interface PublicLayoutProps {
@@ -15,7 +15,7 @@ const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
     <Styled.PageContainer>
       <NavBar backgroundColor="rgba(211, 217, 229, 0.5)" shadow={false} />
       {children}
-      <AdminFooter />
+      <Footer />
     </Styled.PageContainer>
   );
 };

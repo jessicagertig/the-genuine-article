@@ -214,9 +214,10 @@ Styled.Title = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_TitleContainer;
-    ${[t.pb(0), t.pt(0), t.pl(0)]}
+    ${[t.pt(4), t.pb(1)]}
     width: 100%;
     display: flex;
+    justify-content: center;
 
     h2 {
         ${t.pl(0)}
@@ -225,29 +226,61 @@ Styled.Title = styled.div(props => {
         line-height: 1.5rem; 
         font-family: bellota text;
         color: #172a4f;
-        border-bottom: 1px solid red;
         text-align: center;
       }
   `;
 });
 
-Styled.LinksSection = styled.div`
-  label: Footer_ResourceLinksSection;
-  display: flex;
-  width: 100%;
-  height: 150px;
-`
+Styled.LinksSection = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Footer_ResourceLinksSection;
+    ${t.pt(2)};
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
+    height: 330px;
+    border-top: 1px solid red;
+
+    ${t.mq.xs} {
+      height: 250px;
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    ${t.mq.sm} {
+      width: 70%;
+      margin-right: 15%;
+      margin-left: 15%;
+    }
+
+    ${t.mq.lg} {
+      width: 80%;
+      margin-right: 10%;
+      margin-left: 10%;
+    }
+  `;
+});
+
+
 
 Styled.LeftResourceLinks = styled.div(props => {
   const t = props.theme;
   return css`
     label: Footer_LeftResourceLinksContainer;
-    ${[t.pr(0), t.pl(0)]}
+    ${[t.pl(4)]}
     min-width: 200px;
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    ${t.mq.xs} {
+      ${[t.pl(2)]}
+      width: 60%;
+    }
   `;
 });
 
@@ -255,12 +288,17 @@ Styled.RightResourceLinks = styled.div(props => {
   const t = props.theme;
   return css`
     label: Footer_RightResourceLinksContainer;
-    ${[t.pr(0), t.pl(0)]}
+    ${[t.pr(0), t.pl(4)]}
     min-width: 133px;
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    ${t.mq.xs} {
+      ${[t.pl(2)]}
+      width: 40%;
+    }
   `;
 });
 
@@ -271,7 +309,7 @@ Styled.ResourceLink = styled.div(props => {
     ${[t.py(0), t.pr(0), t.pl(0)]}
     color: #223F7C;
     font-size: 0.875rem;
-    line-height: 1.25rem;
+    line-height: 1.375rem;
 
     a {
       font-family: "Bellota Text";

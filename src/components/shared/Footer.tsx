@@ -6,8 +6,10 @@ import { NavLink } from "react-router-dom";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import SvgIcon from '@mui/material/SvgIcon';
 
 import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
+import CarrotIcon from "src/components/shared/CarrotIcon";
 
 interface FooterProps {}
 
@@ -83,9 +85,19 @@ const Footer: React.FC<FooterProps> = props => {
     )
   )
 
+  const svg = (
+    <SvgIcon sx={{ color: "#172a4f", height: "65px", width: "65px" }} >
+      <path d="M 18 13 L 12 7 L 6 13 L 6 15 l 6 -6 l 6 6 Z" />
+    </SvgIcon>
+  )
+
 
   return (
     <Styled.Container>
+        <Styled.Circle>
+          {svg}
+          <p>TOP</p>
+        </Styled.Circle>
       <Styled.MainContainer>
         <Styled.ContentContainer>
           <Styled.NavLinksContainer>
@@ -135,6 +147,8 @@ Styled.Container = styled.div`
   align-items: center;
   background-color: rgba(251, 233, 239, 0.75);
 `
+
+Styled.TopBarContainer = 
 
 Styled.MainContainer = styled.div(props => {
   const t = props.theme;
@@ -351,5 +365,18 @@ Styled.ImageContainer = styled.div(props => {
         display: block;
       }
     }
+  `;
+});
+
+Styled.Circle = styled.div(() => {
+  return css`
+    border: 2px solid #172a4f;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   `;
 });

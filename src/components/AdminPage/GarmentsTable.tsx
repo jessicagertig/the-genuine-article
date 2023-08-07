@@ -231,6 +231,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
       sx={{
         width: "100%",
         maxWidth: "1000px",
+        marginBottom: "150px",
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -350,7 +351,7 @@ Styled.LoadingContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: LoadingContainer;
-    ${t.mb(10)}
+    ${t.mb(24)}
     width: 50%;
     height: 300px;
     display: flex;

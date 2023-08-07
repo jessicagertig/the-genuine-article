@@ -15,6 +15,7 @@ const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
     <Styled.PageContainer>
       <NavBar backgroundColor="rgba(211, 217, 229, 0.5)" shadow={false} />
       {children}
+      <Footer />
     </Styled.PageContainer>
   );
 };
@@ -33,7 +34,13 @@ Styled.PageContainer = styled.div(props => {
     label: AdminContainer;
     width: 100%;
     height: 100%;
-    display: block;
+    min-height: 100vh;
+    display: flex;
     overflow-y: scroll;
+    flex-direction: column;
+
+    & > :last-child {
+      margin-top: auto;
+    }
   `;
 });

@@ -60,9 +60,9 @@ Styled.GarmentPageContainer = styled.div(() => {
   return css`
     label: AdminGarmentPage_Container;
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 50px;
   `;
 });

@@ -23,7 +23,6 @@ const Footer: React.FC<FooterProps> = props => {
     path: string;
   };
 
-
   const links: Link[] = [
     { name: "Home", path: "/" },
     { name: "Garments", path: "/garments" },
@@ -159,7 +158,11 @@ const Footer: React.FC<FooterProps> = props => {
         </Styled.ImageContainer>
       </Styled.MainContainer>
       <Styled.TopBarContainer>
-        <Styled.CircleButton onClick={props.scrollToTop} aria-label="scroll to top">
+        <Styled.CircleButton
+          onClick={props.scrollToTop}
+          role="button"
+          aria-label="scroll to top"
+        >
           {svg}
           <Styled.ButtonText>TOP</Styled.ButtonText>
         </Styled.CircleButton>
@@ -188,7 +191,7 @@ Styled.Container = styled.div`
 
 Styled.TopBarContainer = styled.div(() => {
   return css`
-    label: Foot_TopBarContainer;
+    label: Footer_TopBarContainer;
     height: 64px;
     width: 100%;
     display: flex;
@@ -196,7 +199,7 @@ Styled.TopBarContainer = styled.div(() => {
   `;
 });
 
-Styled.CircleButton = styled.button(() => {
+Styled.CircleButton = styled.div(() => {
   return css`
     label: Footer_CircleButton;
     border: 2px solid #172a4f;
@@ -208,6 +211,11 @@ Styled.CircleButton = styled.button(() => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(240, 167, 189, 0.2);
+    }
   `;
 });
 

@@ -86,18 +86,14 @@ const Footer: React.FC<FooterProps> = props => {
   )
 
   const svg = (
-    <SvgIcon sx={{ color: "#172a4f", height: "65px", width: "65px" }} >
-      <path d="M 18 13 L 12 7 L 6 13 L 6 15 l 6 -6 l 6 6 Z" />
+    <SvgIcon sx={{ color: "#172a4f", height: "55px", width: "55px", marginBottom: 1.5 }} >
+      <path d="M 17 14 L 12 9 L 7 14 L 6 13 l 6 -6 l 6 6 Z" />
     </SvgIcon>
   )
 
 
   return (
     <Styled.Container>
-        <Styled.Circle>
-          {svg}
-          <p>TOP</p>
-        </Styled.Circle>
       <Styled.MainContainer>
         <Styled.ContentContainer>
           <Styled.NavLinksContainer>
@@ -125,6 +121,12 @@ const Footer: React.FC<FooterProps> = props => {
           <img src={bookcaseImage} alt="girls standing by bookcase"/>
         </Styled.ImageContainer>
       </Styled.MainContainer>
+      <Styled.TopBarContainer>
+        <Styled.Circle>
+          {svg}
+          <Styled.ButtonText>TOP</Styled.ButtonText>
+        </Styled.Circle>
+      </Styled.TopBarContainer>
       <Styled.BottomBarContainer>
       </Styled.BottomBarContainer>
     </Styled.Container>
@@ -148,14 +150,52 @@ Styled.Container = styled.div`
   background-color: rgba(251, 233, 239, 0.75);
 `
 
-Styled.TopBarContainer = 
+Styled.TopBarContainer = styled.div (() => {
+  return css`
+  label: Foot_TopBarContainer;
+  height: 64px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  `
+})
+
+Styled.Circle = styled.div(() => {
+  return css`
+    border: 2px solid #172a4f;
+    position: relative;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  `;
+});
+
+
+Styled.ButtonText = styled.div(() => {
+  return css`
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-size: 1rem;
+  line-height: 1.5rem; 
+  font-family: bellota text;
+  font-weight: bold;
+  color: #172a4f;
+  `
+})
 
 Styled.MainContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Footer_Container;
     ${[t.pb(1), t.pl(1)]}
-    height: 500px;
+    height: 450px;
     margin-top: 50px;
     width: 100%;
     max-width: 1200px;
@@ -166,11 +206,10 @@ Styled.MainContainer = styled.div(props => {
 
 Styled.BottomBarContainer = styled.div`
   label: Foot_BottomBarContainer;
-  height: 42px;
-  margin-top: 8px;
+  height: 75px;
   width: 100%;
   display: flex;
-  justify-conent: center;
+  justify-content: center;
 `
 
 Styled.ContentContainer = styled.div(props => {
@@ -365,18 +404,5 @@ Styled.ImageContainer = styled.div(props => {
         display: block;
       }
     }
-  `;
-});
-
-Styled.Circle = styled.div(() => {
-  return css`
-    border: 2px solid #172a4f;
-    border-radius: 50%;
-    width: 75px;
-    height: 75px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
   `;
 });

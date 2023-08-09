@@ -10,10 +10,11 @@ import LoadingBar from "src/components/shared/Loading";
 import { GarmentData } from "src/types";
 import { usePaginatedGarments } from "src/queryHooks/useGarments";
 
-interface GarmentsListProps {}
+interface GarmentsListProps {
+  scrollToTop: () => void;
+}
 
-const GarmentsList: React.FC<GarmentsListProps> = () => {
-  const scrollRef = React.useRef<HTMLDivElement>(null!);
+const GarmentsList: React.FC<GarmentsListProps> = props => {
   
   const [pageNo, setPageNo] = React.useState(1);
   const [garments, setGarments] = React.useState<GarmentData[]>([]);
@@ -22,7 +23,6 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
   
   const { data, isFetching, isLoading, isPreviousData } = usePaginatedGarments(pageNo);
 
-  // const disabled = !hasMore;
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -49,8 +49,8 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
     const diffPage = value !== pageNo;
     setPageNo(value);
     console.log("diffPage", diffPage)
-    if (diffPage && scrollRef?.current) {
-      scrollRef.current.scrollIntoView({ behavior: 'smooth' })
+    if (diffPage) {
+      props.scrollToTop();
     }
   };
 
@@ -70,7 +70,6 @@ const GarmentsList: React.FC<GarmentsListProps> = () => {
 
   return (
     <Styled.GarmentsListContainer>
-      <div ref={scrollRef} />
       {loadingState ? (
         <Styled.LoadingContainer>
           <h2>Loading...</h2>

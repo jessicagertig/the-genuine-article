@@ -11,11 +11,19 @@ interface PublicLayoutProps {
 
 // TODO: make this an authed layout
 const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
+  const pageContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToTop = () => {
+    if (pageContainerRef && pageContainerRef.current) {
+      pageContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
-    <Styled.PageContainer>
+    <Styled.PageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="rgba(211, 217, 229, 0.5)" shadow={false} />
       {children}
-      <Footer />
+      <Footer scrollToTop={scrollToTop} />
     </Styled.PageContainer>
   );
 };

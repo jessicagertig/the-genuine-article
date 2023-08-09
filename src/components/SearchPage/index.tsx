@@ -36,6 +36,15 @@ const SearchPage: React.FC<SearchPageProps> = () => {
 
   const fetchingNextPage = isFetchingNextPage as boolean;
 
+  const searchBarRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToSearchBar = () => {
+    if (searchBarRef && searchBarRef.current) {
+      searchBarRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+
   React.useEffect(() => {
     if (data && data.pages) {
       const garmentResults =
@@ -87,7 +96,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     <Styled.SearchPageContainer>
       <NavBar backgroundColor="white" shadow={true} />
       <Styled.SearchContainer>
-        <Styled.SearchHeaderContainer>
+        <Styled.SearchHeaderContainer ref={searchBarRef}>
           <Styled.TextContainer>
             <h2>Search Garments</h2>
           </Styled.TextContainer>
@@ -108,7 +117,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
         {hasResults ? (
           <SearchResults garments={searchResults} isLoading={isLoading} />
         ) : (
-          <GarmentsList />
+          <GarmentsList scrollToTop={scrollToSearchBar} />
         )}
         <Styled.ButtonContainer>
           {hasResults && hasNextPage && !fetchingNextPage ? (

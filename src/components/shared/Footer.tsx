@@ -6,13 +6,15 @@ import { NavLink } from "react-router-dom";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import SvgIcon from "@mui/material/SvgIcon";
 
 import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
 
-interface FooterProps {}
+interface FooterProps {
+  scrollToTop: () => void;
+}
 
 const Footer: React.FC<FooterProps> = props => {
-
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
@@ -49,40 +51,82 @@ const Footer: React.FC<FooterProps> = props => {
   };
 
   const linksLeft = [
-    {name: "The Metropolitan Museum of Art", to: "https://www.metmuseum.org/art/collection/search"},
-    {name: "Victoria and Albert Museum", to: "https://www.vam.ac.uk/collections"},
-    {name: "Philadeliphia Museum of Art", to: "https://www.philamuseum.org/collection"},
-    {name: "The Kyoto Costume Institute", to: "https://www.kci.or.jp/en/archives/digital_archives/"},
-    {name: "Los Angeles County Museum of Art", to: "https://collections.lacma.org/"},
-    {name: "The Royal Ontario Museum", to: "https://collections.rom.on.ca/objects"},
-    {name: "Maryland Center for History and Culture", to: "https://www.mdhistory.org/digital-resource/"},
-  ]
+    {
+      name: "The Metropolitan Museum of Art",
+      to: "https://www.metmuseum.org/art/collection/search",
+    },
+    {
+      name: "Victoria and Albert Museum",
+      to: "https://www.vam.ac.uk/collections",
+    },
+    {
+      name: "Philadeliphia Museum of Art",
+      to: "https://www.philamuseum.org/collection",
+    },
+    {
+      name: "The Kyoto Costume Institute",
+      to: "https://www.kci.or.jp/en/archives/digital_archives/",
+    },
+    {
+      name: "Los Angeles County Museum of Art",
+      to: "https://collections.lacma.org/",
+    },
+    {
+      name: "The Royal Ontario Museum",
+      to: "https://collections.rom.on.ca/objects",
+    },
+    {
+      name: "Maryland Center for History and Culture",
+      to: "https://www.mdhistory.org/digital-resource/",
+    },
+  ];
 
   const linksRight = [
-    {name: "The Museum at FIT", to: "https://fashionmuseum.fitnyc.edu/objects"},
-    {name: "Cincinnati Art Museum", to: "https://www.cincinnatiartmuseum.org/art/explore-the-collection"},
-    {name: "The Smithsonian", to: "https://www.si.edu/collections"},
-    {name: "RISD Museum", to: "https://risdmuseum.org/art-design/collection"},
-    {name: "Newfields", to: "https://discovernewfields.org/"},
-    {name: "UNT Digital Library", to: "https://digital.library.unt.edu/explore/collections/"},
-  ]
-  
-  const resourceLinksLeft = (
-    linksLeft.map(link => 
-      <Styled.ResourceLink key={link.name}>
-        <a href={link.to} target="_blank" rel="noreferer">{link.name}</a>
-      </Styled.ResourceLink>
-    )
-  )
+    {
+      name: "The Museum at FIT",
+      to: "https://fashionmuseum.fitnyc.edu/objects",
+    },
+    {
+      name: "Cincinnati Art Museum",
+      to: "https://www.cincinnatiartmuseum.org/art/explore-the-collection",
+    },
+    { name: "The Smithsonian", to: "https://www.si.edu/collections" },
+    { name: "RISD Museum", to: "https://risdmuseum.org/art-design/collection" },
+    { name: "Newfields", to: "https://discovernewfields.org/" },
+    {
+      name: "UNT Digital Library",
+      to: "https://digital.library.unt.edu/explore/collections/",
+    },
+  ];
 
-  const resourceLinksRight = (
-    linksRight.map(link => 
-      <Styled.ResourceLink key={link.name}>
-        <a href={link.to} target="_blank" rel="noreferer">{link.name}</a>
-      </Styled.ResourceLink>
-    )
-  )
+  const resourceLinksLeft = linksLeft.map(link => (
+    <Styled.ResourceLink key={link.name}>
+      <a href={link.to} target="_blank" rel="noreferer">
+        {link.name}
+      </a>
+    </Styled.ResourceLink>
+  ));
 
+  const resourceLinksRight = linksRight.map(link => (
+    <Styled.ResourceLink key={link.name}>
+      <a href={link.to} target="_blank" rel="noreferer">
+        {link.name}
+      </a>
+    </Styled.ResourceLink>
+  ));
+
+  const svg = (
+    <SvgIcon
+      sx={{
+        color: "#172a4f",
+        height: "55px",
+        width: "55px",
+        marginBottom: 1.5,
+      }}
+    >
+      <path d="M 17 14 L 12 9 L 7 14 L 6 13 l 6 -6 l 6 6 Z" />
+    </SvgIcon>
+  );
 
   return (
     <Styled.Container>
@@ -110,11 +154,20 @@ const Footer: React.FC<FooterProps> = props => {
           </Styled.ResourceContainer>
         </Styled.ContentContainer>
         <Styled.ImageContainer>
-          <img src={bookcaseImage} alt="girls standing by bookcase"/>
+          <img src={bookcaseImage} alt="girls standing by bookcase" />
         </Styled.ImageContainer>
       </Styled.MainContainer>
-      <Styled.BottomBarContainer>
-      </Styled.BottomBarContainer>
+      <Styled.TopBarContainer>
+        <Styled.CircleButton
+          onClick={props.scrollToTop}
+          role="button"
+          aria-label="scroll to top"
+        >
+          {svg}
+          <Styled.ButtonText>TOP</Styled.ButtonText>
+        </Styled.CircleButton>
+      </Styled.TopBarContainer>
+      <Styled.BottomBarContainer></Styled.BottomBarContainer>
     </Styled.Container>
   );
 };
@@ -134,14 +187,59 @@ Styled.Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: rgba(251, 233, 239, 0.75);
-`
+`;
+
+Styled.TopBarContainer = styled.div(() => {
+  return css`
+    label: Footer_TopBarContainer;
+    height: 64px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  `;
+});
+
+Styled.CircleButton = styled.div(() => {
+  return css`
+    label: Footer_CircleButton;
+    border: 2px solid #172a4f;
+    position: relative;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+      background-color: rgba(240, 167, 189, 0.2);
+    }
+  `;
+});
+
+Styled.ButtonText = styled.div(() => {
+  return css`
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-family: bellota text;
+    font-weight: bold;
+    color: #172a4f;
+  `;
+});
 
 Styled.MainContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Footer_Container;
     ${[t.pb(1), t.pl(1)]}
-    height: 500px;
+    height: 450px;
     margin-top: 50px;
     width: 100%;
     max-width: 1200px;
@@ -152,12 +250,11 @@ Styled.MainContainer = styled.div(props => {
 
 Styled.BottomBarContainer = styled.div`
   label: Foot_BottomBarContainer;
-  height: 42px;
-  margin-top: 8px;
+  height: 75px;
   width: 100%;
   display: flex;
-  justify-conent: center;
-`
+  justify-content: center;
+`;
 
 Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
@@ -187,7 +284,7 @@ Styled.NavLinksContainer = styled.div(props => {
     margin-left: 15%;
     display: flex;
     justify-content: center;
-    color: #223F7C;
+    color: #223f7c;
 
     ${t.mq.sm} {
     }
@@ -221,14 +318,14 @@ Styled.Title = styled.div(props => {
     justify-content: center;
 
     h2 {
-        ${t.pl(0)}
-        width: 300px;
-        font-size: 1.125rem;
-        line-height: 1.5rem; 
-        font-family: bellota text;
-        color: #172a4f;
-        text-align: center;
-      }
+      ${t.pl(0)}
+      width: 300px;
+      font-size: 1.125rem;
+      line-height: 1.5rem;
+      font-family: bellota text;
+      color: #172a4f;
+      text-align: center;
+    }
   `;
 });
 
@@ -264,8 +361,6 @@ Styled.LinksSection = styled.div(props => {
     }
   `;
 });
-
-
 
 Styled.LeftResourceLinks = styled.div(props => {
   const t = props.theme;
@@ -314,7 +409,7 @@ Styled.ResourceLink = styled.div(props => {
 
     a {
       font-family: "Bellota Text";
-      
+
       &:hover {
         color: #172a4f;
       }
@@ -340,7 +435,7 @@ Styled.ImageContainer = styled.div(props => {
     ${t.mq.lg} {
       display: flex;
     }
-    
+
     img {
       ${[t.mr(4)]}
       height: 500px;

@@ -2,11 +2,11 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import Skeleton from '@mui/material/Skeleton';
-import IconButton from '@mui/material/IconButton';
-import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Skeleton from "@mui/material/Skeleton";
+import IconButton from "@mui/material/IconButton";
+import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 
@@ -19,7 +19,10 @@ interface HomeContentProps {
   windowWidth: number;
 }
 
-const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) => {
+const HomeContent: React.FC<HomeContentProps> = ({
+  windowHeight,
+  windowWidth,
+}) => {
   const { openModal, removeModal } = useModalContext();
   const { data: garment } = useDailyGarment();
 
@@ -29,7 +32,10 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
     width: 0,
   });
 
-  const { maxHeight, maxWidth } = useImageDimensions({imageLoaded, dimensions})
+  const { maxHeight, maxWidth } = useImageDimensions({
+    imageLoaded,
+    dimensions,
+  });
   const imgRef = React.useRef<HTMLImageElement>(null!);
 
   const onLoad = () => {
@@ -41,17 +47,19 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
   };
 
   React.useEffect(() => {
-    console.log("IMAGE REF", imgRef)
+    console.log("IMAGE REF", imgRef);
+    console.log(maxHeight);
     if (imgRef.current && imgRef.current.complete) {
       onLoad();
     }
   }, [imgRef]);
 
   const theme = useTheme();
-  const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const imageUrl = garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
-  const noImage = imageUrl === "" || imageUrl === undefined || !imageLoaded
+  const imageUrl =
+    garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
+  const noImage = imageUrl === "" || imageUrl === undefined;
 
   const handleZoom = () => {
     const modal = (
@@ -66,7 +74,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
     openModal(modal);
   };
 
-  // Image container can NOT be conditionally displayed (even if loading is slow) 
+  // Image container can NOT be conditionally displayed (even if loading is slow)
   // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
     <Styled.HomeContentContainer height={windowHeight}>
@@ -75,9 +83,17 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
       </Styled.ContentTitleContainer>
       <Styled.ImageSection>
         {noImage || !imageLoaded ? (
-        <Skeleton variant="rectangular" width="calc((100vh - 160px) * 0.82)" height="calc(100vh - 160px)" sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}/>
+          <Skeleton
+            variant="rectangular"
+            width="calc((100vh - 160px) * 0.82)"
+            height="calc(100vh - 160px)"
+            sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}
+          />
         ) : null}
-        <Styled.DisplayedImage height={maxHeight} noImage={noImage}>
+        <Styled.DisplayedImage
+          height={maxHeight ? maxHeight : 100}
+          noImage={noImage}
+        >
           <img
             ref={imgRef}
             src={imageUrl}
@@ -93,8 +109,8 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
                 color: "white",
                 backgroundColor: "rgba(23, 42, 79, 0.1)",
                 "&:hover": {
-                  backgroundColor: "rgba(23, 42, 79, 0.2)"
-                }
+                  backgroundColor: "rgba(23, 42, 79, 0.2)",
+                },
               }}
             >
               <ZoomOutMapOutlinedIcon />
@@ -114,7 +130,7 @@ let Styled: any;
 Styled = {};
 
 Styled.HomeContentContainer = styled.div((props: any) => {
-  const heightInVh = props.height/(props.height * 0.01)
+  const heightInVh = props.height / (props.height * 0.01);
   return css`
     label: HomeContentContainer;
     display: flex;
@@ -151,7 +167,7 @@ Styled.ImageSection = styled.section(() => {
 
 Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
-  const heightInVh = props.height/(props.height * 0.01)
+  const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
   return css`
     label: Garment_DisplayedImage;
@@ -189,6 +205,5 @@ Styled.DisplayedImage = styled.div((props: any) => {
         display: block;
       }
     }
-
   `;
 });

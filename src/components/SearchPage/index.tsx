@@ -20,7 +20,9 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const [hasResults, setHasResults] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [totalResults, setTotalResults] = React.useState(0);
   const [enabled, setEnabled] = React.useState(false);
+  const hasQuery = searchQuery !== "" && searchQuery !== undefined;
 
   const {
     data,
@@ -33,6 +35,9 @@ const SearchPage: React.FC<SearchPageProps> = () => {
 
   console.log("Data in index:", data);
   console.log("Search results:", searchResults);
+  console.log("hasQuery", hasQuery);
+
+  const noResults = !hasResults && hasQuery && !isLoading;
 
   const fetchingNextPage = isFetchingNextPage as boolean;
 
@@ -44,12 +49,13 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     }
   };
 
-
   React.useEffect(() => {
     if (data && data.pages) {
       const garmentResults =
         data?.pages.flatMap((page: any) => page.data) ?? [];
       setSearchResults(garmentResults);
+      const totalNo = data?.pages[0]?.pagination?.total;
+      setTotalResults(totalNo);
     }
   }, [data, setSearchResults]);
 
@@ -68,6 +74,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     }
     setSearchValue(value);
   };
+
   const handleClearSearch = () => {
     setSearchQuery("");
     setHasResults(false);
@@ -90,7 +97,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     border: "1px solid",
     margin: "4px",
     color: "#899AB8",
-  }
+  };
 
   return (
     <Styled.SearchPageContainer>
@@ -111,17 +118,26 @@ const SearchPage: React.FC<SearchPageProps> = () => {
           <Styled.Divider>
             <Divider sx={{ my: 4, borderColor: "#899AB8" }} />
           </Styled.Divider>
+          <Styled.ResultText>
+            {noResults
+              ? (<>0 search results for <span>{searchQuery}</span></>)
+              : hasResults
+              ? (<>{totalResults} search results for <span>{searchQuery}</span></>)
+              : ""}
+          </Styled.ResultText>
         </Styled.SearchHeaderContainer>
       </Styled.SearchContainer>
       <Styled.GarmentsContainer>
         {hasResults ? (
           <SearchResults garments={searchResults} isLoading={isLoading} />
+        ) : noResults ? (
+          <Styled.EmptyState />
         ) : (
           <GarmentsList scrollToTop={scrollToSearchBar} />
         )}
         <Styled.ButtonContainer>
           {hasResults && hasNextPage && !fetchingNextPage ? (
-            <Button 
+            <Button
               onClick={handleClickLoadMore}
               variant="outlined"
               size="medium"
@@ -224,6 +240,25 @@ Styled.TextContainer = styled.div(props => {
   `;
 });
 
+Styled.ResultText = styled.p(props => {
+  const t = props.theme;
+  return css`
+    label: ResultsText;
+    font-size: 1.125rem;
+    color: #223f7c;
+    font-style: italic;
+
+    span {
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    ${t.mq.sm} {
+      padding-left: 0.5rem;
+    }
+  `;
+});
+
 Styled.SearchBarContainer = styled.div(props => {
   const t = props.theme;
   return css`
@@ -290,10 +325,33 @@ Styled.ButtonContainer = styled.div(props => {
         margin-right: 25%;
         margin-left: 25%;
       }
-  
+
       ${t.mq.md} {
         width: 120px;
       }
+    }
+  `;
+});
+
+Styled.EmptyState = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: EmptyState_Container;
+    height: calc(100vh - 136px)
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    ${t.mq.md} {
+      height: calc(100vh - 178px)
+    }
+
+    ${t.mq.gmd} {
+      height: calc(100vh - 248px)
+    }
+
+    ${t.mq.glg} {
+      height: calc(100vh - 313px)
     }
   `;
 });

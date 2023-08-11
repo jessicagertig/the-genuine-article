@@ -9,7 +9,6 @@ import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import SearchBar from "src/components/shared/SearchBar";
-import EmptyState from "src/components/SearchPage/EmptyState";
 import { GarmentData } from "src/types";
 import { useGarmentsKeywordSearch } from "src/queryHooks/useSearch";
 import { mainSearchStyles } from "src/components/SearchPage/styles/SearchFieldStyles";
@@ -21,6 +20,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const [hasResults, setHasResults] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [totalResults, setTotalResults] = React.useState(0);
   const [enabled, setEnabled] = React.useState(false);
   const hasQuery = searchQuery !== "" && searchQuery !== undefined;
 
@@ -35,7 +35,9 @@ const SearchPage: React.FC<SearchPageProps> = () => {
 
   console.log("Data in index:", data);
   console.log("Search results:", searchResults);
-  console.log("hasQuery", hasQuery)
+  console.log("hasQuery", hasQuery);
+
+  const noResults = !hasResults && hasQuery && !isLoading;
 
   const fetchingNextPage = isFetchingNextPage as boolean;
 
@@ -52,6 +54,8 @@ const SearchPage: React.FC<SearchPageProps> = () => {
       const garmentResults =
         data?.pages.flatMap((page: any) => page.data) ?? [];
       setSearchResults(garmentResults);
+      const totalNo = data?.pages[0]?.pagination?.total;
+      setTotalResults(totalNo);
     }
   }, [data, setSearchResults]);
 
@@ -114,13 +118,20 @@ const SearchPage: React.FC<SearchPageProps> = () => {
           <Styled.Divider>
             <Divider sx={{ my: 4, borderColor: "#899AB8" }} />
           </Styled.Divider>
+          <Styled.ResultText>
+            {noResults
+              ? (<>0 search results for <span>{searchQuery}</span></>)
+              : hasResults
+              ? (<>{totalResults} search results for <span>{searchQuery}</span></>)
+              : ""}
+          </Styled.ResultText>
         </Styled.SearchHeaderContainer>
       </Styled.SearchContainer>
       <Styled.GarmentsContainer>
         {hasResults ? (
           <SearchResults garments={searchResults} isLoading={isLoading} />
-        ) : !hasResults && hasQuery && !isLoading ? (
-          <EmptyState />
+        ) : noResults ? (
+          <Styled.EmptyState />
         ) : (
           <GarmentsList scrollToTop={scrollToSearchBar} />
         )}
@@ -229,6 +240,25 @@ Styled.TextContainer = styled.div(props => {
   `;
 });
 
+Styled.ResultText = styled.p(props => {
+  const t = props.theme;
+  return css`
+    label: ResultsText;
+    font-size: 1.125rem;
+    color: #223f7c;
+    font-style: italic;
+
+    span {
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    ${t.mq.sm} {
+      padding-left: 0.5rem;
+    }
+  `;
+});
+
 Styled.SearchBarContainer = styled.div(props => {
   const t = props.theme;
   return css`
@@ -299,6 +329,29 @@ Styled.ButtonContainer = styled.div(props => {
       ${t.mq.md} {
         width: 120px;
       }
+    }
+  `;
+});
+
+Styled.EmptyState = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: EmptyState_Container;
+    height: calc(100vh - 136px)
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    ${t.mq.md} {
+      height: calc(100vh - 178px)
+    }
+
+    ${t.mq.gmd} {
+      height: calc(100vh - 248px)
+    }
+
+    ${t.mq.glg} {
+      height: calc(100vh - 313px)
     }
   `;
 });

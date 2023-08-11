@@ -9,6 +9,7 @@ import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import SearchBar from "src/components/shared/SearchBar";
+import EmptyState from "src/components/SearchPage/EmptyState";
 import { GarmentData } from "src/types";
 import { useGarmentsKeywordSearch } from "src/queryHooks/useSearch";
 import { mainSearchStyles } from "src/components/SearchPage/styles/SearchFieldStyles";
@@ -21,6 +22,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const [searchValue, setSearchValue] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
   const [enabled, setEnabled] = React.useState(false);
+  const hasQuery = searchQuery !== "" && searchQuery !== undefined;
 
   const {
     data,
@@ -33,6 +35,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
 
   console.log("Data in index:", data);
   console.log("Search results:", searchResults);
+  console.log("hasQuery", hasQuery)
 
   const fetchingNextPage = isFetchingNextPage as boolean;
 
@@ -43,7 +46,6 @@ const SearchPage: React.FC<SearchPageProps> = () => {
       searchBarRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
 
   React.useEffect(() => {
     if (data && data.pages) {
@@ -68,6 +70,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     }
     setSearchValue(value);
   };
+
   const handleClearSearch = () => {
     setSearchQuery("");
     setHasResults(false);
@@ -90,7 +93,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     border: "1px solid",
     margin: "4px",
     color: "#899AB8",
-  }
+  };
 
   return (
     <Styled.SearchPageContainer>
@@ -116,12 +119,14 @@ const SearchPage: React.FC<SearchPageProps> = () => {
       <Styled.GarmentsContainer>
         {hasResults ? (
           <SearchResults garments={searchResults} isLoading={isLoading} />
+        ) : !hasResults && hasQuery && !isLoading ? (
+          <EmptyState />
         ) : (
           <GarmentsList scrollToTop={scrollToSearchBar} />
         )}
         <Styled.ButtonContainer>
           {hasResults && hasNextPage && !fetchingNextPage ? (
-            <Button 
+            <Button
               onClick={handleClickLoadMore}
               variant="outlined"
               size="medium"
@@ -290,7 +295,7 @@ Styled.ButtonContainer = styled.div(props => {
         margin-right: 25%;
         margin-left: 25%;
       }
-  
+
       ${t.mq.md} {
         width: 120px;
       }

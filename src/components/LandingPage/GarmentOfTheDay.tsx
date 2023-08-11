@@ -33,11 +33,11 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
   const imgRef = React.useRef<HTMLImageElement>(null!);
 
   const onLoad = () => {
-    setImageLoaded(true);
     setDimensions({
       height: imgRef.current.naturalHeight,
       width: imgRef.current.naturalWidth,
     });
+    setImageLoaded(true);
   };
 
   React.useEffect(() => {

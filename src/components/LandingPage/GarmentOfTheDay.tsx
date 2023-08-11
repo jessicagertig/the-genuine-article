@@ -51,7 +51,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
   const fullscreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const imageUrl = garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
-  const noImage = imageUrl === "" || imageUrl === undefined
+  const noImage = imageUrl === "" || imageUrl === undefined || !imageLoaded
 
   const handleZoom = () => {
     const modal = (
@@ -66,15 +66,17 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
     openModal(modal);
   };
 
+  // Image container can NOT be conditionally displayed (even if loading is slow) 
+  // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
     <Styled.HomeContentContainer height={windowHeight}>
       <Styled.ContentTitleContainer>
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
       <Styled.ImageSection>
-        {noImage ? (
+        {noImage || !imageLoaded ? (
         <Skeleton variant="rectangular" width="calc((100vh - 160px) * 0.82)" height="calc(100vh - 160px)" sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}/>
-        ) : (
+        ) : null}
         <Styled.DisplayedImage height={maxHeight} noImage={noImage}>
           <img
             ref={imgRef}
@@ -99,7 +101,6 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, windowWidth }) 
             </IconButton>
           </div>
         </Styled.DisplayedImage>
-        )}
       </Styled.ImageSection>
     </Styled.HomeContentContainer>
   );

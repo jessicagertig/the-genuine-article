@@ -12,10 +12,10 @@ The idea behind this project was born out of a combination of a deep background 
 *This project is a work in progress.*
 
 ## Features
-- Image Gallery: Browse through a vast collection of high-quality images depicting historical garments.
+- Image Gallery: Browse or search through a vast collection of high-quality images depicting historical garments.
 - Information Display: Get detailed information about each garment including its origin, materials used, and any relevant historical context.
 - Authentic Source Linking: Easily navigate to the authentic source location (museums, collections) associated with each displayed garment.
-- Filtering Options: Utilize various filters like time period or type of clothing to narrow down your search results and find specific garments of interest.
+- Filtering Options: Utilize various filters like time period or type of clothing to narrow down your search results and find specific garments of interest. (*coming soon*)
 - RESTful API Integration: Fetching data from [The Genuine Article API](https://github.com/jessicagertig/the-genuine-article-api)
 
 ## Technologies Used

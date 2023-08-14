@@ -75,9 +75,9 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
 
   const Buttons = ({ zoomIn, zoomOut, resetTransform }: Controls) => {
     return (
-      <>
+      <Styled.ButtonsContainer>
         <IconButton
-          edge="end"
+          edge={false}
           color="inherit"
           onClick={() => zoomIn()}
           aria-label="zoom in"
@@ -104,7 +104,7 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
         >
           <ZoomOutOutlinedIcon />
         </IconButton>
-      </>
+      </Styled.ButtonsContainer>
     );
   };
 
@@ -197,5 +197,14 @@ Styled.DisplayedImage = styled.div((props: any) => {
       width: ${props.width}px;
       height: ${props.height}px;
     }
+  `;
+});
+
+Styled.ButtonsContainer = styled.div((props: any) => {
+  return css`
+    label: Garment_ToolbarButtons;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
   `;
 });

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import PublicLayout from "src/layouts/PublicLayout";
 import AdminLayout from "src/layouts/AdminLayout";
@@ -7,6 +7,29 @@ import LandingPage from "src/components/LandingPage";
 import SearchPage from "src/components/SearchPage";
 import GarmentPage from "src/components/Garment/GarmentPage";
 import AdminGarmentPage from "src/components/AdminPage/AdminGarmentPage";
+import LoginPage from "src/components/Auth/LoginPage";
+
+import { useAuth } from 'src/context/AuthContext';
+
+// AuthWrapper
+
+interface RequireAuthProps {
+  children: React.ReactNode;
+}
+
+const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    // redirect to login page
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+
+// Pages
 
 type Page = {
   path: string;
@@ -31,12 +54,11 @@ const pages: Page[] = [
     component: GarmentPage,
     layout: PublicLayout,
   },
-  // {
-  //   exact: true,
-  //   path: '/login',
-  //   component: LoginPage,
-  //   layout: PublicLayout
-  // },
+  {
+    path: '/login',
+    component: LoginPage,
+    layout: PublicLayout
+  },
   // Authenticated pages
   // {
   //   exact: false,
@@ -64,9 +86,17 @@ const App: React.FC = () => {
           key={index}
           path={page.path}
           element={
-            <page.layout>
-              <page.component />
-            </page.layout>
+            page.layout === AdminLayout ? (
+              <RequireAuth>
+                <page.layout>
+                  <page.component />
+                </page.layout>
+              </RequireAuth>
+            ) : (
+              <page.layout>
+                <page.component />
+              </page.layout>
+            )
           }
         />
       ))}

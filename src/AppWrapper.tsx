@@ -6,8 +6,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import { ModalProvider } from 'src/context/ModalContext';
-import { WindowSizeProvider } from 'src/context/WindowSizeContext';
+import { ModalProvider } from "src/context/ModalContext";
+import { WindowSizeProvider } from "src/context/WindowSizeContext";
+import { AuthProvider } from "src/context/AuthContext";
 
 import myTheme from "src/styles/theme";
 import customTheme from "src/styles/customTheme";
@@ -22,7 +23,9 @@ const queryClient = new QueryClient({
   },
 });
 
-const AppWrapper = <P extends {}>(WrappedComponent: React.ComponentType<P>): React.FC<P> => {
+const AppWrapper = <P extends {}>(
+  WrappedComponent: React.ComponentType<P>
+): React.FC<P> => {
   return (props: P) => (
     <QueryClientProvider client={queryClient}>
       <StrictMode>

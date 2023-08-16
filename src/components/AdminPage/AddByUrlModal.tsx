@@ -2,11 +2,10 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import TextField from "@mui/material/TextField";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
-import { StyledTextField, StyledAutocomplete } from "src/components/AdminPage/StyledFields";
+import { StyledTextField } from "src/components/AdminPage/StyledFields";
 import DialogModal from "src/components/shared/DialogModal";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 
@@ -19,38 +18,24 @@ interface AddByUrlModalProps {
   onConfirm?: () => void;
 }
 
-const AddByUrlModal: React.FC<AddByUrlModalProps> = (props) => {
+const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
   console.log("Image Upload Modal Props", props);
   const theme = useTheme();
-  const fullscreen = useMediaQuery(theme.breakpoints.down('md'))
+  const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const {
-    mutate: createScrapedItem,
-    error,
-    isLoading,
-  } = useCreateScrapedItem();
+  const { mutate: createScrapedItem, error } = useCreateScrapedItem();
 
   const { modalOpen } = useModalContext();
 
   const [state, setState] = React.useState({
     url: "",
-    src: "",
   });
 
-  const { url, src } = state;
+  const { url } = state;
 
   const handleChangeInput = (event: React.BaseSyntheticEvent, name: string) => {
     const input = event.target?.value;
     setState({ ...state, [name]: input });
-  };
-
-  const handleSingleSelectInputChange = (
-    event: React.SyntheticEvent,
-    name: string,
-    value: any
-  ) => {
-    console.log("change value", value);
-    setState({ ...state, [name]: value })
   };
 
   const handleConfirm = async () => {
@@ -74,8 +59,6 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = (props) => {
 
   const title = "ADD GARMENT";
 
-  const options = ["MET", "VA", "CAM", "PHILA"]
-
   return (
     <>
       <DialogModal
@@ -98,26 +81,6 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = (props) => {
             variant="filled"
             required={true}
             error={error}
-          />
-          <StyledAutocomplete
-            key="src"
-            disablePortal={true}
-            id="src"
-            options={options}
-            // getOptionLabel={(option: unknown) => (option.label}
-            renderInput={params => (
-              <TextField
-                {...params}
-                label="Source Museum"
-                name="src"
-                required={true}
-                variant="filled"
-                error={error}
-              />
-            )}
-            onInputChange={(event, value) =>
-              handleSingleSelectInputChange(event, "src", value)
-            }
           />
         </Styled.ModalContent>
       </DialogModal>

@@ -8,13 +8,16 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import SvgIcon from "@mui/material/SvgIcon";
 
+import TextButton from "src/components/shared/TextButton";
 import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
+import { useAuthContext } from "src/context/AuthContext";
 
 interface FooterProps {
   scrollToTop: () => void;
 }
 
 const Footer: React.FC<FooterProps> = props => {
+  const { logout } = useAuthContext();
   const theme = useTheme();
   const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
@@ -28,6 +31,10 @@ const Footer: React.FC<FooterProps> = props => {
     { name: "Garments", path: "/garments" },
     { name: "Admin", path: "/admin" },
   ];
+
+  const logoutButton = (
+    <TextButton onClick={() => logout()}>Log out</TextButton>
+  )
 
   const styles = {
     transition: "font-size 0.2s ease",
@@ -139,6 +146,7 @@ const Footer: React.FC<FooterProps> = props => {
               </NavLink>
             ))}
           </Styled.NavLinksContainer>
+          {logoutButton}
           <Styled.ResourceContainer>
             <Styled.Title>
               <h2>External Resources</h2>

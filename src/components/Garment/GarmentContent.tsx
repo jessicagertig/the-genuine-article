@@ -8,7 +8,6 @@ import Skeleton from "@mui/material/Skeleton";
 
 import IconButton from "@mui/material/IconButton";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
-// import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
 import Link from "@mui/material/Link";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";

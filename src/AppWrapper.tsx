@@ -35,7 +35,9 @@ const AppWrapper = <P extends {}>(
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <WindowSizeProvider>
                   <ModalProvider>
-                    <WrappedComponent {...props} />
+                    <AuthProvider>
+                      <WrappedComponent {...props} />
+                    </AuthProvider>
                   </ModalProvider>
                 </WindowSizeProvider>
               </LocalizationProvider>

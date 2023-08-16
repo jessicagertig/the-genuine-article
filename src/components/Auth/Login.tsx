@@ -1,14 +1,29 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+import textFieldStyles from "src/components/Auth/styles";
+import { useAuthContext } from "src/context/AuthContext";
+
 const Login: React.FC = () => {
+  const navigate = useNavigate();
+
   const [state, setState] = React.useState({
     email: "",
     password: "",
   });
+
+  const { isAuthenticated, currentUser, login } = useAuthContext();
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/admin")
+    }
+  }, [])
 
   const { email, password } = state;
 
@@ -19,32 +34,9 @@ const Login: React.FC = () => {
   };
 
   const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
     console.log("Submit clicked");
-  };
-
-  const textFieldStyles = {
-    marginBottom: 2,
-    marginTop: 1,
-    "& .MuiOutlinedInput-root": {
-      color: "#223F7C",
-      backgroundColor: "white",
-      fontSize: "1rem",
-      "& .MuiOutlinedInput-notchedOutline": {
-        border: `1px solid rgba(34, 63, 124, .6)`,
-        borderRadius: "4px",
-      },
-      "&:hover .MuiOutlinedInput-notchedOutline": {
-        border: `2px solid #223F7C`,
-      },
-      "& .MuiOutlinedInput-notchedOutline.Mui-focused": {
-        border: `2px solid #223F7C`,
-      },
-    },
-    "& .MuiOutlinedInput-root.Mui-focused": {
-      color: "#172a4f",
-      fontWeight: "semi-bold",
-    },
+    event.preventDefault();
+    login(state);
   };
 
   return (
@@ -56,6 +48,7 @@ const Login: React.FC = () => {
           value={email}
           onChange={handleChange}
           sx={textFieldStyles}
+          required={true}
         />
         <TextField
           label="Password"
@@ -64,6 +57,7 @@ const Login: React.FC = () => {
           value={password}
           onChange={handleChange}
           sx={textFieldStyles}
+          required={true}
         />
         <Button
           variant="contained"

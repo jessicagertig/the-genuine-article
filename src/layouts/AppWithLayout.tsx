@@ -9,7 +9,7 @@ import GarmentPage from "src/components/Garment/GarmentPage";
 import AdminGarmentPage from "src/components/AdminPage/AdminGarmentPage";
 import LoginPage from "src/components/Auth/LoginPage";
 
-import { useAuth } from 'src/context/AuthContext';
+import { useAuthContext } from 'src/context/AuthContext';
 
 // AuthWrapper
 
@@ -18,7 +18,9 @@ interface RequireAuthProps {
 }
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, currentUser } = useAuthContext();
+  console.log("authed?", isAuthenticated)
+  console.log("currentUser?", currentUser)
 
   if (!isAuthenticated) {
     // redirect to login page
@@ -59,13 +61,7 @@ const pages: Page[] = [
     component: LoginPage,
     layout: PublicLayout
   },
-  // Authenticated pages
-  // {
-  //   exact: false,
-  //   path: '/dashboard',
-  //   component: DashboardPage,
-  //   layout: AuthLayout
-  // }
+  // authed pages
   {
     path: "/admin",
     component: AdminPage,

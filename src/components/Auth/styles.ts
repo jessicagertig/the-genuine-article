@@ -1,0 +1,25 @@
+const textFieldStyles = {
+  marginBottom: 2,
+  marginTop: 1,
+  "& .MuiOutlinedInput-root": {
+    color: "#223F7C",
+    backgroundColor: "white",
+    fontSize: "1rem",
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: `1px solid rgba(34, 63, 124, .6)`,
+      borderRadius: "4px",
+    },
+    "&:hover .MuiOutlinedInput-notchedOutline": {
+      border: `2px solid #223F7C`,
+    },
+    "& .MuiOutlinedInput-notchedOutline.Mui-focused": {
+      border: `2px solid #223F7C`,
+    },
+  },
+  "& .MuiOutlinedInput-root.Mui-focused": {
+    color: "#172a4f",
+    fontWeight: "semi-bold",
+  },
+};
+
+export default textFieldStyles;

@@ -11,6 +11,12 @@ type ReqParams = {
   keysToSnake?: boolean;
 };
 
+// Retrieve the token from local storage
+const token = localStorage.getItem('token');
+// set the auth header for all requests
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+
 export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
   const url = baseUrl + endpoint;
   console.log("URL", url)

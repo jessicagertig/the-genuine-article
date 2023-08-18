@@ -11,7 +11,7 @@ const LoginPage: React.FC<LoginPageProps> = props => {
 
   return (
     <Styled.LoginPageContainer>
-      <NavBar backgroundColor="white" shadow={true}/>
+      <NavBar backgroundColor="white" shadow={false}/>
       <Login />
     </Styled.LoginPageContainer>
   );

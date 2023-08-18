@@ -42,7 +42,7 @@ const Login: React.FC = () => {
 
   return (
     <Styled.Container>
-      <Paper sx={{ width: "400px"}}>
+      <Paper sx={{ width: "400px", minWidth: "300px"}}>
       <Styled.Form onSubmit={handleSubmit}>
         <TextField
           label="Email"
@@ -110,14 +110,17 @@ Styled.Form = styled.form(props => {
   const t = props.theme;
   return css`
     label: Login_Form;
+    ${[t.px(8), t.pt(8)]}
     display: flex;
-    width: 100%;
+    width: 96%;
+    margin-right: 2%;
+    margin-left: 2%;
+    height: 300px;
     flex-direction: column;
 
     ${t.mq.sm} {
       ${[t.p(6), t.m(4)]}
       width: 400px;
-      height: 300px;
     }
   `;
 });

@@ -5,6 +5,7 @@ import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
 
 import textFieldStyles from "src/components/Auth/styles";
 import { useAuthContext } from "src/context/AuthContext";
@@ -41,6 +42,7 @@ const Login: React.FC = () => {
 
   return (
     <Styled.Container>
+      <Paper sx={{ width: "400px"}}>
       <Styled.Form onSubmit={handleSubmit}>
         <TextField
           label="Email"
@@ -75,6 +77,7 @@ const Login: React.FC = () => {
           Login
         </Button>
       </Styled.Form>
+      </Paper>
     </Styled.Container>
   );
 };
@@ -90,12 +93,12 @@ Styled.Container = styled.div(props => {
   const t = props.theme;
   return css`
     label: Login_Container;
-    ${t.m(2)}
     height: calc(100vh - 48px);
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid blue;
+    background-color: #172a4f;
 
     ${t.mq.md} {
       height: calc(100vh - 90px);
@@ -108,11 +111,11 @@ Styled.Form = styled.form(props => {
   return css`
     label: Login_Form;
     display: flex;
+    width: 100%;
     flex-direction: column;
-    border: 2px solid blue;
 
     ${t.mq.sm} {
-      ${[t.p(4)]}
+      ${[t.p(6), t.m(4)]}
       width: 400px;
       height: 300px;
     }

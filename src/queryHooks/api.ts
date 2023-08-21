@@ -12,19 +12,18 @@ type ReqParams = {
 };
 
 // Retrieve the token from local storage
-const token = localStorage.getItem('token');
-// set the auth header for all requests
-axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+const checkForToken = localStorage.getItem("token");
+console.log(checkForToken);
 
 export async function apiGet<T>({ endpoint }: ReqParams): Promise<T> {
   const url = baseUrl + endpoint;
-  console.log("URL", url)
-
+  console.log("URL", url);
+  const token = localStorage.getItem("token");
   const { data } = await axios.get(url, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -41,6 +40,7 @@ async function apiMutate<T>({
   keysToSnake = true,
 }: ReqParams): Promise<T> {
   const url: string = baseUrl + endpoint;
+  const token = localStorage.getItem("token");
 
   const { data } = await axios
     .request({
@@ -48,15 +48,17 @@ async function apiMutate<T>({
       url: url,
       headers: {
         Accept: contentType,
-        "Content-Type": contentType
-        // "X-CSRF-Token":
+        "Content-Type": contentType,
+        Authorization: `Bearer ${token}`,
       },
       data: keysToSnake ? allKeysToSnake(variables) : variables,
     })
     .catch(errorObject => {
       console.log("ERROR", errorObject);
       const { response } = errorObject;
-      const responseData = response?.data ? allKeysToCamel(response.data) : null;
+      const responseData = response?.data
+        ? allKeysToCamel(response.data)
+        : null;
       const normalizedError = {
         ...response,
         data: responseData,

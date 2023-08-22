@@ -2,23 +2,22 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+// import useMediaQuery from "@mui/material/useMediaQuery";
+// import { useTheme } from "@mui/material/styles";
 import SvgIcon from "@mui/material/SvgIcon";
 
-import logo from "src/assets/WhiteLogo.png"
-import { useAuthContext } from "src/context/AuthContext";
+import logo from "src/assets/WhiteLogo.png";
 
 interface AdminFooterProps {
   scrollToTop: () => void;
 }
 
 const AdminFooter: React.FC<AdminFooterProps> = props => {
-  const { logout } = useAuthContext();
-  const theme = useTheme();
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  // const theme = useTheme();
+  // const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const navigate = useNavigate();
 
   type Link = {
     name: string;
@@ -31,9 +30,13 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
     { name: "Admin", path: "/admin" },
   ];
 
+  const handleClick = () => {
+    navigate("/logout");
+  };
+
   const logoutButton = (
-    <Styled.Button onClick={() => logout()}>Log out</Styled.Button>
-  )
+    <Styled.Button onClick={handleClick}>Log out</Styled.Button>
+  );
 
   const linksLeft = [
     {
@@ -67,7 +70,6 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   ];
 
   const linksRight = [
-
     {
       name: "CAM",
       to: "https://www.cincinnatiartmuseum.org/art/explore-the-collection",
@@ -117,11 +119,14 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   return (
     <Styled.Container>
       <Styled.MainContainer>
-        <Styled.ImageContainer>
-        </Styled.ImageContainer>
+        <Styled.ImageContainer></Styled.ImageContainer>
         <Styled.AboutContainer>
           <img src={logo} />
-          <p>The genuine article is a digital collection of images of Western clothing from the 1800s - each record includes historical details and a link to the source collection or museum.</p>
+          <p>
+            The genuine article is a digital collection of images of Western
+            clothing from the 1800s - each record includes historical details
+            and a link to the source collection or museum.
+          </p>
         </Styled.AboutContainer>
         <Styled.ContentContainer>
           <Styled.NavLinksContainer>
@@ -140,17 +145,12 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
               <h2>External Resources</h2>
             </Styled.Title>
             <Styled.ResourceLinksSection>
-              <Styled.ResourceLinks>
-                {resourceLinksLeft}
-              </Styled.ResourceLinks>
-              <Styled.ResourceLinks>
-                {resourceLinksRight}
-              </Styled.ResourceLinks>
+              <Styled.ResourceLinks>{resourceLinksLeft}</Styled.ResourceLinks>
+              <Styled.ResourceLinks>{resourceLinksRight}</Styled.ResourceLinks>
             </Styled.ResourceLinksSection>
           </Styled.ResourceLinksContainer>
         </Styled.ContentContainer>
-        <Styled.ImageContainer>
-        </Styled.ImageContainer>
+        <Styled.ImageContainer></Styled.ImageContainer>
       </Styled.MainContainer>
       <Styled.BottomBarContainer>
         <Styled.CircleButton
@@ -210,10 +210,8 @@ Styled.MainContainer = styled.div(props => {
       flex-direction: row;
       margin-top: 32px;
     }
-
   `;
 });
-
 
 /* About Section
 ------------------------*/
@@ -309,7 +307,7 @@ Styled.NavLinksContainer = styled.div(props => {
       color: rgba(211, 217, 229);
       background-color: #172a4f;
       ${[t.pl(2), t.pb(1), t.pt(0)]}
-  
+
       &:hover {
         cursor: pointer;
         color: rgba(211, 217, 229);
@@ -421,7 +419,6 @@ Styled.ResourceLinks = styled.div(props => {
     }
   `;
 });
-
 
 Styled.ResourceLink = styled.div(props => {
   const t = props.theme;

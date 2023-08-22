@@ -10,12 +10,16 @@ import logo from "src/assets/HeaderLogo.png";
 import bonnetLogo from "src/assets/BonnetLogo.png";
 import NavMenuItem from "src/components/shared/NavMenuItem";
 
+import { useAuthContext } from "src/context/AuthContext";
+
 interface NavBarProps {
   backgroundColor?: string;
   shadow?: boolean;
-};
+}
 
 const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
+  const { currentUser } = useAuthContext();
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -24,17 +28,6 @@ const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  type Link = {
-    name: string;
-    path: string;
-  };
-
-  const links: Link[] = [
-    { name: "Home", path: "/" },
-    { name: "Garments", path: "/garments" },
-    { name: "Admin", path: "/admin" },
-  ];
 
   const menu = (
     <Styled.MenuContainer>
@@ -58,20 +51,22 @@ const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
           "aria-labelledby": "basic-button",
         }}
       >
-        {links.map(link => (
-          <NavMenuItem
-            onClose={handleClose}
-            name={link.name}
-            to={link.path}
-            key={link.name}
-          />
-        ))}
+        <NavMenuItem onClose={handleClose} name={"Home"} to={"/"} />
+        <NavMenuItem onClose={handleClose} name={"Garments"} to={"/garments"} />
+        {currentUser ? (
+          <NavMenuItem onClose={handleClose} name={"Admin"} to={"/admin"} />
+        ) : (
+          <NavMenuItem onClose={handleClose} name={"Login"} to={"/login"} />
+        )}
       </Menu>
     </Styled.MenuContainer>
   );
 
   return (
-    <Styled.NavBarContainer style={{ background: backgroundColor }} shadow={shadow} >
+    <Styled.NavBarContainer
+      style={{ background: backgroundColor }}
+      shadow={shadow}
+    >
       <Styled.Container>
         <Styled.LogoContainer>
           <Styled.LargeLogo src={logo} alt="bonnet logo" />
@@ -82,7 +77,11 @@ const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
         <Styled.LinksContainer>
           <Styled.NavLink to="/">Home</Styled.NavLink>
           <Styled.NavLink to="/garments">Garments</Styled.NavLink>
-          <Styled.NavLink to="/admin">Admin</Styled.NavLink>
+          {currentUser ? (
+            <Styled.NavLink to="/admin">Admin</Styled.NavLink>
+          ) : (
+            <Styled.NavLink to="/login">Admin</Styled.NavLink>
+          )}
         </Styled.LinksContainer>
         {menu}
       </Styled.Container>

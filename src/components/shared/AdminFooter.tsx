@@ -2,23 +2,22 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
+// import useMediaQuery from "@mui/material/useMediaQuery";
+// import { useTheme } from "@mui/material/styles";
 import SvgIcon from "@mui/material/SvgIcon";
 
 import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
-import { useAuthContext } from "src/context/AuthContext";
 
 interface AdminFooterProps {
   scrollToTop: () => void;
 }
 
 const AdminFooter: React.FC<AdminFooterProps> = props => {
-  const { logout } = useAuthContext();
-  const theme = useTheme();
-  const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  // const theme = useTheme();
+  // const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+  const navigate = useNavigate();
 
   type Link = {
     name: string;
@@ -31,11 +30,20 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
     { name: "Admin", path: "/admin" },
   ];
 
-  const logoutButton = (
-    <Styled.Button onClick={() => logout()}>Log out</Styled.Button>
-  )
+  const handleClick = () => {
+    navigate("/logout");
+  };
 
-  const linksLeft = [
+  const logoutButton = (
+    <Styled.Button onClick={handleClick}>Log out</Styled.Button>
+  );
+
+  type ResourceLinks = {
+    name: string;
+    to: string;
+  }
+
+  const linksLeft: ResourceLinks[] = [
     {
       name: "MET",
       to: "https://www.metmuseum.org/art/collection/search",
@@ -66,8 +74,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
     },
   ];
 
-  const linksRight = [
-
+  const linksRight: ResourceLinks[] = [
     {
       name: "CAM",
       to: "https://www.cincinnatiartmuseum.org/art/explore-the-collection",
@@ -134,12 +141,8 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
               <h2>External Resources</h2>
             </Styled.Title>
             <Styled.ResourceLinksSection>
-              <Styled.ResourceLinks>
-                {resourceLinksLeft}
-              </Styled.ResourceLinks>
-              <Styled.ResourceLinks>
-                {resourceLinksRight}
-              </Styled.ResourceLinks>
+              <Styled.ResourceLinks>{resourceLinksLeft}</Styled.ResourceLinks>
+              <Styled.ResourceLinks>{resourceLinksRight}</Styled.ResourceLinks>
             </Styled.ResourceLinksSection>
           </Styled.ResourceLinksContainer>
         </Styled.ContentContainer>
@@ -232,7 +235,7 @@ Styled.NavLinksContainer = styled.div(props => {
       color: white;
       background-color: #172a4f;
       ${[t.pl(2), t.pb(1), t.pt(0)]}
-  
+
       &:hover {
         cursor: pointer;
         color: rgba(211, 217, 229);
@@ -254,7 +257,6 @@ Styled.Button = styled.div(props => {
     &:hover {
       cursor: pointer;
       color: rgba(211, 217, 229);
-      fontSize: 1.25rem;
     }
   `;
 });
@@ -328,7 +330,6 @@ Styled.ResourceLinks = styled.div(props => {
     }
   `;
 });
-
 
 Styled.ResourceLink = styled.div(props => {
   const t = props.theme;

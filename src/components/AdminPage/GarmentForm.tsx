@@ -37,7 +37,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
   materials,
   ...props
 }) => {
-  const { data: menus, isLoading: isLoadingMenus } = useMenus();
+  const { data: menus } = useMenus();
 
   const formRef = React.useRef<HTMLFormElement | null>(null);
 

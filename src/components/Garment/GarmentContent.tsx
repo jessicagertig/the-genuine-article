@@ -187,6 +187,7 @@ Styled.GarmentContainer = styled.div(() => {
     width: 100%;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 300px;
   `;
 });
 

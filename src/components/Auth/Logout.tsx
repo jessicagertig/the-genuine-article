@@ -1,12 +1,9 @@
 import React from "react";
 import { useQueryClient } from "react-query";
 
-import { useAuthContext } from "src/context/AuthContext";
-
 function Logout(props: any) {
   console.log("%c[Logout] render", "color: #1976D2", { ...props });
 
-  const { setCurrentUser } = useAuthContext();
   const queryClient = useQueryClient();
 
   React.useEffect(() => {
@@ -15,8 +12,7 @@ function Logout(props: any) {
     queryClient.setQueryData(["authedUser"], null);
     queryClient.invalidateQueries("authedUser");
     queryClient.clear();
-    queryClient.removeQueries();
-    setCurrentUser(null);
+    queryClient.removeQueries();   
     window.location.href = `${process.env.REACT_APP_BASE_URL}/`;
   }, []);
 

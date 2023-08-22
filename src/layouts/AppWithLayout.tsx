@@ -1,4 +1,5 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import React from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import PublicLayout from "src/layouts/PublicLayout";
 import AdminLayout from "src/layouts/AdminLayout";
@@ -8,36 +9,24 @@ import SearchPage from "src/components/SearchPage";
 import GarmentPage from "src/components/Garment/GarmentPage";
 import AdminGarmentPage from "src/components/AdminPage/AdminGarmentPage";
 import LoginPage from "src/components/Auth/LoginPage";
+import Logout from "src/components/Auth/Logout";
 
-import { useAuthContext } from 'src/context/AuthContext';
+import LoadingState from "src/components/shared/LoadingState";
 
-// AuthWrapper
+import { AuthProvider } from "src/context/AuthContext";
+import { useAuthedUser } from "src/queryHooks/useAuth";
 
-interface RequireAuthProps {
-  children: React.ReactNode;
-}
-
-const RequireAuth: React.FC<RequireAuthProps> = ({ children }) => {
-  const { isAuthenticated, currentUser } = useAuthContext();
-  console.log("authed?", isAuthenticated)
-  console.log("currentUser?", currentUser)
-
-  if (!isAuthenticated) {
-    // redirect to login page
-    return <Navigate to="/login" replace />;
-  }
-
-  return <>{children}</>;
-};
-
-
-// Pages
-
-type Page = {
+// after login auth works as follows
+// if a route is an authed route
+// useAuthedUser is enabled
+// in useAuthedUser if there is an error - the user is redirected to logout
+// logout will clear out any cached info or tokens and setCurrentUser
+// logout will then redirect to home "/"
+interface Page {
   path: string;
   component: React.FC;
   layout: React.FC<{ children: React.ReactNode }>;
-};
+}
 
 const pages: Page[] = [
   // Public pages
@@ -57,9 +46,14 @@ const pages: Page[] = [
     layout: PublicLayout,
   },
   {
-    path: '/login',
+    path: "/login",
     component: LoginPage,
-    layout: PublicLayout
+    layout: PublicLayout,
+  },
+  {
+    path: "/logout",
+    component: Logout,
+    layout: PublicLayout,
   },
   // authed pages
   {
@@ -75,28 +69,47 @@ const pages: Page[] = [
 ];
 
 const App: React.FC = () => {
+  const location = useLocation();
+  const isAuthedRoute = location.pathname.includes("admin");
+  const isLoggingIn = location.pathname.includes("login");
+  const isEnabled = isAuthedRoute || isLoggingIn;
+  const {
+    data: user,
+    isLoading,
+    isFetching,
+  } = useAuthedUser({ enabled: isEnabled });
+  const [ initialUser, setInitialUser ] = React.useState(null)
+
+  React.useEffect(() => {
+    console.log("fetching?", isFetching);
+    console.log("loading?", isLoading);
+    console.log("is enabled?", isEnabled);
+    console.log("user", user);
+    if (user !== undefined) {
+      setInitialUser(user)
+    }
+  }, [user, isLoading, isFetching, isEnabled]);
+  // TODO:  possiblyl pass user down to component to be set in context if user is defined but currentUser is not
   return (
-    <Routes>
-      {pages.map((page, index) => (
-        <Route
-          key={index}
-          path={page.path}
-          element={
-            page.layout === AdminLayout ? (
-              <RequireAuth>
+    <AuthProvider currentUser={initialUser}>
+      {isLoading ? (
+        <LoadingState />
+      ) : (
+        <Routes>
+          {pages.map((page, index) => (
+            <Route
+              key={index}
+              path={page.path}
+              element={
                 <page.layout>
                   <page.component />
                 </page.layout>
-              </RequireAuth>
-            ) : (
-              <page.layout>
-                <page.component />
-              </page.layout>
-            )
-          }
-        />
-      ))}
-    </Routes>
+              }
+            />
+          ))}
+        </Routes>
+      )}
+    </AuthProvider>
   );
 };
 

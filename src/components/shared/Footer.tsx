@@ -4,19 +4,15 @@ import { css } from "@emotion/react";
 
 import { NavLink, useNavigate } from "react-router-dom";
 
-// import useMediaQuery from "@mui/material/useMediaQuery";
-// import { useTheme } from "@mui/material/styles";
 import SvgIcon from "@mui/material/SvgIcon";
 
 import logo from "src/assets/WhiteLogo.png";
 
-interface AdminFooterProps {
+interface FooterProps {
   scrollToTop: () => void;
 }
 
-const AdminFooter: React.FC<AdminFooterProps> = props => {
-  // const theme = useTheme();
-  // const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
+const Footer: React.FC<FooterProps> = props => {
   const navigate = useNavigate();
 
   type Link = {
@@ -38,64 +34,44 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
     <Styled.Button onClick={handleClick}>Log out</Styled.Button>
   );
 
-  const linksLeft = [
+  // These are for the public and have been curated by ease of search
+  // and/or quality of collection images & website user experience
+  const externalLinks = [
     {
-      name: "MET",
+      name: "Metropolitan Museum of Art",
       to: "https://www.metmuseum.org/art/collection/search",
     },
     {
-      name: "VA",
+      name: "Victoria and Albert Museum",
       to: "https://www.vam.ac.uk/collections",
     },
     {
-      name: "FIT",
+      name: "The Museum at FIT",
       to: "https://fashionmuseum.fitnyc.edu/objects",
     },
     {
-      name: "KCI",
+      name: "Kyoto Costume Institute",
       to: "https://www.kci.or.jp/en/archives/digital_archives/",
     },
     {
-      name: "LACMA",
-      to: "https://collections.lacma.org/",
-    },
-    {
-      name: "ROM",
-      to: "https://collections.rom.on.ca/objects",
-    },
-    {
-      name: "MD Center",
-      to: "https://www.mdhistory.org/digital-resource/",
-    },
-  ];
-
-  const linksRight = [
-    {
-      name: "CAM",
-      to: "https://www.cincinnatiartmuseum.org/art/explore-the-collection",
-    },
-    { name: "SI", to: "https://www.si.edu/collections" },
-    { name: "RISD", to: "https://risdmuseum.org/art-design/collection" },
-    {
-      name: "UNT",
-      to: "https://digital.library.unt.edu/explore/collections/",
-    },
-    { name: "Newfields", to: "https://discovernewfields.org/" },
-    {
-      name: "PhilaMuseum",
+      name: "Philadephia Museum of Art",
       to: "https://www.philamuseum.org/collection",
     },
+    {
+      name: "The John Bright Collection",
+      to: "https://www.thejohnbrightcollection.co.uk/",
+    },
+    {
+      name: "Irma G. Bowen Collection",
+      to: "https://scholars.unh.edu/bowen_collection/",
+    },
+    {
+      name: "Colonial Williamsburg",
+      to: "https://emuseum.history.org/groups/costumes",
+    },
   ];
 
-  const resourceLinksLeft = linksLeft.map(link => (
-    <Styled.ResourceLink key={link.name}>
-      <a href={link.to} target="_blank" rel="noreferer">
-        {link.name}
-      </a>
-    </Styled.ResourceLink>
-  ));
-
-  const resourceLinksRight = linksRight.map(link => (
+  const resourceLinks = externalLinks.map(link => (
     <Styled.ResourceLink key={link.name}>
       <a href={link.to} target="_blank" rel="noreferer">
         {link.name}
@@ -106,7 +82,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   const svg = (
     <SvgIcon
       sx={{
-        color: "rgba(211, 217, 229)",
+        color: "#d3d9e5",
         height: "55px",
         width: "55px",
         marginBottom: 1.5,
@@ -119,7 +95,6 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   return (
     <Styled.Container>
       <Styled.MainContainer>
-        <Styled.ImageContainer></Styled.ImageContainer>
         <Styled.AboutContainer>
           <img src={logo} />
           <p>
@@ -145,12 +120,10 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
               <h2>External Resources</h2>
             </Styled.Title>
             <Styled.ResourceLinksSection>
-              <Styled.ResourceLinks>{resourceLinksLeft}</Styled.ResourceLinks>
-              <Styled.ResourceLinks>{resourceLinksRight}</Styled.ResourceLinks>
+              <Styled.ResourceLinks>{resourceLinks}</Styled.ResourceLinks>
             </Styled.ResourceLinksSection>
           </Styled.ResourceLinksContainer>
         </Styled.ContentContainer>
-        <Styled.ImageContainer></Styled.ImageContainer>
       </Styled.MainContainer>
       <Styled.BottomBarContainer>
         <Styled.CircleButton
@@ -166,7 +139,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   );
 };
 
-export default AdminFooter;
+export default Footer;
 
 // Styled Components
 // =======================================================
@@ -176,7 +149,7 @@ Styled = {};
 Styled.Container = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_Container;
+    label: Footer_Container;
     height: 475px;
     width: 100%;
     padding-right: 2%;
@@ -195,8 +168,7 @@ Styled.Container = styled.div(props => {
 Styled.MainContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_Container;
-    ${[t.pb(1), t.pl(1)]}
+    label: Footer_Container;
     height: 350px;
     margin-top: 50px;
     width: 100%;
@@ -210,6 +182,14 @@ Styled.MainContainer = styled.div(props => {
       flex-direction: row;
       margin-top: 32px;
     }
+
+    ${t.mq.lg} {
+      width: 85%;
+    }
+
+    ${t.mq.xl} {
+      width: 80%;
+    }
   `;
 });
 
@@ -219,8 +199,8 @@ Styled.MainContainer = styled.div(props => {
 Styled.AboutContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_AboutContainer;
-    ${[t.py(1), t.pr(1), t.mt(12)]}
+    label: Footer_AboutContainer;
+    ${[t.pt(8)]}
     width: 100%;
     height: 100%;
     display: flex;
@@ -228,13 +208,9 @@ Styled.AboutContainer = styled.div(props => {
     align-items: center;
 
     ${t.mq.md} {
-      width: 40%;
+      width: 33%;
       margin-left: 5%;
       align-items: flex-start;
-    }
-
-    ${t.mq.lg} {
-      width: 33%;
     }
 
     img {
@@ -261,8 +237,8 @@ Styled.AboutContainer = styled.div(props => {
 Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_ContentContainer;
-    ${[t.py(1), t.pr(1), t.mt(12)]}
+    label: Footer_ContentContainer;
+    ${[t.pt(8)]}
     width: 100%;
     height: 100%;
     display: flex;
@@ -272,11 +248,7 @@ Styled.ContentContainer = styled.div(props => {
     }
 
     ${t.mq.md} {
-      width: 55%;
-    }
-
-    ${t.mq.lg} {
-      width: 47%;
+      width: 60%;
     }
   `;
 });
@@ -287,8 +259,8 @@ Styled.ContentContainer = styled.div(props => {
 Styled.NavLinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_NavLinksContainer;
-    ${[t.pl(4), t.pb(0), t.pt(0)]}
+    label: Footer_NavLinksContainer;
+    ${[t.pl(4)]}
     width: 90%;
     display: flex;
     color: white;
@@ -301,17 +273,12 @@ Styled.NavLinksContainer = styled.div(props => {
     }
 
     .nav-link {
+      ${[t.pl(2), t.pb(1)]}
       font-size: 1.125rem;
       line-height: 1.5rem;
       font-family: bellota text;
-      color: rgba(211, 217, 229);
+      color: #d3d9e5;
       background-color: #172a4f;
-      ${[t.pl(2), t.pb(1), t.pt(0)]}
-
-      &:hover {
-        cursor: pointer;
-        color: rgba(211, 217, 229);
-      }
 
       ${t.mq.md} {
         color: white;
@@ -323,17 +290,16 @@ Styled.NavLinksContainer = styled.div(props => {
 Styled.Button = styled.div(props => {
   const t = props.theme;
   return css`
-    ${[t.pl(2)]}
+    ${[t.pl(2), t.pb(1)]}
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: bellota text;
-    color: rgba(211, 217, 229);
+    color: #d3d9e5;
     background-color: #172a4f;
-    ${[t.pl(2), t.pb(1), t.pt(0)]}
 
     &:hover {
       cursor: pointer;
-      color: rgba(211, 217, 229);
+      color: #d3d9e5;
     }
 
     ${t.mq.md} {
@@ -347,9 +313,9 @@ Styled.Button = styled.div(props => {
 Styled.ResourceLinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_ResourceLinksContainer;
-    ${[t.pl(4), t.mt(0)]};
-    width: 63%;
+    label: Footer_ResourceLinksContainer;
+    width: 60%;
+    margin-left: 3%;
     display: none;
     flex-direction: column;
     align-items: center;
@@ -357,13 +323,18 @@ Styled.ResourceLinksContainer = styled.div(props => {
     ${t.mq.md} {
       display: flex;
     }
+
+    ${t.mq.lg} {
+      margin-left: 6%;
+      width: 57%;
+    }
   `;
 });
 
 Styled.Title = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_ResourceTitle;
+    label: Footer_ResourceTitle;
     ${[t.pt(4), t.pb(1), t.mb(2)]};
     width: 86%;
     margin-right: 14%;
@@ -387,26 +358,17 @@ Styled.Title = styled.div(props => {
 Styled.ResourceLinksSection = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_ResourceLinksSection;
-    ${t.pt(0)};
+    label: Footer_ResourceLinksSection;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     width: 100%;
-
-    ${t.mq.xs} {
-      flex-direction: row;
-      justify-content: center;
-    }
-
-    ${t.mq.lg} {
-    }
   `;
 });
 
 Styled.ResourceLinks = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_LeftResourceLinksContainer;
+    label: Footer_ResourceLinksContainer;
     ${[t.pl(4)]}
     min-width: 100px;
     width: 100%;
@@ -415,7 +377,6 @@ Styled.ResourceLinks = styled.div(props => {
 
     ${t.mq.xs} {
       ${[t.pl(2)]}
-      width: 50%;
     }
   `;
 });
@@ -423,8 +384,8 @@ Styled.ResourceLinks = styled.div(props => {
 Styled.ResourceLink = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_ExternalLink;
-    ${[t.py(0), t.pr(0), t.pl(0), t.pb(1)]}
+    label: Footer_ExternalLink;
+    ${[t.pb(1)]}
     color: white;
     font-size: 1rem;
     line-height: 1.375rem;
@@ -444,37 +405,9 @@ Styled.ResourceLink = styled.div(props => {
   `;
 });
 
-Styled.ImageContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: AdminFooter_ImageContainer;
-    width: 10%;
-    height: 400px;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    margin-top: 25px;
-
-    ${t.mq.lg} {
-      display: flex;
-    }
-
-    img {
-      ${[t.mr(4)]}
-      height: 400px;
-      width: auto;
-      display: none;
-
-      ${t.mq.lg} {
-        display: block;
-      }
-    }
-  `;
-});
-
 Styled.BottomBarContainer = styled.div(() => {
   return css`
-    label: AdminFooter_TopBarContainer;
+    label: Footer_TopBarContainer;
     height: 75px;
     margin-bottom: 25px;
     width: 100%;
@@ -485,8 +418,8 @@ Styled.BottomBarContainer = styled.div(() => {
 
 Styled.CircleButton = styled.div(() => {
   return css`
-    label: AdminFooter_CircleButton;
-    border: 2px solid rgba(211, 217, 229);
+    label: Footer_CircleButton;
+    border: 2px solid #d3d9e5;
     position: relative;
     border-radius: 50%;
     width: 70px;
@@ -514,6 +447,6 @@ Styled.ButtonText = styled.div(() => {
     line-height: 1.5rem;
     font-family: bellota text;
     font-weight: bold;
-    color: rgba(211, 217, 229);
+    color: #d3d9e5;
   `;
 });

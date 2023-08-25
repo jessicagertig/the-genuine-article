@@ -9,6 +9,7 @@ import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import SearchBar from "src/components/shared/SearchBar";
+import Footer from "src/components/shared/Footer";
 import { GarmentData } from "src/types";
 import { useGarmentsKeywordSearch } from "src/queryHooks/useSearch";
 import { mainSearchStyles } from "src/components/SearchPage/styles/SearchFieldStyles";
@@ -36,6 +37,14 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   console.log("Data in index:", data);
   console.log("Search results:", searchResults);
   console.log("hasQuery", hasQuery);
+
+  const pageContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToTop = () => {
+    if (pageContainerRef && pageContainerRef.current) {
+      pageContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const noResults = !hasResults && hasQuery && !isLoading;
 
@@ -100,7 +109,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   };
 
   return (
-    <Styled.SearchPageContainer>
+    <Styled.SearchPageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="white" shadow={true} />
       <Styled.SearchContainer>
         <Styled.SearchHeaderContainer ref={searchBarRef}>
@@ -119,11 +128,17 @@ const SearchPage: React.FC<SearchPageProps> = () => {
             <Divider sx={{ my: 4, borderColor: "#899AB8" }} />
           </Styled.Divider>
           <Styled.ResultText>
-            {noResults
-              ? (<>0 search results for <span>{searchQuery}</span></>)
-              : hasResults
-              ? (<>{totalResults} search results for <span>{searchQuery}</span></>)
-              : ""}
+            {noResults ? (
+              <>
+                0 search results for <span>{searchQuery}</span>
+              </>
+            ) : hasResults ? (
+              <>
+                {totalResults} search results for <span>{searchQuery}</span>
+              </>
+            ) : (
+              ""
+            )}
           </Styled.ResultText>
         </Styled.SearchHeaderContainer>
       </Styled.SearchContainer>
@@ -148,6 +163,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
           ) : null}
         </Styled.ButtonContainer>
       </Styled.GarmentsContainer>
+      <Footer scrollToTop={scrollToTop} />
     </Styled.SearchPageContainer>
   );
 };
@@ -167,6 +183,10 @@ Styled.SearchPageContainer = styled.div(() => {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+
+    & > :last-child {
+      margin-top: auto;
+    }
   `;
 });
 

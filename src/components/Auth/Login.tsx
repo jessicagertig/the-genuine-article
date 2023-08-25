@@ -9,22 +9,38 @@ import Paper from "@mui/material/Paper";
 
 import textFieldStyles from "src/components/Auth/styles";
 import { useAuthContext } from "src/context/AuthContext";
+import { useLoginUser } from "src/queryHooks/useAuth";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { mutate: loginUser } = useLoginUser();
+  interface CurrentUser {
+    username: string;
+    email: string;
+  }
+
+  interface LoginData {
+    user: CurrentUser;
+    token: string;
+  }
+
+  interface LoginParams {
+    email: string;
+    password: string;
+  }
 
   const [state, setState] = React.useState({
     email: "",
     password: "",
   });
 
-  const { isAuthenticated, currentUser, login } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
   React.useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/admin")
+    if (currentUser) {
+      navigate("/admin");
     }
-  }, [])
+  }, []);
 
   const { email, password } = state;
 
@@ -37,46 +53,75 @@ const Login: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     console.log("Submit clicked");
     event.preventDefault();
-    login(state);
+    handleLogin(state);
+  };
+
+  const handleLogin = async (loginParams: LoginParams) => {
+    // todo: add validation with Yup
+    try {
+      loginUser(
+        {
+          email: loginParams.email,
+          password: loginParams.password,
+        },
+        {
+          onSuccess: (data: LoginData) => {
+            console.log("Success logging in user. Data:", data?.user);
+            const token = data.token;
+            if (data.token) {
+              console.log("saving token");
+              localStorage.setItem("token", token);
+            }
+            navigate("/admin");
+          },
+          onError: (error: any) => {
+            const message = error && error.data ? error.data.message : "";
+            console.log("Request Error:", message);
+          },
+        }
+      );
+    } catch (e) {
+      console.error("ERROR:", e);
+    }
   };
 
   return (
     <Styled.Container>
-      <Paper sx={{ width: "400px", minWidth: "300px"}}>
-      <Styled.Form onSubmit={handleSubmit}>
-        <TextField
-          label="Email"
-          name="email"
-          value={email}
-          onChange={handleChange}
-          sx={textFieldStyles}
-          required={true}
-        />
-        <TextField
-          label="Password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={handleChange}
-          sx={textFieldStyles}
-          required={true}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          sx={{
-            backgroundColor: "#172a4f",
-            fontWeight: "bold",
-            fontSize: "1rem",
-            lineHeight: "1.75rem",
-            padding: "10px 0",
-            marginTop: 3,
-          }}
-        >
-          Login
-        </Button>
-      </Styled.Form>
+      <Paper sx={{ width: "400px", minWidth: "300px" }}>
+        <Styled.Form onSubmit={handleSubmit}>
+          <TextField
+            label="Email"
+            name="email"
+            value={email}
+            onChange={handleChange}
+            sx={textFieldStyles}
+            required={true}
+          />
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={handleChange}
+            sx={textFieldStyles}
+            required={true}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            sx={{
+              backgroundColor: "#172a4f",
+              fontWeight: "bold",
+              fontSize: "1rem",
+              lineHeight: "1.75rem",
+              padding: "10px 0",
+              marginTop: 3,
+            }}
+          >
+            Login
+          </Button>
+        </Styled.Form>
       </Paper>
     </Styled.Container>
   );

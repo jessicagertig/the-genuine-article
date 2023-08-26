@@ -3,6 +3,9 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import { useNavigate } from "react-router-dom";
+
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -13,6 +16,9 @@ import { useLoginUser } from "src/queryHooks/useAuth";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
   const { mutate: loginUser } = useLoginUser();
   interface CurrentUser {
     username: string;
@@ -87,41 +93,48 @@ const Login: React.FC = () => {
 
   return (
     <Styled.Container>
-      <Paper sx={{ width: "400px", minWidth: "300px" }}>
-        <Styled.Form onSubmit={handleSubmit}>
-          <TextField
-            label="Email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            sx={textFieldStyles}
-            required={true}
-          />
-          <TextField
-            label="Password"
-            name="password"
-            type="password"
-            value={password}
-            onChange={handleChange}
-            sx={textFieldStyles}
-            required={true}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            sx={{
-              backgroundColor: "#172a4f",
-              fontWeight: "bold",
-              fontSize: "1rem",
-              lineHeight: "1.75rem",
-              padding: "10px 0",
-              marginTop: 3,
-            }}
-          >
-            Login
-          </Button>
-        </Styled.Form>
+      <Paper sx={{ width: isMobile ? "100%" : "450px", minWidth: "300px" }} square={isMobile}>
+        <Styled.FormContainer>
+          <Styled.TextContainer>
+            <h2>Login</h2>
+          </Styled.TextContainer>
+          <Styled.Form onSubmit={handleSubmit}>
+            <TextField
+              label="Email"
+              name="email"
+              value={email}
+              onChange={handleChange}
+              sx={textFieldStyles}
+              required={true}
+            />
+            <TextField
+              label="Password"
+              name="password"
+              type="password"
+              value={password}
+              onChange={handleChange}
+              sx={textFieldStyles}
+              required={true}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              sx={{
+                backgroundColor: "#172a4f",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                lineHeight: "1.75rem",
+                padding: "10px 0",
+                marginTop: 3,
+                textTransform: "none",
+                width: "128px",
+              }}
+            >
+              Log in
+            </Button>
+          </Styled.Form>
+        </Styled.FormContainer>
       </Paper>
     </Styled.Container>
   );
@@ -141,6 +154,7 @@ Styled.Container = styled.div(props => {
     height: calc(100vh - 48px);
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #172a4f;
@@ -151,21 +165,55 @@ Styled.Container = styled.div(props => {
   `;
 });
 
+Styled.FormContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Login_FormContainer;
+    ${[t.pb(8), t.pt(3), t.my(4)]}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 86%;
+    margin-right: 7%;
+    margin-left: 7%;
+    height: 350px;
+
+    ${t.mq.sm} {
+      ${[t.px(8)]}
+      width: 500px;
+      width: 96%;
+      margin-right: 2%;
+      margin-left: 2%;
+    }
+  `;
+});
+
 Styled.Form = styled.form(props => {
   const t = props.theme;
   return css`
     label: Login_Form;
-    ${[t.px(8), t.pt(8)]}
+    ${[t.pb(8), t.pt(4)]}
     display: flex;
-    width: 96%;
-    margin-right: 2%;
-    margin-left: 2%;
-    height: 300px;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
+  `;
+});
 
-    ${t.mq.sm} {
-      ${[t.p(6), t.m(4)]}
-      width: 400px;
+Styled.TextContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: Login_TextContainer;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+
+    h2 {
+      font-family: "bellota text";
+      font-size: 1.75rem;
+      color: #172a4f;
+      font-weight: 600;
+      ${t.my(4)}
     }
   `;
 });

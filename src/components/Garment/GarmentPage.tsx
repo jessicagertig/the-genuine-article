@@ -6,6 +6,7 @@ import { useParams, useLocation } from "react-router-dom";
 import NavBar from "src/components/shared/NavBar";
 import SecondaryNav from "src/components/shared/SecondaryNav";
 import GarmentContent from "src/components/Garment/GarmentContent";
+// import Footer from "src/components/shared/Footer";
 import { GarmentData } from "src/types";
 
 import { useGarment } from "src/queryHooks/useGarments";
@@ -18,6 +19,14 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
   );
   const { garmentId } = useParams();
   const location = useLocation();
+
+  const pageContainerRef = React.useRef<HTMLDivElement>(null);
+
+  // const scrollToTop = () => {
+  //   if (pageContainerRef && pageContainerRef.current) {
+  //     pageContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+  //   }
+  // };
 
   const idToNumber = garmentId ? parseInt(garmentId, 10) : undefined;
   const pageNo = location?.state?.pageNo;
@@ -36,7 +45,7 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
   }, [garment]);
 
   return (
-    <Styled.GarmentPageContainer>
+    <Styled.GarmentPageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="white" shadow={true} />
       <SecondaryNav
         backPath="/garments"
@@ -44,6 +53,7 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
         pageNumber={pageNo}
       />
       <GarmentContent garment={garmentData} loading={garmentIsLoading} />
+      {/* <Footer scrollToTop={scrollToTop} /> */}
     </Styled.GarmentPageContainer>
   );
 };
@@ -63,5 +73,9 @@ Styled.GarmentPageContainer = styled.div(() => {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+
+    & > :last-child {
+      margin-top: auto;
+    }
   `;
 });

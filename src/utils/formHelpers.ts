@@ -42,7 +42,7 @@ type Color = { id: number; color: string };
 type Material = { id: number; material: string };
 type Title = { id: number; garmentTitle: string };
 
-type Menus = {
+export type Menus = {
   colorMenu: Color[];
   materialsMenu: Material[];
   garmentTitlesMenu: Title[];

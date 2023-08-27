@@ -28,7 +28,7 @@ const Accordian: React.FC<AccordianProps> = (props) => {
       // console.log("scroll height", textRef.current.scrollHeight)
       const scrollHeight = textRef.current.scrollHeight;
       const clientHeight = textRef.current.clientHeight;
-      if (scrollHeight > 150 || clientHeight < scrollHeight) {
+      if (scrollHeight > 245 || clientHeight < scrollHeight) {
         setHasOverflow(true)
       } 
     }
@@ -149,7 +149,7 @@ Styled.AccordianContainer = styled.div((props: any) => {
     .concealer-active {
       display: flex;
       justify-content: center;
-      background-image: linear-gradient(rgba(57,59,63,0),#172a4f);
+      background-image: linear-gradient(rgba(2,11,28,0),#020b1c);
       height: 90px;
       position: absolute;
       left: 0;
@@ -169,7 +169,7 @@ Styled.TextContainer = styled.div((props: any) => {
     justify-content: center;
     
     .hidden.inactive {
-      height: 150px;
+      height: 245px;
       overflow: hidden;
     }
 
@@ -194,7 +194,7 @@ Styled.ButtonsContainer = styled.div((props: any) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #172a4f;
+    background-color: #020b1c;
 
     .active {
       display: flex;
@@ -210,6 +210,6 @@ Styled.ButtonContainer = styled.div((props: any) => {
     height: 36px;
     display: none;
     justify-content: center;
-    background-color: #172a4f;
+    background-color: #020b1c;
   `;
 });

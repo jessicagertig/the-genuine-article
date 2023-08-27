@@ -3,19 +3,15 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useNavigate } from "react-router-dom";
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import OutlinedButton from "src/components/shared/OutlinedButton";
 
 type Props = {
   backPath?: string;
-  toPath?: string;
-  toText?: string;
-  closePath?: string;
-  actions?: React.ReactNode;
   pageTitle: string;
   pageNumber?: number;
   rowsNumber?: number;
@@ -24,10 +20,6 @@ type Props = {
 const SecondaryNav = (props: Props) => {
   const {
     backPath,
-    toPath,
-    toText,
-    closePath,
-    actions,
     pageTitle,
     pageNumber,
     rowsNumber,
@@ -35,7 +27,7 @@ const SecondaryNav = (props: Props) => {
   const navigate = useNavigate();
 
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const mediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const handleClickBack = () => {
     if (backPath !== undefined) {
@@ -58,14 +50,10 @@ const SecondaryNav = (props: Props) => {
     }
   };
 
-  const handleClickTo = () => {
-    if (toPath !== undefined) {
-      navigate(toPath);
-    }
-  };
-
   const colorStyle = {
     color: "#172a4f",
+    width: "48px",
+    height: "48px",
     backgroundColor: "rgba(211, 217, 229, 0.2)",
     "&:hover": {
       backgroundColor: "rgba(211, 217, 229, 0.5)",
@@ -73,33 +61,30 @@ const SecondaryNav = (props: Props) => {
   };
 
   const backIconButton = (
-    <IconButton
-      onClick={handleClickBack}
-      sx={colorStyle}
-    >
-      <ArrowBackIcon/>
+    <IconButton onClick={handleClickBack} sx={colorStyle}>
+      <ArrowBackIcon />
     </IconButton>
-  )
+  );
 
   const backFullButton = (
     <OutlinedButton
-    hasStartIcon={true}
-    iconType="back"
-    onClick={handleClickBack}
-    styles={{
-      maxWidth: "100px",
-      paddingRight: "8px",
-      paddingLeft: "8px",
-      "&.MuiButton-outlined": {
-        border: `2px solid rgba(34, 63, 124, .5)`,
-      },
-    }}
-  >
-    Back
-  </OutlinedButton>
-  )
+      hasStartIcon={true}
+      iconType="back"
+      onClick={handleClickBack}
+      styles={{
+        maxWidth: "100px",
+        paddingRight: "8px",
+        paddingLeft: "8px",
+        "&.MuiButton-outlined": {
+          border: `2px solid rgba(34, 63, 124, .5)`,
+        },
+      }}
+    >
+      Back
+    </OutlinedButton>
+  );
 
-  const backButton = isSmallScreen ? backIconButton : backFullButton;
+  const backButton = mediumScreen ? backIconButton : backFullButton;
 
   return (
     <Styled.SecondaryNavContainer>
@@ -109,22 +94,7 @@ const SecondaryNav = (props: Props) => {
       <Styled.SecondaryNavHeader>
         <h2>{pageTitle}</h2>
       </Styled.SecondaryNavHeader>
-      <Styled.RightButtonContainer>
-        {toText && toPath ? (
-          <OutlinedButton
-            hasStartIcon={true}
-            iconType="add"
-            onClick={handleClickTo}
-            styles={{
-              maxWidth: "100px",
-              paddingRight: "8px",
-              paddingLeft: "8px",
-            }}
-          >
-            {toText}
-          </OutlinedButton>
-        ) : null}
-      </Styled.RightButtonContainer>
+      <Styled.RightContainer></Styled.RightContainer>
     </Styled.SecondaryNavContainer>
   );
 };
@@ -140,7 +110,7 @@ Styled.SecondaryNavContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: SecondaryNavContainer;
-    ${[t.mb(6), t.mt(12)]}
+    ${[t.mb(2), t.mt(4)]}
     margin-right: 2%;
     margin-left: 2%;
     width: 96%;
@@ -201,7 +171,7 @@ Styled.LeftButtonContainer = styled.div(props => {
   `;
 });
 
-Styled.RightButtonContainer = styled.div(props => {
+Styled.RightContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentPageButtonContainer;

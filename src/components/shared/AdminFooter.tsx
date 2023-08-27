@@ -4,15 +4,19 @@ import { css } from "@emotion/react";
 
 import { NavLink, useNavigate } from "react-router-dom";
 
+// import useMediaQuery from "@mui/material/useMediaQuery";
+// import { useTheme } from "@mui/material/styles";
 import SvgIcon from "@mui/material/SvgIcon";
 
-import logo from "src/assets/WhiteLogo.png";
+import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
 
-interface FooterProps {
+interface AdminFooterProps {
   scrollToTop: () => void;
 }
 
-const Footer: React.FC<FooterProps> = props => {
+const AdminFooter: React.FC<AdminFooterProps> = props => {
+  // const theme = useTheme();
+  // const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const navigate = useNavigate();
 
   type Link = {
@@ -34,44 +38,69 @@ const Footer: React.FC<FooterProps> = props => {
     <Styled.Button onClick={handleClick}>Log out</Styled.Button>
   );
 
-  // These are for the public and have been curated by ease of search
-  // and/or quality of collection images & website user experience
-  const externalLinks = [
+  type ResourceLinks = {
+    name: string;
+    to: string;
+  }
+
+  const linksLeft: ResourceLinks[] = [
     {
-      name: "Metropolitan Museum of Art",
+      name: "MET",
       to: "https://www.metmuseum.org/art/collection/search",
     },
     {
-      name: "Victoria and Albert Museum",
+      name: "VA",
       to: "https://www.vam.ac.uk/collections",
     },
     {
-      name: "The Museum at FIT",
+      name: "FIT",
       to: "https://fashionmuseum.fitnyc.edu/objects",
     },
     {
-      name: "Kyoto Costume Institute",
+      name: "KCI",
       to: "https://www.kci.or.jp/en/archives/digital_archives/",
     },
     {
-      name: "Philadephia Museum of Art",
-      to: "https://www.philamuseum.org/collection",
+      name: "LACMA",
+      to: "https://collections.lacma.org/",
     },
     {
-      name: "The John Bright Collection",
-      to: "https://www.thejohnbrightcollection.co.uk/",
+      name: "ROM",
+      to: "https://collections.rom.on.ca/objects",
     },
     {
-      name: "Irma G. Bowen Collection",
-      to: "https://scholars.unh.edu/bowen_collection/",
-    },
-    {
-      name: "Colonial Williamsburg",
-      to: "https://emuseum.history.org/groups/costumes",
+      name: "MD Center",
+      to: "https://www.mdhistory.org/digital-resource/",
     },
   ];
 
-  const resourceLinks = externalLinks.map(link => (
+  const linksRight: ResourceLinks[] = [
+    {
+      name: "CAM",
+      to: "https://www.cincinnatiartmuseum.org/art/explore-the-collection",
+    },
+    { name: "SI", to: "https://www.si.edu/collections" },
+    { name: "RISD", to: "https://risdmuseum.org/art-design/collection" },
+    {
+      name: "UNT",
+      to: "https://digital.library.unt.edu/explore/collections/",
+    },
+    { name: "Newfields", to: "https://discovernewfields.org/" },
+    {
+      name: "PhilaMuseum",
+      to: "https://www.philamuseum.org/collection",
+    },
+  ];
+
+  const resourceLinksLeft = linksLeft.map(link => (
+    <Styled.ResourceLink key={link.name}>
+      <a href={link.to} target="_blank" rel="noreferer">
+        {link.name}
+      </a>
+    </Styled.ResourceLink>
+  ));
+
+  const resourceLinksRight = linksRight.map(link => (
     <Styled.ResourceLink key={link.name}>
       <a href={link.to} target="_blank" rel="noreferer">
         {link.name}
@@ -82,7 +111,7 @@ const Footer: React.FC<FooterProps> = props => {
   const svg = (
     <SvgIcon
       sx={{
-        color: "#d3d9e5",
+        color: "white",
         height: "55px",
         width: "55px",
         marginBottom: 1.5,
@@ -95,17 +124,9 @@ const Footer: React.FC<FooterProps> = props => {
   return (
     <Styled.Container>
       <Styled.MainContainer>
-        <Styled.AboutContainer>
-          <img src={logo} />
-          <p>
-            The genuine article is a digital collection of images of Western
-            clothing from the 1800s - each record includes historical details
-            and a link to the source collection or museum.
-          </p>
-        </Styled.AboutContainer>
         <Styled.ContentContainer>
           <Styled.NavLinksContainer>
-            <Styled.Title>
+            <Styled.Title controlDisplay={true}>
               <h2>Site</h2>
             </Styled.Title>
             {links.map(link => (
@@ -120,10 +141,14 @@ const Footer: React.FC<FooterProps> = props => {
               <h2>External Resources</h2>
             </Styled.Title>
             <Styled.ResourceLinksSection>
-              <Styled.ResourceLinks>{resourceLinks}</Styled.ResourceLinks>
+              <Styled.ResourceLinks>{resourceLinksLeft}</Styled.ResourceLinks>
+              <Styled.ResourceLinks>{resourceLinksRight}</Styled.ResourceLinks>
             </Styled.ResourceLinksSection>
           </Styled.ResourceLinksContainer>
         </Styled.ContentContainer>
+        <Styled.ImageContainer>
+          <img src={bookcaseImage} alt="girls standing by bookcase" />
+        </Styled.ImageContainer>
       </Styled.MainContainer>
       <Styled.BottomBarContainer>
         <Styled.CircleButton
@@ -139,98 +164,36 @@ const Footer: React.FC<FooterProps> = props => {
   );
 };
 
-export default Footer;
+export default AdminFooter;
 
 // Styled Components
 // =======================================================
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Footer_Container;
-    height: 475px;
-    width: 100%;
-    padding-right: 2%;
-    padding-left: 2%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #172a4f;
-
-    ${t.mq.md} {
-      height: 475px;
-    }
-  `;
-});
+Styled.Container = styled.div`
+  label: AdminFooter_Container;
+  height: 575px;
+  width: 100%;
+  padding-right: 2%;
+  padding-left: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #172a4f;
+`;
 
 Styled.MainContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: Footer_Container;
-    height: 325px;
-    margin-top: 50px;
+    label: AdminFooter_Container;
+    ${[t.pb(1), t.pl(1), t.mt(8)]}
+    height: 450px;
+    margin-top: 25px;
     width: 100%;
     max-width: 1200px;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    ${t.mq.md} {
-      flex-direction: row;
-      margin-top: 32px;
-    }
-
-    ${t.mq.lg} {
-      width: 85%;
-    }
-
-    ${t.mq.xl} {
-      width: 80%;
-    }
-  `;
-});
-
-/* About Section
-------------------------*/
-
-Styled.AboutContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Footer_AboutContainer;
-    ${[t.pt(8)]}
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    ${t.mq.md} {
-      width: 33%;
-      margin-left: 5%;
-      align-items: flex-start;
-    }
-
-    img {
-      ${[t.mt(1), t.ml(1), t.mb(2)]};
-      height: 84px;
-      width: 207px;
-    }
-
-    p {
-      color: #D3D9E5;
-      width: 80%;
-      display: none;
-      ${t.pt(1)}
-
-      ${t.mq.md} {
-        display: block;
-        font-size: 1rem;
-        line-height: 1.375rem;
-      }
-    }
+    justify-content: space-between;
   `;
 });
 
@@ -240,17 +203,20 @@ Styled.AboutContainer = styled.div(props => {
 Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: Footer_ContentContainer;
-    ${[t.pt(8)]}
+    label: AdminFooter_ContentContainer;
+    ${[t.py(1), t.pr(1), t.mt(12)]}
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
 
     ${t.mq.sm} {
-      width: 80%;
+      flex-direction: row;
+      align-items: flex-start;
     }
 
-    ${t.mq.md} {
+    ${t.mq.lg} {
       width: 60%;
     }
   `;
@@ -262,35 +228,40 @@ Styled.ContentContainer = styled.div(props => {
 Styled.NavLinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: Footer_NavLinksContainer;
-    ${[t.pl(4)]}
-    width: 90%;
+    label: AdminFooter_NavLinksContainer;
+    ${[t.pl(6), t.pb(6), t.pt(0)]}
+    width: 100%;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     color: white;
-    justify-content: space-around;
 
-    ${t.mq.md} {
-      width: 37%;
+    ${t.mq.xs} {
+      width: 80%;
+    }
+
+    ${t.mq.sm} {
+      ${[t.pb(0), t.pt(0)]}
+      width: 40%;
       flex-direction: column;
       justify-content: flex-start;
     }
 
     .nav-link {
-      ${[t.pl(2), t.pb(1)]}
       font-size: 1.125rem;
       line-height: 1.5rem;
       font-family: bellota text;
-      color: #d3d9e5;
+      color: white;
       background-color: #172a4f;
+      ${[t.pl(0), t.pb(1)]}
+
+      ${t.mq.sm} {
+        ${[t.pl(2), t.pb(1)]}
+      }
 
       &:hover {
         cursor: pointer;
-        color: white;
-      }
-
-      ${t.mq.md} {
-        font-size: 1rem;
-        line-height: 1.5rem;
+        color: #d3d9e5;
       }
     }
   `;
@@ -299,21 +270,20 @@ Styled.NavLinksContainer = styled.div(props => {
 Styled.Button = styled.div(props => {
   const t = props.theme;
   return css`
-    ${[t.pl(2), t.pb(1)]}
+    ${[t.pl(0), t.pr(6)]}
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: bellota text;
-    color: #D3D9E5;
+    color: white;
     background-color: #172a4f;
+
+    ${t.mq.sm} {
+      ${[t.pl(2), t.pr(0)]}
+    }
 
     &:hover {
       cursor: pointer;
-      color: white;
-    }
-
-    ${t.mq.md} {
-      color: #D3D9E5;
-      font-size: 1rem;
+      color: #d3d9e5;
     }
   `;
 });
@@ -323,33 +293,38 @@ Styled.Button = styled.div(props => {
 Styled.ResourceLinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: Footer_ResourceLinksContainer;
-    width: 60%;
-    margin-left: 3%;
-    display: none;
+    label: AdminFooter_ResourceLinksContainer;
+    ${[t.pl(4), t.mt(0)]};
+    width: 100%;
+    display: flex;
     flex-direction: column;
     align-items: center;
 
-    ${t.mq.md} {
-      display: flex;
+    ${t.mq.xs} {
+      width: 80%;
     }
 
-    ${t.mq.lg} {
-      margin-left: 6%;
-      width: 57%;
+    ${t.mq.sm} {
+      width: 60%;
     }
+
   `;
 });
 
-Styled.Title = styled.div(props => {
+Styled.Title = styled.div((props: any) => {
   const t = props.theme;
+  const noDisplay = props.controlDisplay ? props.controlDisplay : false;
   return css`
-    label: Footer_ResourceTitle;
+    label: AdminFooter_ResourceTitle;
     ${[t.pt(4), t.pb(1), t.mb(2)]};
     width: 86%;
     margin-right: 14%;
-    display: none;
-    border-bottom: 1px solid #2F579C;
+    display: ${noDisplay ? "none" : "flex"};
+    border-bottom: 1px solid #223f7c;
+
+    ${t.mq.sm} {
+      display: flex;
+    }
 
     h2 {
       ${t.pl(2)}
@@ -358,19 +333,15 @@ Styled.Title = styled.div(props => {
       font-family: bellota text;
       color: white;
     }
-
-    ${t.mq.md} {
-      display: flex;
-    }
   `;
 });
 
 Styled.ResourceLinksSection = styled.div(props => {
   const t = props.theme;
   return css`
-    label: Footer_ResourceLinksSection;
+    label: AdminFooter_ResourceLinksSection;
+    ${t.pt(0)};
     display: flex;
-    justify-content: center;
     width: 100%;
   `;
 });
@@ -378,15 +349,14 @@ Styled.ResourceLinksSection = styled.div(props => {
 Styled.ResourceLinks = styled.div(props => {
   const t = props.theme;
   return css`
-    label: Footer_ResourceLinksContainer;
-    ${[t.pl(4)]}
-    min-width: 100px;
+    label: AdminFooter_LeftResourceLinksContainer;
+    ${[t.pl(2)]}
     width: 100%;
     display: flex;
     flex-direction: column;
 
     ${t.mq.xs} {
-      ${[t.pl(2)]}
+      width: 50%;
     }
   `;
 });
@@ -394,27 +364,60 @@ Styled.ResourceLinks = styled.div(props => {
 Styled.ResourceLink = styled.div(props => {
   const t = props.theme;
   return css`
-    label: Footer_ExternalLink;
-    ${[t.pb(1)]}
-    color: #D3D9E5;
+    label: AdminFooter_ExternalLink;
+    ${[t.py(0), t.pr(0), t.pl(0), t.pb(1)]}
+    color: white;
     font-size: 1rem;
-    line-height: 1.5rem;
+    line-height: 1.375rem;
 
     a {
       font-family: "Bellota Text";
 
-    &:hover {
-      cursor: pointer;
-      color: white;
+      &:hover {
+        color: white;
+      }
+    }
+
+    ${t.mq.md} {
+      font-size: 1.125rem;
+      line-height: 1.5rem;
+    }
+  `;
+});
+
+Styled.ImageContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: AdminFooter_ImageContainer;
+    width: 40%;
+    height: 500px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+
+    ${t.mq.lg} {
+      display: flex;
+    }
+
+    img {
+      ${[t.mr(4)]}
+      height: 500px;
+      width: auto;
+      display: none;
+
+      ${t.mq.lg} {
+        display: block;
+      }
     }
   `;
 });
 
 Styled.BottomBarContainer = styled.div(() => {
   return css`
-    label: Footer_TopBarContainer;
+    label: AdminFooter_TopBarContainer;
     height: 75px;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -423,8 +426,8 @@ Styled.BottomBarContainer = styled.div(() => {
 
 Styled.CircleButton = styled.div(() => {
   return css`
-    label: Footer_CircleButton;
-    border: 2px solid #d3d9e5;
+    label: AdminFooter_CircleButton;
+    border: 2px solid white;
     position: relative;
     border-radius: 50%;
     width: 70px;
@@ -436,7 +439,7 @@ Styled.CircleButton = styled.div(() => {
 
     &:hover {
       cursor: pointer;
-      border-color: white;
+      color: #d3d9e5;
     }
   `;
 });
@@ -452,6 +455,6 @@ Styled.ButtonText = styled.div(() => {
     line-height: 1.5rem;
     font-family: bellota text;
     font-weight: bold;
-    color: #d3d9e5;
+    color: white;
   `;
 });

@@ -2,14 +2,13 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import Footer from "src/components/shared/Footer";
+import AdminFooter from "src/components/shared/AdminFooter";
 import NavBar from "src/components/shared/NavBar";
 
 interface PublicLayoutProps {
   children: React.ReactNode;
 }
 
-// TODO: make this an authed layout
 const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   const pageContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -23,7 +22,7 @@ const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
     <Styled.PageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="rgba(211, 217, 229, 0.5)" shadow={false} />
       {children}
-      <Footer scrollToTop={scrollToTop} />
+      <AdminFooter scrollToTop={scrollToTop} />
     </Styled.PageContainer>
   );
 };

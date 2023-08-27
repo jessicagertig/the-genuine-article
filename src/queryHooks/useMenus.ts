@@ -1,22 +1,18 @@
 import {
   useQuery,
+  UseQueryResult
 } from "react-query";
 import { apiGet } from "./api";
+import { Menus } from "src/utils/formHelpers";
 
-const getMenus = async () => {
+const getMenus = async (): Promise<Menus> => {
   return await apiGet({ endpoint: "/items/menus" });
 };
 
 /* Hooks
 --===================================================-- */
 
-function useMenus(): {
-  status: any;
-  data: any;
-  error: any;
-  isFetching: boolean;
-  isLoading: boolean;
-} {
+function useMenus(): UseQueryResult<Menus, string> {
   return useQuery(["menus"], () => getMenus(), {
     refetchOnWindowFocus: false,
   });

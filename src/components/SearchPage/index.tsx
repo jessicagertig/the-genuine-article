@@ -9,6 +9,7 @@ import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
 import SearchResults from "src/components/SearchPage/SearchResults";
 import SearchBar from "src/components/shared/SearchBar";
+import Footer from "src/components/shared/Footer";
 import { GarmentData } from "src/types";
 import { useGarmentsKeywordSearch } from "src/queryHooks/useSearch";
 import { mainSearchStyles } from "src/components/SearchPage/styles/SearchFieldStyles";
@@ -36,6 +37,14 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   console.log("Data in index:", data);
   console.log("Search results:", searchResults);
   console.log("hasQuery", hasQuery);
+
+  const pageContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToTop = () => {
+    if (pageContainerRef && pageContainerRef.current) {
+      pageContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const noResults = !hasResults && hasQuery && !isLoading;
 
@@ -100,7 +109,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   };
 
   return (
-    <Styled.SearchPageContainer>
+    <Styled.SearchPageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="white" shadow={true} />
       <Styled.SearchContainer>
         <Styled.SearchHeaderContainer ref={searchBarRef}>
@@ -119,11 +128,17 @@ const SearchPage: React.FC<SearchPageProps> = () => {
             <Divider sx={{ my: 4, borderColor: "#899AB8" }} />
           </Styled.Divider>
           <Styled.ResultText>
-            {noResults
-              ? (<>0 search results for <span>{searchQuery}</span></>)
-              : hasResults
-              ? (<>{totalResults} search results for <span>{searchQuery}</span></>)
-              : ""}
+            {noResults ? (
+              <>
+                0 search results for <span>{searchQuery}</span>
+              </>
+            ) : hasResults ? (
+              <>
+                {totalResults} search results for <span>{searchQuery}</span>
+              </>
+            ) : (
+              ""
+            )}
           </Styled.ResultText>
         </Styled.SearchHeaderContainer>
       </Styled.SearchContainer>
@@ -148,6 +163,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
           ) : null}
         </Styled.ButtonContainer>
       </Styled.GarmentsContainer>
+      <Footer scrollToTop={scrollToTop} />
     </Styled.SearchPageContainer>
   );
 };
@@ -167,6 +183,10 @@ Styled.SearchPageContainer = styled.div(() => {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+
+    & > :last-child {
+      margin-top: auto;
+    }
   `;
 });
 
@@ -174,9 +194,9 @@ Styled.LoadingContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: LoadingContainer;
-    ${t.mb(10)}
     width: 50%;
-    height: 300px;
+    height: calc(100vh - 124px);
+    padding-bottom: 30vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -188,6 +208,10 @@ Styled.LoadingContainer = styled.div(props => {
       font-size: 1.25rem;
       color: #172a4f;
       ${t.m(4)}
+    }
+
+    ${t.mq.md} {
+      height: calc(100vh - 166px);
     }
   `;
 });
@@ -289,6 +313,7 @@ Styled.GarmentsContainer = styled.div(props => {
     flex-direction: column;
     align-content: center;
     width: 100%;
+    margin-bottom: 48px;
 
     ${t.mq.md} {
       width: 96%;
@@ -337,21 +362,20 @@ Styled.EmptyState = styled.div(props => {
   const t = props.theme;
   return css`
     label: EmptyState_Container;
-    height: calc(100vh - 136px)
+    height: calc(100vh - 136px);
     width: 100%;
     display: flex;
     justify-content: center;
 
     ${t.mq.md} {
-      height: calc(100vh - 178px)
+      height: calc(100vh - 178px);
     }
 
     ${t.mq.gmd} {
-      height: calc(100vh - 248px)
+      height: calc(100vh - 248px);
     }
 
     ${t.mq.glg} {
-      height: calc(100vh - 313px)
-    }
+      height: calc(100vh - 313px);
   `;
 });

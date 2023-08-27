@@ -169,7 +169,7 @@ Styled.MainContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Footer_Container;
-    height: 350px;
+    height: 325px;
     margin-top: 50px;
     width: 100%;
     max-width: 1200px;
@@ -220,12 +220,15 @@ Styled.AboutContainer = styled.div(props => {
     }
 
     p {
-      color: white;
+      color: #D3D9E5;
       width: 80%;
       display: none;
+      ${t.pt(1)}
 
       ${t.mq.md} {
         display: block;
+        font-size: 1rem;
+        line-height: 1.375rem;
       }
     }
   `;
@@ -280,8 +283,14 @@ Styled.NavLinksContainer = styled.div(props => {
       color: #d3d9e5;
       background-color: #172a4f;
 
-      ${t.mq.md} {
+      &:hover {
+        cursor: pointer;
         color: white;
+      }
+
+      ${t.mq.md} {
+        font-size: 1rem;
+        line-height: 1.5rem;
       }
     }
   `;
@@ -294,16 +303,17 @@ Styled.Button = styled.div(props => {
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: bellota text;
-    color: #d3d9e5;
+    color: #D3D9E5;
     background-color: #172a4f;
 
     &:hover {
       cursor: pointer;
-      color: #d3d9e5;
+      color: white;
     }
 
     ${t.mq.md} {
-      color: white;
+      color: #D3D9E5;
+      font-size: 1rem;
     }
   `;
 });
@@ -339,7 +349,7 @@ Styled.Title = styled.div(props => {
     width: 86%;
     margin-right: 14%;
     display: none;
-    border-bottom: 1px solid #223f7c;
+    border-bottom: 1px solid #2F579C;
 
     h2 {
       ${t.pl(2)}
@@ -386,21 +396,16 @@ Styled.ResourceLink = styled.div(props => {
   return css`
     label: Footer_ExternalLink;
     ${[t.pb(1)]}
-    color: white;
+    color: #D3D9E5;
     font-size: 1rem;
-    line-height: 1.375rem;
+    line-height: 1.5rem;
 
     a {
       font-family: "Bellota Text";
 
-      &:hover {
-        color: white;
-      }
-    }
-
-    ${t.mq.md} {
-      font-size: 1.125rem;
-      line-height: 1.5rem;
+    &:hover {
+      cursor: pointer;
+      color: white;
     }
   `;
 });
@@ -409,7 +414,7 @@ Styled.BottomBarContainer = styled.div(() => {
   return css`
     label: Footer_TopBarContainer;
     height: 75px;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
     width: 100%;
     display: flex;
     justify-content: center;

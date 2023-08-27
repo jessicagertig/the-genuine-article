@@ -126,7 +126,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
       <Styled.MainContainer>
         <Styled.ContentContainer>
           <Styled.NavLinksContainer>
-            <Styled.Title>
+            <Styled.Title controlDisplay={true}>
               <h2>Site</h2>
             </Styled.Title>
             {links.map(link => (
@@ -208,6 +208,13 @@ Styled.ContentContainer = styled.div(props => {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    ${t.mq.sm} {
+      flex-direction: row;
+      align-items: flex-start;
+    }
 
     ${t.mq.lg} {
       width: 60%;
@@ -222,11 +229,23 @@ Styled.NavLinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_NavLinksContainer;
-    ${[t.pl(4), t.pb(0), t.pt(0)]}
-    width: 40%;
+    ${[t.pl(6), t.pb(6), t.pt(0)]}
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
     color: white;
+
+    ${t.mq.xs} {
+      width: 80%;
+    }
+
+    ${t.mq.sm} {
+      ${[t.pb(0), t.pt(0)]}
+      width: 40%;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
 
     .nav-link {
       font-size: 1.125rem;
@@ -234,11 +253,15 @@ Styled.NavLinksContainer = styled.div(props => {
       font-family: bellota text;
       color: white;
       background-color: #172a4f;
-      ${[t.pl(2), t.pb(1), t.pt(0)]}
+      ${[t.pl(0), t.pb(1)]}
+
+      ${t.mq.sm} {
+        ${[t.pl(2), t.pb(1)]}
+      }
 
       &:hover {
         cursor: pointer;
-        color: rgba(211, 217, 229);
+        color: #d3d9e5;
       }
     }
   `;
@@ -247,16 +270,20 @@ Styled.NavLinksContainer = styled.div(props => {
 Styled.Button = styled.div(props => {
   const t = props.theme;
   return css`
-    ${[t.pl(2)]}
+    ${[t.pl(0), t.pr(6)]}
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: bellota text;
     color: white;
     background-color: #172a4f;
 
+    ${t.mq.sm} {
+      ${[t.pl(2), t.pr(0)]}
+    }
+
     &:hover {
       cursor: pointer;
-      color: rgba(211, 217, 229);
+      color: #d3d9e5;
     }
   `;
 });
@@ -268,22 +295,36 @@ Styled.ResourceLinksContainer = styled.div(props => {
   return css`
     label: AdminFooter_ResourceLinksContainer;
     ${[t.pl(4), t.mt(0)]};
-    width: 60%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    ${t.mq.xs} {
+      width: 80%;
+    }
+
+    ${t.mq.sm} {
+      width: 60%;
+    }
+
   `;
 });
 
-Styled.Title = styled.div(props => {
+Styled.Title = styled.div((props: any) => {
   const t = props.theme;
+  const noDisplay = props.controlDisplay ? props.controlDisplay : false;
   return css`
     label: AdminFooter_ResourceTitle;
     ${[t.pt(4), t.pb(1), t.mb(2)]};
     width: 86%;
     margin-right: 14%;
-    display: flex;
+    display: ${noDisplay ? "none" : "flex"};
     border-bottom: 1px solid #223f7c;
+
+    ${t.mq.sm} {
+      display: flex;
+    }
 
     h2 {
       ${t.pl(2)}
@@ -301,16 +342,7 @@ Styled.ResourceLinksSection = styled.div(props => {
     label: AdminFooter_ResourceLinksSection;
     ${t.pt(0)};
     display: flex;
-    flex-direction: column;
     width: 100%;
-
-    ${t.mq.xs} {
-      flex-direction: row;
-      justify-content: center;
-    }
-
-    ${t.mq.sm} {
-    }
   `;
 });
 
@@ -318,14 +350,12 @@ Styled.ResourceLinks = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_LeftResourceLinksContainer;
-    ${[t.pl(4)]}
-    min-width: 100px;
+    ${[t.pl(2)]}
     width: 100%;
     display: flex;
     flex-direction: column;
 
     ${t.mq.xs} {
-      ${[t.pl(2)]}
       width: 50%;
     }
   `;
@@ -409,7 +439,7 @@ Styled.CircleButton = styled.div(() => {
 
     &:hover {
       cursor: pointer;
-      background-color: rgba(240, 167, 189, 0.2);
+      color: #d3d9e5;
     }
   `;
 });

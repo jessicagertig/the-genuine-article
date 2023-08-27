@@ -187,7 +187,6 @@ Styled.GarmentContainer = styled.div(() => {
     width: 100%;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 300px;
   `;
 });
 
@@ -279,7 +278,7 @@ Styled.InfoSection = styled.section(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoSection;
-    ${[t.pt(9), t.pb(20)]}
+    ${[t.pt(9), t.pb(24)]}
     width: 100%;
     display: flex;
     justify-content: center;

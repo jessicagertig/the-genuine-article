@@ -34,7 +34,7 @@ Styled.Container = styled.div(props => {
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: rgba(251, 233, 239, 0.28);
+    background-color: white;
   `;
 });
 

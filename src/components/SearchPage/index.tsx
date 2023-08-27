@@ -194,9 +194,9 @@ Styled.LoadingContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: LoadingContainer;
-    ${t.mb(10)}
     width: 50%;
-    height: 300px;
+    height: calc(100vh - 124px);
+    padding-bottom: 30vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -208,6 +208,10 @@ Styled.LoadingContainer = styled.div(props => {
       font-size: 1.25rem;
       color: #172a4f;
       ${t.m(4)}
+    }
+
+    ${t.mq.md} {
+      height: calc(100vh - 166px);
     }
   `;
 });
@@ -309,6 +313,7 @@ Styled.GarmentsContainer = styled.div(props => {
     flex-direction: column;
     align-content: center;
     width: 100%;
+    margin-bottom: 48px;
 
     ${t.mq.md} {
       width: 96%;
@@ -357,21 +362,20 @@ Styled.EmptyState = styled.div(props => {
   const t = props.theme;
   return css`
     label: EmptyState_Container;
-    height: calc(100vh - 136px)
+    height: calc(100vh - 136px);
     width: 100%;
     display: flex;
     justify-content: center;
 
     ${t.mq.md} {
-      height: calc(100vh - 178px)
+      height: calc(100vh - 178px);
     }
 
     ${t.mq.gmd} {
-      height: calc(100vh - 248px)
+      height: calc(100vh - 248px);
     }
 
     ${t.mq.glg} {
-      height: calc(100vh - 313px)
-    }
+      height: calc(100vh - 313px);
   `;
 });

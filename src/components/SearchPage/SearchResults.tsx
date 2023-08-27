@@ -30,7 +30,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
   return (
     <Styled.SearchResultsContainer>
-      {!garments ?
+      {!garments || isLoading ?
       (
         <Styled.LoadingContainer>
           <h2>Loading...</h2>
@@ -63,8 +63,8 @@ Styled.SearchResultsContainer = styled.div(() => {
     label: SearchResultsContainer;
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    min-height: calc(100vh - 124px);
+    display: block;
   `;
 });
 
@@ -72,9 +72,9 @@ Styled.LoadingContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: LoadingContainer;
-    ${t.mb(10)}
     width: 50%;
-    height: 300px;
+    height: calc(100vh - 124px);
+    padding-bottom: 30vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -86,6 +86,10 @@ Styled.LoadingContainer = styled.div(props => {
       font-size: 1.25rem;
       color: #172a4f;
       ${t.m(4)}
+    }
+
+    ${t.mq.md} {
+      height: calc(100vh - 166px);
     }
   `;
 });

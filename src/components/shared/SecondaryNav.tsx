@@ -12,10 +12,6 @@ import OutlinedButton from "src/components/shared/OutlinedButton";
 
 type Props = {
   backPath?: string;
-  toPath?: string;
-  toText?: string;
-  closePath?: string;
-  actions?: React.ReactNode;
   pageTitle: string;
   pageNumber?: number;
   rowsNumber?: number;
@@ -24,10 +20,6 @@ type Props = {
 const SecondaryNav = (props: Props) => {
   const {
     backPath,
-    toPath,
-    toText,
-    closePath,
-    actions,
     pageTitle,
     pageNumber,
     rowsNumber,
@@ -35,7 +27,7 @@ const SecondaryNav = (props: Props) => {
   const navigate = useNavigate();
 
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const mediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
 
   const handleClickBack = () => {
     if (backPath !== undefined) {
@@ -55,12 +47,6 @@ const SecondaryNav = (props: Props) => {
       } else {
         navigate(backPath);
       }
-    }
-  };
-
-  const handleClickTo = () => {
-    if (toPath !== undefined) {
-      navigate(toPath);
     }
   };
 
@@ -98,7 +84,7 @@ const SecondaryNav = (props: Props) => {
     </OutlinedButton>
   );
 
-  const backButton = isSmallScreen ? backIconButton : backFullButton;
+  const backButton = mediumScreen ? backIconButton : backFullButton;
 
   return (
     <Styled.SecondaryNavContainer>
@@ -124,7 +110,7 @@ Styled.SecondaryNavContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: SecondaryNavContainer;
-    ${[t.mb(6), t.mt(12)]}
+    ${[t.mb(2), t.mt(4)]}
     margin-right: 2%;
     margin-left: 2%;
     width: 96%;

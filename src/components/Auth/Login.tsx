@@ -116,23 +116,26 @@ const Login: React.FC = () => {
               sx={textFieldStyles}
               required={true}
             />
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              sx={{
-                backgroundColor: "#172a4f",
-                fontWeight: "bold",
-                fontSize: "1rem",
-                lineHeight: "1.75rem",
-                padding: "10px 0",
-                marginTop: 3,
-                textTransform: "none",
-                width: "128px",
-              }}
-            >
-              Log in
-            </Button>
+            <Styled.ButtonsContainer>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                sx={{
+                  backgroundColor: "#172a4f",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  lineHeight: "1.75rem",
+                  padding: "10px 0",
+                  marginTop: 3,
+                  textTransform: "none",
+                  width: "128px",
+                }}
+              >
+                Log in
+              </Button>
+              <Styled.Button>Log in as Guest</Styled.Button>
+            </Styled.ButtonsContainer>
           </Styled.Form>
         </Styled.FormContainer>
       </Paper>
@@ -214,6 +217,32 @@ Styled.TextContainer = styled.div(props => {
       color: #172a4f;
       font-weight: 600;
       ${t.my(4)}
+    }
+  `;
+});
+
+Styled.ButtonsContainer = styled.div(props => {
+  const t = props.theme;
+  return css`
+    ${[t.pl(2), t.pb(1)]}
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  `;
+});
+
+
+Styled.Button = styled.div(props => {
+  const t = props.theme;
+  return css`
+    ${[t.pl(2), t.pb(1)]}
+    font-size: 1rem;
+    font-family: bellota text;
+    color: #172a4f;
+
+    &:hover {
+      cursor: pointer;
+      font-size: 1.02rem;
     }
   `;
 });

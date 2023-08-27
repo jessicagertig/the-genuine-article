@@ -132,7 +132,7 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
             />
           </Styled.DisplayedImage>
         )}
-        <Styled.ThumbGallery></Styled.ThumbGallery>
+        {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
       </Styled.ImagesSection>
       <Styled.InfoSection>
         <Styled.InfoContainer>
@@ -146,7 +146,7 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
                 href={garment?.collectionUrl}
                 rel="noreferrer"
               >
-                <IconButton sx={{ color: "white" }}>
+                <IconButton sx={{ color: "white", pt: 0 }}>
                   <OpenInNewOutlinedIcon />
                 </IconButton>
               </Link>
@@ -212,6 +212,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
     min-height: 375px;
     border-radius: 6px;
     flex-shrink: 1;
+    margin-bottom: 36px;
 
     ${t.mq.xxs} {
       min-height: 420px;
@@ -278,11 +279,11 @@ Styled.InfoSection = styled.section(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoSection;
-    ${t.py(20)}
+    ${[t.pt(9), t.pb(20)]}
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: ${t.color.blue[700]};
+    background-color: #020b1c;
   `;
 });
 
@@ -290,7 +291,7 @@ Styled.InfoContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoSection;
-    ${[t.p(4), t.mb(6)]}
+    ${[t.px(4), t.mb(6)]}
     width: 100%;
     max-width: 900px;
     display: flex;
@@ -325,7 +326,7 @@ Styled.InfoTitle = styled.h2(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoTitle;
-    ${[t.py(2), t.pl(4)]}
+    ${[t.pb(2), t.pl(4)]}
     font-family: "goudy";
     color: white;
     font-size: 1.75rem;

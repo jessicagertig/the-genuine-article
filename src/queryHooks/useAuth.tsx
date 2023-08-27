@@ -35,9 +35,8 @@ function useLoginUser(): {
   console.log("useLoginUser query hook");
   // const queryClient: QueryClient = useQueryClient();
   return useMutation(loginUser, {
-    onSuccess: (data, variables) => {
-      console.log("VARIABLES", variables);
-      console.log("DATA", data);
+    onSuccess: () => {
+      console.log("LOGIN SUCCESS")
       // queryClient.invalidateQueries(["garments"]);
     },
   });
@@ -57,7 +56,7 @@ function useAuthedUser({ enabled = true }: { enabled?: boolean } = {}): {
       refetchOnWindowFocus: true,
       retry: (failureCount, error) => !error.message.includes(401),
       onError: (error) => {
-          console.log("%c[useGetMe] ERROR - Redirecting to /logout", "color: #FF0000");
+          console.log("%c[useGetMe] ERROR - Redirecting to /logout", "color: #FF0000", window.location.href);
           const path = window.location.pathname;
           if (path.includes("admin")) {
             window.location.href = `${process.env.REACT_APP_BASE_URL}/login`

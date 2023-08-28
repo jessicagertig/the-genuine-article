@@ -72,6 +72,10 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
       name: "MD Center",
       to: "https://www.mdhistory.org/digital-resource/",
     },
+    {
+      name: "Irma G Bowen",
+      to: "https://scholars.unh.edu/bowen_collection/",
+    },
   ];
 
   const linksRight: ResourceLinks[] = [
@@ -89,6 +93,14 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
     {
       name: "PhilaMuseum",
       to: "https://www.philamuseum.org/collection",
+    },
+    {
+      name: "Colonial W",
+      to: "https://emuseum.history.org/groups/costumes",
+    },
+    {
+      name: "John Bright",
+      to: "https://www.thejohnbrightcollection.co.uk/",
     },
   ];
 
@@ -188,7 +200,7 @@ Styled.MainContainer = styled.div(props => {
   return css`
     label: AdminFooter_Container;
     ${[t.pb(1), t.pl(1), t.mt(8)]}
-    height: 450px;
+    height: 425px;
     margin-top: 25px;
     width: 100%;
     max-width: 1200px;

@@ -41,7 +41,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
   type ResourceLinks = {
     name: string;
     to: string;
-  }
+  };
 
   const linksLeft: ResourceLinks[] = [
     {
@@ -94,7 +94,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
 
   const resourceLinksLeft = linksLeft.map(link => (
     <Styled.ResourceLink key={link.name}>
-      <a href={link.to} target="_blank" rel="noreferer">
+      <a href={link.to} target="_blank" rel="noreferrer">
         {link.name}
       </a>
     </Styled.ResourceLink>
@@ -102,7 +102,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
 
   const resourceLinksRight = linksRight.map(link => (
     <Styled.ResourceLink key={link.name}>
-      <a href={link.to} target="_blank" rel="noreferer">
+      <a href={link.to} target="_blank" rel="noreferrer">
         {link.name}
       </a>
     </Styled.ResourceLink>
@@ -233,6 +233,7 @@ Styled.NavLinksContainer = styled.div(props => {
     width: 100%;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     color: white;
 
@@ -253,10 +254,10 @@ Styled.NavLinksContainer = styled.div(props => {
       font-family: bellota text;
       color: white;
       background-color: #172a4f;
-      ${[t.pl(0), t.pb(1)]}
+      ${[t.pr(4), t.pb(1), t.pl(0)]}
 
       ${t.mq.sm} {
-        ${[t.pl(2), t.pb(1)]}
+        ${[t.pl(2), t.pr(0)]}
       }
 
       &:hover {
@@ -294,7 +295,7 @@ Styled.ResourceLinksContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: AdminFooter_ResourceLinksContainer;
-    ${[t.pl(4), t.mt(0)]};
+    ${[t.pl(4)]};
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -307,7 +308,6 @@ Styled.ResourceLinksContainer = styled.div(props => {
     ${t.mq.sm} {
       width: 60%;
     }
-
   `;
 });
 
@@ -320,7 +320,7 @@ Styled.Title = styled.div((props: any) => {
     width: 86%;
     margin-right: 14%;
     display: ${noDisplay ? "none" : "flex"};
-    border-bottom: 1px solid #223f7c;
+    border-bottom: 1px solid #4C5F80;
 
     ${t.mq.sm} {
       display: flex;
@@ -336,11 +336,9 @@ Styled.Title = styled.div((props: any) => {
   `;
 });
 
-Styled.ResourceLinksSection = styled.div(props => {
-  const t = props.theme;
+Styled.ResourceLinksSection = styled.div(() => {
   return css`
     label: AdminFooter_ResourceLinksSection;
-    ${t.pt(0)};
     display: flex;
     width: 100%;
   `;
@@ -349,7 +347,7 @@ Styled.ResourceLinksSection = styled.div(props => {
 Styled.ResourceLinks = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_LeftResourceLinksContainer;
+    label: AdminFooter_ResourceLinks;
     ${[t.pl(2)]}
     width: 100%;
     display: flex;
@@ -364,9 +362,9 @@ Styled.ResourceLinks = styled.div(props => {
 Styled.ResourceLink = styled.div(props => {
   const t = props.theme;
   return css`
-    label: AdminFooter_ExternalLink;
-    ${[t.py(0), t.pr(0), t.pl(0), t.pb(1)]}
-    color: white;
+    label: AdminFooter_ResourceLink;
+    ${[t.pb(1)]}
+    color: #d3d9e5;
     font-size: 1rem;
     line-height: 1.375rem;
 
@@ -415,9 +413,9 @@ Styled.ImageContainer = styled.div(props => {
 
 Styled.BottomBarContainer = styled.div(() => {
   return css`
-    label: AdminFooter_TopBarContainer;
+    label: AdminFooter_BottomBarContainer;
     height: 75px;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
     width: 100%;
     display: flex;
     justify-content: center;

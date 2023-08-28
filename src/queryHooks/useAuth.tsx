@@ -1,8 +1,4 @@
-import React from 'react';
-import {
-  useMutation,
-  useQuery,
-} from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { apiGet, apiPost } from "./api";
 
 type LoginParams = {
@@ -36,7 +32,7 @@ function useLoginUser(): {
   // const queryClient: QueryClient = useQueryClient();
   return useMutation(loginUser, {
     onSuccess: () => {
-      console.log("LOGIN SUCCESS")
+      console.log("LOGIN SUCCESS");
       // queryClient.invalidateQueries(["garments"]);
     },
   });
@@ -50,20 +46,22 @@ function useAuthedUser({ enabled = true }: { enabled?: boolean } = {}): {
   isFetching: boolean;
   isLoading: boolean;
 } {
-  return useQuery("authedUser", getAuthedUser,
-    { 
-      enabled,
-      refetchOnWindowFocus: true,
-      retry: (failureCount, error) => !error.message.includes(401),
-      onError: (error) => {
-          console.log("%c[useGetMe] ERROR - Redirecting to /logout", "color: #FF0000", window.location.href);
-          const path = window.location.pathname;
-          if (path.includes("admin")) {
-            window.location.href = `${process.env.REACT_APP_BASE_URL}/login`
-          }
-        }
-      },
-  );
+  return useQuery("authedUser", getAuthedUser, {
+    enabled,
+    refetchOnWindowFocus: true,
+    retry: (failureCount, error) => !error.message.includes(401),
+    onError: error => {
+      console.log(
+        "%c[useGetMe] ERROR - Redirecting to /logout",
+        "color: #FF0000",
+        window.location.href
+      );
+      const path = window.location.pathname;
+      if (path.includes("admin")) {
+        window.location.href = `${process.env.REACT_APP_BASE_URL}/login`;
+      }
+    },
+  });
 }
 
 export { useLoginUser, useAuthedUser };

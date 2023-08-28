@@ -31,7 +31,6 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    error,
   } = useGarmentsKeywordSearch(searchQuery, enabled);
 
   console.log("Data in index:", data);

@@ -51,6 +51,7 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
         backPath="/garments"
         pageTitle={garment ? garment.garmentTitle : ""}
         pageNumber={pageNo}
+        publicPage={true}
       />
       <GarmentContent garment={garmentData} loading={garmentIsLoading} />
       {/* <Footer scrollToTop={scrollToTop} /> */}

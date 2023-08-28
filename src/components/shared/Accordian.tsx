@@ -1,73 +1,80 @@
-import React from 'react'
+import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import Button from '@mui/material/Button';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import Button from "@mui/material/Button";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
 interface AccordianProps {
   text: string | any;
+  dark: boolean;
 }
 
-const Accordian: React.FC<AccordianProps> = (props) => {
-  const { text } = props;
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [hasOverflow, setHasOverflow] = React.useState(false)
+const Accordian: React.FC<AccordianProps> = props => {
+  const { text, dark } = props;
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [hasOverflow, setHasOverflow] = React.useState(false);
 
-  const textRef = React.useRef<HTMLDivElement>(null)
+  const textRef = React.useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const colors = {
+    primaryText: dark ? "white" : "#172a4f",
+    textReverse: dark ? "#172a4f" : "white",
+    background: dark ? "#020b1c" : "white",
+    backgroundTransparent: dark ? "rgba(2,11,28,0)" : "rgba(255,255,255,0)",
+    buttonBorder: dark ? "rgba(211, 217, 229, 0.3)" : "rgba(76, 95, 128, 0.4)",
+  };
 
   React.useEffect(() => {
     if (textRef && textRef.current) {
-      // console.log("Text REF", textRef.current)
-      // console.log("scroll height", textRef.current.scrollHeight)
       const scrollHeight = textRef.current.scrollHeight;
       const clientHeight = textRef.current.clientHeight;
       if (scrollHeight > 245 || clientHeight < scrollHeight) {
-        setHasOverflow(true)
-      } 
+        setHasOverflow(true);
+      }
     }
     //text must be a dependency or else it will not recalculate
-  }, [textRef?.current?.scrollHeight, text])
+  }, [textRef?.current?.scrollHeight, text]);
 
   const handleClickOpen = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    setIsOpen(true)
-  }
+    setIsOpen(true);
+  };
 
   const handleClickClose = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   const concealerClassName = isOpen ? "concealer-inactive" : "concealer-active";
-  
+
   const buttonStyles = {
-    borderColor: "rgba(211, 217, 229, 0.3)",
-    color: "white",
+    borderColor: colors.buttonBorder,
+    color: colors.primaryText,
     textTransform: "none",
     px: 2,
     fontSize: isMobile ? "1rem" : "0.875rem",
     "&:hover": {
-      color: "#172a4f",
-      backgroundColor: "white",
+      color: colors.textReverse,
+      backgroundColor: colors.primaryText,
       fontSize: "0.9rem",
     },
 
     "& .MuiButton-endIcon": {
-      color: "white",
+      color: colors.primaryText,
     },
 
     "&:hover .MuiButton-endIcon": {
-      color: "#172a4f",
+      color: colors.textReverse,
       fontSize: "0.9rem",
-    }
-  }
+    },
+  };
 
   const overflowClass = hasOverflow ? "hidden" : "not-hidden";
   const activeClass = isOpen ? "active" : "inactive";
@@ -80,31 +87,36 @@ const Accordian: React.FC<AccordianProps> = (props) => {
         </div>
       </Styled.TextContainer>
       {hasOverflow ? (
-        <Styled.AccordianContainer>
-          <div className={concealerClassName}>
-          </div>
-          <Styled.ButtonsContainer>
-            <Styled.ButtonContainer className={isOpen ? "" : "active"}>
+        <Styled.AccordianContainer colors={colors}>
+          <div className={concealerClassName}></div>
+          <Styled.ButtonsContainer colors={colors}>
+            <Styled.ButtonContainer
+              className={isOpen ? "" : "active"}
+              colors={colors}
+            >
               <Button
                 variant="outlined"
                 color="primary"
                 onClick={handleClickOpen}
                 size="small"
-                endIcon={<AddOutlinedIcon/>}
+                endIcon={<AddOutlinedIcon />}
                 sx={buttonStyles}
-                >
+              >
                 Read more
               </Button>
             </Styled.ButtonContainer>
-            <Styled.ButtonContainer className={isOpen ? "active" : ""}>
+            <Styled.ButtonContainer
+              className={isOpen ? "active" : ""}
+              colors={colors}
+            >
               <Button
                 variant="outlined"
                 color="primary"
                 onClick={handleClickClose}
                 size="small"
-                endIcon={<RemoveOutlinedIcon/>}
+                endIcon={<RemoveOutlinedIcon />}
                 sx={buttonStyles}
-                >
+              >
                 Read less
               </Button>
             </Styled.ButtonContainer>
@@ -112,8 +124,8 @@ const Accordian: React.FC<AccordianProps> = (props) => {
         </Styled.AccordianContainer>
       ) : null}
     </Styled.Container>
-  )
-}
+  );
+};
 
 export default Accordian;
 
@@ -122,8 +134,7 @@ export default Accordian;
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div((props: any) => {
-  const t = props.theme;
+Styled.Container = styled.div(() => {
   return css`
     label: Accordian_Container;
     width: 100%;
@@ -135,21 +146,22 @@ Styled.Container = styled.div((props: any) => {
 });
 
 Styled.AccordianContainer = styled.div((props: any) => {
-  const t = props.theme;
+  const c = props.colors;
   return css`
     label: Accordian_DisplayContainer;
     position: relative;
     width: 100%;
-    height: 100%
-
-    .concealer-inactive {
+    height: 100% .concealer-inactive {
       display: none;
     }
 
     .concealer-active {
       display: flex;
       justify-content: center;
-      background-image: linear-gradient(rgba(2,11,28,0),#020b1c);
+      background-image: linear-gradient(
+        ${c.backgroundTransparent},
+        ${c.background}
+      );
       height: 90px;
       position: absolute;
       left: 0;
@@ -157,17 +169,16 @@ Styled.AccordianContainer = styled.div((props: any) => {
       width: 100%;
     }
   `;
-})
+});
 
-Styled.TextContainer = styled.div((props: any) => {
-  const t = props.theme;
+Styled.TextContainer = styled.div(() => {
   return css`
     label: Accordian_TextContainer;
     width: 100%;
     height: auto;
     display: block;
     justify-content: center;
-    
+
     .hidden.inactive {
       height: 245px;
       overflow: hidden;
@@ -186,6 +197,7 @@ Styled.TextContainer = styled.div((props: any) => {
 
 Styled.ButtonsContainer = styled.div((props: any) => {
   const t = props.theme;
+  const c = props.colors;
   return css`
     label: Accordian_ButtonsContainer;
     ${t.mt(6)}
@@ -194,7 +206,7 @@ Styled.ButtonsContainer = styled.div((props: any) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #020b1c;
+    background-color: ${c.background};
 
     .active {
       display: flex;
@@ -203,13 +215,13 @@ Styled.ButtonsContainer = styled.div((props: any) => {
 });
 
 Styled.ButtonContainer = styled.div((props: any) => {
-  const t = props.theme;
+  const c = props.colors;
   return css`
     label: Accordian_ButtonContainer;
     width: 100%;
     height: 36px;
     display: none;
     justify-content: center;
-    background-color: #020b1c;
+    background-color: ${c.background};
   `;
 });

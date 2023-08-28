@@ -20,12 +20,20 @@ interface GarmentContentProps {
   loading: boolean;
 }
 
-const GarmentContent: React.FC<GarmentContentProps> = (props) => {
+const GarmentContent: React.FC<GarmentContentProps> = props => {
   const { garment, loading } = props;
   const { openModal, removeModal } = useModalContext();
 
   const theme = useTheme();
-  const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
+  const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const dark = useMediaQuery(theme.breakpoints.down("lg"));
+
+  const colors = {
+    primaryText: dark ? "white" : "#172a4f",
+    secondaryText: dark ? "#BFC9D9" : "#4C5F80",
+    textReverse: dark ? "#172a4f" : "white",
+    background: dark ? "#020b1c" : "white",
+  };
 
   type Item = {
     name: string;
@@ -48,7 +56,7 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
           const list = item ? item.value : [];
           const listToString = list.length > 0 ? list.join(", ") : "";
           return (
-            <Styled.InfoItem key={item.name}>
+            <Styled.InfoItem key={item.name} colors={colors}>
               <p>
                 <span>{item.name}: </span> {listToString}
               </p>
@@ -56,7 +64,7 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
           );
         } else if (item.name === "Link") {
           return (
-            <Styled.InfoItem key={item.name}>
+            <Styled.InfoItem key={item.name} colors={colors}>
               <p>
                 <span>{item.name}: </span>
                 <a href={item.value} target="_blank" rel="noreferrer">
@@ -67,7 +75,7 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
           );
         } else {
           return (
-            <Styled.InfoItem key={item.name}>
+            <Styled.InfoItem key={item.name} colors={colors}>
               <p>
                 <span>{item.name}: </span>
                 {item.value}
@@ -87,8 +95,8 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
       </p>
     ));
     return (
-      <Styled.InfoItem key={item.name}>
-        <Accordian text={mainText} />
+      <Styled.InfoItem key={item.name} colors={colors}>
+        <Accordian text={mainText} dark={dark} />
       </Styled.InfoItem>
     );
   };
@@ -102,7 +110,7 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
         onClose={() => removeModal()}
         garmentTitle={garment?.garmentTitle ? garment.garmentTitle : ""}
         imageUrl={imageUrl}
-        responsiveFullscreen={fullscreen}
+        responsiveFullscreen={mediumScreen}
       />
     );
 
@@ -115,8 +123,8 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
         {loading ? (
           <Skeleton
             variant="rectangular"
-            width={fullscreen ? "calc((100vh - 160px) * 0.82)" : "500px"}
-            height={fullscreen ? "calc(100vh - 160px)" : "609px"}
+            width={mediumScreen ? "calc((100vh - 160px) * 0.82)" : "500px"}
+            height={mediumScreen ? "calc(100vh - 160px)" : "609px"}
             sx={{
               bgcolor: "rgba(211, 217, 229, 0.9)",
               borderRadius: "8px",
@@ -134,11 +142,13 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
         )}
         {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
       </Styled.ImagesSection>
-      <Styled.InfoSection>
-        <Styled.InfoContainer>
+      <Styled.InfoSection colors={colors}>
+        <Styled.InfoContainer colors={colors}>
           <Styled.HeaderContainer>
-            <Styled.InfoTitleContainer>
-              <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
+            <Styled.InfoTitleContainer colors={colors}>
+              <Styled.InfoTitle colors={colors}>
+                {garment?.garmentTitle}
+              </Styled.InfoTitle>
             </Styled.InfoTitleContainer>
             <Styled.IconButtonContainer>
               <Link
@@ -146,23 +156,25 @@ const GarmentContent: React.FC<GarmentContentProps> = (props) => {
                 href={garment?.collectionUrl}
                 rel="noreferrer"
               >
-                <IconButton sx={{ color: "white", pt: 0 }}>
+                <IconButton sx={{ color: colors.primaryText, pt: 0 }}>
                   <OpenInNewOutlinedIcon />
                 </IconButton>
               </Link>
             </Styled.IconButtonContainer>
           </Styled.HeaderContainer>
           <Styled.InfoContent>
-            <Styled.InfoItem>
+            <Styled.InfoItem colors={colors}>
               <p className="culture">{garment?.cultureCountry}</p>
             </Styled.InfoItem>
-            <Styled.InfoItem>
+            <Styled.InfoItem colors={colors}>
               <p className="date">c. {garment?.beginYear}</p>
             </Styled.InfoItem>
-            <Styled.Description>{itemDescription()}</Styled.Description>
+            <Styled.Description colors={colors}>
+              {itemDescription()}
+            </Styled.Description>
           </Styled.InfoContent>
           <Styled.InfoContent>
-            <Styled.Subheader>
+            <Styled.Subheader colors={colors}>
               <h3>Details</h3>
             </Styled.Subheader>
             {itemNodes}
@@ -180,22 +192,40 @@ export default GarmentContent;
 let Styled: any;
 Styled = {};
 
-Styled.GarmentContainer = styled.div(() => {
+Styled.GarmentContainer = styled.div(props => {
+  const t = props.theme;
   return css`
     label: Garment_Container;
     display: flex;
     width: 100%;
     flex-direction: column;
     align-items: center;
+
+    ${t.mq.xl} {
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      width: 86%;
+      margin-left: 7%;
+      margin-right: 7%;
+    }
   `;
 });
 
-Styled.ImagesSection = styled.section(() => {
+Styled.ImagesSection = styled.section(props => {
+  const t = props.theme;
   return css`
     label: Garment_ImagesSection;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+
+    ${t.mq.xl} {
+      width: 45%;
+      margin-left: 5%;
+      margin-top: 8px;
+    }
   `;
 });
 
@@ -242,7 +272,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
   `;
 });
 
-Styled.ThumbGallery = styled.div(props => {
+Styled.ThumbGallery = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: Garment_ImagesGallery;
@@ -258,7 +288,7 @@ Styled.ThumbGallery = styled.div(props => {
   `;
 });
 
-Styled.ThumbImage = styled.div(props => {
+Styled.ThumbImage = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: Garment_ThumbImage;
@@ -274,20 +304,29 @@ Styled.ThumbImage = styled.div(props => {
   `;
 });
 
-Styled.InfoSection = styled.section(props => {
+Styled.InfoSection = styled.section((props: any) => {
   const t = props.theme;
+  const c = props.colors;
   return css`
     label: Garment_InfoSection;
     ${[t.pt(9), t.pb(24)]}
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: #020b1c;
+    background-color: ${c.background};
+
+    ${t.mq.xl} {
+      width: 45%;
+      margin-right: 5%;
+      ${[t.pt(4), t.pb(20)]}
+      justify-content: flex-start;
+    }
   `;
 });
 
-Styled.InfoContainer = styled.div(props => {
+Styled.InfoContainer = styled.div((props: any) => {
   const t = props.theme;
+  const c = props.colors;
   return css`
     label: Garment_InfoSection;
     ${[t.px(4), t.mb(6)]}
@@ -295,13 +334,19 @@ Styled.InfoContainer = styled.div(props => {
     max-width: 900px;
     display: flex;
     flex-direction: column;
-    background-color: 
+    background-color: ${c.background};
     border-radius: 8px;
 
     ${t.mq.sm} {
       margin-right: 6%;
       margin-left: 6%;
       width: 88%;
+    }
+
+    ${t.mq.xl} {
+      width: 95%;
+      margin-left: 0%;
+      margin-right: 5%;
     }
   `;
 });
@@ -321,13 +366,14 @@ Styled.InfoTitleContainer = styled.div(() => {
   `;
 });
 
-Styled.InfoTitle = styled.h2(props => {
+Styled.InfoTitle = styled.h2((props: any) => {
   const t = props.theme;
+  const c = props.colors;
   return css`
     label: Garment_InfoTitle;
     ${[t.pb(2), t.pl(4)]}
     font-family: "goudy";
-    color: white;
+    color: ${c.primaryText};
     font-size: 1.75rem;
     font-weight: 200;
   `;
@@ -342,7 +388,7 @@ Styled.IconButtonContainer = styled.div(() => {
   `;
 });
 
-Styled.InfoContent = styled.div(props => {
+Styled.InfoContent = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: Garment_InfoContent;
@@ -353,45 +399,48 @@ Styled.InfoContent = styled.div(props => {
   `;
 });
 
-Styled.Description = styled.div(props => {
+Styled.Description = styled.div((props: any) => {
   const t = props.theme;
+  const c = props.colors;
   return css`
     label: Garment_Description;
     ${[t.pb(6), t.pt(2)]}
     width: 100%;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid ${c.primaryText};
   `;
 });
 
-Styled.Subheader = styled.div(props => {
+Styled.Subheader = styled.div((props: any) => {
   const t = props.theme;
+  const c = props.colors;
   return css`
     label: Garment_DetailsSubheader;
     width: 100%;
 
     h3 {
       ${[t.pt(8), t.pb(4), t.px(4)]}
-      color: white;
+      color: ${c.primaryText};
       font-family: "bellota text";
       font-size: 1.375rem;
     }
   `;
 });
 
-Styled.InfoItem = styled.div(props => {
+Styled.InfoItem = styled.div((props: any) => {
   const t = props.theme;
+  const c = props.colors;
   return css`
     label: Garment_InfoItem;
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: white;
+    color: ${c.primaryText};
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: "bellota text";
 
     span {
-      color: ${t.color.blue_gray[200]};
+      color: ${c.secondaryText};
     }
 
     a {

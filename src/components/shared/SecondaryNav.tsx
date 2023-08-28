@@ -15,15 +15,11 @@ type Props = {
   pageTitle: string;
   pageNumber?: number;
   rowsNumber?: number;
+  publicPage?: boolean;
 };
 
 const SecondaryNav = (props: Props) => {
-  const {
-    backPath,
-    pageTitle,
-    pageNumber,
-    rowsNumber,
-  } = props;
+  const { backPath, pageTitle, pageNumber, rowsNumber, publicPage } = props;
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -84,14 +80,15 @@ const SecondaryNav = (props: Props) => {
     </OutlinedButton>
   );
 
-  const backButton = mediumScreen ? backIconButton : backFullButton;
+  const backButton =
+    mediumScreen || publicPage ? backIconButton : backFullButton;
 
   return (
     <Styled.SecondaryNavContainer>
       <Styled.LeftButtonContainer>
         {backPath ? backButton : null}
       </Styled.LeftButtonContainer>
-      <Styled.SecondaryNavHeader>
+      <Styled.SecondaryNavHeader public={publicPage}>
         <h2>{pageTitle}</h2>
       </Styled.SecondaryNavHeader>
       <Styled.RightContainer></Styled.RightContainer>
@@ -106,7 +103,7 @@ export default SecondaryNav;
 let Styled: any;
 Styled = {};
 
-Styled.SecondaryNavContainer = styled.div(props => {
+Styled.SecondaryNavContainer = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: SecondaryNavContainer;
@@ -125,7 +122,7 @@ Styled.SecondaryNavContainer = styled.div(props => {
   `;
 });
 
-Styled.SecondaryNavHeader = styled.div(props => {
+Styled.SecondaryNavHeader = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: SecondaryNavHeader;
@@ -149,6 +146,10 @@ Styled.SecondaryNavHeader = styled.div(props => {
       color: ${t.color.blue[700]};
       text-transform: uppercase;
       text-align: center;
+
+      ${t.mq.xl} {
+        display: ${props.public ? "none" : "block"};
+      }
     }
   `;
 });

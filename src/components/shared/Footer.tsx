@@ -73,7 +73,7 @@ const Footer: React.FC<FooterProps> = props => {
 
   const resourceLinks = externalLinks.map(link => (
     <Styled.ResourceLink key={link.name}>
-      <a href={link.to} target="_blank" rel="noreferer">
+      <a href={link.to} target="_blank" rel="noreferrer">
         {link.name}
       </a>
     </Styled.ResourceLink>
@@ -96,7 +96,7 @@ const Footer: React.FC<FooterProps> = props => {
     <Styled.Container>
       <Styled.MainContainer>
         <Styled.AboutContainer>
-          <img src={logo} />
+          <img src={logo} alt="the genuine article logo" />
           <p>
             The genuine article is a digital collection of images of Western
             clothing from the 1800s - each record includes historical details
@@ -220,7 +220,7 @@ Styled.AboutContainer = styled.div(props => {
     }
 
     p {
-      color: #D3D9E5;
+      color: #d3d9e5;
       width: 80%;
       display: none;
       ${t.pt(1)}
@@ -268,6 +268,7 @@ Styled.NavLinksContainer = styled.div(props => {
     display: flex;
     color: white;
     justify-content: space-around;
+    flex-wrap: wrap;
 
     ${t.mq.md} {
       width: 37%;
@@ -280,7 +281,7 @@ Styled.NavLinksContainer = styled.div(props => {
       font-size: 1.125rem;
       line-height: 1.5rem;
       font-family: bellota text;
-      color: #d3d9e5;
+      color: white;
       background-color: #172a4f;
 
       &:hover {
@@ -291,6 +292,7 @@ Styled.NavLinksContainer = styled.div(props => {
       ${t.mq.md} {
         font-size: 1rem;
         line-height: 1.5rem;
+        color: #d3d9e5;
       }
     }
   `;
@@ -303,7 +305,7 @@ Styled.Button = styled.div(props => {
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: bellota text;
-    color: #D3D9E5;
+    color: white;
     background-color: #172a4f;
 
     &:hover {
@@ -312,7 +314,7 @@ Styled.Button = styled.div(props => {
     }
 
     ${t.mq.md} {
-      color: #D3D9E5;
+      color: #d3d9e5;
       font-size: 1rem;
     }
   `;
@@ -349,7 +351,7 @@ Styled.Title = styled.div(props => {
     width: 86%;
     margin-right: 14%;
     display: none;
-    border-bottom: 1px solid #2F579C;
+    border-bottom: 1px solid #4C5F80;
 
     h2 {
       ${t.pl(2)}
@@ -365,8 +367,7 @@ Styled.Title = styled.div(props => {
   `;
 });
 
-Styled.ResourceLinksSection = styled.div(props => {
-  const t = props.theme;
+Styled.ResourceLinksSection = styled.div(() => {
   return css`
     label: Footer_ResourceLinksSection;
     display: flex;
@@ -421,10 +422,11 @@ Styled.BottomBarContainer = styled.div(() => {
   `;
 });
 
-Styled.CircleButton = styled.div(() => {
+Styled.CircleButton = styled.div((props) => {
+  const t = props.theme;
   return css`
     label: Footer_CircleButton;
-    border: 2px solid #d3d9e5;
+    border: 2px solid white;
     position: relative;
     border-radius: 50%;
     width: 70px;
@@ -437,6 +439,10 @@ Styled.CircleButton = styled.div(() => {
     &:hover {
       cursor: pointer;
       border-color: white;
+    }
+
+    ${t.mq.sm} {
+      border-color: #d3d9e5;
     }
   `;
 });

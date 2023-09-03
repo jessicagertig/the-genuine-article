@@ -93,7 +93,10 @@ const Login: React.FC = () => {
 
   return (
     <Styled.Container>
-      <Paper sx={{ width: isMobile ? "100%" : "450px", minWidth: "300px" }} square={isMobile}>
+      <Paper
+        sx={{ width: isMobile ? "100%" : "450px", minWidth: "300px" }}
+        square={isMobile}
+      >
         <Styled.FormContainer>
           <Styled.TextContainer>
             <h2>Login</h2>
@@ -122,7 +125,7 @@ const Login: React.FC = () => {
                 color="primary"
                 type="submit"
                 sx={{
-                  backgroundColor: "#172a4f",
+                  backgroundColor: "#020b1c",
                   fontWeight: "bold",
                   fontSize: "1rem",
                   lineHeight: "1.75rem",
@@ -160,7 +163,7 @@ Styled.Container = styled.div(props => {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #172a4f;
+    background-color: #020b1c;
 
     ${t.mq.md} {
       height: calc(100vh - 90px);
@@ -214,7 +217,7 @@ Styled.TextContainer = styled.div(props => {
     h2 {
       font-family: "bellota text";
       font-size: 1.75rem;
-      color: #172a4f;
+      color: #020b1c;
       font-weight: 600;
       ${t.my(4)}
     }
@@ -231,14 +234,13 @@ Styled.ButtonsContainer = styled.div(props => {
   `;
 });
 
-
 Styled.Button = styled.div(props => {
   const t = props.theme;
   return css`
     ${[t.pl(2), t.pb(1)]}
     font-size: 1rem;
     font-family: bellota text;
-    color: #172a4f;
+    color: #020b1c;
 
     &:hover {
       cursor: pointer;

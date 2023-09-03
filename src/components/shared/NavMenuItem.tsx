@@ -13,10 +13,10 @@ const styles = {
     backgroundColor: "rgba(211, 217, 229, 0.25)",
   },
   "&:visited": {
-    color: "#172a4f",
+    color: "#020b1c",
   },
   "&:link": {
-    color: "#172a4f",
+    color: "#020b1c",
   },
 };
 

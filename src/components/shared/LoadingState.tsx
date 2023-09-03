@@ -4,10 +4,9 @@ import { css } from "@emotion/react";
 
 import Loading from "src/components/shared/Loading";
 
-interface LoadingStateProps {};
+interface LoadingStateProps {}
 
-const LoadingState: React.FC<LoadingStateProps> = (props) => {
-
+const LoadingState: React.FC<LoadingStateProps> = props => {
   return (
     <Styled.Container>
       <Styled.LoadingContainer>
@@ -54,7 +53,7 @@ Styled.LoadingContainer = styled.div(props => {
     h2 {
       font-family: "bellota text";
       font-size: 1.25rem;
-      color: #172a4f;
+      color: #020b1c;
       ${t.m(4)}
     }
   `;

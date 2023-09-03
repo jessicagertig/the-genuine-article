@@ -11,9 +11,9 @@ import { createTheme } from "@mui/material/styles";
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: "#223F7C",
-      light: "#2F579C",
-      dark: "#172a4f",
+      main: "#172a4f",
+      light: "#223F7C",
+      dark: "#020b1c",
     },
     secondary: {
       main: "#FBE9EF",
@@ -36,7 +36,7 @@ const customTheme = createTheme({
       md: 768,
       lg: 1024,
       xl: 1200,
-    }
+    },
   },
   components: {
     // Name of the component
@@ -45,10 +45,10 @@ const customTheme = createTheme({
         // Name of the slot
         root: {
           // Some CSS
-          color: "#172a4f",
+          color: "#020b1c",
           "&:hover": {
             backgroundColor: "rgba(211, 217, 229, 0.5)",
-          }
+          },
         },
       },
     },
@@ -57,14 +57,14 @@ const customTheme = createTheme({
         // Name of the slot
         option: {
           // Some CSS
-          color: "#172a4f",
+          color: "#020b1c",
           "&:hover": {
             backgroundColor: "rgba(211, 217, 229, 0.5)",
-          }
+          },
         },
         tag: {
           // Some CSS
-          color: "#172a4f",
+          color: "#020b1c",
         },
       },
     },
@@ -73,7 +73,7 @@ const customTheme = createTheme({
         // Name of the slot
         root: {
           // Some CSS
-          color: "#172a4f",
+          color: "#020b1c",
         },
       },
     },

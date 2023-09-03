@@ -157,7 +157,7 @@ Styled.TextContainer = styled.div(props => {
     }
     
     span {
-      font-family: "goudy";
+      font-family: serif;
       font-style: italic;
       font-size: 1.75rem;
       line-height: 2.25rem;

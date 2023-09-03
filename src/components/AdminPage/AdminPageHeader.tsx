@@ -67,11 +67,14 @@ const AdminHeader: React.FC<Props> = props => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ px: 1.5, "&:hover": {
-          backgroundColor: "rgba(211, 217, 229, 0.5)",
-        } }}
+        sx={{
+          px: 1.5,
+          "&:hover": {
+            backgroundColor: "rgba(211, 217, 229, 0.5)",
+          },
+        }}
       >
-        <MoreVertOutlinedIcon sx={{ color: "#172a4f", fill: "#172a4f" }} />
+        <MoreVertOutlinedIcon sx={{ color: "#020b1c", fill: "#020b1c" }} />
       </IconButton>
       <Menu
         id="basic-menu"
@@ -86,10 +89,7 @@ const AdminHeader: React.FC<Props> = props => {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {actions.map(action => (
-          <MenuItem
-            onClick={action.handleOnClick}
-            key={action.name}
-          >
+          <MenuItem onClick={action.handleOnClick} key={action.name}>
             {action.name}
           </MenuItem>
         ))}

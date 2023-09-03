@@ -3,7 +3,17 @@ import { css, Theme } from "@emotion/react";
 type Space = { [key: string | "auto" | "px"]: string };
 
 const color = {
-  data: ["#fd7f6f", "#7eb0d5", "#b2e061", "#bd7ebe", "#ffb55a", "#ffee65", "#beb9db", "#fdcce5", "#8bd3c7"],
+  data: [
+    "#fd7f6f",
+    "#7eb0d5",
+    "#b2e061",
+    "#bd7ebe",
+    "#ffb55a",
+    "#ffee65",
+    "#beb9db",
+    "#fdcce5",
+    "#8bd3c7",
+  ],
   white: "#FFFFFF",
   gray: {
     100: "#FAFAFA",
@@ -11,9 +21,9 @@ const color = {
   },
   black: "#000000",
   blue: {
-    100: "#2F579C", //primary light
-    400: "#223F7C", //primary dark
-    700: "#172a4f", //primary main
+    100: "#223F7C", //primary light
+    400: "#172a4f", //primary dark
+    700: "#020b1c", //primary main
   },
   red: {
     300: "#DA2929", //error light
@@ -44,6 +54,7 @@ const space: Space = {
   "4": "1rem", // 16px
   "5": "1.25rem", // 20px
   "6": "1.5rem", // 24px
+  "7": "1.75rem", //28px
   "8": "2rem", // 32px
   "9": "2.25rem", // 36px
   "10": "2.5rem", // 40px
@@ -54,7 +65,7 @@ const space: Space = {
   "24": "6rem",
   "28": "7rem",
   "32": "8rem",
-  "40": "10rem",// 160px
+  "40": "10rem", // 160px
   "48": "12rem",
   "56": "14rem",
   "64": "16rem",
@@ -103,14 +114,11 @@ const breakpoints: { [index: string]: number } = {
   xs: 480,
   sm: 640,
   md: 768,
+  mdlg: 950,
   lg: 1024,
   xl: 1200,
+  gxl: 1445,
   xxl: 1600,
-  //below are specifically for handling garment columns
-  gsm: 735, //2 columns
-  gmd: 1107, // 3 columns
-  glg: 1544, //4 columns
-  gxl: 1909, // 5 columns
 };
 
 const mq = Object.keys(breakpoints)

@@ -24,8 +24,8 @@ const Accordian: React.FC<AccordianProps> = props => {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const colors = {
-    primaryText: dark ? "white" : "#172a4f",
-    textReverse: dark ? "#172a4f" : "white",
+    primaryText: dark ? "white" : "#020b1c",
+    textReverse: dark ? "#020b1c" : "white",
     background: dark ? "#020b1c" : "white",
     backgroundTransparent: dark ? "rgba(2,11,28,0)" : "rgba(255,255,255,0)",
     buttonBorder: dark ? "rgba(211, 217, 229, 0.3)" : "rgba(76, 95, 128, 0.4)",

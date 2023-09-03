@@ -26,8 +26,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = () => {
             displayed here is linked to the collection which houses the item.
           </p>
         </Styled.TextContainer>
-        <Styled.ButtonContainer>
-        </Styled.ButtonContainer>
+        <Styled.ButtonContainer></Styled.ButtonContainer>
       </Styled.InfoSectionContainer>
       <Styled.ImageGridContainer>
         {imageUrls.map(image => (
@@ -100,7 +99,7 @@ Styled.HeaderTextContainer = styled.div(props => {
 
     h3 {
       font-family: "bellota text";
-      color: #172a4f;
+      color: #020b1c;
       font-size: 1.75rem;
     }
   `;
@@ -123,7 +122,7 @@ Styled.TextContainer = styled.div(props => {
     p {
       font-family: "bellota text";
       font-size: 1rem;
-      color: #172a4f;
+      color: #020b1c;
     }
   `;
 });

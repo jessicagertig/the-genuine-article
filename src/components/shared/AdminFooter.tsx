@@ -192,7 +192,7 @@ Styled.Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #172a4f;
+  background-color: #020b1c;
 `;
 
 Styled.MainContainer = styled.div(props => {
@@ -265,7 +265,7 @@ Styled.NavLinksContainer = styled.div(props => {
       line-height: 1.5rem;
       font-family: bellota text;
       color: white;
-      background-color: #172a4f;
+      background-color: #020b1c;
       ${[t.pr(4), t.pb(1), t.pl(0)]}
 
       ${t.mq.sm} {
@@ -288,7 +288,7 @@ Styled.Button = styled.div(props => {
     line-height: 1.5rem;
     font-family: bellota text;
     color: white;
-    background-color: #172a4f;
+    background-color: #020b1c;
 
     ${t.mq.sm} {
       ${[t.pl(2), t.pr(0)]}
@@ -332,7 +332,7 @@ Styled.Title = styled.div((props: any) => {
     width: 86%;
     margin-right: 14%;
     display: ${noDisplay ? "none" : "flex"};
-    border-bottom: 1px solid #4C5F80;
+    border-bottom: 1px solid #4c5f80;
 
     ${t.mq.sm} {
       display: flex;

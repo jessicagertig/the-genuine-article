@@ -19,10 +19,7 @@ interface HomeContentProps {
   windowWidth: number;
 }
 
-const HomeContent: React.FC<HomeContentProps> = ({
-  windowHeight,
-  windowWidth,
-}) => {
+const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const { openModal, removeModal } = useModalContext();
   const { data: garment } = useDailyGarment();
 
@@ -32,7 +29,7 @@ const HomeContent: React.FC<HomeContentProps> = ({
     width: 0,
   });
 
-  const { maxHeight, maxWidth } = useImageDimensions({
+  const { maxHeight } = useImageDimensions({
     imageLoaded,
     dimensions,
   });
@@ -48,7 +45,6 @@ const HomeContent: React.FC<HomeContentProps> = ({
 
   React.useEffect(() => {
     console.log("IMAGE REF", imgRef);
-    console.log(maxHeight);
     if (imgRef.current && imgRef.current.complete) {
       onLoad();
     }
@@ -152,7 +148,8 @@ Styled.ContentTitleContainer = styled.div(props => {
 
     h2 {
       font-size: 1.75rem;
-      color: #172a4f;
+      color: #020b1c;
+      letter-spacing: 0.01rem;
     }
   `;
 });
@@ -174,22 +171,23 @@ Styled.DisplayedImage = styled.div((props: any) => {
     background-color: rgba(211, 217, 229, 0.5);
     display: ${display};
     position: relative;
-    width: auto;
-    height: calc(${heightInVh}vh - 160px);
+    max-width: 95vw;
+    max-height: calc(${heightInVh}vh - 160px);
     flex-shrink: 1;
     border-radius: 8px;
 
     ${t.mq.xs} {
-      height: calc(${heightInVh}vh - 120px);
+      max-height: calc(${heightInVh}vh - 120px);
     }
 
     img {
-      width: auto;
-      height: calc(${heightInVh}vh - 160px);
+      max-width: 95vw;
+      max-height: calc(${heightInVh}vh - 160px);
+      height: auto;
       border-radius: 8px;
 
       ${t.mq.xs} {
-        height: calc(${heightInVh}vh - 120px);
+        max-height: calc(${heightInVh}vh - 120px);
       }
     }
 

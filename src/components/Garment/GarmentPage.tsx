@@ -3,10 +3,12 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useParams, useLocation } from "react-router-dom";
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+
 import NavBar from "src/components/shared/NavBar";
-import SecondaryNav from "src/components/shared/SecondaryNav";
 import GarmentContent from "src/components/Garment/GarmentContent";
-// import Footer from "src/components/shared/Footer";
+import Footer from "src/components/shared/Footer";
 import { GarmentData } from "src/types";
 
 import { useGarment } from "src/queryHooks/useGarments";
@@ -20,13 +22,16 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
   const { garmentId } = useParams();
   const location = useLocation();
 
+  const theme = useTheme();
+  const largeScreen = useMediaQuery(theme.breakpoints.down("xl"));
+
   const pageContainerRef = React.useRef<HTMLDivElement>(null);
 
-  // const scrollToTop = () => {
-  //   if (pageContainerRef && pageContainerRef.current) {
-  //     pageContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
-  //   }
-  // };
+  const scrollToTop = () => {
+    if (pageContainerRef && pageContainerRef.current) {
+      pageContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
 
   const idToNumber = garmentId ? parseInt(garmentId, 10) : undefined;
   const pageNo = location?.state?.pageNo;
@@ -47,14 +52,8 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
   return (
     <Styled.GarmentPageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="white" shadow={true} />
-      <SecondaryNav
-        backPath="/garments"
-        pageTitle={garment ? garment.garmentTitle : ""}
-        pageNumber={pageNo}
-        publicPage={true}
-      />
-      <GarmentContent garment={garmentData} loading={garmentIsLoading} />
-      {/* <Footer scrollToTop={scrollToTop} /> */}
+      <GarmentContent garment={garmentData} loading={garmentIsLoading} pageNumber={pageNo} isDark={largeScreen}/>
+      <Footer scrollToTop={scrollToTop} dark={!largeScreen} />
     </Styled.GarmentPageContainer>
   );
 };

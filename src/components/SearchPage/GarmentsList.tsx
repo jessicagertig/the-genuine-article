@@ -15,13 +15,12 @@ interface GarmentsListProps {
 }
 
 const GarmentsList: React.FC<GarmentsListProps> = props => {
-  
   const [pageNo, setPageNo] = React.useState(1);
   const [garments, setGarments] = React.useState<GarmentData[]>([]);
   const [pageCount, setPageCount] = React.useState(0);
   const [hasMore, setHasMore] = React.useState(false);
-  
-  const { data, isFetching, isLoading, isPreviousData } = usePaginatedGarments(pageNo);
+
+  const { data, isFetching, isLoading } = usePaginatedGarments(pageNo);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,7 +29,7 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
 
   React.useEffect(() => {
     if (location?.state && location.state.pageNo) {
-      setPageNo(location.state.pageNo)
+      setPageNo(location.state.pageNo);
     }
   }, []);
 
@@ -48,7 +47,7 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
   ) => {
     const diffPage = value !== pageNo;
     setPageNo(value);
-    console.log("diffPage", diffPage)
+    console.log("diffPage", diffPage);
     if (diffPage) {
       props.scrollToTop();
     }
@@ -59,14 +58,14 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
     garmentId: number
   ): void => {
     e.preventDefault();
-        navigate(`/garments/${garmentId}`, {
+    navigate(`/garments/${garmentId}`, {
       state: {
         pageNo: pageNo,
       },
     });
   };
 
-  const loadingState = !data && (isLoading || isFetching )
+  const loadingState = !data && (isLoading || isFetching);
 
   return (
     <Styled.GarmentsListContainer>
@@ -83,6 +82,7 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
                 key={index}
                 garment={garment}
                 handleClick={handleOnClick}
+                loading={isLoading}
               />
             ))}
             <Styled.Filler />
@@ -114,9 +114,10 @@ Styled.GarmentsListContainer = styled.div(() => {
     label: GarmentsListContainer;
     width: 100%;
     height: 100%;
-    min-height: calc(100vh - 124px); 
+    min-height: calc(100vh - 124px);
     display: flex;
     flex-direction: column;
+    max-width: 1500px;
   `;
 });
 
@@ -136,7 +137,7 @@ Styled.LoadingContainer = styled.div(props => {
     h2 {
       font-family: "bellota text";
       font-size: 1.25rem;
-      color: #172a4f;
+      color: #020b1c;
       ${t.m(4)}
     }
 
@@ -150,11 +151,15 @@ Styled.GarmentsList = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentsList;
-    ${[t.p(2), t.mx(6)]}
+    ${t.mx(0)};
     height: max-content;
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
+
+    ${t.mq.xxs} {
+      ${t.mx(4)}
+    }
   `;
 });
 
@@ -164,30 +169,23 @@ Styled.Filler = styled.div(props => {
     label: FillerCard;
     ${t.rounded.md};
     width: 296px;
-    height: 444px; //true visual height of image
+    height: 444px;
     display: none;
     ${t.m(4)};
 
-    // 2 columns
-    ${t.mq.gsm} {
+    ${t.mq.sm} {
       display: flex;
     }
-    // 3 columns
-    ${t.mq.gmd} {
+
+    ${t.mq.lg} {
       display: none;
     }
-    // 4 columns
-    ${t.mq.glg} {
-      display: flex;
-    }
-    
-    // 5 columns
+
     ${t.mq.gxl} {
-      display: none;
+      display: flex;
     }
   `;
 });
-
 
 Styled.PaginationContainer = styled.div(props => {
   const t = props.theme;
@@ -201,4 +199,3 @@ Styled.PaginationContainer = styled.div(props => {
     align-self: center;
   `;
 });
-

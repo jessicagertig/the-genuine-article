@@ -30,8 +30,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
   return (
     <Styled.SearchResultsContainer>
-      {!garments || isLoading ?
-      (
+      {!garments || isLoading ? (
         <Styled.LoadingContainer>
           <h2>Loading...</h2>
           <LoadingBar />
@@ -43,6 +42,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
               key={index}
               garment={garment}
               handleClick={handleOnClick}
+              loading={isLoading}
             />
           ))}
         </Styled.SearchResults>
@@ -65,6 +65,7 @@ Styled.SearchResultsContainer = styled.div(() => {
     height: 100%;
     min-height: calc(100vh - 124px);
     display: block;
+    max-width: 1500px;
   `;
 });
 
@@ -73,6 +74,8 @@ Styled.LoadingContainer = styled.div(props => {
   return css`
     label: LoadingContainer;
     width: 50%;
+    margin-right: 25%;
+    margin-left: 25%;
     height: calc(100vh - 124px);
     padding-bottom: 30vh;
     display: flex;
@@ -84,7 +87,7 @@ Styled.LoadingContainer = styled.div(props => {
     h2 {
       font-family: "bellota text";
       font-size: 1.25rem;
-      color: #172a4f;
+      color: #020b1c;
       ${t.m(4)}
     }
 

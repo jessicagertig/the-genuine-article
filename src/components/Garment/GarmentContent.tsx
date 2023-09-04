@@ -14,25 +14,27 @@ import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import Accordian from "src/components/shared/Accordian";
 import { GarmentData } from "src/types";
 import { useModalContext } from "src/context/ModalContext";
+import ImageToolbar from "src/components/Garment/ImageToolbar";
 
 interface GarmentContentProps {
   garment: GarmentData | undefined;
   loading: boolean;
+  pageNumber?: number;
+  isDark: boolean;
 }
 
 const GarmentContent: React.FC<GarmentContentProps> = props => {
-  const { garment, loading } = props;
+  const { garment, loading, pageNumber, isDark } = props;
   const { openModal, removeModal } = useModalContext();
 
   const theme = useTheme();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const dark = useMediaQuery(theme.breakpoints.down("lg"));
 
   const colors = {
-    primaryText: dark ? "white" : "#172a4f",
-    secondaryText: dark ? "#BFC9D9" : "#4C5F80",
-    textReverse: dark ? "#172a4f" : "white",
-    background: dark ? "#020b1c" : "white",
+    primaryText: isDark ? "white" : "#020b1c",
+    secondaryText: isDark ? "#BFC9D9" : "#4C5F80",
+    textReverse: isDark ? "#020b1c" : "white",
+    background: isDark ? "#020b1c" : "white",
   };
 
   type Item = {
@@ -96,7 +98,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
     ));
     return (
       <Styled.InfoItem key={item.name} colors={colors}>
-        <Accordian text={mainText} dark={dark} />
+        <Accordian text={mainText} dark={isDark} />
       </Styled.InfoItem>
     );
   };
@@ -132,13 +134,23 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
             }}
           />
         ) : (
-          <Styled.DisplayedImage>
-            <img
-              src={garment?.imageUrls?.largeUrl}
-              alt={garment ? garment.garmentTitle : "garment"}
-              onClick={handleZoom}
+          <>
+            <Styled.DisplayedImage>
+              <img
+                src={garment?.imageUrls?.largeUrl}
+                alt={garment ? garment.garmentTitle : "garment"}
+                onClick={handleZoom}
+              />
+            </Styled.DisplayedImage>
+            <ImageToolbar
+              garmentMainImgUrl={
+                garment?.imageUrls ? garment?.imageUrls?.mainImageUrl : ""
+              }
+              garmentTitle={garment ? garment.garmentTitle : "garment"}
+              mediumScreen={mediumScreen}
+              pageNumber={pageNumber}
             />
-          </Styled.DisplayedImage>
+          </>
         )}
         {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
       </Styled.ImagesSection>
@@ -156,7 +168,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
                 href={garment?.collectionUrl}
                 rel="noreferrer"
               >
-                <IconButton sx={{ color: colors.primaryText, pt: 0 }}>
+                <IconButton sx={{ color: colors.primaryText }}>
                   <OpenInNewOutlinedIcon />
                 </IconButton>
               </Link>
@@ -198,13 +210,22 @@ Styled.GarmentContainer = styled.div(props => {
     label: Garment_Container;
     display: flex;
     width: 100%;
+    mheight: 100%;
     flex-direction: column;
     align-items: center;
+    ${t.mt(12)}
 
     ${t.mq.xl} {
       flex-direction: row;
       align-items: flex-start;
       justify-content: center;
+      width: 90%;
+      margin-left: 5%;
+      margin-right: 5%;
+      ${t.mt(16)};
+    }
+
+    ${t.mq.gxl} {
       width: 86%;
       margin-left: 7%;
       margin-right: 7%;
@@ -216,13 +237,22 @@ Styled.ImagesSection = styled.section(props => {
   const t = props.theme;
   return css`
     label: Garment_ImagesSection;
+    ${[t.mb(4)]};
     display: flex;
+    height: max-content;
     flex-direction: column;
     align-items: center;
+    justify-content: space-around;
     width: 100%;
 
     ${t.mq.xl} {
-      width: 45%;
+      width: 50%;
+      margin-left: 3%;
+      margin-top: 8px;
+    }
+
+    ${t.mq.gxl} {
+      width: 43%;
       margin-left: 5%;
       margin-top: 8px;
     }
@@ -241,7 +271,6 @@ Styled.DisplayedImage = styled.div((props: any) => {
     min-height: 375px;
     border-radius: 6px;
     flex-shrink: 1;
-    margin-bottom: 36px;
 
     ${t.mq.xxs} {
       min-height: 420px;
@@ -309,17 +338,23 @@ Styled.InfoSection = styled.section((props: any) => {
   const c = props.colors;
   return css`
     label: Garment_InfoSection;
-    ${[t.pt(9), t.pb(24)]}
+    ${[t.pt(10), t.pb(24)]}
     width: 100%;
     display: flex;
     justify-content: center;
     background-color: ${c.background};
 
     ${t.mq.xl} {
-      width: 45%;
-      margin-right: 5%;
-      ${[t.pt(4), t.pb(20)]}
+      width: 44%;
+      margin-right: 3%;
+      ${[t.pt(4)]}
       justify-content: flex-start;
+    }
+
+    ${t.mq.gxl} {
+      width: 47%;
+      margin-left: 5%;
+      margin-top: 8px;
     }
   `;
 });
@@ -347,6 +382,7 @@ Styled.InfoContainer = styled.div((props: any) => {
       width: 95%;
       margin-left: 0%;
       margin-right: 5%;
+      ${t.mt(6)}
     }
   `;
 });
@@ -371,11 +407,11 @@ Styled.InfoTitle = styled.h2((props: any) => {
   const c = props.colors;
   return css`
     label: Garment_InfoTitle;
-    ${[t.pb(2), t.pl(4)]}
-    font-family: "goudy";
+    ${[t.pt(2), t.pl(4)]}
+    font-family: "Sorts Mill Goudy";
     color: ${c.primaryText};
-    font-size: 1.75rem;
-    font-weight: 200;
+    font-size: 2rem;
+    letter-spacing: 0.05rem;
   `;
 });
 
@@ -388,11 +424,9 @@ Styled.IconButtonContainer = styled.div(() => {
   `;
 });
 
-Styled.InfoContent = styled.div((props: any) => {
-  const t = props.theme;
+Styled.InfoContent = styled.div(() => {
   return css`
     label: Garment_InfoContent;
-    ${t.pt(2)}
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -420,7 +454,7 @@ Styled.Subheader = styled.div((props: any) => {
     h3 {
       ${[t.pt(8), t.pb(4), t.px(4)]}
       color: ${c.primaryText};
-      font-family: "bellota text";
+      font-family: "Bellota text";
       font-size: 1.375rem;
     }
   `;
@@ -454,13 +488,20 @@ Styled.InfoItem = styled.div((props: any) => {
       ${[t.py(2), t.px(4)]}
     }
 
+    .description {
+      font-size: 1rem;
+      letter-spacing: 0.03rem;
+    }
+
     .culture {
       ${t.py(0)}
+      margin-top: -4px;
       font-style: italic;
     }
 
     .date {
       ${t.pt(0)}
+      margin-top: -6px;
     }
   `;
 });

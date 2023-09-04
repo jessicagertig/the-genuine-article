@@ -1,19 +1,22 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 
 import { NavLink, useNavigate } from "react-router-dom";
-
 import SvgIcon from "@mui/material/SvgIcon";
 
-import logo from "src/assets/WhiteLogo.png";
+import darkLogo from "src/assets/lightHeaderLogo.png";
+import lightLogo from "src/assets/darkHeaderLogo.png";
 
 interface FooterProps {
   scrollToTop: () => void;
+  dark?: boolean;
 }
 
 const Footer: React.FC<FooterProps> = props => {
+
   const navigate = useNavigate();
+  const isDark = props.dark !== undefined ? props.dark : true;
 
   type Link = {
     name: string;
@@ -31,7 +34,9 @@ const Footer: React.FC<FooterProps> = props => {
   };
 
   const logoutButton = (
-    <Styled.Button onClick={handleClick}>Log out</Styled.Button>
+    <Styled.Button onClick={handleClick} isDark={isDark}>
+      Log out
+    </Styled.Button>
   );
 
   // These are for the public and have been curated by ease of search
@@ -72,7 +77,7 @@ const Footer: React.FC<FooterProps> = props => {
   ];
 
   const resourceLinks = externalLinks.map(link => (
-    <Styled.ResourceLink key={link.name}>
+    <Styled.ResourceLink key={link.name} isDark={isDark}>
       <a href={link.to} target="_blank" rel="noreferrer">
         {link.name}
       </a>
@@ -82,7 +87,7 @@ const Footer: React.FC<FooterProps> = props => {
   const svg = (
     <SvgIcon
       sx={{
-        color: "#d3d9e5",
+        color: isDark ? "#d3d9e5" : "#020b1c",
         height: "55px",
         width: "55px",
         marginBottom: 1.5,
@@ -93,19 +98,22 @@ const Footer: React.FC<FooterProps> = props => {
   );
 
   return (
-    <Styled.Container>
+    <Styled.Container isDark={isDark}>
       <Styled.MainContainer>
-        <Styled.AboutContainer>
-          <img src={logo} alt="the genuine article logo" />
+        <Styled.AboutContainer isDark={isDark}>
+          <img
+            src={isDark ? darkLogo : lightLogo}
+            alt="the genuine article logo"
+          />
           <p>
-            The genuine article is a digital collection of images of Western
+            The Genuine Article is a digital collection of images of Western
             clothing from the 1800s - each record includes historical details
             and a link to the source collection or museum.
           </p>
         </Styled.AboutContainer>
         <Styled.ContentContainer>
-          <Styled.NavLinksContainer>
-            <Styled.Title>
+          <Styled.NavLinksContainer isDark={isDark}>
+            <Styled.Title isDark={isDark}>
               <h2>Site</h2>
             </Styled.Title>
             {links.map(link => (
@@ -116,11 +124,13 @@ const Footer: React.FC<FooterProps> = props => {
             {logoutButton}
           </Styled.NavLinksContainer>
           <Styled.ResourceLinksContainer>
-            <Styled.Title>
+            <Styled.Title isDark={isDark}>
               <h2>External Resources</h2>
             </Styled.Title>
             <Styled.ResourceLinksSection>
-              <Styled.ResourceLinks>{resourceLinks}</Styled.ResourceLinks>
+              <Styled.ResourceLinks isDark={isDark}>
+                {resourceLinks}
+              </Styled.ResourceLinks>
             </Styled.ResourceLinksSection>
           </Styled.ResourceLinksContainer>
         </Styled.ContentContainer>
@@ -130,9 +140,10 @@ const Footer: React.FC<FooterProps> = props => {
           onClick={props.scrollToTop}
           role="button"
           aria-label="scroll to top"
+          isDark={isDark}
         >
           {svg}
-          <Styled.ButtonText>TOP</Styled.ButtonText>
+          <Styled.ButtonText isDark={isDark}>TOP</Styled.ButtonText>
         </Styled.CircleButton>
       </Styled.BottomBarContainer>
     </Styled.Container>
@@ -146,8 +157,9 @@ export default Footer;
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div(props => {
+Styled.Container = styled.div((props: { theme: Theme; isDark: boolean }) => {
   const t = props.theme;
+  const dark = props.isDark;
   return css`
     label: Footer_Container;
     height: 475px;
@@ -157,7 +169,7 @@ Styled.Container = styled.div(props => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #172a4f;
+    background-color: ${dark ? "#020b1c" : "white"};
 
     ${t.mq.md} {
       height: 475px;
@@ -165,156 +177,166 @@ Styled.Container = styled.div(props => {
   `;
 });
 
-Styled.MainContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Footer_Container;
-    height: 325px;
-    margin-top: 50px;
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+Styled.MainContainer = styled.div(
+  (props: { theme: Theme; isDark: boolean }) => {
+    const t = props.theme;
+    return css`
+      label: Footer_Container;
+      height: 325px;
+      margin-top: 50px;
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
 
-    ${t.mq.md} {
-      flex-direction: row;
-      margin-top: 32px;
-    }
+      ${t.mq.md} {
+        flex-direction: row;
+        margin-top: 32px;
+      }
 
-    ${t.mq.lg} {
-      width: 85%;
-    }
+      ${t.mq.lg} {
+        width: 85%;
+      }
 
-    ${t.mq.xl} {
-      width: 80%;
-    }
-  `;
-});
+      ${t.mq.xl} {
+        width: 80%;
+      }
+    `;
+  }
+);
 
 /* About Section
 ------------------------*/
 
-Styled.AboutContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Footer_AboutContainer;
-    ${[t.pt(8)]}
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    ${t.mq.md} {
-      width: 33%;
-      margin-left: 5%;
-      align-items: flex-start;
-    }
-
-    img {
-      ${[t.mt(1), t.ml(1), t.mb(2)]};
-      height: 84px;
-      width: 207px;
-    }
-
-    p {
-      color: #d3d9e5;
-      width: 80%;
-      display: none;
-      ${t.pt(1)}
+Styled.AboutContainer = styled.div(
+  (props: { theme: Theme; isDark: boolean }) => {
+    const t = props.theme;
+    const dark = props.isDark;
+    return css`
+      label: Footer_AboutContainer;
+      ${[t.pt(8)]}
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
       ${t.mq.md} {
-        display: block;
-        font-size: 1rem;
-        line-height: 1.375rem;
+        width: 33%;
+        margin-left: 5%;
+        align-items: flex-start;
       }
-    }
-  `;
-});
+
+      img {
+        ${[t.mt(1), t.ml(1), t.mb(2)]};
+        height: 84px;
+        width: 207px;
+      }
+
+      p {
+        color: ${dark ? "#d3d9e5" : "#172a4f"};
+        width: 80%;
+        display: none;
+        ${t.pt(1)}
+
+        ${t.mq.md} {
+          display: block;
+          font-size: 1rem;
+          line-height: 1.375rem;
+        }
+      }
+    `;
+  }
+);
 
 /* Container for Site Nav & Resource Links
 ---------------------------------------------- */
 
-Styled.ContentContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Footer_ContentContainer;
-    ${[t.pt(8)]}
-    width: 100%;
-    height: 100%;
-    display: flex;
+Styled.ContentContainer = styled.div(
+  (props: { theme: Theme; isDark: boolean }) => {
+    const t = props.theme;
+    return css`
+      label: Footer_ContentContainer;
+      ${[t.pt(8)]}
+      width: 100%;
+      height: 100%;
+      display: flex;
 
-    ${t.mq.sm} {
-      width: 80%;
-    }
+      ${t.mq.sm} {
+        width: 80%;
+      }
 
-    ${t.mq.md} {
-      width: 60%;
-    }
-  `;
-});
+      ${t.mq.md} {
+        width: 60%;
+      }
+    `;
+  }
+);
 
 /* SITE NAV
 -------------------------- */
 
-Styled.NavLinksContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Footer_NavLinksContainer;
-    ${[t.pl(4)]}
-    width: 90%;
-    display: flex;
-    color: white;
-    justify-content: space-around;
-    flex-wrap: wrap;
-
-    ${t.mq.md} {
-      width: 37%;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-
-    .nav-link {
-      ${[t.pl(2), t.pb(1)]}
-      font-size: 1.125rem;
-      line-height: 1.5rem;
-      font-family: bellota text;
-      color: white;
-      background-color: #172a4f;
-
-      &:hover {
-        cursor: pointer;
-        color: white;
-      }
+Styled.NavLinksContainer = styled.div(
+  (props: { theme: Theme; isDark: boolean }) => {
+    const t = props.theme;
+    const dark = props.isDark;
+    return css`
+      label: Footer_NavLinksContainer;
+      ${[t.pl(4)]}
+      width: 90%;
+      display: flex;
+      color: ${dark ? "white" : "#020b1c"};
+      justify-content: space-around;
+      flex-wrap: wrap;
 
       ${t.mq.md} {
-        font-size: 1rem;
-        line-height: 1.5rem;
-        color: #d3d9e5;
+        width: 37%;
+        flex-direction: column;
+        justify-content: flex-start;
       }
-    }
-  `;
-});
 
-Styled.Button = styled.div(props => {
+      .nav-link {
+        ${[t.pl(2), t.pb(1)]}
+        font-size: 1.125rem;
+        line-height: 1.5rem;
+        font-family: bellota text;
+        color: ${dark ? "white" : "#172a4f"};
+
+        &:hover {
+          cursor: pointer;
+          color: ${dark ? "white" : "#020b1c"};
+        }
+
+        ${t.mq.md} {
+          font-size: 1rem;
+          line-height: 1.5rem;
+          color: ${dark ? "#d3d9e5" : "#172a4f"};
+        }
+      }
+    `;
+  }
+);
+
+Styled.Button = styled.div((props: { theme: Theme; isDark: boolean }) => {
   const t = props.theme;
+  const dark = props.isDark;
   return css`
     ${[t.pl(2), t.pb(1)]}
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: bellota text;
-    color: white;
-    background-color: #172a4f;
+    color: ${dark ? "white" : "#172a4f"};
+    background-color: ${dark ? "#020b1c" : "white"};
 
     &:hover {
       cursor: pointer;
-      color: white;
+      color: ${dark ? "white" : "#020b1c"};
     }
 
     ${t.mq.md} {
-      color: #d3d9e5;
+      color: ${dark ? "#d3d9e5" : "#172a4f"};
       font-size: 1rem;
     }
   `;
@@ -322,43 +344,47 @@ Styled.Button = styled.div(props => {
 
 /* RESOURCE LINKS
 -------------------------- */
-Styled.ResourceLinksContainer = styled.div(props => {
+Styled.ResourceLinksContainer = styled.div(
+  (props: { theme: Theme; isDark: boolean }) => {
+    const t = props.theme;
+    const dark = props.isDark;
+    return css`
+      label: Footer_ResourceLinksContainer;
+      width: 60%;
+      margin-left: 3%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+
+      ${t.mq.md} {
+        display: flex;
+      }
+
+      ${t.mq.lg} {
+        margin-left: 6%;
+        width: 57%;
+      }
+    `;
+  }
+);
+
+Styled.Title = styled.div((props: { theme: Theme; isDark: boolean }) => {
   const t = props.theme;
-  return css`
-    label: Footer_ResourceLinksContainer;
-    width: 60%;
-    margin-left: 3%;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-
-    ${t.mq.md} {
-      display: flex;
-    }
-
-    ${t.mq.lg} {
-      margin-left: 6%;
-      width: 57%;
-    }
-  `;
-});
-
-Styled.Title = styled.div(props => {
-  const t = props.theme;
+  const dark = props.isDark;
   return css`
     label: Footer_ResourceTitle;
     ${[t.pt(4), t.pb(1), t.mb(2)]};
     width: 86%;
     margin-right: 14%;
     display: none;
-    border-bottom: 1px solid #4C5F80;
-
+    border-bottom: 1px solid ${dark ? "#4c5f80" : "#899AB8"};
+    
     h2 {
       ${t.pl(2)}
       font-size: 1.125rem;
       line-height: 1.5rem;
       font-family: bellota text;
-      color: white;
+      color: ${dark ? "white" : "#020b1c"};
     }
 
     ${t.mq.md} {
@@ -376,7 +402,7 @@ Styled.ResourceLinksSection = styled.div(() => {
   `;
 });
 
-Styled.ResourceLinks = styled.div(props => {
+Styled.ResourceLinks = styled.div((props: { theme: Theme }) => {
   const t = props.theme;
   return css`
     label: Footer_ResourceLinksContainer;
@@ -392,12 +418,13 @@ Styled.ResourceLinks = styled.div(props => {
   `;
 });
 
-Styled.ResourceLink = styled.div(props => {
+Styled.ResourceLink = styled.div((props: { theme: Theme; isDark: boolean }) => {
   const t = props.theme;
+  const dark = props.isDark;
   return css`
     label: Footer_ExternalLink;
     ${[t.pb(1)]}
-    color: #D3D9E5;
+    color: ${dark ? "#D3D9E5" : "#172a4f"};
     font-size: 1rem;
     line-height: 1.5rem;
 
@@ -406,7 +433,7 @@ Styled.ResourceLink = styled.div(props => {
 
     &:hover {
       cursor: pointer;
-      color: white;
+      color: ${dark ? "white" : "#020b1c"};
     }
   `;
 });
@@ -422,11 +449,12 @@ Styled.BottomBarContainer = styled.div(() => {
   `;
 });
 
-Styled.CircleButton = styled.div((props) => {
+Styled.CircleButton = styled.div((props: { theme: Theme; isDark: boolean }) => {
   const t = props.theme;
+  const dark = props.isDark;
   return css`
     label: Footer_CircleButton;
-    border: 2px solid white;
+    border: 2px solid ${dark ? "white" : "#172a4f"};
     position: relative;
     border-radius: 50%;
     width: 70px;
@@ -438,16 +466,17 @@ Styled.CircleButton = styled.div((props) => {
 
     &:hover {
       cursor: pointer;
-      border-color: white;
+      border-color: ${dark ? "white" : "#020b1c"};
     }
 
     ${t.mq.sm} {
-      border-color: #d3d9e5;
+      border-color: ${dark ? "#d3d9e5" : "#172a4f"};
     }
   `;
 });
 
-Styled.ButtonText = styled.div(() => {
+Styled.ButtonText = styled.div((props: { theme: Theme; isDark: boolean }) => {
+  const dark = props.isDark;
   return css`
     position: absolute;
     left: 50%;
@@ -458,6 +487,6 @@ Styled.ButtonText = styled.div(() => {
     line-height: 1.5rem;
     font-family: bellota text;
     font-weight: bold;
-    color: #d3d9e5;
+    color: ${dark ? "#d3d9e5" : "#020b1c"};
   `;
 });

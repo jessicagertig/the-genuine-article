@@ -85,7 +85,6 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
                 loading={isLoading}
               />
             ))}
-            <Styled.Filler />
           </Styled.GarmentsList>
           <Styled.PaginationContainer>
             <Pagination
@@ -159,30 +158,6 @@ Styled.GarmentsList = styled.div(props => {
 
     ${t.mq.xxs} {
       ${t.mx(4)}
-    }
-  `;
-});
-
-Styled.Filler = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: FillerCard;
-    ${t.rounded.md};
-    width: 296px;
-    height: 444px;
-    display: none;
-    ${t.m(4)};
-
-    ${t.mq.sm} {
-      display: flex;
-    }
-
-    ${t.mq.lg} {
-      display: none;
-    }
-
-    ${t.mq.gxl} {
-      display: flex;
     }
   `;
 });

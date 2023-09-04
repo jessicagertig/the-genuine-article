@@ -18,11 +18,11 @@ const getGarments = async () => {
   return await apiGet({ endpoint: "/items" });
 };
 
-const getPaginatedGarments = async (page = 1, limit = 15) => {
+const getPaginatedGarments = async (page = 1, limit = 12) => {
   return await apiGet({ endpoint: `/items/list?page=${page}&limit=${limit}` });
 };
 
-const getPageCount = async (limit = 15) => {
+const getPageCount = async (limit = 12) => {
   return await apiGet({ endpoint: `/items/pages?limit=${limit}` });
 };
 

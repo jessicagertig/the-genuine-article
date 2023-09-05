@@ -209,10 +209,10 @@ const GarmentContent: React.FC<GarmentContentProps> = ({
             />
           </Styled.DisplayedImage>
         )}
-        <Styled.ThumbGallery></Styled.ThumbGallery>
+        {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
         <Styled.ButtonContainer>
           <OutlinedButton onClick={event => onClickEditImages(event)}>
-            Edit Images
+            Edit Image
           </OutlinedButton>
         </Styled.ButtonContainer>
       </Styled.ImagesSection>
@@ -281,6 +281,7 @@ Styled.DisplayedImage = styled.div(props => {
   const t = props.theme;
   return css`
     label: Garment_DisplayedImage;
+    ${t.mb(4)}
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     width: 100vw;

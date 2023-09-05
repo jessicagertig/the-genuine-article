@@ -126,7 +126,6 @@ Styled.SecondaryNavHeader = styled.div((props: any) => {
   return css`
     label: SecondaryNavHeader;
     width: 40%;
-    display: none;
     justify-content: center;
     align-items: center;
 

@@ -200,7 +200,7 @@ Styled.MainContainer = styled.div(props => {
   return css`
     label: AdminFooter_Container;
     ${[t.pb(1), t.pl(1), t.mt(8)]}
-    height: 425px;
+    height: 410px;
     margin-top: 25px;
     width: 100%;
     max-width: 1200px;
@@ -427,7 +427,7 @@ Styled.BottomBarContainer = styled.div(() => {
   return css`
     label: AdminFooter_BottomBarContainer;
     height: 75px;
-    margin-bottom: 50px;
+    margin-bottom: 65px;
     width: 100%;
     display: flex;
     justify-content: center;

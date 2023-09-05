@@ -213,7 +213,7 @@ Styled.GarmentContainer = styled.div(props => {
     mheight: 100%;
     flex-direction: column;
     align-items: center;
-    ${t.mt(12)}
+    ${t.mt(7)}
 
     ${t.mq.xl} {
       flex-direction: row;
@@ -249,6 +249,7 @@ Styled.ImagesSection = styled.section(props => {
       width: 50%;
       margin-left: 3%;
       margin-top: 8px;
+      margin-bottom: 200px;
     }
 
     ${t.mq.gxl} {
@@ -397,8 +398,7 @@ Styled.InfoTitleContainer = styled.div(() => {
     label: Garment_InfoHeader;
     display: flex;
     justify-content: flex-start;
-    width: 60%;
-    margin-right: 20%;
+    width: 80%;
   `;
 });
 
@@ -407,7 +407,7 @@ Styled.InfoTitle = styled.h2((props: any) => {
   const c = props.colors;
   return css`
     label: Garment_InfoTitle;
-    ${[t.pt(2), t.pl(4)]}
+    ${[t.pt(2), t.pb(2), t.pl(4)]}
     font-family: "Sorts Mill Goudy";
     color: ${c.primaryText};
     font-size: 2rem;
@@ -421,6 +421,7 @@ Styled.IconButtonContainer = styled.div(() => {
     display: flex;
     justify-content: flex-end;
     width: 20%;
+    padding-top: 4px;
   `;
 });
 

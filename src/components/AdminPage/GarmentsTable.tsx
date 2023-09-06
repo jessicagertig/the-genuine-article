@@ -40,14 +40,13 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const { openModal, removeModal } = useModalContext();
-  
+
   const initialRows = isSmallScreen ? 5 : 8;
   const [page, setPage] = React.useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = React.useState<number>(initialRows);
 
   const navigate = useNavigate();
   const location = useLocation();
-
 
   React.useEffect(() => {
     console.log("LOCATION", location);
@@ -251,7 +250,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
                     fontWeight: "bold",
                     borderBottom: "1px solid rgb(211, 217, 229)",
                     fontSize: "1rem",
-                    color: "#172a4f",
+                    color: "#020b1c",
                     pt: 3,
                   }}
                 >
@@ -318,12 +317,12 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={event => handleChangeRowsPerPage(event)}
         sx={{
-          color: "#172a4f",
+          color: "#020b1c",
           "& .MuiSelect-icon": {
-            color: "#172a4f",
+            color: "#020b1c",
           },
           "& .MuiInputBase-input": {
-            color: "#172a4f",
+            color: "#020b1c",
           },
           "& .MuiTablePagination-displayedRows": {
             width: "84px",
@@ -363,7 +362,7 @@ Styled.LoadingContainer = styled.div(props => {
     h2 {
       font-family: "bellota text";
       font-size: 1.25rem;
-      color: #172a4f;
+      color: #020b1c;
       ${t.m(4)}
     }
 

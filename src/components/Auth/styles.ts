@@ -17,7 +17,7 @@ const textFieldStyles = {
     },
   },
   "& .MuiOutlinedInput-root.Mui-focused": {
-    color: "#172a4f",
+    color: "#020b1c",
     fontWeight: "semi-bold",
   },
 };

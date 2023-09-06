@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 
 import GarmentsList from "src/components/SearchPage/GarmentsList";
@@ -25,13 +24,8 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const [enabled, setEnabled] = React.useState(false);
   const hasQuery = searchQuery !== "" && searchQuery !== undefined;
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useGarmentsKeywordSearch(searchQuery, enabled);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useGarmentsKeywordSearch(searchQuery, enabled);
 
   console.log("Data in index:", data);
   console.log("Search results:", searchResults);
@@ -123,9 +117,6 @@ const SearchPage: React.FC<SearchPageProps> = () => {
               styles={mainSearchStyles}
             />
           </Styled.SearchBarContainer>
-          <Styled.Divider>
-            <Divider sx={{ my: 4, borderColor: "#899AB8" }} />
-          </Styled.Divider>
           <Styled.ResultText>
             {noResults ? (
               <>
@@ -182,6 +173,7 @@ Styled.SearchPageContainer = styled.div(() => {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
+    align-items: center;
 
     & > :last-child {
       margin-top: auto;
@@ -205,7 +197,7 @@ Styled.LoadingContainer = styled.div(props => {
     h2 {
       font-family: "bellota text";
       font-size: 1.25rem;
-      color: #172a4f;
+      color: #020b1c;
       ${t.m(4)}
     }
 
@@ -219,13 +211,20 @@ Styled.SearchContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: TextContainer;
-    ${t.m(4)}
-    width: 80%;
-    margin-right: 10%;
-    margin-left: 10%;
+    ${[t.mx(4), t.mt(4)]}
+    width: 90%;
+    margin-right: 5%;
+    margin-left: 5%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    max-width: 1500px;
+
+    ${t.mq.sm} {
+      width: 94%;
+      margin-right: 3%;
+      margin-left: 3%;
+    }
   `;
 });
 
@@ -250,14 +249,14 @@ Styled.TextContainer = styled.div(props => {
     display: none;
     justify-content: flex-start;
 
-    ${t.mq.gmd} {
+    ${t.mq.md} {
       display: flex;
     }
 
     h2 {
       font-family: "bellota text";
       font-size: 1.65rem;
-      color: #172a4f;
+      color: #020b1c;
       ${t.my(4)}
     }
   `;
@@ -268,7 +267,7 @@ Styled.ResultText = styled.p(props => {
   return css`
     label: ResultsText;
     font-size: 1.125rem;
-    color: #223f7c;
+    color: #172a4f;
     font-style: italic;
 
     span {
@@ -292,38 +291,20 @@ Styled.SearchBarContainer = styled.div(props => {
   `;
 });
 
-Styled.Divider = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: DividerContainer;
-    display: none;
-
-    ${t.mq.glg} {
-      display: block;
-    }
-  `;
-});
-
 Styled.GarmentsContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: GarmentsContainer;
     display: flex;
     flex-direction: column;
-    align-content: center;
+    align-items: center;
     width: 100%;
     margin-bottom: 48px;
 
-    ${t.mq.md} {
-      width: 96%;
-      margin-right: 2%;
-      margin-left: 2%;
-    }
-
-    ${t.mq.xl} {
-      width: 90%;
-      margin-right: 5%;
-      margin-left: 5%;
+    ${t.mq.sm} {
+      width: 94%;
+      margin-right: 3%;
+      margin-left: 3%;
     }
   `;
 });
@@ -370,7 +351,7 @@ Styled.EmptyState = styled.div(props => {
       height: calc(100vh - 178px);
     }
 
-    ${t.mq.gmd} {
+    ${t.mq.lg} {
       height: calc(100vh - 248px);
     }
 

@@ -6,8 +6,8 @@ import Menu from "@mui/material/Menu";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import logo from "src/assets/HeaderLogo.png";
-import bonnetLogo from "src/assets/BonnetLogo.png";
+import logo from "src/assets/darkHeaderLogo.png";
+import bonnetLogo from "src/assets/darkBonnet.png";
 import NavMenuItem from "src/components/shared/NavMenuItem";
 
 import { useAuthContext } from "src/context/AuthContext";
@@ -38,9 +38,9 @@ const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        sx={{ "& .MuiIconButton-root": { color: "#172a4f" } }}
+        sx={{ "& .MuiIconButton-root": { color: "#020b1c" } }}
       >
-        <MenuIcon sx={{ color: "#172a4f", fill: "#172a4f" }} />
+        <MenuIcon sx={{ color: "#020b1c", fill: "#020b1c" }} />
       </IconButton>
       <Menu
         id="basic-menu"
@@ -140,6 +140,8 @@ Styled.LargeLogo = styled.img(props => {
   return css`
     label: NavBarLargeLogo;
     display: none;
+    height: 74px;
+    ${t.my(2)};
 
     ${t.mq.md} {
       display: block;
@@ -152,6 +154,9 @@ Styled.SmallLogo = styled.img(props => {
   return css`
     label: NavBarSmallLogo;
     display: block;
+    height: 42px;
+    width: 42px;
+    ${t.my(1)};
 
     ${t.mq.md} {
       display: none;
@@ -202,15 +207,15 @@ Styled.NavLink = styled(NavLink)(props => {
     ${[t.py(1), t.px(2), t.pb(12), t.rounded.sm]}
     label: NavBarLink;
     display: none;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 900;
-    transition: font-size 0.2s ease;
     font-family: "Bellota Text", cursive;
 
     &:hover {
       cursor: pointer;
+      transition: font-size 0.2s ease;
       color: ${t.color.red[500]};
-      font-size: 1.4rem;
+      font-size: 1.128rem;
     }
 
     ${t.mq.md} {

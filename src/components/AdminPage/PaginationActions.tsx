@@ -50,7 +50,7 @@ const PaginationActions = (props: TablePaginationActionsProps) => {
   };
 
   const colorStyle = {
-    color: "#172a4f",
+    color: "#020b1c",
     "&:hover": {
       backgroundColor: "rgba(211, 217, 229, 0.5)",
     },

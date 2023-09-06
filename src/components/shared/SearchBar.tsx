@@ -44,7 +44,9 @@ const SearchBar: React.FC<SearchProps> = ({
 
   return (
     <Styled.Form onSubmit={handleSubmitSearch}>
-      <FormControl sx={{ width: "100%", display: "flex", flexDirection: "row"}}>
+      <FormControl
+        sx={{ width: "100%", display: "flex", flexDirection: "row" }}
+      >
         <TextField
           size="medium"
           variant="outlined"
@@ -54,7 +56,7 @@ const SearchBar: React.FC<SearchProps> = ({
           placeholder="Search by keyword"
           InputProps={{
             style: {
-              height: "40px"
+              height: "40px",
             },
             endAdornment: (
               <InputAdornment position="end" style={{ display: showClearIcon }}>
@@ -104,9 +106,9 @@ Styled.ButtonContainer = styled.div(() => {
     height: 40px;
     margin: 8px 0;
     border-radius: 0 4px 4px 0;
-    background-color: rgba(23, 42, 79, 0.9); 
-    border-bottom: 2px solid rgba(23, 42, 79, 0.9);
-    border-top: 2px solid rgba(23, 42, 79, 0.9);
-    border-right: 2px solid rgba(23, 42, 79, 0.9);
+    background-color: #172a4f;
+    border-bottom: 2px solid #172a4f;
+    border-top: 2px solid #172a4f;
+    border-right: 2px solid #172a4f;
   `;
 });

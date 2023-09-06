@@ -61,7 +61,7 @@ const GarmentZoomModal: React.FC<GarmentZoomModalProps> = props => {
     if (imgRef.current && imgRef.current.complete) {
       onLoad();
     }
-  }, [imgRef.current]);
+  }, [imgRef]);
 
   const handleClose = () => {
     props.onClose();

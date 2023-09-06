@@ -10,11 +10,11 @@ type SearchParams = {
   limit?: number;
 }
 
-const getGarmentsSearch = async ({ query, page = 1, limit = 15}: SearchParams) => {
+const getGarmentsSearch = async ({ query, page = 1, limit = 12}: SearchParams) => {
   return await apiGet({ endpoint: `/items/search?q=${query}&page=${page}&limit=${limit}` });
 };
 
-const getGarmentsKeywordSearch = async ({ query, page = 1, limit = 15}: SearchParams): Promise<{
+const getGarmentsKeywordSearch = async ({ query, page = 1, limit = 12}: SearchParams): Promise<{
   data: any;
   pagination: any;
 }> => {

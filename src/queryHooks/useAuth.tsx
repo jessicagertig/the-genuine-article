@@ -13,6 +13,15 @@ const loginUser = async ({ email, password }: LoginParams) => {
   });
 };
 
+const guestEmail: string = process.env.REACT_APP_GUEST_EMAIL as string;
+const guestPassword: string = process.env.REACT_APP_GUEST_PASSWORD as string;
+const loginGuest = async({ email = guestEmail, password = guestPassword}: LoginParams) => {
+  return await apiPost({
+    endpoint: "/auth/login",
+    variables: { email, password },
+  });
+};
+
 const getAuthedUser = async () => {
   return await apiGet({
     endpoint: "/auth",
@@ -31,6 +40,22 @@ function useLoginUser(): {
   console.log("useLoginUser query hook");
   // const queryClient: QueryClient = useQueryClient();
   return useMutation(loginUser, {
+    onSuccess: () => {
+      console.log("LOGIN SUCCESS");
+      // queryClient.invalidateQueries(["garments"]);
+    },
+  });
+}
+
+function useLoginGuest(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  console.log("useLoginUser query hook");
+  // const queryClient: QueryClient = useQueryClient();
+  return useMutation(loginGuest, {
     onSuccess: () => {
       console.log("LOGIN SUCCESS");
       // queryClient.invalidateQueries(["garments"]);
@@ -64,4 +89,4 @@ function useAuthedUser({ enabled = true }: { enabled?: boolean } = {}): {
   });
 }
 
-export { useLoginUser, useAuthedUser };
+export { useLoginUser, useLoginGuest, useAuthedUser };

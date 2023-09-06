@@ -12,7 +12,7 @@ import Paper from "@mui/material/Paper";
 
 import textFieldStyles from "src/components/Auth/styles";
 import { useAuthContext } from "src/context/AuthContext";
-import { useLoginUser } from "src/queryHooks/useAuth";
+import { useLoginUser, useLoginGuest } from "src/queryHooks/useAuth";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -20,6 +20,8 @@ const Login: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { mutate: loginUser } = useLoginUser();
+  const { mutate: loginGuest } = useLoginGuest();
+
   interface CurrentUser {
     username: string;
     email: string;
@@ -61,6 +63,34 @@ const Login: React.FC = () => {
     event.preventDefault();
     handleLogin(state);
   };
+
+  const handleGuestLogin = (event: React.FormEvent) => {
+    console.log("Submit clicked");
+    event.preventDefault();
+    try {
+      loginGuest({},
+        {
+          onSuccess: (data: LoginData) => {
+            console.log("Success logging in user. Data:", data?.user);
+            const token = data.token;
+            if (data.token) {
+              console.log("saving token");
+              localStorage.setItem("token", token);
+            }
+            navigate("/admin");
+          },
+          onError: (error: any) => {
+            const message = error && error.data ? error.data.message : "";
+            console.log("Request Error:", message);
+          },
+        }
+      );
+    } catch (e) {
+      console.error("ERROR:", e);
+    }
+  };
+
+
 
   const handleLogin = async (loginParams: LoginParams) => {
     // todo: add validation with Yup
@@ -137,7 +167,7 @@ const Login: React.FC = () => {
               >
                 Log in
               </Button>
-              <Styled.Button>Log in as Guest</Styled.Button>
+              <Styled.Button onClick={handleGuestLogin}>Log in as Guest</Styled.Button>
             </Styled.ButtonsContainer>
           </Styled.Form>
         </Styled.FormContainer>

@@ -213,7 +213,7 @@ Styled.GarmentContainer = styled.div(props => {
     mheight: 100%;
     flex-direction: column;
     align-items: center;
-    ${t.mt(7)}
+    ${t.mt(6)}
 
     ${t.mq.xl} {
       flex-direction: row;
@@ -264,35 +264,45 @@ Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: Garment_DisplayedImage;
-    background-color: rgba(211, 217, 229, 0.5);
+    background-color: white;
     display: flex;
     position: relative;
-    width: 100vw;
+    width: calc(100vw - (100vw - 100%));
     max-height: 575px;
-    min-height: 375px;
-    border-radius: 6px;
+    min-height: 220px;
     flex-shrink: 1;
+    justify-content: center;
+    ${[t.px(3)]};
 
     ${t.mq.xxs} {
-      min-height: 420px;
+      max-height: 609px;
+      min-height: 343px;
     }
 
-    ${t.mq.xs} {
-      width: 500px;
-      height: 609px;
+    ${t.mq.sm} {
+      width: 524px;
+      max-height: 609px;
       min-height: 609px;
+      ${t.mt(2)};
+    }
+
+    ${t.mq.sm} {
+
     }
 
     img {
-      width: 100vw;
+      width: calc(100vw - (100vw - 100%));
       max-width: 480px;
       max-height: 575px;
 
       ${t.mq.xs} {
-        width: 500px;
-        height: 609px;
         max-width: 500px;
         max-height: 609px;
+      }
+
+      ${t.mq.sm} {
+        width: 500px;
+        height: 609px;
       }
     }
 

@@ -48,6 +48,9 @@ const Login: React.FC = () => {
     if (currentUser) {
       navigate("/admin");
     }
+    // NOTE: Run effect once on component mount, please
+    // recheck dependencies if effect is updated.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { email, password } = state;

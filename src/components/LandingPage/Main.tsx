@@ -9,18 +9,24 @@ interface MainProps {
   windowHeight: number;
 }
 
-const Main: React.ForwardRefRenderFunction<any, MainProps> = ({ scrollRef, windowHeight }, ref) => {
+const Main: React.ForwardRefRenderFunction<any, MainProps> = (
+  { scrollRef, windowHeight },
+  ref
+) => {
   const imageUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/blueRoseDress1800.jpeg`;
 
   const handleClickScrollTeaser = () => {
-    scrollRef?.current?.scrollIntoView({behavior: 'smooth'})
-  }
+    scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <Styled.HomeContainer height={windowHeight}>
       <Styled.BackgroundContainer>
         <Styled.Image src={imageUrl}>
-          <img src={imageUrl} />
+          <img
+            src={imageUrl}
+            alt="background of floral brocaded fabric with red and pink roses on a blue base"
+          />
         </Styled.Image>
       </Styled.BackgroundContainer>
       <Styled.ContentContainer>
@@ -29,9 +35,7 @@ const Main: React.ForwardRefRenderFunction<any, MainProps> = ({ scrollRef, windo
         </Styled.HeaderText>
         <Styled.TextContainer>
           <span>of</span>
-          <p>
-          Genuine articles of clothing from the 19th century
-          </p>
+          <p>Genuine articles of clothing from the 19th century</p>
         </Styled.TextContainer>
       </Styled.ContentContainer>
       <Styled.ButtonContainer onClick={handleClickScrollTeaser}>
@@ -50,7 +54,7 @@ Styled = {};
 
 Styled.HomeContainer = styled.div((props: any) => {
   const t = props.theme;
-  const heightInVh = props.height/(props.height * 0.01)
+  const heightInVh = props.height / (props.height * 0.01);
   return css`
     label: HomeContainer;
     display: flex;
@@ -68,8 +72,7 @@ Styled.HomeContainer = styled.div((props: any) => {
   `;
 });
 
-Styled.BackgroundContainer = styled.div(props => {
-  const t = props.theme;
+Styled.BackgroundContainer = styled.div(() => {
   return css`
     label: BackgroundContainer;
     height: 100%;
@@ -90,7 +93,6 @@ Styled.InvisibleImage = styled.div((props: any) => {
     }
   `;
 });
-
 
 Styled.Image = styled.div((props: any) => {
   return css`
@@ -118,7 +120,7 @@ Styled.ContentContainer = styled.div(props => {
     position: relative;
     width: 100%;
     text-align: center;
-    background-color: rgba(0,0,0,.5);
+    background-color: rgba(0, 0, 0, 0.5);
 
     ${t.mq.xs} {
       ${t.mb(20)}
@@ -129,33 +131,32 @@ Styled.ContentContainer = styled.div(props => {
 Styled.HeaderText = styled.div(props => {
   const t = props.theme;
   return css`
+    ${[t.py(4)]}
 
-  ${[t.py(4)]}
+    h3 {
+      font-family: "bellota text";
+      color: white;
+      font-size: 1.75rem;
+      width: 100%;
+      text-align: center;
+      text-transform: uppercase;
 
-  h3 {
-    font-family: "bellota text";
-    color: white;
-    font-size: 1.75rem;
-    width: 100%;
-    text-align: center;
-    text-transform: uppercase;
-
-    ${t.mq.sm} {
-      font-size: 2rem;
+      ${t.mq.sm} {
+        font-size: 2rem;
+      }
     }
-  }
-  `
-})
+  `;
+});
 
 Styled.TextContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: TextContainer;
     color: white;
-    
+
     ${t.mq.md} {
     }
-    
+
     span {
       font-family: serif;
       font-style: italic;
@@ -164,7 +165,7 @@ Styled.TextContainer = styled.div(props => {
       padding-top: 8px;
       padding-bottom: 16px;
     }
-    
+
     p {
       font-family: "bellota text";
       font-size: 1.25rem;

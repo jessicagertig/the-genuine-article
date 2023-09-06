@@ -19,7 +19,7 @@ const LoginPage: React.FC<LoginPageProps> = props => {
     if (currentUser) {
       navigate("/admin");
     }
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   return (
     <Styled.LoginPageContainer>
@@ -36,8 +36,7 @@ export default LoginPage;
 let Styled: any;
 Styled = {};
 
-Styled.LoginPageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.LoginPageContainer = styled.div(() => {
   return css`
     label: LoginPageContainer;
     width: 100%;

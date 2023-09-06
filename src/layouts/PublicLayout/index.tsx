@@ -22,8 +22,7 @@ export default PublicLayout;
 let Styled: any;
 Styled = {};
 
-Styled.PageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.PageContainer = styled.div(() => {
   return css`
     label: PublicPageContainer;
     width: 100%;

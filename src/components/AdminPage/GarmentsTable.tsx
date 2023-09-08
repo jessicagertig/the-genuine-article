@@ -34,7 +34,7 @@ interface Column {
 interface GarmentsTableProps {}
 
 const GarmentsTable: React.FC<GarmentsTableProps> = props => {
-  const { data: garments, isLoading, error } = useGarments();
+  const { data: garments, isLoading } = useGarments();
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -56,6 +56,9 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     if (location?.state?.pageNo !== undefined) {
       setPage(location.state.pageNo);
     }
+    // NOTE: Run effect once on component mount, please
+    // recheck dependencies if effect is updated.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const smallScreenColumns: Column[] = [
@@ -105,30 +108,6 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     });
   };
 
-  const handleButtonClick = (
-    event: React.SyntheticEvent,
-    garmentId: number
-  ): void => {
-    event.stopPropagation();
-    const modal = (
-      <ImageUploadModal onCancel={() => removeModal()} id={garmentId} />
-    );
-
-    openModal(modal);
-  };
-
-  const handleLinkClick = (event: React.SyntheticEvent) => {
-    event.stopPropagation();
-  };
-
-  const convertArray = (array: string[]): string => {
-    let stringList = "";
-    if (array.length > 0) {
-      stringList = array.join(", ");
-    }
-    return stringList;
-  };
-
   interface FormattedData {
     id: number;
     garmentTitle: string;
@@ -143,7 +122,35 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
     [key: string]: number | string | React.ReactNode;
   }
 
-  const formatData = (garment: GarmentData): FormattedData => {
+  const formatData = React.useCallback((garment: GarmentData): FormattedData => {
+    
+    // helper functions
+    const handleButtonClick = (
+      event: React.SyntheticEvent,
+      garmentId: number
+    ): void => {
+      event.stopPropagation();
+      const modal = (
+        <ImageUploadModal onCancel={() => removeModal()} id={garmentId} />
+      );
+  
+      openModal(modal);
+    };
+  
+    const handleLinkClick = (event: React.SyntheticEvent) => {
+      event.stopPropagation();
+    };
+  
+    const convertArray = (array: string[]): string => {
+      let stringList = "";
+      if (array.length > 0) {
+        stringList = array.join(", ");
+      }
+      return stringList;
+    };
+
+    // begin main function
+    
     const colorsList = convertArray(garment.colors);
     const materialsList = convertArray(garment.materials);
     const hasImage = garment.imageUrls;
@@ -201,7 +208,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
       hasImage: imagePreview(),
       addImageButton: addImageButton,
     };
-  };
+  }, [openModal, removeModal]);
 
   const rows = React.useMemo(() => {
     if (garments) {
@@ -211,7 +218,7 @@ const GarmentsTable: React.FC<GarmentsTableProps> = props => {
       return tableRows;
     }
     return [];
-  }, [garments]);
+  }, [garments, formatData]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? (1 + page) * rowsPerPage - rows.length : 0;

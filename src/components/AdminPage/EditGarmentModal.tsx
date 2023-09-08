@@ -36,18 +36,20 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
 
   const title = "EDIT GARMENT";
 
-  const initialInfoState: Partial<ItemInfo> = {
-    garmentTitle: garment ? garment?.garmentTitle : "",
-    beginYear: garment ? garment?.beginYear : "",
-    endYear: garment?.endYear ? garment?.endYear : "",
-    cultureCountry: garment ? garment?.cultureCountry : "",
-    collection: garment ? garment?.collection : "",
-    creator: garment?.creator ? garment?.creator : "",
-    collectionUrl: garment ? garment?.collectionUrl : "",
-    source: garment?.source ? garment?.source : "",
-    itemCollectionNo: garment ? garment?.itemCollectionNo : "",
-    description: garment?.description ? garment?.description : "",
-  };
+  const initialInfoState = React.useMemo(() => {
+    return {
+      garmentTitle: garment ? garment?.garmentTitle : "",
+      beginYear: garment ? garment?.beginYear : "",
+      endYear: garment?.endYear ? garment?.endYear : "",
+      cultureCountry: garment ? garment?.cultureCountry : "",
+      collection: garment ? garment?.collection : "",
+      creator: garment?.creator ? garment?.creator : "",
+      collectionUrl: garment ? garment?.collectionUrl : "",
+      source: garment?.source ? garment?.source : "",
+      itemCollectionNo: garment ? garment?.itemCollectionNo : "",
+      description: garment?.description ? garment?.description : "",
+    }
+  }, [garment]);
 
   const [colorsState, setColorsState] = React.useState<Option[]>([]);
   const [materialsState, setMaterialsState] = React.useState<Option[]>([]);
@@ -73,7 +75,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
       );
       setMaterialsState(materialOptions);
     }
-  }, [menus, garment]);
+  }, [menus, garment, initialInfoState]);
 
   interface IndexSignatureType {
     [key: string]: string | { value: number; label: string };

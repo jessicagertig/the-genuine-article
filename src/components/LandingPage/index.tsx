@@ -48,8 +48,7 @@ export default LandingPage;
 let Styled: any;
 Styled = {};
 
-Styled.LandingPageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.LandingPageContainer = styled.div(() => {
   return css`
     label: LandingPageContainer;
     width: 100%;

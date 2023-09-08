@@ -66,7 +66,7 @@ export const returnConvertedMenus = (menus: Menus) => {
     garmentTitlesMenu: [] as Option[],
   };
   if (menus as Menus) {
-    names.map(name => {
+    names.forEach(name => {
       const menu = menus[name];
       const newMenu = convertObjectToOptions(menu, name);
       menusObject[name] = newMenu;

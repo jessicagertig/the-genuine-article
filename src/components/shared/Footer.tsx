@@ -347,7 +347,6 @@ Styled.Button = styled.div((props: { theme: Theme; isDark: boolean }) => {
 Styled.ResourceLinksContainer = styled.div(
   (props: { theme: Theme; isDark: boolean }) => {
     const t = props.theme;
-    const dark = props.isDark;
     return css`
       label: Footer_ResourceLinksContainer;
       width: 60%;

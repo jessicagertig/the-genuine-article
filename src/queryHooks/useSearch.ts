@@ -98,7 +98,7 @@ function useGarmentsKeywordSearch(query: string, enabled = false): {
   );
 
   // Access the data and pagination of each page
-  const allData = data?.pages.map(page => page.data);
+  // const allData = data?.pages.map(page => page.data);
   const allPagination = data?.pages.map(page => page.pagination);
 
   // Add data and pagination to the useInfiniteQuery result

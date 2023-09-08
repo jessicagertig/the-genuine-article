@@ -213,7 +213,11 @@ Styled.GarmentContainer = styled.div(props => {
     mheight: 100%;
     flex-direction: column;
     align-items: center;
-    ${t.mt(6)}
+    ${t.mt(4)};
+
+    ${t.mq.xs} {
+      ${t.mt(6)};
+    }
 
     ${t.mq.xl} {
       flex-direction: row;
@@ -272,22 +276,18 @@ Styled.DisplayedImage = styled.div((props: any) => {
     min-height: 220px;
     flex-shrink: 1;
     justify-content: center;
-    ${[t.px(3)]};
+    ${[t.px(4)]};
 
     ${t.mq.xxs} {
       max-height: 609px;
-      min-height: 343px;
+      min-height: 335px;
     }
 
     ${t.mq.sm} {
-      width: 524px;
+      width: 532px;
       max-height: 609px;
       min-height: 609px;
       ${t.mt(2)};
-    }
-
-    ${t.mq.sm} {
-
     }
 
     img {

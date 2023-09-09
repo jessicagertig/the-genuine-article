@@ -11,10 +11,11 @@ import SvgIcon from "@mui/material/SvgIcon";
 import bookcaseImage from "src/assets/GirlsBookcaseImg.png";
 
 interface AdminFooterProps {
-  scrollToTop: () => void;
+  scrollToTop: (scrollBehavior: ScrollBehavior) => void;
 }
 
 const AdminFooter: React.FC<AdminFooterProps> = props => {
+  const { scrollToTop } = props;
   // const theme = useTheme();
   // const isMediumScreen = useMediaQuery(theme.breakpoints.down("lg"));
   const navigate = useNavigate();
@@ -164,7 +165,7 @@ const AdminFooter: React.FC<AdminFooterProps> = props => {
       </Styled.MainContainer>
       <Styled.BottomBarContainer>
         <Styled.CircleButton
-          onClick={props.scrollToTop}
+          onClick={() => scrollToTop("smooth")}
           role="button"
           aria-label="scroll to top"
         >

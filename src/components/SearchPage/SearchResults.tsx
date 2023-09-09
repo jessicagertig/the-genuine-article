@@ -10,11 +10,15 @@ import { GarmentData } from "src/types";
 interface SearchResultsProps {
   garments: GarmentData[];
   isLoading: boolean;
+  hasResults: boolean;
+  noResults: boolean;
 }
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   garments,
   isLoading,
+  hasResults,
+  noResults,
 }) => {
   const navigate = useNavigate();
 
@@ -30,23 +34,29 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
   return (
     <Styled.SearchResultsContainer>
-      {!garments || isLoading ? (
-        <Styled.LoadingContainer>
-          <h2>Loading...</h2>
-          <LoadingBar />
-        </Styled.LoadingContainer>
-      ) : (
-        <Styled.SearchResults>
-          {garments?.map((garment: any, index: number) => (
-            <GarmentCard
-              key={index}
-              garment={garment}
-              handleClick={handleOnClick}
-              loading={isLoading}
-            />
-          ))}
-        </Styled.SearchResults>
-      )}
+      {hasResults ? (
+        <>
+          {!garments || isLoading ? (
+            <Styled.LoadingContainer>
+              <h2>Loading...</h2>
+              <LoadingBar />
+            </Styled.LoadingContainer>
+          ) : (
+            <Styled.SearchResults>
+              {garments?.map((garment: any, index: number) => (
+                <GarmentCard
+                  key={index}
+                  garment={garment}
+                  handleClick={handleOnClick}
+                  loading={isLoading}
+                />
+              ))}
+            </Styled.SearchResults>
+          )}
+        </>
+      ) : noResults ? (
+        <Styled.EmptyState />
+      ) : null}
     </Styled.SearchResultsContainer>
   );
 };
@@ -106,5 +116,27 @@ Styled.SearchResults = styled.div(props => {
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
+  `;
+});
+
+Styled.EmptyState = styled.div(props => {
+  const t = props.theme;
+  return css`
+    label: EmptyState_Container;
+    height: calc(100vh - 136px);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    ${t.mq.md} {
+      height: calc(100vh - 178px);
+    }
+
+    ${t.mq.lg} {
+      height: calc(100vh - 248px);
+    }
+
+    ${t.mq.glg} {
+      height: calc(100vh - 313px);
   `;
 });

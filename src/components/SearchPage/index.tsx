@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import Button from "@mui/material/Button";
+import { useSearchParams } from 'react-router-dom';
 
 import GarmentsList from "src/components/SearchPage/GarmentsList";
 import NavBar from "src/components/shared/NavBar";
@@ -16,10 +17,12 @@ import { mainSearchStyles } from "src/components/SearchPage/styles/SearchFieldSt
 interface SearchPageProps {}
 
 const SearchPage: React.FC<SearchPageProps> = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchResults, setSearchResults] = React.useState<GarmentData[]>([]);
   const [hasResults, setHasResults] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [initialQuery, setInitialQuery] = React.useState("");
   const [totalResults, setTotalResults] = React.useState(0);
   const [enabled, setEnabled] = React.useState(false);
   const hasQuery = searchQuery !== "" && searchQuery !== undefined;
@@ -43,13 +46,15 @@ const SearchPage: React.FC<SearchPageProps> = () => {
 
   const fetchingNextPage = isFetchingNextPage as boolean;
 
-  const searchBarRef = React.useRef<HTMLDivElement>(null);
-
-  const scrollToSearchBar = () => {
-    if (searchBarRef && searchBarRef.current) {
-      searchBarRef.current.scrollIntoView({ behavior: "smooth" });
+  React.useEffect(() => {
+    const query = searchParams.get("query");
+    if (query) {
+      setSearchQuery(query);
+      setSearchValue(query);
+      setInitialQuery(query);
+      setEnabled(true);
     }
-  };
+  }, []);
 
   React.useEffect(() => {
     if (data && data.pages) {
@@ -73,6 +78,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     console.log("value", value);
     if (value === "") {
       setSearchQuery(value);
+      setSearchParams({});
     }
     setSearchValue(value);
   };
@@ -80,11 +86,13 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const handleClearSearch = () => {
     setSearchQuery("");
     setHasResults(false);
+    setSearchParams({});
   };
 
   const handleSubmitSearch = () => {
     setEnabled(true);
     setSearchQuery(searchValue);
+    setSearchParams({ query: searchValue });
   };
 
   const handleClickLoadMore = () => {
@@ -105,7 +113,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     <Styled.SearchPageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="white" shadow={true} />
       <Styled.SearchContainer>
-        <Styled.SearchHeaderContainer ref={searchBarRef}>
+        <Styled.SearchHeaderContainer>
           <Styled.TextContainer>
             <h2>Search Garments</h2>
           </Styled.TextContainer>
@@ -133,12 +141,10 @@ const SearchPage: React.FC<SearchPageProps> = () => {
         </Styled.SearchHeaderContainer>
       </Styled.SearchContainer>
       <Styled.GarmentsContainer>
-        {hasResults ? (
-          <SearchResults garments={searchResults} isLoading={isLoading} />
-        ) : noResults ? (
-          <Styled.EmptyState />
+      {hasQuery ? (
+          <SearchResults garments={searchResults} isLoading={isLoading} hasResults={hasResults} noResults={noResults} />
         ) : (
-          <GarmentsList scrollToTop={scrollToSearchBar} />
+          <GarmentsList scrollToTop={scrollToTop} />
         )}
         <Styled.ButtonContainer>
           {hasResults && hasNextPage && !fetchingNextPage ? (

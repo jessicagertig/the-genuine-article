@@ -22,7 +22,6 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const [hasResults, setHasResults] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [initialQuery, setInitialQuery] = React.useState("");
   const [totalResults, setTotalResults] = React.useState(0);
   const [enabled, setEnabled] = React.useState(false);
   const hasQuery = searchQuery !== "" && searchQuery !== undefined;
@@ -51,7 +50,6 @@ const SearchPage: React.FC<SearchPageProps> = () => {
     if (query) {
       setSearchQuery(query);
       setSearchValue(query);
-      setInitialQuery(query);
       setEnabled(true);
     }
   }, []);
@@ -341,27 +339,5 @@ Styled.ButtonContainer = styled.div(props => {
         width: 120px;
       }
     }
-  `;
-});
-
-Styled.EmptyState = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: EmptyState_Container;
-    height: calc(100vh - 136px);
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-    ${t.mq.md} {
-      height: calc(100vh - 178px);
-    }
-
-    ${t.mq.lg} {
-      height: calc(100vh - 248px);
-    }
-
-    ${t.mq.glg} {
-      height: calc(100vh - 313px);
   `;
 });

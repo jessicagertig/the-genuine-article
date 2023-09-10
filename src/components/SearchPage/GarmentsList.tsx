@@ -18,7 +18,7 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
   const [pageNo, setPageNo] = React.useState(1);
   const [garments, setGarments] = React.useState<GarmentData[]>([]);
   const [pageCount, setPageCount] = React.useState(0);
-  const [hasMore, setHasMore] = React.useState(false);
+  // const [hasMore, setHasMore] = React.useState(false);
 
   const { data, isFetching, isLoading } = usePaginatedGarments(pageNo);
 
@@ -31,13 +31,16 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
     if (location?.state && location.state.pageNo) {
       setPageNo(location.state.pageNo);
     }
+    // NOTE: Run effect once on component mount, please
+    // recheck dependencies if effect is updated.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
     if (data) {
       setGarments(data.items);
       setPageCount(data.pages);
-      setHasMore(data.hasMore);
+      // setHasMore(data.hasMore);
     }
   }, [data]);
 

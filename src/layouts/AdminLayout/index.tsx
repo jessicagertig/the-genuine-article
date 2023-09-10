@@ -43,8 +43,7 @@ export default AdminLayout;
 let Styled: any;
 Styled = {};
 
-Styled.PageContainer = styled.div(props => {
-  const t = props.theme;
+Styled.PageContainer = styled.div(() => {
   return css`
     label: AdminContainer;
     width: 100%;

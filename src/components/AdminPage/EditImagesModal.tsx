@@ -31,7 +31,7 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
   const { modalOpen } = useModalContext();
-  const { mutate: updateMainImage, isLoading: isLoadingUpdateMainImage } =
+  const { mutate: updateMainImage } =
     useUpdateMainImage();
   const { mutate: createMainImage } = useCreateMainImage();
   const { mutate: deleteMainImage } = useDeleteMainImage();

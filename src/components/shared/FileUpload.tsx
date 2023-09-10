@@ -13,7 +13,7 @@ interface FileUploadProps {
 
 const FileUpload = (props: FileUploadProps) => {
   console.log("FileUploadProps", props);
-  const { fileName, variantType } = props;
+  const { variantType } = props;
   const buttonVariant = variantType ? variantType : "text";
 
   const { handleChangeInput } = props;

@@ -2,11 +2,13 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import IconButton from "@mui/material/IconButton";
 import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
+import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 
@@ -22,6 +24,7 @@ interface HomeContentProps {
 const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const { openModal, removeModal } = useModalContext();
   const { data: garment } = useDailyGarment();
+  const navigate = useNavigate();
 
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [dimensions, setDimensions] = React.useState({
@@ -70,6 +73,37 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     openModal(modal);
   };
 
+  const navigateTo = (id: number | undefined) => {
+    if (id !== undefined) {
+      navigate(`/garments/${id}`);
+    }
+  };
+
+  const garmentInfo = (
+    <Styled.Info>
+      <Styled.HeaderContainer>
+        <Styled.InfoTitleContainer>
+          <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
+        </Styled.InfoTitleContainer>
+        <Styled.IconButtonContainer>
+          <IconButton
+            sx={{ color: "#020b1c", height: "32px", width: "32px" }}
+            onClick={() => navigateTo(garment?.id)}
+          >
+            <OpenInNewOutlinedIcon />
+          </IconButton>
+        </Styled.IconButtonContainer>
+      </Styled.HeaderContainer>
+      <Styled.InfoItem>
+        <p>
+          c. {garment?.beginYear},<span> {garment?.cultureCountry}</span>
+        </p>
+      </Styled.InfoItem>
+      <Styled.InfoItem>
+        <p className="date"></p>
+      </Styled.InfoItem>
+    </Styled.Info>
+  );
   // Image container can NOT be conditionally displayed (even if loading is slow)
   // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
@@ -77,43 +111,46 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
       <Styled.ContentTitleContainer>
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
-      <Styled.ImageSection>
-        {noImage || !imageLoaded ? (
-          <Skeleton
-            variant="rectangular"
-            width="calc((100vh - 160px) * 0.82)"
-            height="calc(100vh - 160px)"
-            sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}
-          />
-        ) : null}
-        <Styled.DisplayedImage
-          height={maxHeight ? maxHeight : 100}
-          noImage={noImage}
-        >
-          <img
-            ref={imgRef}
-            src={imageUrl}
-            alt={garment ? garment.garmentTitle : "garment"}
-            onLoad={onLoad}
-          />
-          <div>
-            <IconButton
-              edge="start"
-              onClick={handleZoom}
-              aria-label="zoom"
-              sx={{
-                color: "white",
-                backgroundColor: "rgba(23, 42, 79, 0.1)",
-                "&:hover": {
-                  backgroundColor: "rgba(23, 42, 79, 0.2)",
-                },
-              }}
-            >
-              <ZoomOutMapOutlinedIcon />
-            </IconButton>
-          </div>
-        </Styled.DisplayedImage>
-      </Styled.ImageSection>
+      <Styled.Card>
+        <Styled.ImageSection>
+          {noImage || !imageLoaded ? (
+            <Skeleton
+              variant="rectangular"
+              width="calc((100vh - 160px) * 0.82)"
+              height="calc(100vh - 160px)"
+              sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}
+            />
+          ) : null}
+          <Styled.DisplayedImage
+            height={maxHeight ? maxHeight : 100}
+            noImage={noImage}
+          >
+            <img
+              ref={imgRef}
+              src={imageUrl}
+              alt={garment ? garment.garmentTitle : "garment"}
+              onLoad={onLoad}
+            />
+            <div>
+              <IconButton
+                edge="start"
+                onClick={handleZoom}
+                aria-label="zoom"
+                sx={{
+                  color: "white",
+                  backgroundColor: "rgba(23, 42, 79, 0.1)",
+                  "&:hover": {
+                    backgroundColor: "rgba(23, 42, 79, 0.2)",
+                  },
+                }}
+              >
+                <ZoomOutMapOutlinedIcon />
+              </IconButton>
+            </div>
+          </Styled.DisplayedImage>
+        </Styled.ImageSection>
+        {garmentInfo}
+      </Styled.Card>
     </Styled.HomeContentContainer>
   );
 };
@@ -133,6 +170,8 @@ Styled.HomeContentContainer = styled.div((props: any) => {
     flex-direction: column;
     width: 100%;
     height: ${heightInVh}vh;
+    align-items: center;
+    justify-content: center;
   `;
 });
 
@@ -142,14 +181,41 @@ Styled.ContentTitleContainer = styled.div(props => {
     label: HomeContentContainer;
     display: flex;
     width: 100%;
-    height: 90px;
+    height: 72px;
     justify-content: center;
-    ${t.py(8)}
+    ${t.py(5)}
 
     h2 {
       font-size: 1.75rem;
       color: #020b1c;
       letter-spacing: 0.01rem;
+    }
+  `;
+});
+
+Styled.Card = styled.div((props: any) => {
+  const t = props.theme;
+  const heightInVh = props.height / (props.height * 0.01);
+  return css`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 92vw;
+    max-height: calc(${heightInVh}vh - 120px);
+    border-radius: 8px;
+    width: fit-content;
+    margin-bottom: 48px;
+    height: fit-content;
+
+    ${t.mq.xs} {
+      max-height: calc(${heightInVh}vh - 120px);
+    }
+
+    ${t.mq.md} {
+      max-width: 640px;
     }
   `;
 });
@@ -171,23 +237,21 @@ Styled.DisplayedImage = styled.div((props: any) => {
     background-color: rgba(211, 217, 229, 0.5);
     display: ${display};
     position: relative;
-    max-width: 95vw;
-    max-height: calc(${heightInVh}vh - 160px);
-    flex-shrink: 1;
-    border-radius: 8px;
+    max-width: 92vw;
+    max-height: calc(${heightInVh}vh - 204px);
+    border-radius: 8px 8px 0 0;
 
-    ${t.mq.xs} {
-      max-height: calc(${heightInVh}vh - 120px);
+    ${t.mq.md} {
+      max-width: 640px;
     }
 
     img {
-      max-width: 95vw;
-      max-height: calc(${heightInVh}vh - 160px);
-      height: auto;
-      border-radius: 8px;
+      max-width: 92vw;
+      max-height: calc(${heightInVh}vh - 204px);
+      border-radius: 8px 8px 0 0;
 
-      ${t.mq.xs} {
-        max-height: calc(${heightInVh}vh - 120px);
+      ${t.mq.md} {
+        max-width: 640px;
       }
     }
 
@@ -201,6 +265,73 @@ Styled.DisplayedImage = styled.div((props: any) => {
     &:hover {
       div {
         display: block;
+      }
+    }
+  `;
+});
+
+Styled.Info = styled.div(() => {
+  return css`
+    display: flex;
+    height: 88px;
+    align-items: space-between;
+    flex-direction: column;
+    padding: 8px;
+  `;
+});
+
+Styled.HeaderContainer = styled.div`
+  label: Garment_InfoHeaderContainer
+  width: 100%;
+`;
+
+Styled.InfoTitleContainer = styled.div(() => {
+  return css`
+    label: Garment_InfoHeader;
+    display: flex;
+    justify-content: flex-start;
+    width: 80%;
+  `;
+});
+
+Styled.InfoTitle = styled.h2((props: any) => {
+  const t = props.theme;
+  return css`
+    label: Garment_InfoTitle;
+    ${[t.pt(3), t.pb(1), t.pl(2)]}
+    font-family: "Sorts Mill Goudy";
+    color: #020b1c;
+    font-size: 1.375rem;
+    letter-spacing: 0.05rem;
+  `;
+});
+
+Styled.IconButtonContainer = styled.div(() => {
+  return css`
+    label: Garment_InfoIconButton;
+    display: flex;
+    justify-content: flex-end;
+    width: 20%;
+  `;
+});
+
+Styled.InfoItem = styled.div((props: any) => {
+  const t = props.theme;
+  return css`
+    label: Garment_InfoItem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: #020b1c;
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-family: "bellota text";
+
+    p {
+      ${[t.px(2)]}
+
+      span {
+        font-style: italic;
       }
     }
   `;

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
@@ -73,12 +73,6 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     openModal(modal);
   };
 
-  const navigateTo = (id: number | undefined) => {
-    if (id !== undefined) {
-      navigate(`/garments/${id}`);
-    }
-  };
-
   const garmentInfo = (
     <Styled.Info>
       <Styled.HeaderContainer>
@@ -86,12 +80,13 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
           <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
         </Styled.InfoTitleContainer>
         <Styled.IconButtonContainer>
-          <IconButton
-            sx={{ color: "#020b1c", height: "32px", width: "32px" }}
-            onClick={() => navigateTo(garment?.id)}
-          >
-            <OpenInNewOutlinedIcon />
-          </IconButton>
+          <Link to={`/garments/${garment?.id}`} target="_blank">
+            <IconButton
+              sx={{ color: "#020b1c", height: "32px", width: "32px" }}
+            >
+              <OpenInNewOutlinedIcon />
+            </IconButton>
+          </Link>
         </Styled.IconButtonContainer>
       </Styled.HeaderContainer>
       <Styled.InfoItem>

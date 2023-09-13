@@ -8,6 +8,8 @@ import Button from "@mui/material/Button";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
+import useResizeObserver from 'src/hooks/useResizeObserver';
+
 interface AccordianProps {
   text: string | any;
   dark: boolean;
@@ -17,6 +19,7 @@ const Accordian: React.FC<AccordianProps> = props => {
   const { text, dark } = props;
   const [isOpen, setIsOpen] = React.useState(false);
   const [hasOverflow, setHasOverflow] = React.useState(false);
+  const { ref: sizeRef, height: varHeight } = useResizeObserver();
 
   const textRef = React.useRef<HTMLDivElement>(null);
 
@@ -37,10 +40,17 @@ const Accordian: React.FC<AccordianProps> = props => {
       const clientHeight = textRef.current.clientHeight;
       if (scrollHeight > 245 || clientHeight < scrollHeight) {
         setHasOverflow(true);
+      } else if (scrollHeight === 245 && !(clientHeight < scrollHeight)) {
+        setHasOverflow(false)
+        setIsOpen(false)
+      }
+      if (varHeight && varHeight <= 240 && isOpen) {
+        setHasOverflow(false);
+        setIsOpen(false);
       }
     }
     //text must be a dependency or else it will not recalculate
-  }, [textRef?.current?.scrollHeight, text]);
+  }, [textRef?.current?.scrollHeight, text, varHeight]);
 
   const handleClickOpen = (event: React.SyntheticEvent): void => {
     event.preventDefault();
@@ -81,7 +91,7 @@ const Accordian: React.FC<AccordianProps> = props => {
 
   return (
     <Styled.Container>
-      <Styled.TextContainer>
+      <Styled.TextContainer ref={sizeRef}>
         <div ref={textRef} className={`${overflowClass} ${activeClass}`}>
           {text}
         </div>
@@ -91,7 +101,7 @@ const Accordian: React.FC<AccordianProps> = props => {
           <div className={concealerClassName}></div>
           <Styled.ButtonsContainer colors={colors}>
             <Styled.ButtonContainer
-              className={isOpen ? "" : "active"}
+              className={isOpen ? overflowClass : `${overflowClass} active` }
               colors={colors}
             >
               <Button
@@ -106,7 +116,7 @@ const Accordian: React.FC<AccordianProps> = props => {
               </Button>
             </Styled.ButtonContainer>
             <Styled.ButtonContainer
-              className={isOpen ? "active" : ""}
+              className={isOpen ? `${overflowClass} active` : overflowClass}
               colors={colors}
             >
               <Button
@@ -151,7 +161,8 @@ Styled.AccordianContainer = styled.div((props: any) => {
     label: Accordian_DisplayContainer;
     position: relative;
     width: 100%;
-    height: 100% .concealer-inactive {
+    
+    .concealer-inactive {
       display: none;
     }
 
@@ -210,6 +221,10 @@ Styled.ButtonsContainer = styled.div((props: any) => {
 
     .active {
       display: flex;
+    }
+
+    .not-hidden {
+      display: none;
     }
   `;
 });

@@ -10,6 +10,8 @@ import Skeleton from "@mui/material/Skeleton";
 import IconButton from "@mui/material/IconButton";
 import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 
@@ -62,15 +64,15 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     to: {
       height: show ? `${infoHeight}px` : "48px",
       width: show ? `${currentWidth}px` : "48px",
-      borderRadius: show ? "36px 36px 8px 8px" : "0px 48px 0px 0px",
+      borderRadius: show ? "36px 36px 8px 8px" : "0px 48px 0px 8px",
       paddingRight: show ? "5%" : "0%",
       paddingLeft: show ? "5%" : "0%",
     },
-    config: { duration: 1000 },
+    config: { duration: 500 },
   });
 
-  const trail = useTrail(show ? 2 : 0, {
-    delay: 750,
+  const trail = useTrail(show ? 3 : 0, {
+    delay: 250,
     from: {
       opacity: 0,
       transform: "translate3d(0px,-10px, 0)",
@@ -126,20 +128,37 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     <Styled.Info>
       <Styled.InfoSubContainer style={styles} onClick={handleClickInfo}>
         {trail.map((props, index) => (
-          <animated.div key={index} style={{...props, width: "100%", height: "100%"}}>
+          <animated.div key={index} style={{ ...props, width: "100%" }}>
             {index === 0 && (
               <Styled.HeaderContainer>
-                <Styled.InfoTitleContainer>
-                  <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
-                </Styled.InfoTitleContainer>
+                  <Styled.InfoTitleContainer>
+                  <Link
+                    to={`/garments/${garment?.id}`}
+                    target="_blank"
+                    style={{ display: "flex" }}
+                  >
+                    <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
+                    <IconButton
+                      sx={{
+                        color: "white",
+                        height: "24px",
+                        width: "24px",
+                        padding: "0.25rem",
+                        marginTop: "0.25rem",
+                        marginBottom: "-3px",
+                        alignSelf: "center",
+                      }}
+                    >
+                      <OpenInNewOutlinedIcon fontSize="small" />
+                    </IconButton>
+                  </Link>
+                  </Styled.InfoTitleContainer>
                 <Styled.IconButtonContainer>
-                  <Link to={`/garments/${garment?.id}`} target="_blank">
                     <IconButton
                       sx={{ color: "white", height: "32px", width: "32px" }}
                     >
-                      <OpenInNewOutlinedIcon />
+                      <CloseOutlinedIcon />
                     </IconButton>
-                  </Link>
                 </Styled.IconButtonContainer>
               </Styled.HeaderContainer>
             )}
@@ -151,6 +170,18 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
                 </p>
               </Styled.InfoItem>
             )}
+            {/* {index === 2 && (
+              <Styled.IconButtonContainer>
+                  <Link to={`/garments/${garment?.id}`} target="_blank">
+                    <IconButton
+                      sx={{ color: "white", height: "24px", paddingLeft: 0 }}
+                    >
+                      <Styled.Span>View details</Styled.Span>
+                      <OpenInNewOutlinedIcon fontSize="small"/>
+                    </IconButton>
+                  </Link>
+                </Styled.IconButtonContainer>
+            )} */}
           </animated.div>
         ))}
       </Styled.InfoSubContainer>
@@ -272,6 +303,8 @@ Styled.EnlargeButton = styled.div(() => {
   return css`
     display: block;
     position: absolute;
+    opacity: 0.5;
+    transition: opacity 0.5s;
     top: 10px;
     right: 10px;
     z-index: 3;
@@ -279,6 +312,8 @@ Styled.EnlargeButton = styled.div(() => {
     &:hover {
       display: block;
       cursor: pointer;
+      opacity: 1;
+      transition: opacity 0.5s;
     }
   `;
 });
@@ -331,15 +366,12 @@ Styled.InfoSubContainer = styled(animated.div)`
   label: Garment_InfoHeaderContainer;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.5);
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 Styled.HeaderContainer = styled.div`
   label: Garment_InfoHeaderContainer;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 1rem;
 `;
 
 Styled.InfoTitleContainer = styled.div(() => {
@@ -361,6 +393,7 @@ Styled.InfoTitle = styled.h2((props: any) => {
     font-size: 1.5rem;
     line-height: 2rem;
     letter-spacing: 0.05rem;
+    display: inline-flex;
   `;
 });
 
@@ -371,6 +404,14 @@ Styled.IconButtonContainer = styled.div(() => {
     justify-content: flex-end;
     width: 20%;
     margin-top: 8px;
+    opacity: 0.5;
+    transition: opacity 0.5s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 1;
+      transition: opacity 0.5s;
+    }
   `;
 });
 

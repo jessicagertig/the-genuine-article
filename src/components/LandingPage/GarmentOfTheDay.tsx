@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useSpring, useTransition, animated, to } from "@react-spring/web";
+import { useSpring, useTrail, animated } from "@react-spring/web";
 
 import { Link } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -15,7 +15,7 @@ import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
-import useIntersectionObserver from "src/hooks/useIntersectionObserver";
+import useResizeObserver from "src/hooks/useResizeObserver";
 import useImageDimensions from "src/hooks/useImageDimensions";
 
 interface HomeContentProps {
@@ -27,6 +27,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const { openModal, removeModal } = useModalContext();
   const { data: garment } = useDailyGarment();
 
+  const [show, setShow] = React.useState(false);
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [dimensions, setDimensions] = React.useState({
     height: 0,
@@ -40,20 +41,50 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     imageLoaded,
     dimensions,
   });
+  const {
+    ref: sizeRef,
+    height: currentHeight,
+    width: currentWidth,
+  } = useResizeObserver();
+
   const imgRef = React.useRef<HTMLImageElement>(null!);
-  const triggerRef = React.useRef<HTMLDivElement>(null!);
-  const dataRef = useIntersectionObserver(triggerRef, {
-    freezeOnceVisible: true,
-  });
 
-  const resize = useSpring({
-    from: { scale: 1, translate: "0%" },
-    to: async (next, cancel) => {
-      await next({ scale: dataRef?.isIntersecting ? 0.85 : 1 });
-      await next({ translate: dataRef?.isIntersecting ? "-7.5%" : "0%" });
+  const infoHeight = currentHeight && currentHeight * 0.25;
+
+  const changeDimensions = useSpring({
+    from: {
+      height: "48px",
+      width: "48px",
+      borderRadius: "0px 0px 0px 0px",
+      paddingRight: "0%",
+      paddingLeft: "0%",
     },
+    to: {
+      height: show ? `${infoHeight}px` : "48px",
+      width: show ? `${currentWidth}px` : "48px",
+      borderRadius: show ? "36px 36px 8px 8px" : "0px 48px 0px 0px",
+      paddingRight: show ? "5%" : "0%",
+      paddingLeft: show ? "5%" : "0%",
+    },
+    config: { duration: 1000 },
   });
 
+  const trail = useTrail(show ? 2 : 0, {
+    delay: 750,
+    from: {
+      opacity: 0,
+      transform: "translate3d(0px,-10px, 0)",
+      width: "100%",
+    },
+    to: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0)",
+      width: "100%",
+    },
+    config: { duration: 1000 },
+  });
+
+  const styles = changeDimensions;
 
   const onLoad = () => {
     setDimensions({
@@ -86,39 +117,45 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
 
     openModal(modal);
   };
-  const garmentInfo = () => {
-    const content = (
-      <>
-        <Styled.HeaderContainer>
-          <Styled.InfoTitleContainer>
-            <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
-          </Styled.InfoTitleContainer>
-          <Styled.IconButtonContainer>
-            <Link to={`/garments/${garment?.id}`} target="_blank">
-              <IconButton
-                sx={{ color: "white", height: "32px", width: "32px" }}
-              >
-                <OpenInNewOutlinedIcon />
-              </IconButton>
-            </Link>
-          </Styled.IconButtonContainer>
-        </Styled.HeaderContainer>
-        <Styled.InfoItem>
-          <p>
-            c. {garment?.beginYear}
-          </p>
-          <p><span>{garment?.cultureCountry}</span></p>
-        </Styled.InfoItem>
-      </>
-    );
-    // if (!mediumScreen) {
-    //   return transitions((style, item) =>
-    //     item ? <Styled.Info style={style}>{content}</Styled.Info> : null
-    //   );
-    // } else {
-      return <Styled.Info><Styled.InfoSubContainer>{content}</Styled.InfoSubContainer></Styled.Info>
-    // }
+
+  const handleClickInfo = () => {
+    setShow(!show);
   };
+
+  const garmentInfo = (
+    <Styled.Info>
+      <Styled.InfoSubContainer style={styles} onClick={handleClickInfo}>
+        {trail.map((props, index) => (
+          <animated.div key={index} style={{...props, width: "100%", height: "100%"}}>
+            {index === 0 && (
+              <Styled.HeaderContainer>
+                <Styled.InfoTitleContainer>
+                  <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
+                </Styled.InfoTitleContainer>
+                <Styled.IconButtonContainer>
+                  <Link to={`/garments/${garment?.id}`} target="_blank">
+                    <IconButton
+                      sx={{ color: "white", height: "32px", width: "32px" }}
+                    >
+                      <OpenInNewOutlinedIcon />
+                    </IconButton>
+                  </Link>
+                </Styled.IconButtonContainer>
+              </Styled.HeaderContainer>
+            )}
+            {index === 1 && (
+              <Styled.InfoItem>
+                <p>c. {garment?.beginYear}</p>
+                <p>
+                  <span>{garment?.cultureCountry}</span>
+                </p>
+              </Styled.InfoItem>
+            )}
+          </animated.div>
+        ))}
+      </Styled.InfoSubContainer>
+    </Styled.Info>
+  );
 
   // Image container can NOT be conditionally displayed (even if loading is slow)
   // because the imageRef cannot be used until img is rendered (don't forget!)
@@ -127,7 +164,12 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
       <Styled.ContentTitleContainer>
         <h2>Garment of the Day</h2>
       </Styled.ContentTitleContainer>
-      <Styled.Card height={windowHeight} noImage={noImage} imageLoaded={imageLoaded}>
+      <Styled.Card
+        height={maxHeight ? maxHeight : "calc(100vh - 160px)"}
+        noImage={noImage}
+        imageLoaded={imageLoaded}
+        ref={sizeRef}
+      >
         {noImage || !imageLoaded ? (
           <Skeleton
             variant="rectangular"
@@ -164,9 +206,8 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
             <ZoomOutMapOutlinedIcon />
           </IconButton>
         </Styled.EnlargeButton>
-        {garmentInfo()}
+        {garmentInfo}
       </Styled.Card>
-      <div ref={triggerRef} style={{ marginBottom: "48px" }} />
     </Styled.HomeContentContainer>
   );
 };
@@ -209,24 +250,21 @@ Styled.ContentTitleContainer = styled.div(props => {
 });
 
 Styled.Card = styled.div((props: any) => {
-  const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
   return css`
+    label: Card;
     display: ${display};
     flex-direction: column;
     align-items: space-between;
     background-color: blue;
     border-radius: 8px;
-    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.3);
     max-width: 92vw;
     width: auto;
     max-height: calc(${heightInVh}vh - 120px);
     position: relative;
     z-index: 0;
-
-    ${t.mq.md} {
-    }
+    margin-bottom: 48px;
   `;
 });
 
@@ -242,24 +280,18 @@ Styled.EnlargeButton = styled.div(() => {
       display: block;
       cursor: pointer;
     }
-  `
-})
+  `;
+});
 
-Styled.ImageSection = styled(animated.div)((props: any) => {
-  const t = props.theme;
+Styled.ImageSection = styled(animated.div)(() => {
   return css`
     label: DailyGarment_ImageSection;
     display: flex;
     justify-content: center;
-
-    ${t.mq.md} {
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    }
   `;
 });
 
 Styled.DisplayedImage = styled(animated.div)((props: any) => {
-  const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
   return css`
@@ -277,13 +309,10 @@ Styled.DisplayedImage = styled(animated.div)((props: any) => {
       max-height: calc(${heightInVh}vh - 120px);
       border-radius: 8px;
     }
-
   `;
 });
 
-Styled.Info = styled(animated.div)((props: any) => {
-  const t = props.theme;
-  const heightInVh = props.height / (props.height * 0.01);
+Styled.Info = styled(animated.div)(() => {
   return css`
     display: flex;
     align-items: flex-end;
@@ -295,33 +324,20 @@ Styled.Info = styled(animated.div)((props: any) => {
     left: 0;
     right: 0;
     z-index: 2;
-
-    ${t.mq.md} {
-    }
   `;
 });
 
-Styled.InfoSubContainer = styled.div`
+Styled.InfoSubContainer = styled(animated.div)`
   label: Garment_InfoHeaderContainer;
-  opacity: 0;
-  transition: opacity 0.5s;
-  width: 100%;
-  height: 25%;
-  padding-right: 5%;
-  padding-left: 5%;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 36px 36px 8px 8px;
   &:hover {
-    opacity: 1;
-    transition: opacity 0.5s;
     cursor: pointer;
   }
-
 `;
 
 Styled.HeaderContainer = styled.div`
-  label: Garment_InfoHeaderContainer
+  label: Garment_InfoHeaderContainer;
   width: 100%;
   margin-top: 16px;
 `;
@@ -348,8 +364,7 @@ Styled.InfoTitle = styled.h2((props: any) => {
   `;
 });
 
-Styled.IconButtonContainer = styled.div((props) => {
-  const t = props.theme;
+Styled.IconButtonContainer = styled.div(() => {
   return css`
     label: Garment_InfoIconButton;
     display: flex;

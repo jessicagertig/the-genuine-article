@@ -38,6 +38,8 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
 
   const theme = useTheme();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const verySmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { maxHeight, maxWidth } = useImageDimensions({
     imageLoaded,
@@ -52,6 +54,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const imgRef = React.useRef<HTMLImageElement>(null!);
 
   const infoHeight = currentHeight && currentHeight * 0.25;
+  const showMinHeight = verySmallScreen ? "140px" : smallScreen ? "155px" : "165px";
 
   const changeDimensions = useSpring({
     from: {
@@ -68,7 +71,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
       borderRadius: show ? "36px 36px 8px 8px" : "0px 48px 0px 8px",
       paddingRight: show ? "5%" : "0%",
       paddingLeft: show ? "5%" : "0%",
-      minHeight: show ? "155px" : "48px",
+      minHeight: show ? showMinHeight : "48px",
     },
     config: { duration: 500 },
   });
@@ -93,8 +96,6 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     to: { opacity: show ? 0 : 1 },
     config: { duration: 500 },
   });
-
-  const styles = changeDimensions;
 
   const onLoad = () => {
     setDimensions({
@@ -154,7 +155,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
                         },
                       }}
                     >
-                      <OpenInNewOutlinedIcon />
+                      <OpenInNewOutlinedIcon fontSize={verySmallScreen ? "small" : "medium"} />
                     </IconButton>
                   </Link>
                 </Styled.IconButtonContainer>
@@ -169,7 +170,9 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
               </Styled.InfoItem>
             )}
             {index === 2 && (
-              <Styled.SolidIconButtonContainer style={{alignItems: "flex-end"}}>
+              <Styled.SolidIconButtonContainer
+                style={{ alignItems: "flex-end", top: verySmallScreen ? "-4px" : "4px" }}
+              >
                 <IconButton
                   sx={{
                     color: "white",
@@ -296,12 +299,21 @@ Styled.ContentTitleContainer = styled.div(props => {
     width: 100%;
     height: 88px;
     justify-content: center;
-    ${t.py(6)}
+    ${t.py(7)}
+
+    ${t.mq.xxs} {
+      ${t.py(6)};
+    }
 
     h2 {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
       color: #020b1c;
       letter-spacing: 0.01rem;
+      line-height: 2.66rem;
+
+      ${t.mq.xxs} {
+        font-size: 1.75rem;
+      }
     }
   `;
 });
@@ -426,20 +438,37 @@ Styled.InfoTitle = styled.h2((props: any) => {
     ${[t.pt(3), t.pb(1)]}
     font-family: "Sorts Mill Goudy";
     color: white;
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-size: 1.275rem;
+    line-height: 1.66rem;
     letter-spacing: 0.05rem;
     display: inline-flex;
+
+    ${t.mq.xs} {
+      font-size: 1.375rem;
+      line-height: 1.75rem;
+      letter-spacing: 0.05rem;
+    }
+
+    ${t.mq.sm} {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      letter-spacing: 0.05rem;
+    }
   `;
 });
 
-Styled.IconButtonContainer = styled.div(() => {
+Styled.IconButtonContainer = styled.div((props) => {
+  const t = props.theme;
   return css`
     label: Garment_InfoIconButton;
     display: flex;
     justify-content: flex-end;
     width: 20%;
-    margin-top: 8px;
+    margin-top: 0.25rem;
+
+    ${t.mq.md} {
+      margin-top: 0.5rem;
+    }
 
     &:hover {
       cursor: pointer;
@@ -472,9 +501,19 @@ Styled.InfoItem = styled.div((props: any) => {
     flex-direction: column;
     width: 100%;
     color: white;
-    font-size: 1rem;
-    line-height: 1.375rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     font-family: "bellota text";
+
+    ${t.mq.xs} {
+      font-size: 0.9rem;
+      line-height: 1.3rem;
+    }
+
+    ${t.mq.sm} {
+      font-size: 1rem;
+      line-height: 1.375rem;
+    }
 
     p {
       ${[t.pr(2)]}

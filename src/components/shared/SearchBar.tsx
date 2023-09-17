@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+import { useSearchParams } from "react-router-dom";
 import { FormControl, InputAdornment, TextField } from "@mui/material";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
@@ -22,6 +23,15 @@ const SearchBar: React.FC<SearchProps> = ({
 }) => {
   const [showClearIcon, setShowClearIcon] = React.useState("none");
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchParams] = useSearchParams();
+
+  React.useEffect(() => {
+    const query = searchParams.get("query");
+    if (query && query !== "") {
+      setSearchTerm(query);
+      setShowClearIcon("flex");
+    }
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setShowClearIcon(event.target.value === "" ? "none" : "flex");

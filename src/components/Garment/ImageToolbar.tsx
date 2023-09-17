@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -14,13 +14,18 @@ interface ImageToolbarProps {
   garmentMainImgUrl: string;
   garmentTitle: string;
   mediumScreen: boolean;
-  pageNumber?: number;
 }
 
 const ImageToolbar: React.FC<ImageToolbarProps> = props => {
-  const { mediumScreen, garmentTitle, garmentMainImgUrl, pageNumber } = props;
+  const { mediumScreen, garmentTitle, garmentMainImgUrl } = props;
   const navigate = useNavigate();
+  const location = useLocation();
   const { openModal, removeModal } = useModalContext();
+
+  console.log("GARMENT TOOLBAR LOCATION", location);
+  const isSearch = location?.state?.isSearch;
+  const searchParams = location?.state?.searchParams;
+  const pageNumber = location?.state?.pageNo;
 
   const handleZoom = () => {
     const modal = (
@@ -42,6 +47,8 @@ const ImageToolbar: React.FC<ImageToolbarProps> = props => {
           pageNo: pageNumber,
         },
       });
+    } else if (isSearch && searchParams !== undefined) {
+      navigate(`/garments${searchParams}`);
     } else {
       navigate("/garments");
     }
@@ -66,7 +73,7 @@ const ImageToolbar: React.FC<ImageToolbarProps> = props => {
           aria-label="navigate back to list"
         >
           <ArrowBackIcon fontSize="small" />
-          <p>garments</p>
+          <p>{isSearch ? "search results" : "garments"}</p>
         </Styled.IconButton>
         <IconButton onClick={handleZoom} aria-label="zoom" sx={buttonStyles}>
           <ZoomOutMapOutlinedIcon fontSize="small" />

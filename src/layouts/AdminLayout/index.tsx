@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import { useLocation } from 'react-router-dom';
 
 import AdminFooter from "src/components/shared/AdminFooter";
 import NavBar from "src/components/shared/NavBar";
@@ -12,11 +13,18 @@ interface PublicLayoutProps {
 const AdminLayout: React.FC<PublicLayoutProps> = ({ children }) => {
   const pageContainerRef = React.useRef<HTMLDivElement>(null);
 
-  const scrollToTop = () => {
+  const scrollToTop = (scrollBehavior: ScrollBehavior) => {
     if (pageContainerRef && pageContainerRef.current) {
-      pageContainerRef.current.scrollTo({ top: 0, behavior: "smooth" });
+      pageContainerRef.current.scrollTo({ top: 0, behavior: scrollBehavior });
     }
   };
+
+  const { pathname } = useLocation();
+
+  React.useEffect(() => {
+      console.log('pathname', pathname)
+      scrollToTop("auto")
+  }, [pathname]);
 
   return (
     <Styled.PageContainer ref={pageContainerRef}>

@@ -19,12 +19,11 @@ import ImageToolbar from "src/components/Garment/ImageToolbar";
 interface GarmentContentProps {
   garment: GarmentData | undefined;
   loading: boolean;
-  pageNumber?: number;
   isDark: boolean;
 }
 
 const GarmentContent: React.FC<GarmentContentProps> = props => {
-  const { garment, loading, pageNumber, isDark } = props;
+  const { garment, loading, isDark } = props;
   const { openModal, removeModal } = useModalContext();
 
   const theme = useTheme();
@@ -148,7 +147,6 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
               }
               garmentTitle={garment ? garment.garmentTitle : "garment"}
               mediumScreen={mediumScreen}
-              pageNumber={pageNumber}
             />
           </>
         )}

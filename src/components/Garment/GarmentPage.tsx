@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
@@ -20,7 +20,6 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
     undefined
   );
   const { garmentId } = useParams();
-  const location = useLocation();
 
   const theme = useTheme();
   const largeScreen = useMediaQuery(theme.breakpoints.down("xl"));
@@ -34,7 +33,6 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
   };
 
   const idToNumber = garmentId ? parseInt(garmentId, 10) : undefined;
-  const pageNo = location?.state?.pageNo;
 
   const {
     data: garment,
@@ -52,7 +50,11 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
   return (
     <Styled.GarmentPageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="white" shadow={true} />
-      <GarmentContent garment={garmentData} loading={garmentIsLoading} pageNumber={pageNo} isDark={largeScreen}/>
+      <GarmentContent
+        garment={garmentData}
+        loading={garmentIsLoading}
+        isDark={largeScreen}
+      />
       <Footer scrollToTop={scrollToTop} dark={!largeScreen} />
     </Styled.GarmentPageContainer>
   );

@@ -476,7 +476,7 @@ Styled.DisplayedImage = styled(animated.div)((props: any) => {
     border-radius: 8px;
     z-index: 1;
 
-    ${t.mq.md} {
+    ${t.mq.sm} {
       max-width: 550px;
     }
 
@@ -485,7 +485,7 @@ Styled.DisplayedImage = styled(animated.div)((props: any) => {
       max-height: calc(${heightInVh}vh - 120px);
       border-radius: 8px;
 
-      ${t.mq.md} {
+      ${t.mq.sm} {
         max-width: 550px;
       }
     }

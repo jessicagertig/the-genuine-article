@@ -3,22 +3,21 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useSpring, useTrail, animated } from "@react-spring/web";
 
-import { Link } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
 import IconButton from "@mui/material/IconButton";
 import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
-import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import SouthWestOutlinedIcon from "@mui/icons-material/SouthWestOutlined";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
+import GarmentInfoContent from "src/components/LandingPage/GarmentInfoContent";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
 import useResizeObserver from "src/hooks/useResizeObserver";
 import useImageDimensions from "src/hooks/useImageDimensions";
+import useIntersectionObserver from 'src/hooks/useIntersectionObserver';
 
 interface HomeContentProps {
   windowHeight: number;
@@ -37,6 +36,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   });
 
   const theme = useTheme();
+  const largeScreen = useMediaQuery(theme.breakpoints.up("xl"));
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
   const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const verySmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
@@ -53,8 +53,29 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
 
+  const dataRef = useIntersectionObserver(imgRef, {
+    freezeOnceVisible: true
+  })
+
   const infoHeight = currentHeight && currentHeight * 0.25;
-  const showMinHeight = verySmallScreen ? "140px" : smallScreen ? "155px" : "165px";
+  const showMinHeight = verySmallScreen
+    ? "140px"
+    : smallScreen
+    ? "155px"
+    : "165px";
+  const actualHeight =
+    infoHeight && Math.max(infoHeight, parseInt(showMinHeight));
+
+  let spaceBelow = false;
+  if (largeScreen) {
+    spaceBelow = false;
+  } else if (currentHeight && actualHeight) {
+    spaceBelow = windowHeight - (currentHeight + 132) > actualHeight;
+  }
+  const shownColor =
+    show && spaceBelow ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)";
+  const shownRadius =
+    show && spaceBelow ? "0px 0px 8px 8px" : "36px 36px 8px 8px";
 
   const changeDimensions = useSpring({
     from: {
@@ -64,32 +85,55 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
       paddingRight: "0%",
       paddingLeft: "0%",
       minHeight: "48px",
+      backgroundColor: "rgba(0, 0, 0, 0.3)",
+      marginBottom: "0px",
     },
     to: {
       height: show ? `${infoHeight}px` : "48px",
       width: show ? `${currentWidth}px` : "48px",
-      borderRadius: show ? "36px 36px 8px 8px" : "0px 48px 0px 8px",
+      borderRadius: show ? shownRadius : "0px 48px 0px 8px",
       paddingRight: show ? "5%" : "0%",
       paddingLeft: show ? "5%" : "0%",
       minHeight: show ? showMinHeight : "48px",
+      backgroundColor: show ? shownColor : "rgba(0, 0, 0, 0.2)",
+      marginBottom: show && spaceBelow ? `-${actualHeight}px` : "0px",
     },
     config: { duration: 500 },
   });
 
-  const trail = useTrail(show ? 3 : 0, {
+  const trail = useTrail(show ? 4 : 0, {
     delay: 250,
     from: {
       opacity: 0,
       transform: "translate3d(0px,-10px, 0)",
       width: "100%",
+      color: "white",
     },
     to: {
       opacity: 1,
       transform: "translate3d(0px, 0px, 0)",
       width: "100%",
+      color: show && spaceBelow ? "#020b1c" : "white",
     },
     config: { duration: 1000 },
   });
+
+  const largeScreenConfig = {
+    delay: 200,
+    from: {
+      opacity: 0,
+      transform: "translate3d(70px,0px, 0)",
+      color: "white",
+    },
+    to: {
+      opacity: dataRef?.isIntersecting ? 1 : 0,
+      transform: dataRef?.isIntersecting ? "translate3d(0px, 0px, 0)" : "translate3d(70px,0px, 0)",
+      color: dataRef?.isIntersecting ? "#020b1c" : "white",
+    },
+    config: { duration: 500 },
+  }
+  const titleStyle = useSpring(largeScreenConfig);
+  const largeScreenTrail = useTrail(dataRef?.isIntersecting ? 3 : 0, largeScreenConfig);
 
   const remove = useSpring({
     from: { opacity: 1 },
@@ -133,141 +177,138 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     setShow(!show);
   };
 
-  const garmentInfo = (
+  const toolButtonStyles = {
+    color: "inherit",
+    height: "40px",
+    width: "40px",
+    opacity: 0.6,
+    "&:hover": {
+      opacity: 1,
+      transform: "scale(1.1)",
+      transition: "all 0.5s",
+    },
+  };
+
+  const enlargeToolButton = (
+    <IconButton onClick={handleZoom} aria-label="zoom" sx={toolButtonStyles}>
+      <ZoomOutMapOutlinedIcon />
+    </IconButton>
+  );
+
+  const enlargeCardButton = (
+    <Styled.EnlargeButton>
+      <IconButton
+        edge="start"
+        onClick={handleZoom}
+        aria-label="zoom"
+        sx={{
+          color: "white",
+          bgcolor: "rgba(23, 42, 79, 0.1)",
+          "&:hover": {
+            bgcolor: "rgba(23, 42, 79, 0.2)",
+          },
+        }}
+      >
+        <ZoomOutMapOutlinedIcon />
+      </IconButton>
+    </Styled.EnlargeButton>
+  );
+
+  const garmentImageCardInfo = (
     <Styled.Info>
       <Styled.InfoSubContainer style={changeDimensions}>
-        {trail.map((props, index) => (
-          <animated.div key={index} style={{ ...props, width: "100%" }}>
-            {index === 0 && (
-              <Styled.HeaderContainer>
-                <Styled.InfoTitleContainer>
-                  <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
-                </Styled.InfoTitleContainer>
-                <Styled.IconButtonContainer>
-                  <Link to={`/garments/${garment?.id}`} target="_blank">
-                    <IconButton
-                      sx={{
-                        color: "white",
-                        height: "36px",
-                        width: "36px",
-                        "&:hover": {
-                          bgcolor: "rgba(0, 0, 0, 0.5)",
-                        },
-                      }}
-                    >
-                      <OpenInNewOutlinedIcon fontSize={verySmallScreen ? "small" : "medium"} />
-                    </IconButton>
-                  </Link>
-                </Styled.IconButtonContainer>
-              </Styled.HeaderContainer>
-            )}
-            {index === 1 && (
-              <Styled.InfoItem>
-                <p>c. {garment?.beginYear}</p>
-                <p>
-                  <span>{garment?.cultureCountry}</span>
-                </p>
-              </Styled.InfoItem>
-            )}
-            {index === 2 && (
-              <Styled.SolidIconButtonContainer
-                style={{ alignItems: "flex-end", top: verySmallScreen ? "-4px" : "4px" }}
-              >
-                <IconButton
-                  sx={{
-                    color: "white",
-                    height: "40px",
-                    width: "40px",
-                    marginBottom: "0.25rem",
-                    marginLeft: "-0.6rem",
-                    opacity: 0.6,
-                    "&:hover": {
-                      opacity: 1,
-                      transform: "scale(1.05)",
-                      transition: "all 0.5s",
-                    },
-                  }}
-                  onClick={handleClickInfo}
-                >
-                  <SouthWestOutlinedIcon />
-                </IconButton>
-              </Styled.SolidIconButtonContainer>
-            )}
-          </animated.div>
-        ))}
-        {!show && (
-          <Styled.SolidIconButtonContainer style={remove}>
-            <IconButton
-              sx={{
-                color: "white",
-                height: "40px",
-                width: "40px",
-                "&:hover": {
-                  transform: "scale(1.1)",
-                  transition: "all 0.5s",
-                },
-              }}
-              onClick={handleClickInfo}
-            >
+        <GarmentInfoContent
+          spaceBelow={spaceBelow}
+          garment={garment}
+          verySmallScreen={verySmallScreen}
+          trail={trail}
+          handleClickInfo={handleClickInfo}
+        />
+        {!show && !largeScreen ? (
+          <Styled.InfoIconButtonContainer style={remove}>
+            <IconButton sx={toolButtonStyles} onClick={handleClickInfo}>
               <InfoOutlinedIcon />
             </IconButton>
-          </Styled.SolidIconButtonContainer>
-        )}
+          </Styled.InfoIconButtonContainer>
+        ) : null}
       </Styled.InfoSubContainer>
     </Styled.Info>
+  );
+
+  const garmentCardInfo = (
+    <Styled.InfoCard>
+      <Styled.InfoSubContainer>
+        <GarmentInfoContent
+          spaceBelow={spaceBelow}
+          garment={garment}
+          verySmallScreen={verySmallScreen}
+          trail={largeScreenTrail}
+          handleClickInfo={handleClickInfo}
+        />
+      </Styled.InfoSubContainer>
+    </Styled.InfoCard>
   );
 
   // Image container can NOT be conditionally displayed (even if loading is slow)
   // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
-    <Styled.HomeContentContainer height={windowHeight}>
-      <Styled.ContentTitleContainer>
-        <h2>Garment of the Day</h2>
-      </Styled.ContentTitleContainer>
-      <Styled.Card
-        height={maxHeight ? maxHeight : "calc(100vh - 160px)"}
-        noImage={noImage}
-        imageLoaded={imageLoaded}
-        ref={sizeRef}
-      >
-        {noImage || !imageLoaded ? (
-          <Skeleton
-            variant="rectangular"
-            width="calc((100vh - 160px) * 0.82)"
-            height="calc(100vh - 160px)"
-            sx={{ bgcolor: "rgba(211, 217, 229, 0.5)", borderRadius: "8px" }}
-          />
-        ) : null}
-        <Styled.DisplayedImage
-          height={maxHeight ? maxHeight : 100}
-          noImage={noImage}
-          width={maxWidth}
-        >
-          <img
-            ref={imgRef}
-            src={imageUrl}
-            alt={garment ? garment.garmentTitle : "garment"}
-            onLoad={onLoad}
-          />
-        </Styled.DisplayedImage>
-        <Styled.EnlargeButton>
-          <IconButton
-            edge="start"
-            onClick={handleZoom}
-            aria-label="zoom"
-            sx={{
-              color: "white",
-              bgcolor: "rgba(23, 42, 79, 0.1)",
-              "&:hover": {
-                bgcolor: "rgba(23, 42, 79, 0.2)",
-              },
-            }}
+    <Styled.HomeContentContainer height={windowHeight} spaceBelow={spaceBelow}>
+      {!largeScreen ? (
+        <Styled.ContentTitleContainer>
+          <h2>Garment of the Day</h2>
+        </Styled.ContentTitleContainer>
+      ) : null}
+      <Styled.ContentContainer>
+        <Styled.ImageCardContainer>
+          <Styled.Card
+            height={maxHeight}
+            noImage={noImage}
+            imageLoaded={imageLoaded}
+            ref={sizeRef}
           >
-            <ZoomOutMapOutlinedIcon />
-          </IconButton>
-        </Styled.EnlargeButton>
-        {garmentInfo}
-      </Styled.Card>
+            {noImage || !imageLoaded ? (
+              <Skeleton
+                variant="rectangular"
+                width="calc((100vh - 160px) * 0.82)"
+                height="calc(100vh - 160px)"
+                sx={{
+                  bgcolor: "rgba(211, 217, 229, 0.5)",
+                  borderRadius: "8px",
+                }}
+              />
+            ) : null}
+            <Styled.DisplayedImage
+              height={maxHeight ? maxHeight : 100}
+              noImage={noImage}
+              width={maxWidth}
+            >
+              <img
+                ref={imgRef}
+                src={imageUrl}
+                alt={garment ? garment.garmentTitle : "garment"}
+                onLoad={onLoad}
+              />
+            </Styled.DisplayedImage>
+            {!largeScreen ? (
+              <>
+                {enlargeCardButton}
+                {garmentImageCardInfo}
+              </>
+            ) : null}
+          </Styled.Card>
+          {largeScreen ? (
+            <Styled.Tools>{enlargeToolButton}</Styled.Tools>
+          ) : null}
+        </Styled.ImageCardContainer>
+        {largeScreen ? (
+          <Styled.InfoCardContainer>
+            <Styled.ContentTitleContainer style={titleStyle}>
+              <h2>Garment of the Day</h2>
+            </Styled.ContentTitleContainer>
+            {garmentCardInfo}
+          </Styled.InfoCardContainer>
+        ) : null}
+      </Styled.ContentContainer>
     </Styled.HomeContentContainer>
   );
 };
@@ -280,6 +321,7 @@ let Styled: any;
 Styled = {};
 
 Styled.HomeContentContainer = styled.div((props: any) => {
+  const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   return css`
     label: HomeContentContainer;
@@ -288,10 +330,31 @@ Styled.HomeContentContainer = styled.div((props: any) => {
     width: 100%;
     height: ${heightInVh}vh;
     align-items: center;
+    padding-top: ${props.spaceBelow ? "1rem" : "0rem"};
+
+    ${t.mq.xl} {
+      width: 92%;
+      margin-right: 4%;
+      margin-left: 4%;
+      background-color: white;
+      justify-content: center;
+    }
+
+    ${t.mq.gxl} {
+      width: 84%;
+      margin-right: 8%;
+      margin-left: 8%;
+    }
+
+    ${t.mq.xxl} {
+      width: 76%;
+      margin-right: 12%;
+      margin-left: 12%;
+    }
   `;
 });
 
-Styled.ContentTitleContainer = styled.div(props => {
+Styled.ContentTitleContainer = styled(animated.div)(props => {
   const t = props.theme;
   return css`
     label: HomeContentContainer;
@@ -300,20 +363,56 @@ Styled.ContentTitleContainer = styled.div(props => {
     height: 88px;
     justify-content: center;
     ${t.py(7)}
+    color: #020b1c;
 
     ${t.mq.xxs} {
       ${t.py(6)};
     }
 
+    ${t.mq.xl} {
+      justify-content: flex-start;
+      border-bottom: 1px solid;
+      align-items: flex-end;
+      width: 80%;
+      ${[t.pt(10), t.pb(2)]};
+      color: unset;
+    }
+
     h2 {
       font-size: 1.5rem;
-      color: #020b1c;
+      color: inherit;
       letter-spacing: 0.01rem;
       line-height: 2.66rem;
 
       ${t.mq.xxs} {
         font-size: 1.75rem;
       }
+
+      ${t.mq.xl} {
+        ${[t.pl(4)]};
+      }
+    }
+  `;
+});
+
+Styled.ContentContainer = styled.div(() => {
+  return css`
+    label: DailyGarment_ContentContainer;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  `;
+});
+
+Styled.ImageCardContainer = styled(animated.div)((props) => {
+  const t = props.theme;
+  return css`
+    label: DailyGarment_CardContainer;
+    display: flex;
+    justify-content: center;
+
+    ${t.mq.xl} {
+      width: 50%;
     }
   `;
 });
@@ -328,12 +427,11 @@ Styled.Card = styled.div((props: any) => {
     align-items: flex-end;
     background-color: #d3d9e5;
     border-radius: 8px;
-    max-width: 92vw;
+    max-width: 95vw;
     width: auto;
     max-height: calc(${heightInVh}vh - 120px);
     position: relative;
     z-index: 0;
-    margin-bottom: 48px;
   `;
 });
 
@@ -373,7 +471,7 @@ Styled.DisplayedImage = styled(animated.div)((props: any) => {
     background-color: rgba(211, 217, 229, 0.5);
     display: ${display};
     position: relative;
-    max-width: 92vw;
+    max-width: 95vw;
     max-height: calc(${heightInVh}vh - 120px);
     border-radius: 8px;
     z-index: 1;
@@ -383,13 +481,53 @@ Styled.DisplayedImage = styled(animated.div)((props: any) => {
     }
 
     img {
-      max-width: 92vw;
+      max-width: 95vw;
       max-height: calc(${heightInVh}vh - 120px);
       border-radius: 8px;
 
       ${t.mq.md} {
         max-width: 550px;
       }
+    }
+  `;
+});
+
+Styled.Tools = styled.div(() => {
+  return css`
+    label: DailyGarment_Tools;
+    width: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `;
+});
+
+Styled.InfoCardContainer = styled(animated.div)((props) => {
+  const t = props.theme;
+  return css`
+    label: DailyGarment_InfoCardContainer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+
+    ${t.mq.xl} {
+      width: 45%;
+    }
+  `;
+});
+
+Styled.InfoCard = styled(animated.div)((props) => {
+  const t = props.theme;
+  return css`
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+
+    ${t.mq.xl} {
+      align-items: flex-start;
     }
   `;
 });
@@ -409,74 +547,22 @@ Styled.Info = styled(animated.div)(() => {
   `;
 });
 
-Styled.InfoSubContainer = styled(animated.div)`
-  label: Garment_InfoHeaderContainer;
-  flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: relative;
-`;
-
-Styled.HeaderContainer = styled.div`
-  label: Garment_InfoHeaderContainer;
-  width: 100%;
-  margin-top: 1rem;
-`;
-
-Styled.InfoTitleContainer = styled.div(() => {
-  return css`
-    label: Garment_InfoHeader;
-    display: flex;
-    justify-content: flex-start;
-    width: 80%;
-  `;
-});
-
-Styled.InfoTitle = styled.h2((props: any) => {
+Styled.InfoSubContainer = styled(animated.div)((props) => {
   const t = props.theme;
   return css`
-    label: Garment_InfoTitle;
-    ${[t.pt(3), t.pb(1)]}
-    font-family: "Sorts Mill Goudy";
-    color: white;
-    font-size: 1.275rem;
-    line-height: 1.66rem;
-    letter-spacing: 0.05rem;
-    display: inline-flex;
+    label: Garment_InfoSubContainer;
+    flex-direction: column;
+    position: relative;
+    max-height: 170px;
 
-    ${t.mq.xs} {
-      font-size: 1.375rem;
-      line-height: 1.75rem;
-      letter-spacing: 0.05rem;
-    }
-
-    ${t.mq.sm} {
-      font-size: 1.5rem;
-      line-height: 2rem;
-      letter-spacing: 0.05rem;
+    ${t.mq.xl} {
+      width: 80%;
+      ${t.pl(4)};
     }
   `;
-});
+})
 
-Styled.IconButtonContainer = styled.div((props) => {
-  const t = props.theme;
-  return css`
-    label: Garment_InfoIconButton;
-    display: flex;
-    justify-content: flex-end;
-    width: 20%;
-    margin-top: 0.25rem;
-
-    ${t.mq.md} {
-      margin-top: 0.5rem;
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-  `;
-});
-
-Styled.SolidIconButtonContainer = styled(animated.div)(() => {
+Styled.InfoIconButtonContainer = styled(animated.div)(() => {
   return css`
     label: Garment_InfoIconButton;
     display: flex;
@@ -486,42 +572,10 @@ Styled.SolidIconButtonContainer = styled(animated.div)(() => {
     bottom: 0;
     top: 0.25rem;
     left: 0;
+    color: white;
 
     &:hover {
       cursor: pointer;
-    }
-  `;
-});
-
-Styled.InfoItem = styled.div((props: any) => {
-  const t = props.theme;
-  return css`
-    label: Garment_InfoItem;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    color: white;
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    font-family: "bellota text";
-
-    ${t.mq.xs} {
-      font-size: 0.9rem;
-      line-height: 1.3rem;
-    }
-
-    ${t.mq.sm} {
-      font-size: 1rem;
-      line-height: 1.375rem;
-    }
-
-    p {
-      ${[t.pr(2)]}
-      margin-top: -4px;
-
-      span {
-        font-style: italic;
-      }
     }
   `;
 });

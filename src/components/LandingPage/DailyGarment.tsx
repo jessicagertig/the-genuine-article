@@ -192,7 +192,7 @@ Styled.HomeContentContainer = styled.div((props: any) => {
     width: 100%;
     height: ${heightInVh}vh;
     align-items: center;
-    justify-content: "center";
+    justify-content: center;
 
     ${t.mq.xl} {
       width: 92%;
@@ -280,38 +280,11 @@ Styled.Card = styled.div((props: any) => {
     flex-direction: column;
     align-items: flex-end;
     background-color: #d3d9e5;
-    border-radius: 8px;
+    border-radius: 4px;
     max-width: 95vw;
     max-height: calc(${heightInVh}vh - 120px);
     position: relative;
     z-index: 0;
-  `;
-});
-
-Styled.EnlargeButton = styled.div(() => {
-  return css`
-    display: block;
-    position: absolute;
-    opacity: 0.5;
-    transition: opacity 0.5s;
-    top: 10px;
-    right: 10px;
-    z-index: 3;
-
-    &:hover {
-      display: block;
-      cursor: pointer;
-      opacity: 1;
-      transition: opacity 0.5s;
-    }
-  `;
-});
-
-Styled.ImageSection = styled.div(() => {
-  return css`
-    label: DailyGarment_ImageSection;
-    display: flex;
-    justify-content: center;
   `;
 });
 
@@ -326,7 +299,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
     position: relative;
     max-width: 95vw;
     max-height: calc(${heightInVh}vh - 120px);
-    border-radius: 8px;
+    border-radius: 4px;
     z-index: 1;
 
     ${t.mq.xs} {
@@ -336,7 +309,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
     img {
       max-width: 95vw;
       max-height: calc(${heightInVh}vh - 120px);
-      border-radius: 8px;
+      border-radius: 4px;
 
       ${t.mq.xs} {
         max-width: min(450px, 95vw);
@@ -365,7 +338,7 @@ Styled.InfoCardContainer = styled.div((props) => {
     position: relative;
 
     ${t.mq.xl} {
-      width: 45%;
+      width: 30%;
     }
   `;
 });
@@ -414,70 +387,3 @@ Styled.InfoSubContainer = styled.div((props) => {
     }
   `;
 })
-
-Styled.InfoIconButtonContainer = styled.div(() => {
-  return css`
-    label: Garment_InfoIconButton;
-    display: flex;
-    height: 48px;
-    width: 48px;
-    position: absolute;
-    bottom: 0;
-    top: 0.25rem;
-    left: 0;
-    color: white;
-
-    &:hover {
-      cursor: pointer;
-    }
-  `;
-});
-
-
-// arrow button code
-
-// <div class="arrow">
-//   <svg class="svg"><path class="svgarrow" d="m 12 4 l -1.41 1.41 L 16.17 11 H 4 v 2 h 12.17 l -5.58 5.59 L 12 20 l 8 -8 Z"></path></svg>
-// </div>
-
-// .arrow {
-//   position: relative;
-//   width: 40px;
-//   height: 40px;
-//   border: 1px solid red;
-// }
-
-// .svg {
-//   height: 100%;
-//   width: 100%;
-//   transition: 0.2s ease-in-out;
-//   border: 1px solid blue;
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-// }
-
-// .svg:hover {
-//   cursor: pointer;
-//   padding-left: 10px;
-//   width: 30px;
-//   transition: 0.2s ease-in-out;
-// }
-
-// .arrow:before {
-//   content:'';
-//   height:2px;
-//   width:20px;
-//   background-color: black;
-//   display:block;
-//   float:left;
-//   position:relative;
-//   top: 12px;
-//   transition: 0.2s ease-in-out;
-// }
-
-// .arrow:hover:before {
-//   width: 28px;
-//   cursor: pointer;
-// }
-

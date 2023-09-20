@@ -9,6 +9,7 @@ import Skeleton from "@mui/material/Skeleton";
 import IconButton from "@mui/material/IconButton";
 import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import GarmentInfoContent from "src/components/LandingPage/GarmentInfoContent";
@@ -323,6 +324,7 @@ Styled = {};
 Styled.HomeContentContainer = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
+  const space = props.spaceBelow;
   return css`
     label: HomeContentContainer;
     display: flex;
@@ -330,7 +332,9 @@ Styled.HomeContentContainer = styled.div((props: any) => {
     width: 100%;
     height: ${heightInVh}vh;
     align-items: center;
-    padding-top: ${props.spaceBelow ? "1rem" : "0rem"};
+    justify-content: ${space ? "flex-start" : "center"};
+    padding-top: ${space ? "3.5rem" : "0rem"};
+    padding-bottom: ${space ? "0rem" : "2rem"};
 
     ${t.mq.xl} {
       width: 92%;
@@ -338,6 +342,7 @@ Styled.HomeContentContainer = styled.div((props: any) => {
       margin-left: 4%;
       background-color: white;
       justify-content: center;
+      ${t.py(0)};
     }
 
     ${t.mq.gxl} {
@@ -360,13 +365,13 @@ Styled.ContentTitleContainer = styled(animated.div)(props => {
     label: HomeContentContainer;
     display: flex;
     width: 100%;
-    height: 88px;
+    height: 64px;
     justify-content: center;
-    ${t.py(7)}
+    ${t.pb(7)}
     color: #020b1c;
 
     ${t.mq.xxs} {
-      ${t.py(6)};
+      ${t.pb(6)};
     }
 
     ${t.mq.xl} {

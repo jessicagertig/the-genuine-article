@@ -72,17 +72,11 @@ Styled.ContentContainer = styled(animated.div)(props => {
   width: 100%;
   align-items: center;
 
-  ${t.mq.xl} {
-    width: 92%;
-    margin-right: 4%;
-    margin-left: 4%;
-    ${t.py(0)};
-  }
-
   ${t.mq.gxl} {
     width: 84%;
     margin-right: 8%;
     margin-left: 8%;
+    ${t.py(0)};
   }
 
   ${t.mq.xxl} {

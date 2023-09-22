@@ -39,12 +39,12 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = (props) => {
             </Styled.InfoTitleContainer>
           )}
           {index === 2 && (
-            <Styled.InfoItem>
+            <Styled.InfoDetails>
               <p>c. {garment?.beginYear}</p>
               <p>
                 <span>{garment?.cultureCountry}</span>
               </p>
-            </Styled.InfoItem>
+            </Styled.InfoDetails>
           )}
           {index === 3 && (
             <Styled.Button aria-role="button">
@@ -83,13 +83,14 @@ Styled.InfoTitle = styled.h2((props: any) => {
   const t = props.theme;
   return css`
     label: DailyGarmentInfo_InfoTitle;
-    ${[t.pt(3), t.pb(1)]}
+    ${[t.pt(8), t.pl(2)]}
     font-family: "Sorts Mill Goudy";
     color: inherit;
     font-size: 2rem;
-    line-height: 3.375rem;
+    line-height: 3.25rem;
     letter-spacing: 0.01rem;
     display: inline-flex;
+    margin-bottom: -1rem;
 
     ${t.mq.xxs} {
       font-size: 2.25rem;
@@ -101,31 +102,14 @@ Styled.InfoTitle = styled.h2((props: any) => {
   `;
 });
 
-Styled.IconButtonContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: DailyGarmentInfo_InfoIconButton;
-    display: flex;
-    justify-content: flex-end;
-    width: 20%;
-    margin-top: 0.25rem;
-
-    ${t.mq.md} {
-      margin-top: 0.5rem;
-    }
-
-    &:hover {
-      cursor: pointer;
-    }
-  `;
-});
-
 Styled.Button = styled.div((props) => {
   const t = props.theme;
   return css`
     label: DailyGarmentInfo_LearnMoreButton;
     display: flex;
     justify-content: center;
+    align-items: center;
+    ${[t.pb(6), t.pl(2)]};
 
     span {
       font-family: "Sorts Mill Goudy";
@@ -145,27 +129,30 @@ Styled.Button = styled.div((props) => {
   `
 })
 
-Styled.InfoItem = styled.div((props: any) => {
+Styled.InfoDetails = styled.div((props: any) => {
   const t = props.theme;
   return css`
-    label: DailyGarmentInfo_InfoItem;
+    label: DailyGarmentInfo_InfoDetails;
     display: flex;
     flex-direction: column;
     width: 100%;
     font-size: 0.875rem;
     line-height: 1.25rem;
     font-family: "bellota text";
+    ${[t.pl(2), t.pt(4), t.pb(6)]};
 
     ${t.mq.sm} {
       font-size: 1rem;
       line-height: 1.375rem;
     }
 
-    p {
-      ${[t.pr(2)]}
+    &:nth-child(2) {
       margin-top: -4px;
-      color: inherit;
+    }
 
+    p {
+      color: inherit;
+      
       span {
         font-style: italic;
       }

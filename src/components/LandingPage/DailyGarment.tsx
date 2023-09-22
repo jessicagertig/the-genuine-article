@@ -6,18 +6,18 @@ import { useSpring, useTrail, animated } from "@react-spring/web";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
-import IconButton from "@mui/material/IconButton";
 import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
-import DailyGarmentInfo from 'src/components/LandingPage/DailyGarmentInfo';
+import DailyGarmentInfo from "src/components/LandingPage/DailyGarmentInfo";
+import Divider from "src/components/shared/Divider";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
 import useResizeObserver from "src/hooks/useResizeObserver";
 import useImageDimensions from "src/hooks/useImageDimensions";
-import useIntersectionObserver from 'src/hooks/useIntersectionObserver';
+import useIntersectionObserver from "src/hooks/useIntersectionObserver";
 
 interface HomeContentProps {
   windowHeight: number;
@@ -50,13 +50,12 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     width: currentWidth,
   } = useResizeObserver();
 
-  
   const imgRef = React.useRef<HTMLImageElement>(null!);
-  
+
   const dataRef = useIntersectionObserver(imgRef, {
-    freezeOnceVisible: false
-  })
-  
+    freezeOnceVisible: false,
+  });
+
   const show = dataRef?.isIntersecting;
   const infoHeight = currentHeight && currentHeight * 0.25;
   const showMinHeight = verySmallScreen
@@ -88,12 +87,22 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
       width: "100%",
       color: show ? "#020b1c" : "white",
     },
-    config: { duration: 1000 },
+    config: { duration: 500 },
   });
 
-  const remove = useSpring({
-    from: { opacity: 1 },
-    to: { opacity: show ? 0 : 1 },
+  const enter = useTrail(show ? 2 : 0, {
+    from: {
+      opacity: 0,
+      transform: "translate3d(-100px,0px, 0)",
+      width: "100%",
+      color: "white",
+    },
+    to: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0)",
+      width: "100%",
+      color: show ? "#020b1c" : "white",
+    },
     config: { duration: 500 },
   });
 
@@ -132,46 +141,62 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   // Image container can NOT be conditionally displayed (even if loading is slow)
   // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
-    <Styled.HomeContentContainer height={windowHeight} spaceBelow={spaceBelow}>
-        <Styled.ContentTitleContainer>
-          <h2>Garment of the Day</h2>
-        </Styled.ContentTitleContainer>
-        <Styled.ImageCardContainer>
-          <Styled.Card
-            height={maxHeight ? maxHeight : 100}
-            noImage={noImage}
-            imageLoaded={imageLoaded}
-            ref={sizeRef}
-          >
-            {noImage || !imageLoaded ? (
-              <Skeleton
-                variant="rectangular"
-                width="calc((100vh - 160px) * 0.82)"
-                height="calc(100vh - 160px)"
-                sx={{
-                  bgcolor: "rgba(211, 217, 229, 0.5)",
-                  borderRadius: "8px",
-                }}
-              />
-            ) : null}
-            <Styled.DisplayedImage
+    <Styled.Container height={windowHeight}>
+      <Styled.SubContainer height={windowHeight}>
+        <Styled.HomeContentContainer
+          height={windowHeight}
+          spaceBelow={spaceBelow}
+        >
+          <Styled.ContentTitleContainer>
+            {enter.map((props, index) => (
+              <animated.div key={index} style={{ ...props, width: "100%" }}>
+                {index === 0 && <h2>Garment of the Day</h2>}
+                {index === 1 && <Divider color="#020b1c" />}
+              </animated.div>
+            ))}
+          </Styled.ContentTitleContainer>
+          <Styled.ImageCardContainer>
+            <Styled.Card
               height={maxHeight ? maxHeight : 100}
               noImage={noImage}
-              width={maxWidth}
+              imageLoaded={imageLoaded}
+              ref={sizeRef}
             >
-              <img
-                ref={imgRef}
-                src={imageUrl}
-                alt={garment ? garment.garmentTitle : "garment"}
-                onLoad={onLoad}
-              />
-            </Styled.DisplayedImage>
-          </Styled.Card>
-        </Styled.ImageCardContainer>
+              {noImage || !imageLoaded ? (
+                <Skeleton
+                  variant="rectangular"
+                  width="calc((100vh - 160px) * 0.82)"
+                  height="calc(100vh - 160px)"
+                  sx={{
+                    bgcolor: "rgba(211, 217, 229, 0.5)",
+                    borderRadius: "8px",
+                  }}
+                />
+              ) : null}
+              <Styled.DisplayedImage
+                height={maxHeight ? maxHeight : 100}
+                noImage={noImage}
+                width={maxWidth}
+              >
+                <img
+                  ref={imgRef}
+                  src={imageUrl}
+                  alt={garment ? garment.garmentTitle : "garment"}
+                  onLoad={onLoad}
+                />
+              </Styled.DisplayedImage>
+            </Styled.Card>
+          </Styled.ImageCardContainer>
           <Styled.InfoCardContainer>
-            <DailyGarmentInfo isIntersecting={dataRef?.isIntersecting} garment={garment} trail={trail} />
+            <DailyGarmentInfo
+              isIntersecting={dataRef?.isIntersecting}
+              garment={garment}
+              trail={trail}
+            />
           </Styled.InfoCardContainer>
-    </Styled.HomeContentContainer>
+        </Styled.HomeContentContainer>
+      </Styled.SubContainer>
+    </Styled.Container>
   );
 };
 
@@ -182,63 +207,87 @@ export default HomeContent;
 let Styled: any;
 Styled = {};
 
+Styled.Container = styled.div((props: any) => {
+  const t = props.theme;
+  const heightInVh = props.height / (props.height * 0.01);
+  return css`
+    label: HomeContentContainer;
+    display: flex;
+    width: 100%;
+    height: ${heightInVh}vh;
+    align-items: center;
+    justify-content: center;
+    background-color: #020b1c;
+  `;
+});
+
+Styled.SubContainer = styled.div((props: any) => {
+  const t = props.theme;
+  const heightInVh = props.height / (props.height * 0.01);
+  return css`
+    label: HomeContentContainer;
+    display: flex;
+    width: 100%;
+    height: min(${heightInVh}vh, 760px);
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+  `;
+});
+
 Styled.HomeContentContainer = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   return css`
     label: HomeContentContainer;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
-    height: ${heightInVh}vh;
+    height: 100%;
     align-items: center;
     justify-content: center;
+    max-width: 1500px;
 
     ${t.mq.xl} {
-      width: 92%;
-      margin-right: 4%;
-      margin-left: 4%;
-      background-color: white;
-      justify-content: center;
-      ${t.py(0)};
+      padding-right: 2%;
+      padding-left: 2%;
+      flex-direction: row;
     }
 
     ${t.mq.gxl} {
-      width: 84%;
-      margin-right: 8%;
-      margin-left: 8%;
-    }
-
-    ${t.mq.xxl} {
-      width: 76%;
-      margin-right: 12%;
-      margin-left: 12%;
+      padding-right: 5%;
+      padding-left: 5%;
     }
   `;
 });
 
-Styled.ContentTitleContainer = styled.div(props => {
+Styled.ContentTitleContainer = styled(animated.div)(props => {
   const t = props.theme;
   return css`
     label: HomeContentContainer;
     display: flex;
-    width: 30%;
+    flex-direction: column;
+    width: min(500px, 95vw, 100%);
     height: 64px;
-    justify-content: center;
-    ${t.pb(7)}
-    color: #020b1c;
+    margin-bottom: calc(25% - 64px);
+    justify-content: flex-end;
+    align-items: flex-end;
 
-    ${t.mq.xxs} {
-      ${t.pb(6)};
+    ${t.mq.md} {
+      ${[t.pt(10)]};
     }
 
     ${t.mq.xl} {
+      width: 27%;
+    }
+
+    ${t.mq.xxl} {
+      width: 28%;
+    }
+    
+    div {
+      display: flex;
       justify-content: flex-end;
-      border-bottom: 1px solid;
-      align-items: flex-end;
-      width: 30%;
-      ${[t.pt(10), t.pb(2)]};
-      color: unset;
     }
 
     h2 {
@@ -246,6 +295,7 @@ Styled.ContentTitleContainer = styled.div(props => {
       color: inherit;
       letter-spacing: 0.01rem;
       line-height: 2.66rem;
+      ${t.pb(2)};
 
       ${t.mq.xxs} {
         font-size: 1.75rem;
@@ -258,7 +308,7 @@ Styled.ContentTitleContainer = styled.div(props => {
   `;
 });
 
-Styled.ImageCardContainer = styled.div((props) => {
+Styled.ImageCardContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: DailyGarment_CardContainer;
@@ -266,7 +316,11 @@ Styled.ImageCardContainer = styled.div((props) => {
     justify-content: center;
 
     ${t.mq.xl} {
-      width: 40%;
+      width: 46%;
+    }
+
+    ${t.mq.xxl} {
+      width: 44%;
     }
   `;
 });
@@ -274,15 +328,17 @@ Styled.ImageCardContainer = styled.div((props) => {
 Styled.Card = styled.div((props: any) => {
   const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
+  const t = props.theme;
   return css`
     label: Card;
     display: ${display};
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     background-color: #d3d9e5;
     border-radius: 4px;
-    max-width: 95vw;
     max-height: calc(${heightInVh}vh - 120px);
+    width: auto;
+    max-width: min(500px, 95vw, 100%);
     position: relative;
     z-index: 0;
   `;
@@ -297,13 +353,12 @@ Styled.DisplayedImage = styled.div((props: any) => {
     background-color: rgba(211, 217, 229, 0.5);
     display: ${display};
     position: relative;
-    max-width: 95vw;
+    max-width: min(500px, 95vw, 100%);
     max-height: calc(${heightInVh}vh - 120px);
     border-radius: 4px;
     z-index: 1;
 
     ${t.mq.xs} {
-      max-width: min(450px, 95vw);
     }
 
     img {
@@ -312,23 +367,13 @@ Styled.DisplayedImage = styled.div((props: any) => {
       border-radius: 4px;
 
       ${t.mq.xs} {
-        max-width: min(450px, 95vw);
+        max-width: min(500px, 95vw, 100%);
       }
     }
   `;
 });
 
-Styled.Tools = styled.div(() => {
-  return css`
-    label: DailyGarment_Tools;
-    width: 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  `;
-});
-
-Styled.InfoCardContainer = styled.div((props) => {
+Styled.InfoCardContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: DailyGarment_InfoCardContainer;
@@ -336,14 +381,19 @@ Styled.InfoCardContainer = styled.div((props) => {
     flex-direction: column;
     justify-content: center;
     position: relative;
+    width: min(500px, 95vw, 100%);
 
     ${t.mq.xl} {
-      width: 30%;
+      width: 27%;
+    }
+
+    ${t.mq.xxl} {
+      width: 28%;
     }
   `;
 });
 
-Styled.InfoCard = styled.div((props) => {
+Styled.InfoCard = styled.div(props => {
   const t = props.theme;
   return css`
     display: flex;
@@ -373,7 +423,7 @@ Styled.Info = styled.div(() => {
   `;
 });
 
-Styled.InfoSubContainer = styled.div((props) => {
+Styled.InfoSubContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Garment_InfoSubContainer;
@@ -386,4 +436,4 @@ Styled.InfoSubContainer = styled.div((props) => {
       ${t.pl(4)};
     }
   `;
-})
+});

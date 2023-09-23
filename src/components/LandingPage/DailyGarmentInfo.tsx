@@ -4,7 +4,6 @@ import { css } from "@emotion/react";
 
 import { Link } from "react-router-dom";
 import { SpringValue, animated } from "@react-spring/web";
-import IconButton from "@mui/material/IconButton";
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 import Divider from "src/components/shared/Divider";
@@ -49,6 +48,7 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = (props) => {
           {index === 3 && (
             <Styled.Button aria-role="button">
               <span>Learn more</span>
+              <div className="line"></div>
               <ArrowForwardIcon/>
             </Styled.Button>
           )}
@@ -83,21 +83,19 @@ Styled.InfoTitle = styled.h2((props: any) => {
   const t = props.theme;
   return css`
     label: DailyGarmentInfo_InfoTitle;
-    ${[t.pt(8), t.pl(2)]}
+    ${[t.pt(4), t.pl(2)]}
     font-family: "Sorts Mill Goudy";
     color: inherit;
-    font-size: 2rem;
-    line-height: 3.25rem;
+    font-size: 1.75rem;
+    line-height: 2.5rem;
     letter-spacing: 0.01rem;
     display: inline-flex;
     margin-bottom: -1rem;
 
-    ${t.mq.xxs} {
+    ${t.mq.md} {
       font-size: 2.25rem;
-    }
-
-    ${t.mq.sm} {
-      font-size: 2.625rem;
+      line-height: 3rem;
+      ${[t.pt(8), t.pl(2)]}
     }
   `;
 });
@@ -109,7 +107,32 @@ Styled.Button = styled.div((props) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    ${[t.pb(6), t.pl(2)]};
+    ${[t.pb(4), t.pl(2)]};
+
+    .line {
+      width: 10px;
+      height: 2px;
+      background-color: #020b1c;
+      ${t.ml(2)};
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover .line {
+      width: 22px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    svg {
+      margin-left: -4px;
+    }
+
+    ${t.mq.md} {
+      ${[t.pb(6), t.pl(2)]};
+    }
 
     span {
       font-family: "Sorts Mill Goudy";
@@ -118,12 +141,9 @@ Styled.Button = styled.div((props) => {
       line-height: 2.25rem;
       letter-spacing: 0.01rem;
 
-      ${t.mq.xxs} {
+      ${t.mq.md} {
         font-size: 1.5rem;
-      }
-  
-      ${t.mq.sm} {
-        font-size: 1.75rem;
+        line-height: 2rem;
       }
     }
   `
@@ -136,14 +156,14 @@ Styled.InfoDetails = styled.div((props: any) => {
     display: flex;
     flex-direction: column;
     width: 100%;
-    font-size: 0.875rem;
+    font-size: 1rem;
     line-height: 1.25rem;
     font-family: "bellota text";
-    ${[t.pl(2), t.pt(4), t.pb(6)]};
+    ${[t.pl(2), t.pt(2), t.pb(4)]};
 
-    ${t.mq.sm} {
+    ${t.mq.md} {
       font-size: 1rem;
-      line-height: 1.375rem;
+      ${[t.pt(4), t.pb(6)]};
     }
 
     &:nth-child(2) {

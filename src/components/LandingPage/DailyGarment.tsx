@@ -13,6 +13,7 @@ import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import DailyGarmentInfo from "src/components/LandingPage/DailyGarmentInfo";
 import Divider from "src/components/shared/Divider";
 
+
 import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
 import useResizeObserver from "src/hooks/useResizeObserver";
@@ -177,6 +178,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
                 height={maxHeight ? maxHeight : 100}
                 noImage={noImage}
                 width={maxWidth}
+                onClick={handleZoom}
               >
                 <img
                   ref={imgRef}
@@ -228,10 +230,15 @@ Styled.SubContainer = styled.div((props: any) => {
     label: HomeContentContainer;
     display: flex;
     width: 100%;
-    height: min(${heightInVh}vh, 760px);
+    height: auto;
+    min-height: min(${heightInVh}vh, 800px);
     align-items: center;
     justify-content: center;
     background-color: white;
+
+    ${t.mq.xl} {
+      height: min(${heightInVh}vh, 760px);
+    }
   `;
 });
 
@@ -243,15 +250,17 @@ Styled.HomeContentContainer = styled.div((props: any) => {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 94%;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     max-width: 1500px;
 
     ${t.mq.xl} {
+      height: 100%;
       padding-right: 2%;
       padding-left: 2%;
       flex-direction: row;
+      justify-content: center;
     }
 
     ${t.mq.gxl} {
@@ -268,17 +277,24 @@ Styled.ContentTitleContainer = styled(animated.div)(props => {
     display: flex;
     flex-direction: column;
     width: min(500px, 95vw, 100%);
-    height: 64px;
-    margin-bottom: calc(25% - 64px);
+    height: 40px;
     justify-content: flex-end;
     align-items: flex-end;
+    ${[t.mt(2), t.mb(4)]};
+
+    ${t.mq.xs} {
+      ${[t.mb(6)]}
+    }
 
     ${t.mq.md} {
-      ${[t.pt(10)]};
+      height: 64px;
+      ${t.my(8)};
     }
 
     ${t.mq.xl} {
       width: 27%;
+      margin-bottom: 30%;
+      ${t.my(9)}    
     }
 
     ${t.mq.xxl} {
@@ -291,18 +307,20 @@ Styled.ContentTitleContainer = styled(animated.div)(props => {
     }
 
     h2 {
-      font-size: 1.5rem;
+      font-size: 1.375rem;
+      line-height: 2.25rem;
       color: inherit;
       letter-spacing: 0.01rem;
-      line-height: 2.66rem;
-      ${t.pb(2)};
+      line-height: 2rem;
+      ${[t.pb(2)]};
 
-      ${t.mq.xxs} {
+      ${t.mq.md} {
         font-size: 1.75rem;
+        line-height: 2.5rem;
       }
 
       ${t.mq.xl} {
-        ${[t.pl(4)]};
+        ${[t.pl(4), t.pb(2)]};
       }
     }
   `;
@@ -336,11 +354,15 @@ Styled.Card = styled.div((props: any) => {
     align-items: center;
     background-color: #d3d9e5;
     border-radius: 4px;
-    max-height: calc(${heightInVh}vh - 120px);
+    max-height: calc(${heightInVh}vh - 316px);
     width: auto;
     max-width: min(500px, 95vw, 100%);
     position: relative;
     z-index: 0;
+
+    ${t.mq.xl} {
+      max-height: calc(${heightInVh}vh - 120px);
+    }
   `;
 });
 
@@ -354,20 +376,31 @@ Styled.DisplayedImage = styled.div((props: any) => {
     display: ${display};
     position: relative;
     max-width: min(500px, 95vw, 100%);
-    max-height: calc(${heightInVh}vh - 120px);
+    max-height: calc(${heightInVh}vh - 316px);
     border-radius: 4px;
     z-index: 1;
+    transform: scale(1);
 
-    ${t.mq.xs} {
+    ${t.mq.xl} {
+      max-height: calc(${heightInVh}vh - 120px);
+    }
+  
+    &:hover {
+      cursor: pointer;
+      transform: scale(1.005);
     }
 
     img {
       max-width: 95vw;
-      max-height: calc(${heightInVh}vh - 120px);
+      max-height: calc(${heightInVh}vh - 316px);
       border-radius: 4px;
 
       ${t.mq.xs} {
         max-width: min(500px, 95vw, 100%);
+      }
+
+      ${t.mq.xl} {
+        max-height: calc(${heightInVh}vh - 120px);
       }
     }
   `;
@@ -382,6 +415,22 @@ Styled.InfoCardContainer = styled.div(props => {
     justify-content: center;
     position: relative;
     width: min(500px, 95vw, 100%);
+    max-height: 180px;
+    ${[t.mt(4), t.mb(2)]};
+
+    ${t.mq.xs} {
+      ${[t.mt(6)]}
+    }
+
+    ${t.mq.sm} {
+      ${t.my(8)}
+      max-height: 200px;
+    }
+
+    ${t.mq.md} {
+      ${t.my(9)}
+      max-height: 224px;
+    }
 
     ${t.mq.xl} {
       width: 27%;
@@ -420,20 +469,5 @@ Styled.Info = styled.div(() => {
     left: 0;
     right: 0;
     z-index: 2;
-  `;
-});
-
-Styled.InfoSubContainer = styled.div(props => {
-  const t = props.theme;
-  return css`
-    label: Garment_InfoSubContainer;
-    flex-direction: column;
-    position: relative;
-    max-height: 170px;
-
-    ${t.mq.xl} {
-      width: 80%;
-      ${t.pl(4)};
-    }
   `;
 });

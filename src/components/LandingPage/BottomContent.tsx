@@ -2,41 +2,27 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-import { useTrail, useSpring, animated } from "@react-spring/web";
-
-import useIntersectionObserver from "src/hooks/useIntersectionObserver";
+import { Link } from "react-router-dom";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface BottomContentProps {}
 
-const BottomContent: React.FC<BottomContentProps> = props => {
-  const triggerRef = React.useRef<HTMLDivElement>(null!);
-
-  const dataRef = useIntersectionObserver(triggerRef, { freezeOnceVisible: false });
-
-  const appear = useSpring({
-    delay: 1000,
-    config: { duration: 400 },
-    from: {
-      opacity: 0,
-      zIndex: -1,
-    },
-    to: {
-      opacity: dataRef?.isIntersecting ? 1 : 0,
-      zIndex: dataRef?.isIntersecting ? 1 : -1,
-    }
-  })
+const BottomContent: React.FC<BottomContentProps> = () => {
 
   return (
-    <Styled.Container ref={triggerRef}>
+    <Styled.Container>
       <Styled.ContentContainer>
         <Styled.AlignmentContainer>
           <Styled.Text>
             <h2>Discover the Collection</h2>
           </Styled.Text>
-          <Styled.Button style={appear}>
+          <Link to="/garments" target="_blank">
+          <Styled.Button>
             <h3>Explore</h3>
-            <div className="placeHolder"></div>
+              <div className="line"></div>
+              <ArrowForwardIcon/>
           </Styled.Button>
+          </Link>
         </Styled.AlignmentContainer>
       </Styled.ContentContainer>
     </Styled.Container>
@@ -63,7 +49,7 @@ Styled.Container = styled.div(props => {
   `;
 });
 
-Styled.ContentContainer = styled(animated.div)(props => {
+Styled.ContentContainer = styled.div(props => {
   const t = props.theme;
   return css`
   label: BottomContent_ContentContainer;
@@ -71,18 +57,17 @@ Styled.ContentContainer = styled(animated.div)(props => {
   display: flex;
   width: 100%;
   align-items: center;
+  justify-content: center;
 
-  ${t.mq.gxl} {
-    width: 84%;
-    margin-right: 8%;
-    margin-left: 8%;
+  ${t.mq.xl} {
+    padding-right: 2%;
+    padding-left: 2%;
     ${t.py(0)};
   }
 
-  ${t.mq.xxl} {
-    width: 76%;
-    margin-right: 12%;
-    margin-left: 12%;
+  ${t.mq.gxl} {
+    padding-right: 5%;
+    padding-left: 5%;
   }
   `
 })
@@ -91,13 +76,26 @@ Styled.AlignmentContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: BottomContent_Container;
-    width: 70%;
+    width: 98%;
+    width: min(500px, 95vw, 100%);
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     background-color: #020b1c;
     ${t.mt(3)};
+
+    ${t.mq.xs} {
+      align-items: flex-end;
+    }
+
+    ${t.mq.xl} {
+      width: 73%; 
+    }
+
+    ${t.mq.xxl} {
+      width: 72%;
+    }
   `;
 });
 
@@ -107,26 +105,35 @@ Styled.Text = styled.div(props => {
     label: BottomContent_Text;
     display: flex;
     width: 100%;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
 
+    ${t.mq.xs} {
+      justify-content: flex-end;
+    }
+
     h2 {
-      font-size: 2rem;
+      font-size: 1.675rem;
+      line-height: 2.5rem;
       color: white;
       letter-spacing: 0.1rem;
-      line-height: 4rem;
       font-family: "Sorts Mill Goudy";
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;  
 
       ${t.mq.xxs} {
+        line-height: 3.5rem;
+        font-size: calc(26px + 22 * ((100vw - 320px) / 880));
+      }
+
+      ${t.mq.xl} {
         font-size: 3rem;
       }
     }
   `;
 });
 
-Styled.Button = styled(animated.div)(props => {
+Styled.Button = styled.div(props => {
   const t = props.theme;
   return css`
   label: BottomContnet_ExploreButton;
@@ -139,6 +146,7 @@ Styled.Button = styled(animated.div)(props => {
   transform: scale(1);
   transition: all 0.2s ease-in-out;
   ${[t.mt(6)]};
+  border-radius: 4px;
 
   &:hover {
     cursor: pointer;
@@ -154,15 +162,20 @@ Styled.Button = styled(animated.div)(props => {
   text-transform: uppercase;
   ${t.mr(2)}
 
-  ${t.mq.xxs} {
-    font-size: 1.75rem;
+    ${t.mq.xxs} {
+      font-size: 1.75rem;
+    }
   }
-}
 
-  .placeHolder {
-    width: 32px;
+  .line {
+    width: 14px;
     height: 2px;
-    border-bottom: 2px solid #020b1c;
+    background-color: #020b1c;
+    ${t.ml(1)};
+  }
+
+  svg {
+    margin-left: -4px;
   }
   `
 })

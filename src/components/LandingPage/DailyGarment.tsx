@@ -148,7 +148,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
           height={windowHeight}
           spaceBelow={spaceBelow}
         >
-          <Styled.ContentTitleContainer>
+          <Styled.ContentTitleContainer height={maxHeight ? maxHeight : 100}>
             {enter.map((props, index) => (
               <animated.div key={index} style={{ ...props, width: "100%" }}>
                 {index === 0 && <h2>Garment of the Day</h2>}
@@ -189,9 +189,9 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
               </Styled.DisplayedImage>
             </Styled.Card>
           </Styled.ImageCardContainer>
-          <Styled.InfoCardContainer>
+          <Styled.InfoCardContainer height={maxHeight ? maxHeight : 100}>
             <DailyGarmentInfo
-              isIntersecting={dataRef?.isIntersecting}
+              maxHeight={maxHeight ? maxHeight : 100}
               garment={garment}
               trail={trail}
             />
@@ -244,16 +244,21 @@ Styled.SubContainer = styled.div((props: any) => {
 
 Styled.HomeContentContainer = styled.div((props: any) => {
   const t = props.theme;
-  const heightInVh = props.height / (props.height * 0.01);
+  const shortScreen = props.height <= 800;
   return css`
     label: HomeContentContainer;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 94%;
+    height: 96%;
     align-items: center;
     justify-content: flex-start;
     max-width: 1500px;
+
+    ${t.mq.md} {
+      height: ${shortScreen ? `${props.height}px` : "94%"};
+      justify-content: ${shortScreen ? "space-between" : "flex-start"};
+    }
 
     ${t.mq.xl} {
       height: 100%;
@@ -270,8 +275,9 @@ Styled.HomeContentContainer = styled.div((props: any) => {
   `;
 });
 
-Styled.ContentTitleContainer = styled(animated.div)(props => {
+Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
   const t = props.theme;
+  const shortScreen = props.height <= 800;
   return css`
     label: HomeContentContainer;
     display: flex;
@@ -283,18 +289,20 @@ Styled.ContentTitleContainer = styled(animated.div)(props => {
     ${[t.mt(2), t.mb(4)]};
 
     ${t.mq.xs} {
-      ${[t.mb(6)]}
+      margin-bottom: ${shortScreen ? "2vh" : "24px"};
     }
 
     ${t.mq.md} {
-      height: 64px;
-      ${t.my(8)};
+      height: ${shortScreen ? "auto" : "64px"};
+      margin-top: ${shortScreen ? "2vh" : "36px"};
+      margin-bottom: ${shortScreen ? "2vh" : "36px"};
     }
 
     ${t.mq.xl} {
       width: 27%;
+      height: 64px;
       margin-bottom: 30%;
-      ${t.my(9)}    
+      ${t.mt(9)}    
     }
 
     ${t.mq.xxl} {
@@ -315,8 +323,7 @@ Styled.ContentTitleContainer = styled(animated.div)(props => {
       ${[t.pb(2)]};
 
       ${t.mq.md} {
-        font-size: 1.75rem;
-        line-height: 2.5rem;
+        font-size: ${shortScreen ? "1.375rem" : "1.75rem"};
       }
 
       ${t.mq.xl} {
@@ -346,6 +353,8 @@ Styled.ImageCardContainer = styled.div(props => {
 Styled.Card = styled.div((props: any) => {
   const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
+  const shortScreen = props.height <= 800;
+  const subtractMedium = shortScreen ? "40vh" : "414px"; 
   const t = props.theme;
   return css`
     label: Card;
@@ -354,11 +363,15 @@ Styled.Card = styled.div((props: any) => {
     align-items: center;
     background-color: #d3d9e5;
     border-radius: 4px;
-    max-height: calc(${heightInVh}vh - 316px);
     width: auto;
+    max-height: calc(${heightInVh}vh - 316px);
     max-width: min(500px, 95vw, 100%);
     position: relative;
     z-index: 0;
+
+    ${t.mq.md} {
+      max-height: calc(${heightInVh}vh - ${subtractMedium});
+    }
 
     ${t.mq.xl} {
       max-height: calc(${heightInVh}vh - 120px);
@@ -370,6 +383,8 @@ Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
+  const shortScreen = props.height <= 800;
+  const subtractMedium = shortScreen ? "40vh" : "414px";   
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
@@ -380,6 +395,10 @@ Styled.DisplayedImage = styled.div((props: any) => {
     border-radius: 4px;
     z-index: 1;
     transform: scale(1);
+
+    ${t.mq.md} {
+      max-height: calc(${heightInVh}vh - ${subtractMedium});
+    }
 
     ${t.mq.xl} {
       max-height: calc(${heightInVh}vh - 120px);
@@ -399,6 +418,10 @@ Styled.DisplayedImage = styled.div((props: any) => {
         max-width: min(500px, 95vw, 100%);
       }
 
+      ${t.mq.md} {
+        max-height: calc(${heightInVh}vh - ${subtractMedium});
+      }
+
       ${t.mq.xl} {
         max-height: calc(${heightInVh}vh - 120px);
       }
@@ -406,8 +429,9 @@ Styled.DisplayedImage = styled.div((props: any) => {
   `;
 });
 
-Styled.InfoCardContainer = styled.div(props => {
+Styled.InfoCardContainer = styled.div((props: any) => {
   const t = props.theme;
+  const shortScreen = props.height <= 800;
   return css`
     label: DailyGarment_InfoCardContainer;
     display: flex;
@@ -428,8 +452,9 @@ Styled.InfoCardContainer = styled.div(props => {
     }
 
     ${t.mq.md} {
-      ${t.my(9)}
-      max-height: 224px;
+      max-height: ${shortScreen ? "26vh" : "224px"};
+      margin-top: ${shortScreen ? "2vh" : "36px"};
+      margin-bottom: ${shortScreen ? "2vh" : "36px"};
     }
 
     ${t.mq.xl} {

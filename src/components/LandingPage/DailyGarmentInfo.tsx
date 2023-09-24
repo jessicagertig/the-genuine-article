@@ -18,12 +18,12 @@ type Trail = {
 interface DailyGarmentInfoProps {
   garment: GarmentData;
   trail: Trail;
-  isIntersecting?: boolean | undefined;
+  maxHeight: number;
 };
 
 const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = (props) => {
 
-  const { garment, trail, isIntersecting } = props;
+  const { garment, trail, maxHeight } = props;
 
   return (
     <>
@@ -34,11 +34,11 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = (props) => {
           )}
           {index === 1 && (
             <Styled.InfoTitleContainer>
-              <Styled.InfoTitle>{garment?.garmentTitle}</Styled.InfoTitle>
+              <Styled.InfoTitle height={maxHeight}>{garment?.garmentTitle}</Styled.InfoTitle>
             </Styled.InfoTitleContainer>
           )}
           {index === 2 && (
-            <Styled.InfoDetails>
+            <Styled.InfoDetails height={maxHeight}>
               <p>c. {garment?.beginYear}</p>
               <p>
                 <span>{garment?.cultureCountry}</span>
@@ -46,11 +46,13 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = (props) => {
             </Styled.InfoDetails>
           )}
           {index === 3 && (
-            <Styled.Button aria-role="button">
-              <span>Learn more</span>
-              <div className="line"></div>
-              <ArrowForwardIcon/>
-            </Styled.Button>
+            <Link to={`/garments/${garment?.id}`} target="_blank">
+              <Styled.Button role="button" height={maxHeight}>
+                <span>Learn more</span>
+                <div className="line"></div>
+                <ArrowForwardIcon/>
+              </Styled.Button>
+            </Link>
           )}
           {index === 4 && (
             <>
@@ -81,6 +83,7 @@ Styled.InfoTitleContainer = styled.div(() => {
 
 Styled.InfoTitle = styled.h2((props: any) => {
   const t = props.theme;
+  const shortScreen = props.height <= 800;
   return css`
     label: DailyGarmentInfo_InfoTitle;
     ${[t.pt(4), t.pl(2)]}
@@ -93,15 +96,17 @@ Styled.InfoTitle = styled.h2((props: any) => {
     margin-bottom: -1rem;
 
     ${t.mq.md} {
-      font-size: 2.25rem;
-      line-height: 3rem;
-      ${[t.pt(8), t.pl(2)]}
+      font-size: ${shortScreen ? "1.75rem" : "2.25rem"};
+      line-height: ${shortScreen ? "2.5rem" : "3rem"};
+      padding-top: ${shortScreen ? "16px" : "24px"};
+      ${[t.pl(2)]}
     }
   `;
 });
 
-Styled.Button = styled.div((props) => {
+Styled.Button = styled.div((props: any) => {
   const t = props.theme;
+  const shortScreen = props.height <= 800;
   return css`
     label: DailyGarmentInfo_LearnMoreButton;
     display: flex;
@@ -131,19 +136,20 @@ Styled.Button = styled.div((props) => {
     }
 
     ${t.mq.md} {
-      ${[t.pb(6), t.pl(2)]};
+      padding-bottom: ${shortScreen ? "16px" : "24px"};
+      ${[t.pl(2)]};
     }
 
     span {
       font-family: "Sorts Mill Goudy";
       color: inherit;
       font-size: 1.375rem;
-      line-height: 2.25rem;
+      line-height: 2rem;
       letter-spacing: 0.01rem;
 
       ${t.mq.md} {
-        font-size: 1.5rem;
-        line-height: 2rem;
+        font-size: ${shortScreen ? "1.375rem" : "1.5rem"};
+        line-height: ${shortScreen ? "1.5rem" : "2rem"};
       }
     }
   `
@@ -151,6 +157,7 @@ Styled.Button = styled.div((props) => {
 
 Styled.InfoDetails = styled.div((props: any) => {
   const t = props.theme;
+  const shortScreen = props.height <= 800;
   return css`
     label: DailyGarmentInfo_InfoDetails;
     display: flex;
@@ -163,7 +170,8 @@ Styled.InfoDetails = styled.div((props: any) => {
 
     ${t.mq.md} {
       font-size: 1rem;
-      ${[t.pt(4), t.pb(6)]};
+      padding-bottom: ${shortScreen ? "16px" : "24px"};
+      padding-top: ${shortScreen ? "8px" : "16px"};
     }
 
     &:nth-child(2) {

@@ -48,6 +48,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const {
     ref: sizeRef,
     height: currentHeight,
+    width: currentWidth,
   } = useResizeObserver();
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
@@ -155,7 +156,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
               </animated.div>
             ))}
           </Styled.ContentTitleContainer>
-          <Styled.ImageCardContainer>
+          <Styled.ImageCardContainer currentWidth={currentWidth}>
             <Styled.Card
               height={maxHeight ? maxHeight : 100}
               noImage={noImage}
@@ -333,19 +334,20 @@ Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
   `;
 });
 
-Styled.ImageCardContainer = styled.div(props => {
+Styled.ImageCardContainer = styled.div((props: any) => {
   const t = props.theme;
+  const currentWidth = props.currentWidth;
   return css`
     label: DailyGarment_CardContainer;
     display: flex;
     justify-content: center;
 
     ${t.mq.xl} {
-      width: 46%;
+      width: min(46%, calc(${currentWidth}px + 32px));
     }
 
     ${t.mq.xxl} {
-      width: 44%;
+      width: min(46%, calc(${currentWidth}px + 32px));
     }
   `;
 });

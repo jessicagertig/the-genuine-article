@@ -101,6 +101,12 @@ Styled.InfoTitle = styled.h2((props: any) => {
       padding-top: ${shortScreen ? "16px" : "24px"};
       ${[t.pl(2)]}
     }
+
+    ${t.mq.xl} {
+      font-size: 2.25rem;
+      line-height: 3rem;
+      ${[t.pt(6)]};
+    }
   `;
 });
 
@@ -140,6 +146,10 @@ Styled.Button = styled.div((props: any) => {
       ${[t.pl(2)]};
     }
 
+    ${t.mq.xl} {
+      ${[t.pb(6)]};
+    }
+
     span {
       font-family: "Sorts Mill Goudy";
       color: inherit;
@@ -150,6 +160,11 @@ Styled.Button = styled.div((props: any) => {
       ${t.mq.md} {
         font-size: ${shortScreen ? "1.375rem" : "1.5rem"};
         line-height: ${shortScreen ? "1.5rem" : "2rem"};
+      }
+
+      ${t.mq.xl} {
+        font-size: 1.5rem;
+        line-height: 2rem;
       }
     }
   `

@@ -48,13 +48,12 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const {
     ref: sizeRef,
     height: currentHeight,
-    width: currentWidth,
   } = useResizeObserver();
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
 
   const dataRef = useIntersectionObserver(imgRef, {
-    freezeOnceVisible: false,
+    freezeOnceVisible: true,
   });
 
   const show = dataRef?.isIntersecting;
@@ -327,6 +326,7 @@ Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
       }
 
       ${t.mq.xl} {
+        font-size: 1.75rem;
         ${[t.pl(4), t.pb(2)]};
       }
     }
@@ -458,7 +458,9 @@ Styled.InfoCardContainer = styled.div((props: any) => {
     }
 
     ${t.mq.xl} {
+      max-height: 224px;
       width: 27%;
+      ${t.my(9)}
     }
 
     ${t.mq.xxl} {

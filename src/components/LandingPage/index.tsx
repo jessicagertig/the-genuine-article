@@ -5,7 +5,9 @@ import { css } from "@emotion/react";
 import NavBar from "src/components/shared/NavBar";
 import Main from "src/components/LandingPage/Main";
 import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
+import BottomContent from "src/components/LandingPage/BottomContent";
 import Footer from "src/components/shared/Footer";
+import DailyGarment from "src/components/LandingPage/DailyGarment";
 
 import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
@@ -30,13 +32,14 @@ const LandingPage: React.FC<LandingPageProps> = props => {
   }, [scrollRef]);
 
   return (
-    <Styled.LandingPageContainer ref={pageContainerRef}>
+    <Styled.LandingPageContainer ref={pageContainerRef} >
       <NavBar backgroundColor="white" />
       <Main scrollRef={scrollRef} windowHeight={height} />
       <Styled.RefContainer ref={scrollRef}>
-        <GarmentOfTheDay windowHeight={height} windowWidth={width} />
+        <DailyGarment windowHeight={height} windowWidth={width} />
       </Styled.RefContainer>
-      <Footer scrollToTop={scrollToTop} />
+      <BottomContent />
+      <Footer scrollToTop={scrollToTop} dark={false} />
     </Styled.LandingPageContainer>
   );
 };
@@ -48,7 +51,8 @@ export default LandingPage;
 let Styled: any;
 Styled = {};
 
-Styled.LandingPageContainer = styled.div(() => {
+Styled.LandingPageContainer = styled.div((props) => {
+  const t = props.theme;
   return css`
     label: LandingPageContainer;
     width: 100%;
@@ -56,8 +60,12 @@ Styled.LandingPageContainer = styled.div(() => {
     display: block;
     overflow-y: scroll;
 
+    
     & > :last-child {
       margin-top: auto;
+    }
+
+    ${t.mq.xl} {
     }
   `;
 });
@@ -66,14 +74,4 @@ Styled.RefContainer = styled.div`
   label: RefContainer;
   width: 100%;
   height: fit-content;
-  margin-bottom: 100px;
-`;
-
-Styled.SearchContainer = styled.div`
-  label: SearchContainer;
-  width: 100%;
-  height: 400px;
-  display: flex;
-  justify-content: center;
-  margin: 20px;
 `;

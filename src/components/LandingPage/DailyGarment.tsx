@@ -52,27 +52,35 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   } = useResizeObserver();
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
+  const pageRef = React.useRef<HTMLDivElement>(null);
 
+  const [navHeight, setNavHeight] = React.useState(0);
+
+  const hasMobileNav = () => {
+    if (!mediumScreen || !pageRef.current) {
+      return false
+    }
+    return windowHeight !== pageRef.current.clientHeight;
+  }
+
+  React.useEffect(() => {
+    if (hasMobileNav() && pageRef?.current) {
+      console.log('clientHeight', pageRef?.current?.clientHeight)
+      const navBarHeight = windowHeight - pageRef?.current?.clientHeight;
+      setNavHeight(navBarHeight);
+    } else {
+      setNavHeight(0);
+      console.log('clientHeight false', pageRef?.current?.clientHeight)
+    }
+
+  }, [windowHeight, pageRef, pageRef.current, mediumScreen])
+
+  /* animations */
   const dataRef = useIntersectionObserver(imgRef, {
     freezeOnceVisible: true,
   });
 
   const show = dataRef?.isIntersecting;
-  const infoHeight = currentHeight && currentHeight * 0.25;
-  const showMinHeight = verySmallScreen
-    ? "140px"
-    : smallScreen
-    ? "155px"
-    : "165px";
-  const actualHeight =
-    infoHeight && Math.max(infoHeight, parseInt(showMinHeight));
-
-  let spaceBelow = false;
-  if (largeScreen) {
-    spaceBelow = false;
-  } else if (currentHeight && actualHeight) {
-    spaceBelow = windowHeight - (currentHeight + 132) > actualHeight;
-  }
 
   const trail = useTrail(show ? 5 : 0, {
     delay: 500,
@@ -106,6 +114,8 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     },
     config: { duration: 500 },
   });
+
+  /* image sizing & zoom */
 
   const onLoad = () => {
     setDimensions({
@@ -142,11 +152,10 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   // Image container can NOT be conditionally displayed (even if loading is slow)
   // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
-    <Styled.Container height={windowHeight}>
-      <Styled.SubContainer height={windowHeight}>
+    <Styled.Container height={windowHeight} ref={pageRef}>
+      <Styled.SubContainer height={windowHeight} navHeight={navHeight}>
         <Styled.HomeContentContainer
           height={windowHeight}
-          spaceBelow={spaceBelow}
         >
           <Styled.ContentTitleContainer height={maxHeight ? maxHeight : 100}>
             {enter.map((props, index) => (
@@ -210,10 +219,9 @@ let Styled: any;
 Styled = {};
 
 Styled.Container = styled.div((props: any) => {
-  const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   return css`
-    label: HomeContentContainer;
+    label: DailyGarment_Container;
     display: flex;
     width: 100%;
     height: ${heightInVh}vh;
@@ -226,18 +234,20 @@ Styled.Container = styled.div((props: any) => {
 Styled.SubContainer = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
+  const navHeight = props.navHeight;
+  const calcHeight = props.height - navHeight;
   return css`
-    label: HomeContentContainer;
+    label: DailyGarment_SubContainer;
     display: flex;
     width: 100%;
-    height: auto;
-    min-height: min(${heightInVh}vh, 800px);
+    height: ${calcHeight}px;
+    min-height: min(${heightInVh}vh, 800px, ${calcHeight}px);
     align-items: center;
     justify-content: center;
     background-color: white;
 
     ${t.mq.xl} {
-      height: min(${heightInVh}vh, 760px);
+      height: min(${heightInVh}vh, 800px);
     }
   `;
 });
@@ -246,7 +256,7 @@ Styled.HomeContentContainer = styled.div((props: any) => {
   const t = props.theme;
   const shortScreen = props.height <= 800;
   return css`
-    label: HomeContentContainer;
+    label: DailyGarment_HomeContentContainer;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -279,7 +289,7 @@ Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
   const t = props.theme;
   const shortScreen = props.height <= 800;
   return css`
-    label: HomeContentContainer;
+    label: DailyGarment_TitleContainer;
     display: flex;
     flex-direction: column;
     width: min(500px, 95vw, 100%);
@@ -338,7 +348,7 @@ Styled.ImageCardContainer = styled.div((props: any) => {
   const t = props.theme;
   const currentWidth = props.currentWidth;
   return css`
-    label: DailyGarment_CardContainer;
+    label: DailyGarment_ImageCardContainer;
     display: flex;
     justify-content: center;
 
@@ -359,7 +369,7 @@ Styled.Card = styled.div((props: any) => {
   const subtractMedium = shortScreen ? "40vh" : "414px"; 
   const t = props.theme;
   return css`
-    label: Card;
+    label: DailyGarment_ImageCard;
     display: ${display};
     flex-direction: column;
     align-items: center;
@@ -474,6 +484,7 @@ Styled.InfoCardContainer = styled.div((props: any) => {
 Styled.InfoCard = styled.div(props => {
   const t = props.theme;
   return css`
+    label: DailyGarment_InfoCard;
     display: flex;
     align-items: flex-end;
     width: 100%;
@@ -483,20 +494,5 @@ Styled.InfoCard = styled.div(props => {
     ${t.mq.xl} {
       align-items: flex-start;
     }
-  `;
-});
-
-Styled.Info = styled.div(() => {
-  return css`
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
   `;
 });

@@ -14,7 +14,9 @@ const BottomContent: React.FC<BottomContentProps> = () => {
       <Styled.ContentContainer>
         <Styled.AlignmentContainer>
           <Styled.Text>
-            <h2>Discover the Collection</h2>
+            <h2>Discover</h2>
+            <h2>the </h2>
+            <h2>Collection</h2>
           </Styled.Text>
           <Link to="/garments" target="_blank">
           <Styled.Button>
@@ -77,7 +79,6 @@ Styled.AlignmentContainer = styled.div(props => {
   return css`
     label: BottomContent_Container;
     width: 98%;
-    width: min(500px, 95vw, 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -85,16 +86,22 @@ Styled.AlignmentContainer = styled.div(props => {
     background-color: #020b1c;
     ${t.mt(3)};
 
-    ${t.mq.xs} {
+    ${t.mq.sm} {
       align-items: flex-end;
+      width: 70%;
+      max-width: 500px;
+    }
+
+    ${t.mq.md} {
+      width: 60%;
     }
 
     ${t.mq.xl} {
-      width: 73%; 
+      width: 60%; 
     }
 
     ${t.mq.xxl} {
-      width: 72%;
+      width: 50%;
     }
   `;
 });
@@ -107,8 +114,13 @@ Styled.Text = styled.div(props => {
     width: 100%;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 
-    ${t.mq.xs} {
+    ${t.mq.xxs} {
+      flex-direction: row;
+    }
+
+    ${t.mq.sm} {
       justify-content: flex-end;
     }
 
@@ -124,10 +136,20 @@ Styled.Text = styled.div(props => {
       ${t.mq.xxs} {
         line-height: 3.5rem;
         font-size: calc(26px + 22 * ((100vw - 320px) / 880));
+        padding-right: calc(8px + 8 * ((100vw - 320px) / 880));
+
+        &:nth-of-type(3) {
+          padding-right: 0;
+        }
       }
 
       ${t.mq.xl} {
         font-size: 3rem;
+        ${t.pr(4)};
+
+        &:nth-of-type(3) {
+          padding-right: 0;
+        }
       }
     }
   `;

@@ -18,7 +18,7 @@ const BottomContent: React.FC<BottomContentProps> = () => {
             <h2>the </h2>
             <h2>Collection</h2>
           </Styled.Text>
-          <Link to="/garments" target="_blank">
+          <Link to="/garments" target="_blank" style={{ marginTop: "24px" }}>
           <Styled.Button>
             <h3>Explore</h3>
               <div className="line"></div>
@@ -167,7 +167,6 @@ Styled.Button = styled.div(props => {
   background-color: white;
   transform: scale(1);
   transition: all 0.2s ease-in-out;
-  ${[t.mt(6)]};
   border-radius: 4px;
 
   &:hover {
@@ -190,10 +189,11 @@ Styled.Button = styled.div(props => {
   }
 
   .line {
-    width: 14px;
+    width: 18px;
     height: 2px;
     background-color: #020b1c;
     ${t.ml(1)};
+    margin-right: -4px;
   }
 
   svg {

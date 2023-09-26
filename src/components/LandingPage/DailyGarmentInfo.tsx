@@ -121,16 +121,18 @@ Styled.Button = styled.div((props: any) => {
     ${[t.pb(4), t.pl(2)]};
 
     .line {
-      width: 10px;
+      width: 22px;
       height: 2px;
       background-color: #020b1c;
       ${t.ml(2)};
-      transition: all 0.3s ease-in-out;
+      margin-right: -12px;
+      transition: width 0.3s ease-in-out;
+      transform: scale(1, 1.25);
     }
 
     &:hover .line {
-      width: 22px;
-      transition: all 0.3s ease-in-out;
+      width: 34px;
+      transition: width 0.3s ease-in-out;
     }
 
     &:hover {
@@ -154,7 +156,7 @@ Styled.Button = styled.div((props: any) => {
       font-family: "Sorts Mill Goudy";
       color: inherit;
       font-size: 1.375rem;
-      line-height: 2rem;
+      line-height: 1.5rem;
       letter-spacing: 0.01rem;
 
       ${t.mq.md} {
@@ -181,7 +183,7 @@ Styled.InfoDetails = styled.div((props: any) => {
     font-size: 1rem;
     line-height: 1.25rem;
     font-family: "bellota text";
-    ${[t.pl(2), t.pt(2), t.pb(4)]};
+    ${[t.pl(2), t.pt(2), t.pb(2)]};
 
     ${t.mq.md} {
       font-size: 1rem;
@@ -189,13 +191,19 @@ Styled.InfoDetails = styled.div((props: any) => {
       padding-top: ${shortScreen ? "8px" : "16px"};
     }
 
-    &:nth-child(2) {
-      margin-top: -4px;
+    ${t.mq.xl} {
+      padding-bottom: 24px;
+      padding-top: 16px;
     }
 
+    
     p {
       color: inherit;
       
+      &:nth-child(2) {
+        margin-top: -4px;
+      }
+
       span {
         font-style: italic;
       }

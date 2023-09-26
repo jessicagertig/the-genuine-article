@@ -1,18 +1,15 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useSpring, useTrail, animated } from "@react-spring/web";
+import { useTrail, animated } from "@react-spring/web";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import Skeleton from "@mui/material/Skeleton";
-import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import DailyGarmentInfo from "src/components/LandingPage/DailyGarmentInfo";
 import Divider from "src/components/shared/Divider";
-
 
 import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
@@ -36,10 +33,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   });
 
   const theme = useTheme();
-  const largeScreen = useMediaQuery(theme.breakpoints.up("xl"));
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const verySmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { maxHeight, maxWidth } = useImageDimensions({
     imageLoaded,
@@ -52,27 +46,28 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   } = useResizeObserver();
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
+  const contentContainerRef = React.useRef<HTMLDivElement>(null!);
+  
+  const [addMargin, setAddMargin] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log("CONTENT REF", contentContainerRef);
+    if (contentContainerRef?.current && contentContainerRef.current.clientHeight) {
+      const hasBorders = contentContainerRef?.current?.clientHeight < windowHeight;
+      const needsMargin = mediumScreen && !hasBorders;
+      setAddMargin(needsMargin);
+    } else {
+      setAddMargin(false);
+    }
+  }, [contentContainerRef]);
+  
+  /* ANIMATIONS */
 
   const dataRef = useIntersectionObserver(imgRef, {
     freezeOnceVisible: true,
   });
 
   const show = dataRef?.isIntersecting;
-  const infoHeight = currentHeight && currentHeight * 0.25;
-  const showMinHeight = verySmallScreen
-    ? "140px"
-    : smallScreen
-    ? "155px"
-    : "165px";
-  const actualHeight =
-    infoHeight && Math.max(infoHeight, parseInt(showMinHeight));
-
-  let spaceBelow = false;
-  if (largeScreen) {
-    spaceBelow = false;
-  } else if (currentHeight && actualHeight) {
-    spaceBelow = windowHeight - (currentHeight + 132) > actualHeight;
-  }
 
   const trail = useTrail(show ? 5 : 0, {
     delay: 500,
@@ -106,6 +101,8 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     },
     config: { duration: 500 },
   });
+
+  /* HANDLE IMAGE DIMENSIONS */
 
   const onLoad = () => {
     setDimensions({
@@ -143,10 +140,10 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
     <Styled.Container height={windowHeight}>
-      <Styled.SubContainer height={windowHeight}>
+      <Styled.SubContainer height={windowHeight} ref={contentContainerRef}>
         <Styled.HomeContentContainer
           height={windowHeight}
-          spaceBelow={spaceBelow}
+          addMargin={addMargin}
         >
           <Styled.ContentTitleContainer height={maxHeight ? maxHeight : 100}>
             {enter.map((props, index) => (
@@ -210,10 +207,9 @@ let Styled: any;
 Styled = {};
 
 Styled.Container = styled.div((props: any) => {
-  const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   return css`
-    label: HomeContentContainer;
+    label: DailyGarment_Container;
     display: flex;
     width: 100%;
     height: ${heightInVh}vh;
@@ -227,7 +223,7 @@ Styled.SubContainer = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
   return css`
-    label: HomeContentContainer;
+    label: DailyGarment_SubContainer;
     display: flex;
     width: 100%;
     height: auto;
@@ -245,19 +241,22 @@ Styled.SubContainer = styled.div((props: any) => {
 Styled.HomeContentContainer = styled.div((props: any) => {
   const t = props.theme;
   const shortScreen = props.height <= 800;
+  const addPadding = props.addMargin;
   return css`
-    label: HomeContentContainer;
+    label: DailyGarment_HomeContentContainer;
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 96%;
+    height: 100%;
     align-items: center;
     justify-content: flex-start;
     max-width: 1500px;
+    padding-bottom: ${addPadding ? "64px" : "0px"};
 
     ${t.mq.md} {
       height: ${shortScreen ? `${props.height}px` : "94%"};
       justify-content: ${shortScreen ? "space-between" : "flex-start"};
+      ${t.pb(0)};
     }
 
     ${t.mq.xl} {
@@ -283,13 +282,18 @@ Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
     display: flex;
     flex-direction: column;
     width: min(500px, 95vw, 100%);
-    height: 40px;
+    max-height: 48px;
+    height: auto;
     justify-content: flex-end;
     align-items: flex-end;
-    ${[t.mt(2), t.mb(4)]};
+    ${[t.mt(4), t.mb(4)]};
 
     ${t.mq.xs} {
-      margin-bottom: ${shortScreen ? "2vh" : "24px"};
+      margin-bottom: ${shortScreen ? "16px" : "20px"};
+    }
+
+    ${t.mq.sm} {
+      margin-bottom: ${shortScreen ? "16px" : "24px"};
     }
 
     ${t.mq.md} {
@@ -301,8 +305,7 @@ Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
     ${t.mq.xl} {
       width: 27%;
       height: 64px;
-      margin-bottom: 30%;
-      ${t.mt(9)}    
+      margin-top: -224px;  
     }
 
     ${t.mq.xxl} {
@@ -319,8 +322,7 @@ Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
       line-height: 2.25rem;
       color: inherit;
       letter-spacing: 0.01rem;
-      line-height: 2rem;
-      ${[t.pb(2)]};
+      ${[t.pb(0)]};
 
       ${t.mq.md} {
         font-size: ${shortScreen ? "1.375rem" : "1.75rem"};
@@ -442,14 +444,11 @@ Styled.InfoCardContainer = styled.div((props: any) => {
     position: relative;
     width: min(500px, 95vw, 100%);
     max-height: 180px;
-    ${[t.mt(4), t.mb(2)]};
-
-    ${t.mq.xs} {
-      ${[t.mt(6)]}
-    }
+    ${[t.my(4)]};
 
     ${t.mq.sm} {
-      ${t.my(8)}
+      margin-top: ${shortScreen ? "16px" : "24px"};
+      margin-bottom: ${shortScreen ? "16px" : "24px"};
       max-height: 200px;
     }
 
@@ -486,17 +485,3 @@ Styled.InfoCard = styled.div(props => {
   `;
 });
 
-Styled.Info = styled.div(() => {
-  return css`
-    display: flex;
-    align-items: flex-end;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-  `;
-});

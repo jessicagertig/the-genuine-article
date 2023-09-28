@@ -39,28 +39,28 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     imageLoaded,
     dimensions,
   });
-  const {
-    ref: sizeRef,
-    height: currentHeight,
-    width: currentWidth,
-  } = useResizeObserver();
+  const { ref: sizeRef, width: currentWidth } = useResizeObserver();
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
   const contentContainerRef = React.useRef<HTMLDivElement>(null!);
-  
+
   const [addMargin, setAddMargin] = React.useState(false);
 
   React.useEffect(() => {
     console.log("CONTENT REF", contentContainerRef);
-    if (contentContainerRef?.current && contentContainerRef.current.clientHeight) {
-      const hasBorders = contentContainerRef?.current?.clientHeight < windowHeight;
+    if (
+      contentContainerRef?.current &&
+      contentContainerRef.current.clientHeight
+    ) {
+      const hasBorders =
+        contentContainerRef?.current?.clientHeight < windowHeight;
       const needsMargin = mediumScreen && !hasBorders;
       setAddMargin(needsMargin);
     } else {
       setAddMargin(false);
     }
-  }, [contentContainerRef]);
-  
+  }, [contentContainerRef, mediumScreen, windowHeight]);
+
   /* ANIMATIONS */
 
   const dataRef = useIntersectionObserver(imgRef, {
@@ -207,7 +207,9 @@ let Styled: any;
 Styled = {};
 
 Styled.Container = styled.div((props: any) => {
+  const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
+  const shortMediumScreen = props.height <= 630; // and is between md and xl width
   return css`
     label: DailyGarment_Container;
     display: flex;
@@ -216,12 +218,17 @@ Styled.Container = styled.div((props: any) => {
     align-items: center;
     justify-content: center;
     background-color: #020b1c;
+
+    ${t.mq.md} {
+      min-height: ${shortMediumScreen ? "630px" : "unset"};
+    };
   `;
 });
 
 Styled.SubContainer = styled.div((props: any) => {
   const t = props.theme;
   const heightInVh = props.height / (props.height * 0.01);
+  const shortMediumScreen = props.height <= 630; // and is between md and xl width
   return css`
     label: DailyGarment_SubContainer;
     display: flex;
@@ -232,8 +239,12 @@ Styled.SubContainer = styled.div((props: any) => {
     justify-content: center;
     background-color: white;
 
+    ${t.mq.md} {
+      min-height: ${shortMediumScreen ? "630px" : "min(${heightInVh}vh, 800px)"};
+    };
+
     ${t.mq.xl} {
-      height: min(${heightInVh}vh, 760px);
+      height: min(${heightInVh}vh, 800px);
     }
   `;
 });
@@ -254,7 +265,7 @@ Styled.HomeContentContainer = styled.div((props: any) => {
     padding-bottom: ${addPadding ? "64px" : "0px"};
 
     ${t.mq.md} {
-      height: ${shortScreen ? `${props.height}px` : "94%"};
+      height: ${shortScreen ? "100%" : "94%"};
       justify-content: ${shortScreen ? "space-between" : "flex-start"};
       ${t.pb(0)};
     }
@@ -298,20 +309,20 @@ Styled.ContentTitleContainer = styled(animated.div)((props: any) => {
 
     ${t.mq.md} {
       height: ${shortScreen ? "auto" : "64px"};
-      margin-top: ${shortScreen ? "2vh" : "36px"};
-      margin-bottom: ${shortScreen ? "2vh" : "36px"};
+      margin-top: ${shortScreen ? "2%" : "36px"};
+      margin-bottom: ${shortScreen ? "2%" : "36px"};
     }
 
     ${t.mq.xl} {
       width: 27%;
       height: 64px;
-      margin-top: -224px;  
+      margin-top: -224px;
     }
 
     ${t.mq.xxl} {
       width: 28%;
     }
-    
+
     div {
       display: flex;
       justify-content: flex-end;
@@ -358,7 +369,7 @@ Styled.Card = styled.div((props: any) => {
   const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
   const shortScreen = props.height <= 800;
-  const subtractMedium = shortScreen ? "40vh" : "414px"; 
+  const subtractMedium = shortScreen ? "40vh" : "414px";
   const t = props.theme;
   return css`
     label: Card;
@@ -374,11 +385,13 @@ Styled.Card = styled.div((props: any) => {
     z-index: 0;
 
     ${t.mq.md} {
-      max-height: calc(${heightInVh}vh - ${subtractMedium});
+      max-height: max(calc(${heightInVh}vh - ${subtractMedium}), 378px);
+      min-height: 378px;
     }
 
     ${t.mq.xl} {
-      max-height: calc(${heightInVh}vh - 120px);
+      max-height: max(calc(${heightInVh}vh - 120px), 510px);
+      min-height: 510px;
     }
   `;
 });
@@ -388,7 +401,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
   const heightInVh = props.height / (props.height * 0.01);
   const display = props.noImage ? "none" : "flex";
   const shortScreen = props.height <= 800;
-  const subtractMedium = shortScreen ? "40vh" : "414px";   
+  const subtractMedium = shortScreen ? "40vh" : "414px";
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
@@ -398,16 +411,17 @@ Styled.DisplayedImage = styled.div((props: any) => {
     max-height: calc(${heightInVh}vh - 316px);
     border-radius: 4px;
     z-index: 1;
-    transform: scale(1);
 
     ${t.mq.md} {
-      max-height: calc(${heightInVh}vh - ${subtractMedium});
+      max-height: max(calc(${heightInVh}vh - ${subtractMedium}), 378px);
+      min-height: 378px;
     }
 
     ${t.mq.xl} {
-      max-height: calc(${heightInVh}vh - 120px);
+      max-height: max(calc(${heightInVh}vh - 120px), 510px);
+      min-height: 510px;
     }
-  
+
     &:hover {
       cursor: pointer;
       transform: scale(1.005);
@@ -422,13 +436,14 @@ Styled.DisplayedImage = styled.div((props: any) => {
         max-width: min(500px, 95vw, 100%);
       }
 
-      ${t.mq.md} {
-        max-height: calc(${heightInVh}vh - ${subtractMedium});
-      }
+    ${t.mq.md} {
+      max-height: max(calc(${heightInVh}vh - ${subtractMedium}), 378px);
+      min-height: 378px;
+    }
 
-      ${t.mq.xl} {
-        max-height: calc(${heightInVh}vh - 120px);
-      }
+    ${t.mq.xl} {
+      max-height: max(calc(${heightInVh}vh - 120px), 510px);
+      min-height: 510px;
     }
   `;
 });
@@ -453,9 +468,9 @@ Styled.InfoCardContainer = styled.div((props: any) => {
     }
 
     ${t.mq.md} {
-      max-height: ${shortScreen ? "26vh" : "224px"};
-      margin-top: ${shortScreen ? "2vh" : "36px"};
-      margin-bottom: ${shortScreen ? "2vh" : "36px"};
+      max-height: ${shortScreen ? "26%" : "224px"};
+      margin-top: ${shortScreen ? "2%" : "36px"};
+      margin-bottom: ${shortScreen ? "2%" : "36px"};
     }
 
     ${t.mq.xl} {
@@ -484,4 +499,3 @@ Styled.InfoCard = styled.div(props => {
     }
   `;
 });
-

@@ -4,37 +4,36 @@ import { css } from "@emotion/react";
 
 import { Link } from "react-router-dom";
 import { SpringValue, animated } from "@react-spring/web";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import Divider from "src/components/shared/Divider";
 import { GarmentData } from "src/types";
 
 type Trail = {
-    opacity: SpringValue<number>;
-    transform: SpringValue<string>;
-    color: SpringValue<string>;
-}[]
+  opacity: SpringValue<number>;
+  transform: SpringValue<string>;
+  color: SpringValue<string>;
+}[];
 
 interface DailyGarmentInfoProps {
   garment: GarmentData;
   trail: Trail;
   maxHeight: number;
-};
+}
 
-const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = (props) => {
-
+const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
   const { garment, trail, maxHeight } = props;
 
   return (
     <>
       {trail.map((props, index) => (
         <animated.div key={index} style={{ ...props, width: "100%" }}>
-          {index === 0 && (
-            <Divider color="#020b1c"/>
-          )}
+          {index === 0 && <Divider color="#020b1c" />}
           {index === 1 && (
             <Styled.InfoTitleContainer>
-              <Styled.InfoTitle height={maxHeight}>{garment?.garmentTitle}</Styled.InfoTitle>
+              <Styled.InfoTitle height={maxHeight}>
+                {garment?.garmentTitle}
+              </Styled.InfoTitle>
             </Styled.InfoTitleContainer>
           )}
           {index === 2 && (
@@ -46,17 +45,19 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = (props) => {
             </Styled.InfoDetails>
           )}
           {index === 3 && (
-            <Link to={`/garments/${garment?.id}`} target="_blank">
-              <Styled.Button role="button" height={maxHeight}>
-                <span>Learn more</span>
-                <div className="line"></div>
-                <ArrowForwardIcon/>
-              </Styled.Button>
-            </Link>
+            <Styled.ButtonContainer height={maxHeight}>
+              <Link to={`/garments/${garment?.id}`} target="_blank">
+                <Styled.Button role="button" height={maxHeight}>
+                  <span>Learn more</span>
+                  <div className="line"></div>
+                  <ArrowForwardIcon />
+                </Styled.Button>
+              </Link>
+            </Styled.ButtonContainer>
           )}
           {index === 4 && (
             <>
-              <Divider color="#020b1c"/>
+              <Divider color="#020b1c" />
             </>
           )}
         </animated.div>
@@ -110,6 +111,27 @@ Styled.InfoTitle = styled.h2((props: any) => {
   `;
 });
 
+Styled.ButtonContainer = styled.div((props: any) => {
+  const t = props.theme;
+  const shortScreen = props.height <= 800;
+  return css`
+    label: DailyGarmentInfo_ButtonContainer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ${[t.pb(4), t.pl(2)]};
+
+    ${t.mq.md} {
+      padding-bottom: ${shortScreen ? "16px" : "24px"};
+      ${[t.pl(2)]};
+    }
+
+    ${t.mq.xl} {
+      ${[t.pb(6)]};
+    }
+  `;
+});
+
 Styled.Button = styled.div((props: any) => {
   const t = props.theme;
   const shortScreen = props.height <= 800;
@@ -118,7 +140,6 @@ Styled.Button = styled.div((props: any) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    ${[t.pb(4), t.pl(2)]};
 
     .line {
       width: 22px;
@@ -143,15 +164,6 @@ Styled.Button = styled.div((props: any) => {
       margin-left: -4px;
     }
 
-    ${t.mq.md} {
-      padding-bottom: ${shortScreen ? "16px" : "24px"};
-      ${[t.pl(2)]};
-    }
-
-    ${t.mq.xl} {
-      ${[t.pb(6)]};
-    }
-
     span {
       font-family: "Sorts Mill Goudy";
       color: inherit;
@@ -169,8 +181,8 @@ Styled.Button = styled.div((props: any) => {
         line-height: 2rem;
       }
     }
-  `
-})
+  `;
+});
 
 Styled.InfoDetails = styled.div((props: any) => {
   const t = props.theme;
@@ -196,10 +208,9 @@ Styled.InfoDetails = styled.div((props: any) => {
       padding-top: 16px;
     }
 
-    
     p {
       color: inherit;
-      
+
       &:nth-child(2) {
         margin-top: -4px;
       }

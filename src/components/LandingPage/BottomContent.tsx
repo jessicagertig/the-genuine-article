@@ -37,8 +37,7 @@ export default BottomContent;
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div(props => {
-  const t = props.theme;
+Styled.Container = styled.div(() => {
   return css`
     label: BottomContent_Container;
     height: 300px;

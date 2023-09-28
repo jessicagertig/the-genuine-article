@@ -4,7 +4,6 @@ import { css } from "@emotion/react";
 
 import NavBar from "src/components/shared/NavBar";
 import Main from "src/components/LandingPage/Main";
-import GarmentOfTheDay from "src/components/LandingPage/GarmentOfTheDay";
 import BottomContent from "src/components/LandingPage/BottomContent";
 import Footer from "src/components/shared/Footer";
 import DailyGarment from "src/components/LandingPage/DailyGarment";

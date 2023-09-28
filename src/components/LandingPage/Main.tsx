@@ -67,7 +67,8 @@ Styled.HomeContainer = styled.div((props: any) => {
     z-index: 1;
 
     ${t.mq.md} {
-      height: calc(${heightInVh}vh - 90px);
+      height: max(calc(${heightInVh}vh - 90px), 630px);
+      min-height: 630px;
     }
   `;
 });

@@ -3,13 +3,13 @@ import { MemoryRouter } from "react-router-dom";
 import App from "./layouts/AppWithLayout";
 
 describe("App", () => {
-  it("should render the LandingPage component by default", () => {
+  it("should render the LandingPage component at /", () => {
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>
     );
-    const landingPageElement = screen.getByText(/The Genuine Article/i);
+    const landingPageElement = screen.getByText(/Genuine articles of clothing from the 19th century/i);
     expect(landingPageElement).toBeInTheDocument();
   });
 });

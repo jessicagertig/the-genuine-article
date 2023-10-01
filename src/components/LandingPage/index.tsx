@@ -26,12 +26,8 @@ const LandingPage: React.FC<LandingPageProps> = props => {
     }
   };
 
-  React.useEffect(() => {
-    console.log("REF", scrollRef);
-  }, [scrollRef]);
-
   return (
-    <Styled.LandingPageContainer ref={pageContainerRef} >
+    <Styled.LandingPageContainer data-testid="landing-page-container" ref={pageContainerRef} >
       <NavBar backgroundColor="white" />
       <Main scrollRef={scrollRef} windowHeight={height} />
       <Styled.RefContainer ref={scrollRef}>
@@ -51,7 +47,6 @@ let Styled: any;
 Styled = {};
 
 Styled.LandingPageContainer = styled.div((props) => {
-  const t = props.theme;
   return css`
     label: LandingPageContainer;
     width: 100%;
@@ -62,9 +57,6 @@ Styled.LandingPageContainer = styled.div((props) => {
     
     & > :last-child {
       margin-top: auto;
-    }
-
-    ${t.mq.xl} {
     }
   `;
 });

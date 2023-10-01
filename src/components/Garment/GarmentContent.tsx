@@ -29,13 +29,6 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
   const theme = useTheme();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const colors = {
-    primaryText: isDark ? "white" : "#020b1c",
-    secondaryText: isDark ? "#BFC9D9" : "#4C5F80",
-    textReverse: isDark ? "#020b1c" : "white",
-    background: isDark ? "#020b1c" : "white",
-  };
-
   type Item = {
     name: string;
     value: any;
@@ -57,7 +50,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
           const list = item ? item.value : [];
           const listToString = list.length > 0 ? list.join(", ") : "";
           return (
-            <Styled.InfoItem key={item.name} colors={colors}>
+            <Styled.InfoItem key={item.name} isDark={isDark}>
               <p>
                 <span>{item.name}: </span> {listToString}
               </p>
@@ -65,7 +58,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
           );
         } else if (item.name === "Link") {
           return (
-            <Styled.InfoItem key={item.name} colors={colors}>
+            <Styled.InfoItem key={item.name} isDark={isDark}>
               <p>
                 <span>{item.name}: </span>
                 <a href={item.value} target="_blank" rel="noreferrer">
@@ -76,7 +69,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
           );
         } else {
           return (
-            <Styled.InfoItem key={item.name} colors={colors}>
+            <Styled.InfoItem key={item.name} isDark={isDark}>
               <p>
                 <span>{item.name}: </span>
                 {item.value}
@@ -96,7 +89,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
       </p>
     ));
     return (
-      <Styled.InfoItem key={item.name} colors={colors}>
+      <Styled.InfoItem key={item.name} isDark={isDark}>
         <Accordian text={mainText} dark={isDark} />
       </Styled.InfoItem>
     );
@@ -152,11 +145,11 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
         )}
         {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
       </Styled.ImagesSection>
-      <Styled.InfoSection colors={colors}>
-        <Styled.InfoContainer colors={colors}>
+      <Styled.InfoSection isDark={isDark}>
+        <Styled.InfoContainer isDark={isDark}>
           <Styled.HeaderContainer>
-            <Styled.InfoTitleContainer colors={colors}>
-              <Styled.InfoTitle colors={colors}>
+            <Styled.InfoTitleContainer isDark={isDark}>
+              <Styled.InfoTitle isDark={isDark}>
                 {garment?.garmentTitle}
               </Styled.InfoTitle>
             </Styled.InfoTitleContainer>
@@ -166,25 +159,25 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
                 href={garment?.collectionUrl}
                 rel="noreferrer"
               >
-                <IconButton sx={{ color: colors.primaryText }}>
+                <IconButton sx={{ color: isDark ? "white" : "#020b1c" }}>
                   <OpenInNewOutlinedIcon />
                 </IconButton>
               </Link>
             </Styled.IconButtonContainer>
           </Styled.HeaderContainer>
           <Styled.InfoContent>
-            <Styled.InfoItem colors={colors}>
+            <Styled.InfoItem isDark={isDark}>
               <p className="culture">{garment?.cultureCountry}</p>
             </Styled.InfoItem>
-            <Styled.InfoItem colors={colors}>
+            <Styled.InfoItem isDark={isDark}>
               <p className="date">c. {garment?.beginYear}</p>
             </Styled.InfoItem>
-            <Styled.Description colors={colors}>
+            <Styled.Description isDark={isDark}>
               {itemDescription()}
             </Styled.Description>
           </Styled.InfoContent>
           <Styled.InfoContent>
-            <Styled.Subheader colors={colors}>
+            <Styled.Subheader isDark={isDark}>
               <h3>Details</h3>
             </Styled.Subheader>
             {itemNodes}
@@ -344,14 +337,14 @@ Styled.ThumbImage = styled.div((props: any) => {
 
 Styled.InfoSection = styled.section((props: any) => {
   const t = props.theme;
-  const c = props.colors;
+  const isDark = props.isDark;
   return css`
     label: Garment_InfoSection;
     ${[t.pt(10), t.pb(24)]}
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: ${c.background};
+    background-color: ${isDark ? "#020b1c" : "white"};
 
     ${t.mq.xl} {
       width: 44%;
@@ -370,7 +363,7 @@ Styled.InfoSection = styled.section((props: any) => {
 
 Styled.InfoContainer = styled.div((props: any) => {
   const t = props.theme;
-  const c = props.colors;
+  const isDark = props.isDark;
   return css`
     label: Garment_InfoSection;
     ${[t.px(4), t.mb(6)]}
@@ -378,7 +371,7 @@ Styled.InfoContainer = styled.div((props: any) => {
     max-width: 900px;
     display: flex;
     flex-direction: column;
-    background-color: ${c.background};
+    background-color: ${isDark ? "#020b1c" : "white"};
     border-radius: 8px;
 
     ${t.mq.sm} {
@@ -412,12 +405,12 @@ Styled.InfoTitleContainer = styled.div(() => {
 
 Styled.InfoTitle = styled.h2((props: any) => {
   const t = props.theme;
-  const c = props.colors;
+  const isDark = props.isDark;
   return css`
     label: Garment_InfoTitle;
     ${[t.pt(2), t.pb(2), t.pl(4)]}
     font-family: "Sorts Mill Goudy";
-    color: ${c.primaryText};
+    color: ${isDark ? "white" : "#020b1c"};
     font-size: 2rem;
     letter-spacing: 0.05rem;
   `;
@@ -444,25 +437,25 @@ Styled.InfoContent = styled.div(() => {
 
 Styled.Description = styled.div((props: any) => {
   const t = props.theme;
-  const c = props.colors;
+  const isDark = props.isDark;
   return css`
     label: Garment_Description;
     ${[t.pb(6), t.pt(2)]}
     width: 100%;
-    border-bottom: 1px solid ${c.primaryText};
+    border-bottom: 1px solid ${isDark ? "white" : "#020b1c"};
   `;
 });
 
 Styled.Subheader = styled.div((props: any) => {
   const t = props.theme;
-  const c = props.colors;
+  const isDark = props.isDark;
   return css`
     label: Garment_DetailsSubheader;
     width: 100%;
 
     h3 {
       ${[t.pt(8), t.pb(4), t.px(4)]}
-      color: ${c.primaryText};
+      color: ${isDark ? "white" : "#020b1c"};
       font-family: "Bellota text";
       font-size: 1.375rem;
     }
@@ -471,19 +464,19 @@ Styled.Subheader = styled.div((props: any) => {
 
 Styled.InfoItem = styled.div((props: any) => {
   const t = props.theme;
-  const c = props.colors;
+  const isDark = props.isDark;
   return css`
     label: Garment_InfoItem;
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: ${c.primaryText};
+    color: ${isDark ? "white" : "#020b1c"};
     font-size: 1.125rem;
     line-height: 1.5rem;
     font-family: "bellota text";
 
     span {
-      color: ${c.secondaryText};
+      color: ${isDark ? "#BFC9D9" : "#4C5F80"};
     }
 
     a {

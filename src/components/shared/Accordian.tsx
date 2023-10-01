@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 
-import useResizeObserver from 'src/hooks/useResizeObserver';
+import useResizeObserver from "src/hooks/useResizeObserver";
 
 interface AccordianProps {
   text: string | any;
@@ -26,14 +26,6 @@ const Accordian: React.FC<AccordianProps> = props => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const colors = {
-    primaryText: dark ? "white" : "#020b1c",
-    textReverse: dark ? "#020b1c" : "white",
-    background: dark ? "#020b1c" : "white",
-    backgroundTransparent: dark ? "rgba(2,11,28,0)" : "rgba(255,255,255,0)",
-    buttonBorder: dark ? "rgba(211, 217, 229, 0.3)" : "rgba(76, 95, 128, 0.4)",
-  };
-
   React.useEffect(() => {
     if (textRef && textRef.current) {
       const scrollHeight = textRef.current.scrollHeight;
@@ -41,8 +33,8 @@ const Accordian: React.FC<AccordianProps> = props => {
       if (scrollHeight > 245 || clientHeight < scrollHeight) {
         setHasOverflow(true);
       } else if (scrollHeight === 245 && !(clientHeight < scrollHeight)) {
-        setHasOverflow(false)
-        setIsOpen(false)
+        setHasOverflow(false);
+        setIsOpen(false);
       }
       if (varHeight && varHeight <= 240 && isOpen) {
         setHasOverflow(false);
@@ -50,6 +42,8 @@ const Accordian: React.FC<AccordianProps> = props => {
       }
     }
     //text must be a dependency or else it will not recalculate
+    // isOpen should not be included since its changed in the useEffect
+    // eslint-disable-next-line
   }, [textRef?.current?.scrollHeight, text, varHeight]);
 
   const handleClickOpen = (event: React.SyntheticEvent): void => {
@@ -65,23 +59,23 @@ const Accordian: React.FC<AccordianProps> = props => {
   const concealerClassName = isOpen ? "concealer-inactive" : "concealer-active";
 
   const buttonStyles = {
-    borderColor: colors.buttonBorder,
-    color: colors.primaryText,
+    borderColor: dark ? "rgba(211, 217, 229, 0.3)" : "rgba(76, 95, 128, 0.4)",
+    color: dark ? "white" : "#020b1c",
     textTransform: "none",
     px: 2,
     fontSize: isMobile ? "1rem" : "0.875rem",
     "&:hover": {
-      color: colors.textReverse,
-      backgroundColor: colors.primaryText,
+      color: dark ? "#020b1c" : "white",
+      backgroundColor: dark ? "white" : "#020b1c",
       fontSize: "0.9rem",
     },
 
     "& .MuiButton-endIcon": {
-      color: colors.primaryText,
+      color: dark ? "white" : "#020b1c",
     },
 
     "&:hover .MuiButton-endIcon": {
-      color: colors.textReverse,
+      color: dark ? "#020b1c" : "white",
       fontSize: "0.9rem",
     },
   };
@@ -97,12 +91,12 @@ const Accordian: React.FC<AccordianProps> = props => {
         </div>
       </Styled.TextContainer>
       {hasOverflow ? (
-        <Styled.AccordianContainer colors={colors}>
+        <Styled.AccordianContainer dark={dark}>
           <div className={concealerClassName}></div>
-          <Styled.ButtonsContainer colors={colors}>
+          <Styled.ButtonsContainer dark={dark}>
             <Styled.ButtonContainer
-              className={isOpen ? overflowClass : `${overflowClass} active` }
-              colors={colors}
+              className={isOpen ? overflowClass : `${overflowClass} active`}
+              dark={dark}
             >
               <Button
                 variant="outlined"
@@ -117,7 +111,7 @@ const Accordian: React.FC<AccordianProps> = props => {
             </Styled.ButtonContainer>
             <Styled.ButtonContainer
               className={isOpen ? `${overflowClass} active` : overflowClass}
-              colors={colors}
+              dark={dark}
             >
               <Button
                 variant="outlined"
@@ -156,12 +150,12 @@ Styled.Container = styled.div(() => {
 });
 
 Styled.AccordianContainer = styled.div((props: any) => {
-  const c = props.colors;
+  const dark = props.dark;
   return css`
     label: Accordian_DisplayContainer;
     position: relative;
     width: 100%;
-    
+
     .concealer-inactive {
       display: none;
     }
@@ -170,8 +164,8 @@ Styled.AccordianContainer = styled.div((props: any) => {
       display: flex;
       justify-content: center;
       background-image: linear-gradient(
-        ${c.backgroundTransparent},
-        ${c.background}
+        ${dark ? "rgba(2,11,28,0)" : "rgba(255,255,255,0)"},
+        ${dark ? "#020b1c" : "white"}
       );
       height: 90px;
       position: absolute;
@@ -208,7 +202,7 @@ Styled.TextContainer = styled.div(() => {
 
 Styled.ButtonsContainer = styled.div((props: any) => {
   const t = props.theme;
-  const c = props.colors;
+  const dark = props.dark;
   return css`
     label: Accordian_ButtonsContainer;
     ${t.mt(6)}
@@ -217,7 +211,7 @@ Styled.ButtonsContainer = styled.div((props: any) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: ${c.background};
+    background-color: ${dark ? "#020b1c" : "white"};
 
     .active {
       display: flex;
@@ -230,13 +224,13 @@ Styled.ButtonsContainer = styled.div((props: any) => {
 });
 
 Styled.ButtonContainer = styled.div((props: any) => {
-  const c = props.colors;
+  const dark = props.dark;
   return css`
     label: Accordian_ButtonContainer;
     width: 100%;
     height: 36px;
     display: none;
     justify-content: center;
-    background-color: ${c.background};
+    background-color: ${dark ? "#020b1c" : "white"};
   `;
 });

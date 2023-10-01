@@ -52,6 +52,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
       setSearchValue(query);
       setEnabled(true);
     }
+    // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {

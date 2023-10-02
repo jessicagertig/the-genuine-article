@@ -81,10 +81,10 @@ const App: React.FC = () => {
   const [ initialUser, setInitialUser ] = React.useState(null)
 
   React.useEffect(() => {
-    console.log("fetching?", isFetching);
-    console.log("loading?", isLoading);
-    console.log("is enabled?", isEnabled);
-    console.log("user", user);
+    // console.log("fetching?", isFetching);
+    // console.log("loading?", isLoading);
+    // console.log("is enabled?", isEnabled);
+    // console.log("user", user);
     if (user !== undefined) {
       setInitialUser(user)
     }

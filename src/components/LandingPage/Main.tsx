@@ -38,7 +38,7 @@ const Main: React.ForwardRefRenderFunction<any, MainProps> = (
           <p>Genuine articles of clothing from the 19th century</p>
         </Styled.TextContainer>
       </Styled.ContentContainer>
-      <Styled.ButtonContainer onClick={handleClickScrollTeaser}>
+      <Styled.ButtonContainer data-testid="scroll-down-teaser-button" onClick={handleClickScrollTeaser}>
         <Bounce />
       </Styled.ButtonContainer>
     </Styled.HomeContainer>
@@ -83,15 +83,6 @@ Styled.BackgroundContainer = styled.div(() => {
     top: 0;
     width: 100%;
     z-index: 1;
-  `;
-});
-
-Styled.InvisibleImage = styled.div((props: any) => {
-  return css`
-    display: none;
-    img {
-      display: none;
-    }
   `;
 });
 

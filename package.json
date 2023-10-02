@@ -44,7 +44,7 @@
   "scripts": {
     "start": "yarn react-scripts start",
     "build": "yarn react-scripts build",
-    "test": "yarn react-scripts test --coverage --watchAll"
+    "test": "yarn react-scripts test --verbose --coverage --watchAll"
   },
   "eslintConfig": {
     "extends": [

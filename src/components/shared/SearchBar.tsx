@@ -84,7 +84,7 @@ const SearchBar: React.FC<SearchProps> = ({
           <IconButton
             aria-label="trigger-search"
             type="submit"
-            sx={{ color: "white", mx: "4px" }}
+            sx={{ color: "white", mx: "4px", mt: "-2px", width: "40px", height: "40px"}}
             onClick={handleSubmitSearch}
           >
             <SearchOutlinedIcon />
@@ -109,16 +109,15 @@ Styled.Form = styled.form(() => {
   `;
 });
 
-Styled.ButtonContainer = styled.div(() => {
+Styled.ButtonContainer = styled.div((props) => {
+  const t = props.theme;
   return css`
     label: SearchBar_ButtonContainer;
     width: 48px;
     height: 40px;
-    margin: 8px 0;
+    ${[t.my(2)]};
     border-radius: 0 4px 4px 0;
     background-color: #172a4f;
-    border-bottom: 2px solid #172a4f;
-    border-top: 2px solid #172a4f;
-    border-right: 2px solid #172a4f;
+    border: 2px solid #172a4f;
   `;
 });

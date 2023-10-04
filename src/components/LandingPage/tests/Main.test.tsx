@@ -1,8 +1,6 @@
 import React, { ReactNode } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent } from "src/utils/themeTestHelper";
 import Main from "src/components/LandingPage/Main";
-import { ThemeProvider } from "@emotion/react";
-import myTheme from "src/styles/theme";
 
 describe("Main component", () => {
   it("renders 'A Digital Collection' text", () => {
@@ -10,9 +8,7 @@ describe("Main component", () => {
     const scrollRef = React.createRef<HTMLDivElement>();
     // Render the Main component
     render(
-      <ThemeProvider theme={myTheme}>
-        <Main scrollRef={scrollRef} windowHeight={500} />
-      </ThemeProvider>
+        <Main ref={scrollRef} windowHeight={500} />
     );
 
     // Assert that the 'A Digital Collection' text exists
@@ -31,9 +27,7 @@ describe("Main component", () => {
 
 
     render(
-      <ThemeProvider theme={myTheme}>
-        <Main scrollRef={scrollRef as unknown as React.RefObject<HTMLDivElement>} windowHeight={windowHeight} />
-      </ThemeProvider>
+        <Main ref={scrollRef as unknown as React.RefObject<HTMLDivElement>} windowHeight={windowHeight} />
     );
 
     const button = screen.getByTestId("scroll-down-teaser-button");

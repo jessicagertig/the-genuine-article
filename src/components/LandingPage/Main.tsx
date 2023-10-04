@@ -5,18 +5,19 @@ import { css } from "@emotion/react";
 import Bounce from "src/components/shared/Bounce";
 
 interface MainProps {
-  scrollRef: React.RefObject<HTMLDivElement>;
   windowHeight: number;
 }
 
-const Main: React.ForwardRefRenderFunction<any, MainProps> = (
-  { scrollRef, windowHeight },
-  ref
+const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
+  { windowHeight },
+  scrollRef
 ) => {
   const imageUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/blueRoseDress1800.jpeg`;
 
   const handleClickScrollTeaser = () => {
-    scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollRef !== null && typeof scrollRef === "object") {
+      scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (

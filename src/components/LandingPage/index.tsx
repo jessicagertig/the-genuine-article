@@ -16,7 +16,7 @@ const LandingPage: React.FC<LandingPageProps> = props => {
   const {
     dimensions: { height, width },
   } = useWindowSizeContext();
-  const scrollRef = React.useRef<HTMLDivElement>(null!);
+  const scrollRef = React.useRef<HTMLDivElement | null>(null);
 
   const pageContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -29,7 +29,7 @@ const LandingPage: React.FC<LandingPageProps> = props => {
   return (
     <Styled.LandingPageContainer data-testid="landing-page-container" ref={pageContainerRef} >
       <NavBar backgroundColor="white" />
-      <Main scrollRef={scrollRef} windowHeight={height} />
+      <Main ref={scrollRef} windowHeight={height} />
       <Styled.RefContainer ref={scrollRef}>
         <DailyGarment windowHeight={height} windowWidth={width} />
       </Styled.RefContainer>

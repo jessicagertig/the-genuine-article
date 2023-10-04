@@ -1,15 +1,10 @@
 import React, { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+// import "@testing-library/jest-dom/extend-expect";
 import LandingPage from "src/components/LandingPage";
-import { renderHook } from "@testing-library/react-hooks";
 import { WindowSizeProvider } from "src/context/WindowSizeContext";
 import * as WindowSizeContext from "src/context/WindowSizeContext";
 
-// Mock the context
-// jest.mock("src/context/WindowSizeContext", () => ({
-//   useWindowSizeContext: () => ({ dimensions: { height: 800, width: 600 } }),
-// }));
 // Create a mock provider
 const MockWindowSizeProvider: React.FC<{ children: ReactNode }> = ({
   children,

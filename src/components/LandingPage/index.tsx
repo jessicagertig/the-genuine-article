@@ -33,8 +33,8 @@ const LandingPage: React.FC<LandingPageProps> = props => {
   return (
     <Styled.LandingPageContainer ref={pageContainerRef} >
       <NavBar backgroundColor="white" />
-      <Main scrollRef={scrollRef} windowHeight={height} />
-      <Styled.RefContainer ref={scrollRef}>
+      <Main ref={scrollRef} windowHeight={height} />
+      <Styled.RefContainer ref={scrollRef} windowHeight={height}>
         <DailyGarment windowHeight={height} windowWidth={width} />
       </Styled.RefContainer>
       <BottomContent />
@@ -69,8 +69,10 @@ Styled.LandingPageContainer = styled.div((props) => {
   `;
 });
 
-Styled.RefContainer = styled.div`
-  label: RefContainer;
-  width: 100%;
-  height: fit-content;
-`;
+Styled.RefContainer = styled.div((props: any) => {
+    return css`
+    label: RefContainer;
+    width: 100%;
+    height: ${props.windowHeight};
+  `;
+})

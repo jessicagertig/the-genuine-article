@@ -47,7 +47,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const [addMargin, setAddMargin] = React.useState(false);
 
   React.useEffect(() => {
-    console.log("CONTENT REF", contentContainerRef);
+    // console.log("CONTENT REF", contentContainerRef);
     if (
       contentContainerRef?.current &&
       contentContainerRef.current.clientHeight
@@ -113,7 +113,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   };
 
   React.useEffect(() => {
-    console.log("IMAGE REF", imgRef);
+    // console.log("IMAGE REF", imgRef);
     if (imgRef.current && imgRef.current.complete) {
       onLoad();
     }

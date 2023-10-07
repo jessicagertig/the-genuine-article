@@ -22,10 +22,10 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   children,
   currentUser,
 }) => {
-  React.useEffect(() => {
-    console.log("AUTH CONTEXT");
-    console.log("current user", currentUser);
-  }, [currentUser]);
+  // React.useEffect(() => {
+  //   console.log("AUTH CONTEXT");
+  //   console.log("current user", currentUser);
+  // }, [currentUser]);
 
   return (
     <AuthContext.Provider

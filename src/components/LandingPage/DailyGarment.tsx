@@ -233,8 +233,7 @@ Styled.SubContainer = styled.div((props: any) => {
     label: DailyGarment_SubContainer;
     display: flex;
     width: 100%;
-    height: auto;
-    min-height: min(${heightInVh}vh, 800px);
+    height: min(${heightInVh}vh, 800px);
     align-items: center;
     justify-content: center;
     background-color: white;

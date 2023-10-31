@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import { Link } from "react-router-dom";
-import { SpringValue, animated } from "@react-spring/web";
+import { SpringValue, useTrail, animated } from "@react-spring/web";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import Divider from "src/components/shared/Divider";
@@ -17,27 +17,42 @@ type Trail = {
 
 interface DailyGarmentInfoProps {
   garment: GarmentData;
-  trail: Trail;
-  maxHeight: number;
+  height: number;
+  show: boolean | undefined;
 }
 
 const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
-  const { garment, trail, maxHeight } = props;
+  const { garment, height, show } = props;
+
+  const trail: Trail = useTrail(show ? 5 : 0, {
+    delay: 500,
+    from: {
+      opacity: 0,
+      transform: "translate3d(100px,0px, 0)",
+      color: "white",
+    },
+    to: {
+      opacity: 1,
+      transform: "translate3d(0px, 0px, 0)",
+      color: show ? "#020b1c" : "white",
+    },
+    config: { duration: 500 },
+  });
 
   return (
-    <>
+      <Styled.InfoCardContainer height={height ? height : 100}>
       {trail.map((props, index) => (
         <animated.div key={index} style={{ ...props, width: "100%" }}>
           {index === 0 && <Divider color="#020b1c" />}
           {index === 1 && (
             <Styled.InfoTitleContainer>
-              <Styled.InfoTitle height={maxHeight}>
+              <Styled.InfoTitle height={height}>
                 {garment?.garmentTitle}
               </Styled.InfoTitle>
             </Styled.InfoTitleContainer>
           )}
           {index === 2 && (
-            <Styled.InfoDetails height={maxHeight}>
+            <Styled.InfoDetails height={height}>
               <p>c. {garment?.beginYear}</p>
               <p>
                 <span>{garment?.cultureCountry}</span>
@@ -45,9 +60,9 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
             </Styled.InfoDetails>
           )}
           {index === 3 && (
-            <Styled.ButtonContainer height={maxHeight}>
+            <Styled.ButtonContainer height={height}>
               <Link to={`/garments/${garment?.id}`} target="_blank">
-                <Styled.Button role="button" height={maxHeight}>
+                <Styled.Button role="button" height={height}>
                   <span>Learn more</span>
                   <div className="line"></div>
                   <ArrowForwardIcon />
@@ -62,7 +77,7 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
           )}
         </animated.div>
       ))}
-    </>
+    </Styled.InfoCardContainer>
   );
 };
 
@@ -72,6 +87,44 @@ export default DailyGarmentInfo;
 // =======================================================
 let Styled: any;
 Styled = {};
+
+Styled.InfoCardContainer = styled.div((props: any) => {
+  const t = props.theme;
+  const shortScreen = props.height <= 800;
+  return css`
+    label: DailyGarment_InfoCardContainer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    width: min(500px, 95vw, 100%);
+    max-height: 180px;
+    ${[t.my(4)]};
+
+    ${t.mq.sm} {
+      margin-top: ${shortScreen ? "16px" : "24px"};
+      margin-bottom: ${shortScreen ? "16px" : "24px"};
+      max-height: 200px;
+    }
+
+    ${t.mq.md} {
+      max-height: ${shortScreen ? "26%" : "224px"};
+      margin-top: ${shortScreen ? "2%" : "36px"};
+      margin-bottom: ${shortScreen ? "2%" : "36px"};
+    }
+
+    ${t.mq.xl} {
+      max-height: 224px;
+      width: 27%;
+      ${t.my(9)}
+    }
+
+    ${t.mq.xxl} {
+      width: 28%;
+    }
+  `;
+  
+});
 
 Styled.InfoTitleContainer = styled.div(() => {
   return css`

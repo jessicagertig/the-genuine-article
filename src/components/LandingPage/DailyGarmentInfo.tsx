@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 
 import { Link } from "react-router-dom";
 import { SpringValue, useTrail, animated } from "@react-spring/web";
@@ -8,6 +8,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import Divider from "src/components/shared/Divider";
 import { GarmentData } from "src/types";
+import { StylingVariables } from "src/components/LandingPage/DailyGarment";
 
 type Trail = {
   opacity: SpringValue<number>;
@@ -17,14 +18,13 @@ type Trail = {
 
 interface DailyGarmentInfoProps {
   garment: GarmentData;
-  height: number;
-  show: boolean | undefined;
+  stylevars: StylingVariables;
 }
 
 const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
-  const { garment, height, show } = props;
+  const { garment, stylevars } = props;
 
-  const trail: Trail = useTrail(show ? 5 : 0, {
+  const trail: Trail = useTrail(stylevars.show ? 5 : 0, {
     delay: 500,
     from: {
       opacity: 0,
@@ -34,25 +34,25 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
     to: {
       opacity: 1,
       transform: "translate3d(0px, 0px, 0)",
-      color: show ? "#020b1c" : "white",
+      color: stylevars.show ? "#020b1c" : "white",
     },
     config: { duration: 500 },
   });
 
   return (
-      <Styled.InfoCardContainer height={height ? height : 100}>
+    <Styled.InfoCardContainer stylevars={stylevars}>
       {trail.map((props, index) => (
         <animated.div key={index} style={{ ...props, width: "100%" }}>
           {index === 0 && <Divider color="#020b1c" />}
           {index === 1 && (
             <Styled.InfoTitleContainer>
-              <Styled.InfoTitle height={height}>
+              <Styled.InfoTitle stylevars={stylevars}>
                 {garment?.garmentTitle}
               </Styled.InfoTitle>
             </Styled.InfoTitleContainer>
           )}
           {index === 2 && (
-            <Styled.InfoDetails height={height}>
+            <Styled.InfoDetails stylevars={stylevars}>
               <p>c. {garment?.beginYear}</p>
               <p>
                 <span>{garment?.cultureCountry}</span>
@@ -60,9 +60,9 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
             </Styled.InfoDetails>
           )}
           {index === 3 && (
-            <Styled.ButtonContainer height={height}>
+            <Styled.ButtonContainer stylevars={stylevars}>
               <Link to={`/garments/${garment?.id}`} target="_blank">
-                <Styled.Button role="button" height={height}>
+                <Styled.Button role="button" stylevars={stylevars}>
                   <span>Learn more</span>
                   <div className="line"></div>
                   <ArrowForwardIcon />
@@ -88,9 +88,11 @@ export default DailyGarmentInfo;
 let Styled: any;
 Styled = {};
 
-Styled.InfoCardContainer = styled.div((props: any) => {
-  const t = props.theme;
-  const shortScreen = props.height <= 800;
+type Props = { theme: Theme; stylevars: StylingVariables };
+
+Styled.InfoCardContainer = styled.div(({ theme, stylevars }: Props) => {
+  const t = theme;
+  const { isShortScreen } = stylevars;
   return css`
     label: DailyGarment_InfoCardContainer;
     display: flex;
@@ -102,15 +104,15 @@ Styled.InfoCardContainer = styled.div((props: any) => {
     ${[t.my(4)]};
 
     ${t.mq.sm} {
-      margin-top: ${shortScreen ? "16px" : "24px"};
-      margin-bottom: ${shortScreen ? "16px" : "24px"};
+      margin-top: ${isShortScreen ? "16px" : "24px"};
+      margin-bottom: ${isShortScreen ? "16px" : "24px"};
       max-height: 200px;
     }
 
     ${t.mq.md} {
-      max-height: ${shortScreen ? "26%" : "224px"};
-      margin-top: ${shortScreen ? "2%" : "36px"};
-      margin-bottom: ${shortScreen ? "2%" : "36px"};
+      max-height: ${isShortScreen ? "26%" : "224px"};
+      margin-top: ${isShortScreen ? "2%" : "36px"};
+      margin-bottom: ${isShortScreen ? "2%" : "36px"};
     }
 
     ${t.mq.xl} {
@@ -123,7 +125,6 @@ Styled.InfoCardContainer = styled.div((props: any) => {
       width: 28%;
     }
   `;
-  
 });
 
 Styled.InfoTitleContainer = styled.div(() => {
@@ -135,9 +136,9 @@ Styled.InfoTitleContainer = styled.div(() => {
   `;
 });
 
-Styled.InfoTitle = styled.h2((props: any) => {
-  const t = props.theme;
-  const shortScreen = props.height <= 800;
+Styled.InfoTitle = styled.h2(({ theme, stylevars }: Props) => {
+  const t = theme;
+  const { isShortScreen } = stylevars;
   return css`
     label: DailyGarmentInfo_InfoTitle;
     ${[t.pt(4), t.pl(2)]}
@@ -150,9 +151,9 @@ Styled.InfoTitle = styled.h2((props: any) => {
     margin-bottom: -1rem;
 
     ${t.mq.md} {
-      font-size: ${shortScreen ? "1.75rem" : "2.25rem"};
-      line-height: ${shortScreen ? "2.5rem" : "3rem"};
-      padding-top: ${shortScreen ? "16px" : "24px"};
+      font-size: ${isShortScreen ? "1.75rem" : "2.25rem"};
+      line-height: ${isShortScreen ? "2.5rem" : "3rem"};
+      padding-top: ${isShortScreen ? "16px" : "24px"};
       ${[t.pl(2)]}
     }
 
@@ -164,9 +165,9 @@ Styled.InfoTitle = styled.h2((props: any) => {
   `;
 });
 
-Styled.ButtonContainer = styled.div((props: any) => {
-  const t = props.theme;
-  const shortScreen = props.height <= 800;
+Styled.ButtonContainer = styled.div(({ theme, stylevars }: Props) => {
+  const t = theme;
+  const { isShortScreen } = stylevars;
   return css`
     label: DailyGarmentInfo_ButtonContainer;
     display: flex;
@@ -175,7 +176,7 @@ Styled.ButtonContainer = styled.div((props: any) => {
     ${[t.pb(4), t.pl(2)]};
 
     ${t.mq.md} {
-      padding-bottom: ${shortScreen ? "16px" : "24px"};
+      padding-bottom: ${isShortScreen ? "16px" : "24px"};
       ${[t.pl(2)]};
     }
 
@@ -185,9 +186,9 @@ Styled.ButtonContainer = styled.div((props: any) => {
   `;
 });
 
-Styled.Button = styled.div((props: any) => {
-  const t = props.theme;
-  const shortScreen = props.height <= 800;
+Styled.Button = styled.div(({ theme, stylevars }: Props) => {
+  const t = theme;
+  const { isShortScreen } = stylevars;
   return css`
     label: DailyGarmentInfo_LearnMoreButton;
     display: flex;
@@ -225,8 +226,8 @@ Styled.Button = styled.div((props: any) => {
       letter-spacing: 0.01rem;
 
       ${t.mq.md} {
-        font-size: ${shortScreen ? "1.375rem" : "1.5rem"};
-        line-height: ${shortScreen ? "1.5rem" : "2rem"};
+        font-size: ${isShortScreen ? "1.375rem" : "1.5rem"};
+        line-height: ${isShortScreen ? "1.5rem" : "2rem"};
       }
 
       ${t.mq.xl} {
@@ -237,9 +238,9 @@ Styled.Button = styled.div((props: any) => {
   `;
 });
 
-Styled.InfoDetails = styled.div((props: any) => {
-  const t = props.theme;
-  const shortScreen = props.height <= 800;
+Styled.InfoDetails = styled.div(({ theme, stylevars }: Props) => {
+  const t = theme;
+  const { isShortScreen } = stylevars;
   return css`
     label: DailyGarmentInfo_InfoDetails;
     display: flex;
@@ -252,8 +253,8 @@ Styled.InfoDetails = styled.div((props: any) => {
 
     ${t.mq.md} {
       font-size: 1rem;
-      padding-bottom: ${shortScreen ? "16px" : "24px"};
-      padding-top: ${shortScreen ? "8px" : "16px"};
+      padding-bottom: ${isShortScreen ? "16px" : "24px"};
+      padding-top: ${isShortScreen ? "8px" : "16px"};
     }
 
     ${t.mq.xl} {

@@ -4,17 +4,14 @@ import { css, Theme } from "@emotion/react";
 import { useTrail, animated } from "@react-spring/web";
 
 import Divider from "src/components/shared/Divider";
+import { StylingVariables } from "src/components/LandingPage/DailyGarment";
 
 interface DailyGarmentTitleProps {
-  show: boolean | undefined;
-  height: number | undefined;
+  stylevars: StylingVariables;
 }
 
-const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({
-  show,
-  height,
-}) => {
-  const enter = useTrail(show ? 2 : 0, {
+const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({ stylevars }) => {
+  const enter = useTrail(stylevars.show ? 2 : 0, {
     from: {
       opacity: 0,
       transform: "translate3d(-100px,0px, 0)",
@@ -25,13 +22,13 @@ const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({
       opacity: 1,
       transform: "translate3d(0px, 0px, 0)",
       width: "100%",
-      color: show ? "#020b1c" : "white",
+      color: stylevars.show ? "#020b1c" : "white",
     },
     config: { duration: 500 },
   });
 
   return (
-    <Styled.ContentTitleContainer height={height ? height : 100}>
+    <Styled.ContentTitleContainer stylevars={stylevars}>
       {enter.map((props, index) => (
         <animated.div key={index} style={{ ...props, width: "100%" }}>
           {index === 0 && <h2>Garment of the Day</h2>}
@@ -49,10 +46,12 @@ export default DailyGarmentTitle;
 let Styled: any;
 Styled = {};
 
+type Props = { theme: Theme; stylevars: StylingVariables };
+
 Styled.ContentTitleContainer = styled(animated.div)(
-  ({ theme, height }: { theme: Theme; height: number | undefined }) => {
+  ({ theme, stylevars }: Props) => {
     const t = theme;
-    const shortScreen = height && height <= 800;
+    const { isShortScreen } = stylevars;
     return css`
       label: HomeContentContainer;
       display: flex;
@@ -65,17 +64,17 @@ Styled.ContentTitleContainer = styled(animated.div)(
       ${[t.mt(4), t.mb(4)]};
 
       ${t.mq.xs} {
-        margin-bottom: ${shortScreen ? "16px" : "20px"};
+        margin-bottom: ${isShortScreen ? "16px" : "20px"};
       }
 
       ${t.mq.sm} {
-        margin-bottom: ${shortScreen ? "16px" : "24px"};
+        margin-bottom: ${isShortScreen ? "16px" : "24px"};
       }
 
       ${t.mq.md} {
-        height: ${shortScreen ? "auto" : "64px"};
-        margin-top: ${shortScreen ? "2%" : "36px"};
-        margin-bottom: ${shortScreen ? "2%" : "36px"};
+        height: ${isShortScreen ? "auto" : "64px"};
+        margin-top: ${isShortScreen ? "2%" : "36px"};
+        margin-bottom: ${isShortScreen ? "2%" : "36px"};
       }
 
       ${t.mq.xl} {
@@ -101,7 +100,7 @@ Styled.ContentTitleContainer = styled(animated.div)(
         ${[t.pb(0)]};
 
         ${t.mq.md} {
-          font-size: ${shortScreen ? "1.375rem" : "1.75rem"};
+          font-size: ${isShortScreen ? "1.375rem" : "1.75rem"};
         }
 
         ${t.mq.xl} {

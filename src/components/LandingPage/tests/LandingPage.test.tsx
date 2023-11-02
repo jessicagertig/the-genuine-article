@@ -18,9 +18,14 @@ jest.doMock("src/context/WindowSizeContext", () => ({
   useWindowSizeContext: mockUseWindowSizeContext,
 }));
 
+function mockMain() {
+  return React.forwardRef<HTMLDivElement, {}>((props, ref) => <div ref={ref}>Main</div>);
+}
+
 // Mock the components
 jest.mock("src/components/shared/NavBar", () => () => <div>NavBar</div>);
 jest.mock("src/components/LandingPage/Main", () => () => <div>Main</div>);
+jest.mock("src/components/LandingPage/Main", () => mockMain());
 jest.mock("src/components/LandingPage/DailyGarment", () => () => (
   <div>DailyGarment</div>
 ));

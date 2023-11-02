@@ -23,7 +23,11 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
   return (
     <Styled.HomeContainer height={windowHeight}>
       <Styled.BackgroundContainer>
-        <Styled.Image src={imageUrl}>
+        <Styled.Image
+          src={imageUrl}
+          role="img"
+          aria-label="background of floral brocaded fabric with red and pink roses on a blue base"
+        >
           <img
             src={imageUrl}
             alt="background of floral brocaded fabric with red and pink roses on a blue base"
@@ -39,7 +43,10 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
           <p>Genuine articles of clothing from the 19th century</p>
         </Styled.TextContainer>
       </Styled.ContentContainer>
-      <Styled.ButtonContainer data-testid="scroll-down-teaser-button" onClick={handleClickScrollTeaser}>
+      <Styled.ButtonContainer
+        data-testid="scroll-down-teaser-button"
+        onClick={handleClickScrollTeaser}
+      >
         <Bounce />
       </Styled.ButtonContainer>
     </Styled.HomeContainer>

@@ -1,20 +1,31 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { render, screen, fireEvent } from "src/utils/themeTestHelper";
 import Main from "src/components/LandingPage/Main";
 
 describe("Main component", () => {
-  it("renders 'A Digital Collection' text", () => {
-    // Create a mock ref object
-    const scrollRef = React.createRef<HTMLDivElement>();
-    // Render the Main component
+  it("renders background image and text", () => {
     render(
-        <Main ref={scrollRef} windowHeight={500} />
+      <Main windowHeight={100} />
     );
-
-    // Assert that the 'A Digital Collection' text exists
-    const textElement = screen.getByText("A Digital Collection");
-    expect(textElement).toBeInTheDocument();
+  
+    // Test for background image
+    const backgroundImage = screen.getByRole("img");
+    expect(backgroundImage).toHaveAttribute(
+      "src",
+      expect.stringContaining("blueRoseDress1800")
+    );
+  
+    // Test for header text
+    const headerText = screen.getByText("A Digital Collection");
+    expect(headerText).toBeInTheDocument();
+  
+    // Test for text content
+    const textContent = screen.getByText(
+      "Genuine articles of clothing from the 19th century"
+    );
+    expect(textContent).toBeInTheDocument();
   });
+
 
   it("calls function with behavior smooth when scroll-down-teaser-button is clicked", () => {
     const scrollIntoViewMock = jest.fn();

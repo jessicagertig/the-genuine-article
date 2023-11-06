@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import Bounce from "src/components/shared/Bounce";
+import ProgressiveImg from 'src/components/shared/ProgressiveImage';
+import TinyImg from 'src/assets/tinyBg.jpeg'
 
 interface MainProps {
   windowHeight: number;
@@ -23,7 +25,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
   return (
     <Styled.HomeContainer height={windowHeight}>
       <Styled.BackgroundContainer>
-        <Styled.Image
+        {/* <Styled.Image
           src={imageUrl}
           role="img"
           aria-label="background of floral brocaded fabric with red and pink roses on a blue base"
@@ -32,7 +34,8 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
             src={imageUrl}
             alt="background of floral brocaded fabric with red and pink roses on a blue base"
           />
-        </Styled.Image>
+        </Styled.Image> */}
+        <ProgressiveImg placeholderSrc={TinyImg} src={imageUrl} alt="background of floral brocaded fabric with red and pink roses on a blue base"/>
       </Styled.BackgroundContainer>
       <Styled.ContentContainer>
         <Styled.HeaderText>
@@ -94,21 +97,21 @@ Styled.BackgroundContainer = styled.div(() => {
   `;
 });
 
-Styled.Image = styled.div((props: any) => {
-  return css`
-    background-image: url(${props.src});
-    background-attachment: fixed;
-    background-position: center top;
-    background-size: cover;
-    display: block;
-    height: 100%;
-    width: 100%;
+// Styled.Image = styled.div((props: any) => {
+//   return css`
+//     background-image: url(${props.src});
+//     background-attachment: fixed;
+//     background-position: center top;
+//     background-size: cover;
+//     display: block;
+//     height: 100%;
+//     width: 100%;
 
-    img {
-      display: none;
-    }
-  `;
-});
+//     img {
+//       display: none;
+//     }
+//   `;
+// });
 
 Styled.ContentContainer = styled.div(props => {
   const t = props.theme;

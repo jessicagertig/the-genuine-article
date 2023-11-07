@@ -1,16 +1,18 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 
 interface ProgressiveImgProps
   extends React.ImgHTMLAttributes<HTMLImageElement> {
   placeholderSrc: string;
   src: string;
+  isBackground: boolean;
 }
 
 const ProgressiveImg: React.FC<ProgressiveImgProps> = ({
   placeholderSrc,
   src,
+  isBackground,
   ...props
 }) => {
   const [imgSrc, setImgSrc] = React.useState(placeholderSrc || src);
@@ -26,12 +28,24 @@ const ProgressiveImg: React.FC<ProgressiveImgProps> = ({
   const isLoadingState = placeholderSrc && imgSrc === placeholderSrc;
 
   return (
-    <Styled.Wrapper isLoading={isLoadingState}>
-      <Styled.Image
-        {...{ src: imgSrc, ...props }}
-        alt={props.alt || ""}
-        isLoading={isLoadingState}
-      />
+    <Styled.Wrapper
+      isLoading={isLoadingState}
+      isBackground={isBackground}
+      {...{ ...props }}
+    >
+      {isBackground ? (
+        <Styled.BackgroundImage
+          {...{ src: imgSrc, ...props }}
+          alt={props.alt || ""}
+          isLoading={isLoadingState}
+        />
+      ) : (
+        <Styled.Image
+          {...{ src: imgSrc, ...props }}
+          alt={props.alt || ""}
+          isLoading={isLoadingState}
+        />
+      )}
     </Styled.Wrapper>
   );
 };
@@ -43,10 +57,16 @@ export default ProgressiveImg;
 let Styled: any;
 Styled = {};
 
-Styled.Wrapper = styled.div((props: any) => {
+interface Props extends ProgressiveImgProps {
+  theme: Theme;
+  isLoading: boolean;
+  isBackground: boolean;
+}
+
+Styled.Wrapper = styled.div((props: Props) => {
   return css`
-    width: 100%;
-    height: 100%;
+    height: ${props.height ?? "100%"};
+    width: ${props.width ?? "100%"};
     overflow: hidden;
     &:after {
       content: "";
@@ -61,7 +81,7 @@ Styled.Wrapper = styled.div((props: any) => {
   `;
 });
 
-Styled.Image = styled.img((props: any) => {
+Styled.BackgroundImage = styled.img((props: Props) => {
   return css`
     label: ProgressiveImage;
     object-fit: cover;
@@ -69,6 +89,19 @@ Styled.Image = styled.img((props: any) => {
     display: block;
     height: 100%;
     width: 100%;
+    background-color: #162c6b;
+    clip-path: ${props.isLoading ? "inset(0)" : "none"};
+  `;
+});
+
+Styled.Image = styled.img((props: Props) => {
+  return css`
+    label: ProgressiveImage;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    height: ${props.height ?? "100%"};
+    width: ${props.width ?? "100%"};
     background-color: #162c6b;
     clip-path: ${props.isLoading ? "inset(0)" : "none"};
   `;

@@ -29,6 +29,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
           placeholderSrc={TinyImg}
           src={imageUrl}
           alt="background of floral brocaded fabric with red and pink roses on a blue base"
+          isBackground={true}
         />
       </Styled.BackgroundContainer>
       <Styled.ContentContainer>

@@ -117,7 +117,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const isVeryShortScreen = height <= 630;
   const isShortScreen = height <= 800;
   const heightInVh = height / (height * 0.01);
-  const styleVars = {
+  const styleVars: StylingVariables = {
     isVeryShortScreen,
     isShortScreen,
     heightInVh,

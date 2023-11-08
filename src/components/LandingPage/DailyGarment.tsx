@@ -51,6 +51,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
   const contentContainerRef = React.useRef<HTMLDivElement>(null!);
+  const intersectionRef = React.useRef<HTMLDivElement>(null!);
 
   const [addBottomMobileNavPadding, setaddBottomMobileNavPadding] =
     React.useState(false);
@@ -72,7 +73,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
 
   /* ANIMATIONS */
 
-  const dataRef = useIntersectionObserver(imgRef, {
+  const dataRef = useIntersectionObserver(intersectionRef, {
     freezeOnceVisible: true,
   });
 
@@ -134,6 +135,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
         <Styled.HomeContentContainer
           styleVars={styleVars}
           addBottomMobileNavPadding={addBottomMobileNavPadding}
+          ref={intersectionRef}
         >
           {noImage || !garment ? <DailyGarmentSkeleton /> : null}
           {garment ? (

@@ -48,7 +48,7 @@ Styled = {};
 
 type Props = { theme: Theme; isShortScreen: boolean };
 
-Styled.ContentTitleContainer = styled(animated.div)(
+Styled.ContentTitleContainer = styled.div(
   ({ theme, isShortScreen }: Props) => {
     const t = theme;
     return css`

@@ -4,11 +4,11 @@ import { css, Theme } from "@emotion/react";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import Skeleton from "@mui/material/Skeleton";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import DailyGarmentInfo from "src/components/LandingPage/DailyGarmentInfo";
 import DailyGarmentTitle from "src/components/LandingPage/DailyGarmentTitle";
+import DailyGarmentSkeleton from "src/components/LandingPage/DailyGarmentSkeleton";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useDailyGarment } from "src/queryHooks/useGarments";
@@ -117,7 +117,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
   const isVeryShortScreen = height <= 630;
   const isShortScreen = height <= 800;
   const heightInVh = height / (height * 0.01);
-  const stylevars = {
+  const styleVars = {
     isVeryShortScreen,
     isShortScreen,
     heightInVh,
@@ -126,49 +126,43 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     noImage,
   };
 
-  // Image container can NOT be conditionally displayed (even if loading is slow)
+  // Image container can NOT be conditionally displayed based on loading - only if no garment data exists
   // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
-    <Styled.Container stylevars={stylevars}>
-      <Styled.SubContainer stylevars={stylevars} ref={contentContainerRef}>
+    <Styled.Container styleVars={styleVars}>
+      <Styled.SubContainer styleVars={styleVars} ref={contentContainerRef}>
         <Styled.HomeContentContainer
-          stylevars={stylevars}
+          styleVars={styleVars}
           addBottomMobileNavPadding={addBottomMobileNavPadding}
         >
-          <DailyGarmentTitle stylevars={stylevars} />
-          <Styled.ImageCardContainer currentWidth={currentWidth}>
-            <Styled.Card
-              stylevars={stylevars}
-              noImage={noImage}
-              imageLoaded={imageLoaded}
-              ref={sizeRef}
-            >
-              {noImage || !imageLoaded ? (
-                <Skeleton
-                  variant="rectangular"
-                  width="calc((100vh - 160px) * 0.82)"
-                  height="calc(100vh - 160px)"
-                  sx={{
-                    bgcolor: "rgba(211, 217, 229, 0.5)",
-                    borderRadius: "8px",
-                  }}
-                />
-              ) : null}
-              <Styled.DisplayedImage
-                stylevars={stylevars}
-                width={maxZoomedImgWidth}
-                onClick={handleZoom}
-              >
-                <img
-                  ref={imgRef}
-                  src={imageUrl}
-                  alt={garment ? garment.garmentTitle : "garment"}
-                  onLoad={onLoad}
-                />
-              </Styled.DisplayedImage>
-            </Styled.Card>
-          </Styled.ImageCardContainer>
-          <DailyGarmentInfo stylevars={stylevars} garment={garment} />
+          {noImage || !garment ? <DailyGarmentSkeleton /> : null}
+          {garment ? (
+            <>
+              <DailyGarmentTitle styleVars={styleVars} />
+              <Styled.ImageCardContainer currentWidth={currentWidth}>
+                <Styled.Card
+                  styleVars={styleVars}
+                  noImage={noImage}
+                  imageLoaded={imageLoaded}
+                  ref={sizeRef}
+                >
+                  <Styled.DisplayedImage
+                    styleVars={styleVars}
+                    width={maxZoomedImgWidth}
+                    onClick={handleZoom}
+                  >
+                    <img
+                      ref={imgRef}
+                      src={imageUrl}
+                      alt={garment ? garment.garmentTitle : "garment"}
+                      onLoad={onLoad}
+                    />
+                  </Styled.DisplayedImage>
+                </Styled.Card>
+              </Styled.ImageCardContainer>
+              <DailyGarmentInfo styleVars={styleVars} garment={garment} />
+            </>
+          ) : null}
         </Styled.HomeContentContainer>
       </Styled.SubContainer>
     </Styled.Container>
@@ -182,11 +176,11 @@ export default HomeContent;
 let Styled: any;
 Styled = {};
 
-type Props = { theme: Theme; stylevars: StylingVariables };
+type Props = { theme: Theme; styleVars: StylingVariables };
 
-Styled.Container = styled.div(({ theme, stylevars }: Props) => {
+Styled.Container = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { heightInVh, isVeryShortScreen } = stylevars;
+  const { heightInVh, isVeryShortScreen } = styleVars;
   return css`
     label: DailyGarment_Container;
     display: flex;
@@ -202,9 +196,9 @@ Styled.Container = styled.div(({ theme, stylevars }: Props) => {
   `;
 });
 
-Styled.SubContainer = styled.div(({ theme, stylevars }: Props) => {
+Styled.SubContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { heightInVh, isVeryShortScreen } = stylevars;
+  const { heightInVh, isVeryShortScreen } = styleVars;
   return css`
     label: DailyGarment_SubContainer;
     display: flex;
@@ -226,9 +220,9 @@ Styled.SubContainer = styled.div(({ theme, stylevars }: Props) => {
   `;
 });
 
-Styled.HomeContentContainer = styled.div(({ theme, stylevars }: Props) => {
+Styled.HomeContentContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { addPadding, isShortScreen } = stylevars;
+  const { addPadding, isShortScreen } = styleVars;
   return css`
     label: DailyGarment_HomeContentContainer;
     display: flex;
@@ -280,9 +274,9 @@ Styled.ImageCardContainer = styled.div(
   }
 );
 
-Styled.Card = styled.div(({ theme, stylevars }: Props) => {
+Styled.Card = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { heightInVh, noImage, isShortScreen } = stylevars;
+  const { heightInVh, noImage, isShortScreen } = styleVars;
   return css`
     label: Card;
     display: ${noImage ? "none" : "flex"};
@@ -297,7 +291,10 @@ Styled.Card = styled.div(({ theme, stylevars }: Props) => {
     z-index: 0;
 
     ${t.mq.md} {
-      max-height: max(calc(${heightInVh}vh - ${isShortScreen ? "40vh" : "414px"}), 378px);
+      max-height: max(
+        calc(${heightInVh}vh - ${isShortScreen ? "40vh" : "414px"}),
+        378px
+      );
       min-height: 378px;
     }
 
@@ -308,9 +305,9 @@ Styled.Card = styled.div(({ theme, stylevars }: Props) => {
   `;
 });
 
-Styled.DisplayedImage = styled.div(({ theme, stylevars }: Props) => {
+Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { heightInVh, noImage, isShortScreen } = stylevars;
+  const { heightInVh, noImage, isShortScreen } = styleVars;
   return css`
     label: Garment_DisplayedImage;
     background-color: rgba(211, 217, 229, 0.5);
@@ -322,7 +319,9 @@ Styled.DisplayedImage = styled.div(({ theme, stylevars }: Props) => {
     z-index: 1;
 
     ${t.mq.md} {
-      max-height: max(calc(${heightInVh}vh - ${isShortScreen ? "40vh" : "414px"}), 378px);
+      max-height: max(calc(${heightInVh}vh - ${
+    isShortScreen ? "40vh" : "414px"
+  }), 378px);
       min-height: 378px;
     }
 
@@ -346,7 +345,9 @@ Styled.DisplayedImage = styled.div(({ theme, stylevars }: Props) => {
       }
 
     ${t.mq.md} {
-      max-height: max(calc(${heightInVh}vh - ${isShortScreen ? "40vh" : "414px"}), 378px);
+      max-height: max(calc(${heightInVh}vh - ${
+    isShortScreen ? "40vh" : "414px"
+  }), 378px);
       min-height: 378px;
     }
 

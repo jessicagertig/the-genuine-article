@@ -154,7 +154,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
                     <img
                       ref={imgRef}
                       src={imageUrl}
-                      alt={garment ? garment.garmentTitle : "garment"}
+                      alt={garment?.garmentTitle}
                       onLoad={onLoad}
                     />
                   </Styled.DisplayedImage>
@@ -259,7 +259,7 @@ Styled.ImageCardContainer = styled.div(
   ({ theme, currentWidth }: { theme: Theme; currentWidth: number }) => {
     const t = theme;
     return css`
-      label: DailyGarment_CardContainer;
+      label: DailyGarment_ImageCardContainer;
       display: flex;
       justify-content: center;
 

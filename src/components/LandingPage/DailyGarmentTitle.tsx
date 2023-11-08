@@ -7,11 +7,11 @@ import Divider from "src/components/shared/Divider";
 import { StylingVariables } from "src/components/LandingPage/DailyGarment";
 
 interface DailyGarmentTitleProps {
-  stylevars: StylingVariables;
+  styleVars: StylingVariables;
 }
 
-const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({ stylevars }) => {
-  const enter = useTrail(stylevars.show ? 2 : 0, {
+const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({ styleVars }) => {
+  const enter = useTrail(styleVars.show ? 2 : 0, {
     from: {
       opacity: 0,
       transform: "translate3d(-100px,0px, 0)",
@@ -22,13 +22,13 @@ const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({ stylevars }) => {
       opacity: 1,
       transform: "translate3d(0px, 0px, 0)",
       width: "100%",
-      color: stylevars.show ? "#020b1c" : "white",
+      color: styleVars.show ? "#020b1c" : "white",
     },
     config: { duration: 500 },
   });
 
   return (
-    <Styled.ContentTitleContainer stylevars={stylevars}>
+    <Styled.ContentTitleContainer styleVars={styleVars}>
       {enter.map((props, index) => (
         <animated.div key={index} style={{ ...props, width: "100%" }}>
           {index === 0 && <h2>Garment of the Day</h2>}
@@ -46,12 +46,12 @@ export default DailyGarmentTitle;
 let Styled: any;
 Styled = {};
 
-type Props = { theme: Theme; stylevars: StylingVariables };
+type Props = { theme: Theme; styleVars: StylingVariables };
 
 Styled.ContentTitleContainer = styled(animated.div)(
-  ({ theme, stylevars }: Props) => {
+  ({ theme, styleVars }: Props) => {
     const t = theme;
-    const { isShortScreen } = stylevars;
+    const { isShortScreen } = styleVars;
     return css`
       label: HomeContentContainer;
       display: flex;

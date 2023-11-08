@@ -18,13 +18,13 @@ type Trail = {
 
 interface DailyGarmentInfoProps {
   garment: GarmentData;
-  stylevars: StylingVariables;
+  styleVars: StylingVariables;
 }
 
 const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
-  const { garment, stylevars } = props;
+  const { garment, styleVars } = props;
 
-  const trail: Trail = useTrail(stylevars.show ? 5 : 0, {
+  const trail: Trail = useTrail(styleVars.show ? 5 : 0, {
     delay: 500,
     from: {
       opacity: 0,
@@ -34,25 +34,25 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
     to: {
       opacity: 1,
       transform: "translate3d(0px, 0px, 0)",
-      color: stylevars.show ? "#020b1c" : "white",
+      color: styleVars.show ? "#020b1c" : "white",
     },
     config: { duration: 500 },
   });
 
   return (
-    <Styled.InfoCardContainer stylevars={stylevars}>
+    <Styled.InfoCardContainer styleVars={styleVars}>
       {trail.map((props, index) => (
         <animated.div key={index} style={{ ...props, width: "100%" }}>
           {index === 0 && <Divider color="#020b1c" />}
           {index === 1 && (
             <Styled.InfoTitleContainer>
-              <Styled.InfoTitle stylevars={stylevars}>
+              <Styled.InfoTitle styleVars={styleVars}>
                 {garment?.garmentTitle}
               </Styled.InfoTitle>
             </Styled.InfoTitleContainer>
           )}
           {index === 2 && (
-            <Styled.InfoDetails stylevars={stylevars}>
+            <Styled.InfoDetails styleVars={styleVars}>
               <p>c. {garment?.beginYear}</p>
               <p>
                 <span>{garment?.cultureCountry}</span>
@@ -60,9 +60,9 @@ const DailyGarmentInfo: React.FC<DailyGarmentInfoProps> = props => {
             </Styled.InfoDetails>
           )}
           {index === 3 && (
-            <Styled.ButtonContainer stylevars={stylevars}>
+            <Styled.ButtonContainer styleVars={styleVars}>
               <Link to={`/garments/${garment?.id}`} target="_blank">
-                <Styled.Button role="button" stylevars={stylevars}>
+                <Styled.Button role="button" styleVars={styleVars}>
                   <span>Learn more</span>
                   <div className="line"></div>
                   <ArrowForwardIcon />
@@ -88,11 +88,11 @@ export default DailyGarmentInfo;
 let Styled: any;
 Styled = {};
 
-type Props = { theme: Theme; stylevars: StylingVariables };
+type Props = { theme: Theme; styleVars: StylingVariables };
 
-Styled.InfoCardContainer = styled.div(({ theme, stylevars }: Props) => {
+Styled.InfoCardContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { isShortScreen } = stylevars;
+  const { isShortScreen } = styleVars;
   return css`
     label: DailyGarment_InfoCardContainer;
     display: flex;
@@ -136,9 +136,9 @@ Styled.InfoTitleContainer = styled.div(() => {
   `;
 });
 
-Styled.InfoTitle = styled.h2(({ theme, stylevars }: Props) => {
+Styled.InfoTitle = styled.h2(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { isShortScreen } = stylevars;
+  const { isShortScreen } = styleVars;
   return css`
     label: DailyGarmentInfo_InfoTitle;
     ${[t.pt(4), t.pl(2)]}
@@ -165,9 +165,9 @@ Styled.InfoTitle = styled.h2(({ theme, stylevars }: Props) => {
   `;
 });
 
-Styled.ButtonContainer = styled.div(({ theme, stylevars }: Props) => {
+Styled.ButtonContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { isShortScreen } = stylevars;
+  const { isShortScreen } = styleVars;
   return css`
     label: DailyGarmentInfo_ButtonContainer;
     display: flex;
@@ -186,9 +186,9 @@ Styled.ButtonContainer = styled.div(({ theme, stylevars }: Props) => {
   `;
 });
 
-Styled.Button = styled.div(({ theme, stylevars }: Props) => {
+Styled.Button = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { isShortScreen } = stylevars;
+  const { isShortScreen } = styleVars;
   return css`
     label: DailyGarmentInfo_LearnMoreButton;
     display: flex;
@@ -238,9 +238,9 @@ Styled.Button = styled.div(({ theme, stylevars }: Props) => {
   `;
 });
 
-Styled.InfoDetails = styled.div(({ theme, stylevars }: Props) => {
+Styled.InfoDetails = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { isShortScreen } = stylevars;
+  const { isShortScreen } = styleVars;
   return css`
     label: DailyGarmentInfo_InfoDetails;
     display: flex;

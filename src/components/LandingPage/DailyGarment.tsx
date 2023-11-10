@@ -23,6 +23,7 @@ export interface StylingVariables {
   addPadding: boolean;
   show: boolean | undefined;
   noImage: boolean;
+  noGarment: boolean;
 }
 
 interface HomeContentProps {
@@ -125,6 +126,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     addPadding: addBottomMobileNavPadding,
     show,
     noImage,
+    noGarment: !garment,
   };
 
   // Image container can NOT be conditionally displayed based on loading - only if no garment data exists
@@ -138,33 +140,29 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
           ref={intersectionRef}
         >
           {noImage || !garment ? <DailyGarmentSkeleton /> : null}
-          {garment ? (
-            <>
-              <DailyGarmentTitle styleVars={styleVars} />
-              <Styled.ImageCardContainer currentWidth={currentWidth}>
-                <Styled.Card
-                  styleVars={styleVars}
-                  noImage={noImage}
-                  imageLoaded={imageLoaded}
-                  ref={sizeRef}
-                >
-                  <Styled.DisplayedImage
-                    styleVars={styleVars}
-                    width={maxZoomedImgWidth}
-                    onClick={handleZoom}
-                  >
-                    <img
-                      ref={imgRef}
-                      src={imageUrl}
-                      alt={garment?.garmentTitle}
-                      onLoad={onLoad}
-                    />
-                  </Styled.DisplayedImage>
-                </Styled.Card>
-              </Styled.ImageCardContainer>
-              <DailyGarmentInfo styleVars={styleVars} garment={garment} />
-            </>
-          ) : null}
+          <DailyGarmentTitle styleVars={styleVars} />
+          <Styled.ImageCardContainer currentWidth={currentWidth}>
+            <Styled.Card
+              styleVars={styleVars}
+              noImage={noImage}
+              imageLoaded={imageLoaded}
+              ref={sizeRef}
+            >
+              <Styled.DisplayedImage
+                styleVars={styleVars}
+                width={maxZoomedImgWidth}
+                onClick={handleZoom}
+              >
+                <img
+                  ref={imgRef}
+                  src={imageUrl}
+                  alt={garment?.garmentTitle}
+                  onLoad={onLoad}
+                />
+              </Styled.DisplayedImage>
+            </Styled.Card>
+          </Styled.ImageCardContainer>
+          <DailyGarmentInfo styleVars={styleVars} garment={garment} />
         </Styled.HomeContentContainer>
       </Styled.SubContainer>
     </Styled.Container>
@@ -266,7 +264,7 @@ Styled.ImageCardContainer = styled.div(
       justify-content: center;
 
       ${t.mq.xl} {
-        width: min(46%, calc(${currentWidth}px + 32px));
+        width: min(44%, calc(${currentWidth}px + 32px));
       }
 
       ${t.mq.xxl} {
@@ -278,10 +276,10 @@ Styled.ImageCardContainer = styled.div(
 
 Styled.Card = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { heightInVh, noImage, isShortScreen } = styleVars;
+  const { heightInVh, noImage, noGarment, isShortScreen } = styleVars;
   return css`
     label: Card;
-    display: ${noImage ? "none" : "flex"};
+    display: ${noImage || noGarment ? "none" : "flex"};
     flex-direction: column;
     align-items: center;
     background-color: #d3d9e5;

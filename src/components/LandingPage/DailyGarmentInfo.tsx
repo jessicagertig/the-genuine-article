@@ -92,10 +92,10 @@ type Props = { theme: Theme; styleVars: StylingVariables };
 
 Styled.InfoCardContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { isShortScreen } = styleVars;
+  const { isShortScreen, noGarment } = styleVars;
   return css`
     label: DailyGarment_InfoCardContainer;
-    display: flex;
+    display: ${noGarment ? "none" : "flex"};
     flex-direction: column;
     justify-content: center;
     position: relative;
@@ -117,7 +117,7 @@ Styled.InfoCardContainer = styled.div(({ theme, styleVars }: Props) => {
 
     ${t.mq.xl} {
       max-height: 224px;
-      width: 27%;
+      width: 26%;
       ${t.my(9)}
     }
 

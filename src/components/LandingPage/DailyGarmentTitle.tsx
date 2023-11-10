@@ -10,8 +10,8 @@ interface DailyGarmentTitleProps {
   styleVars: StylingVariables;
 }
 
-const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({ styleVars: { show, isShortScreen} }) => {
-  const enter = useTrail(show ? 2 : 0, {
+const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({ styleVars }) => {
+  const enter = useTrail(styleVars.show ? 2 : 0, {
     from: {
       opacity: 0,
       transform: "translate3d(-100px,0px, 0)",
@@ -22,13 +22,13 @@ const DailyGarmentTitle: React.FC<DailyGarmentTitleProps> = ({ styleVars: { show
       opacity: 1,
       transform: "translate3d(0px, 0px, 0)",
       width: "100%",
-      color: show ? "#020b1c" : "white",
+      color: styleVars.show ? "#020b1c" : "white",
     },
     config: { duration: 500 },
   });
 
   return (
-    <Styled.ContentTitleContainer isShortScreen={isShortScreen}>
+    <Styled.ContentTitleContainer styleVars={styleVars}>
       {enter.map((props, index) => (
         <animated.div key={index} style={{ ...props, width: "100%" }}>
           {index === 0 && <h2>Garment of the Day</h2>}
@@ -46,14 +46,15 @@ export default DailyGarmentTitle;
 let Styled: any;
 Styled = {};
 
-type Props = { theme: Theme; isShortScreen: boolean };
+type Props = { theme: Theme; styleVars: StylingVariables };
 
 Styled.ContentTitleContainer = styled.div(
-  ({ theme, isShortScreen }: Props) => {
+  ({ theme, styleVars }: Props) => {
+    const { isShortScreen, noGarment } = styleVars;
     const t = theme;
     return css`
       label: DailyGarmentTitle_ContentTitleContainer;
-      display: flex;
+      display: ${ noGarment ? "none" : "flex"};
       flex-direction: column;
       width: min(500px, 95vw, 100%);
       max-height: 48px;
@@ -77,7 +78,7 @@ Styled.ContentTitleContainer = styled.div(
       }
 
       ${t.mq.xl} {
-        width: 27%;
+        width: 26%;
         height: 64px;
         margin-top: -224px;
       }

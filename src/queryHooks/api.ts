@@ -102,20 +102,16 @@ export async function apiPut<T>({
 export async function apiDelete<T>({
   endpoint,
   variables,
+  contentType = "application/json",
+  keysToSnake = true,
 }: ReqParams): Promise<T> {
-  const url: string = baseUrl + endpoint;
-
-  const { data } = await axios.request({
+  return await apiMutate({
     method: "delete",
-    url: url,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    data: allKeysToSnake(variables),
+    endpoint,
+    variables,
+    contentType,
+    keysToSnake,
   });
-
-  return allKeysToCamel(data);
 }
 
 /*

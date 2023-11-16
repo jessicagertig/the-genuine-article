@@ -1,8 +1,10 @@
 import React, { forwardRef } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 
 import Bounce from "src/components/shared/Bounce";
+import ProgressiveImg from "src/components/shared/ProgressiveImage";
+import TinyImg from "src/assets/tinyBg.jpeg";
 
 interface MainProps {
   windowHeight: number;
@@ -21,14 +23,14 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
   };
 
   return (
-    <Styled.HomeContainer height={windowHeight}>
+    <Styled.HomeContainer height={windowHeight ?? 100}>
       <Styled.BackgroundContainer>
-        <Styled.Image src={imageUrl}>
-          <img
-            src={imageUrl}
-            alt="background of floral brocaded fabric with red and pink roses on a blue base"
-          />
-        </Styled.Image>
+        <ProgressiveImg
+          placeholderSrc={TinyImg}
+          src={imageUrl}
+          alt="background of floral brocaded fabric with red and pink roses on a blue base"
+          isBackground={true}
+        />
       </Styled.BackgroundContainer>
       <Styled.ContentContainer>
         <Styled.HeaderText>
@@ -39,7 +41,10 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
           <p>Genuine articles of clothing from the 19th century</p>
         </Styled.TextContainer>
       </Styled.ContentContainer>
-      <Styled.ButtonContainer data-testid="scroll-down-teaser-button" onClick={handleClickScrollTeaser}>
+      <Styled.ButtonContainer
+        data-testid="scroll-down-teaser-button"
+        onClick={handleClickScrollTeaser}
+      >
         <Bounce />
       </Styled.ButtonContainer>
     </Styled.HomeContainer>
@@ -53,9 +58,9 @@ export default forwardRef(Main);
 let Styled: any;
 Styled = {};
 
-Styled.HomeContainer = styled.div((props: any) => {
-  const t = props.theme;
-  const heightInVh = props.height / (props.height * 0.01);
+Styled.HomeContainer = styled.div(({ theme, height }: { theme: Theme; height: number }) => {
+  const t = theme;
+  const heightInVh = height / (height * 0.01);
   return css`
     label: HomeContainer;
     display: flex;
@@ -87,24 +92,8 @@ Styled.BackgroundContainer = styled.div(() => {
   `;
 });
 
-Styled.Image = styled.div((props: any) => {
-  return css`
-    background-image: url(${props.src});
-    background-attachment: fixed;
-    background-position: center top;
-    background-size: cover;
-    display: block;
-    height: 100%;
-    width: 100%;
-
-    img {
-      display: none;
-    }
-  `;
-});
-
-Styled.ContentContainer = styled.div(props => {
-  const t = props.theme;
+Styled.ContentContainer = styled.div(({ theme }: { theme: Theme }) => {
+  const t = theme;
   return css`
     label: HomeHeaderTextContainer;
     ${[t.pt(8), t.pb(10), t.mb(28)]}
@@ -141,14 +130,10 @@ Styled.HeaderText = styled.div(props => {
   `;
 });
 
-Styled.TextContainer = styled.div(props => {
-  const t = props.theme;
+Styled.TextContainer = styled.div(() => {
   return css`
     label: TextContainer;
     color: white;
-
-    ${t.mq.md} {
-    }
 
     span {
       font-family: serif;
@@ -168,8 +153,8 @@ Styled.TextContainer = styled.div(props => {
   `;
 });
 
-Styled.ButtonContainer = styled.div(props => {
-  const t = props.theme;
+Styled.ButtonContainer = styled.div(({ theme }: { theme: Theme }) => {
+  const t = theme;
   return css`
     label: ButtonContainer;
     display: block;

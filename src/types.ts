@@ -22,6 +22,10 @@ export interface ImageUrls {
   largeUrl: string;
   displayUrl: string;
   thumbUrl: string;
+  tinyDisplayUrl: string;
+  tinyLargeUrl: string;
+  tinyMainUrl: string;
+  ratio: string;
 }
 
 export interface GarmentState {

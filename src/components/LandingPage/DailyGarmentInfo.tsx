@@ -211,7 +211,7 @@ Styled.InfoDetails = styled.div((props: any) => {
     p {
       color: inherit;
 
-      &:nth-child(2) {
+      &:nth-of-type(2) {
         margin-top: -4px;
       }
 

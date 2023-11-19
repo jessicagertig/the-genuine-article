@@ -7,38 +7,54 @@ interface ProgressiveImgProps
   placeholderSrc: string;
   src: string;
   isBackground: boolean;
+  handleLoading?: (loading?: boolean) => void;
 }
 
 const ProgressiveImg: React.FC<ProgressiveImgProps> = ({
   placeholderSrc,
   src,
   isBackground,
+  handleLoading,
   ...props
 }) => {
   const [imgSrc, setImgSrc] = React.useState(placeholderSrc || src);
+
+  const isLoadingState: boolean = !!(
+    placeholderSrc && imgSrc === placeholderSrc
+  );
+
+  // console.log("PROGRESSIVE IMAGE", {
+  //   isLoadingState,
+  //   placeholderSrc,
+  //   imgSrc,
+  //   src,
+  // });
 
   React.useEffect(() => {
     const img = new Image();
     img.src = src;
     img.onload = () => {
       setImgSrc(src);
+      if (handleLoading) {
+        handleLoading(false);
+      }
     };
-  }, [src]);
-
-  const isLoadingState = placeholderSrc && imgSrc === placeholderSrc;
+  }, [src, handleLoading]);
 
   return (
-    <Styled.Wrapper
-      isLoading={isLoadingState}
-      isBackground={isBackground}
-      {...{ ...props }}
-    >
+    <>
       {isBackground ? (
-        <Styled.BackgroundImage
-          {...{ src: imgSrc, ...props }}
-          alt={props.alt || ""}
+        <Styled.Wrapper
           isLoading={isLoadingState}
-        />
+          isBackground={isBackground}
+          {...{ ...props }}
+        >
+          <Styled.BackgroundImage
+            {...{ src: imgSrc, ...props }}
+            alt={props.alt || ""}
+            isLoading={isLoadingState}
+          />
+        </Styled.Wrapper>
       ) : (
         <Styled.Image
           {...{ src: imgSrc, ...props }}
@@ -46,7 +62,7 @@ const ProgressiveImg: React.FC<ProgressiveImgProps> = ({
           isLoading={isLoadingState}
         />
       )}
-    </Styled.Wrapper>
+    </>
   );
 };
 
@@ -89,7 +105,6 @@ Styled.BackgroundImage = styled.img((props: Props) => {
     display: block;
     height: 100%;
     width: 100%;
-    background-color: #162c6b;
     clip-path: ${props.isLoading ? "inset(0)" : "none"};
   `;
 });
@@ -98,11 +113,7 @@ Styled.Image = styled.img((props: Props) => {
   return css`
     label: ProgressiveImage;
     object-fit: cover;
-    object-position: center top;
-    display: block;
     height: ${props.height ?? "100%"};
     width: ${props.width ?? "100%"};
-    background-color: #162c6b;
-    clip-path: ${props.isLoading ? "inset(0)" : "none"};
   `;
 });

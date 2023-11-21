@@ -4,7 +4,6 @@ import { css, Theme } from "@emotion/react";
 
 import Bounce from "src/components/shared/Bounce";
 import ProgressiveImg from "src/components/shared/ProgressiveImage";
-import TinyImg from "src/assets/tinyBg.jpeg";
 
 interface MainProps {
   windowHeight: number;
@@ -14,6 +13,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
   { windowHeight },
   scrollRef
 ) => {
+  const placeholderUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/tinyBg.jpeg`; 
   const imageUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/blueRoseDress1800.jpeg`;
 
   const handleClickScrollTeaser = () => {
@@ -26,7 +26,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
     <Styled.HomeContainer height={windowHeight ?? 100}>
       <Styled.BackgroundContainer>
         <ProgressiveImg
-          placeholderSrc={TinyImg}
+          placeholderSrc={placeholderUrl}
           src={imageUrl}
           alt="background of floral brocaded fabric with red and pink roses on a blue base"
           isBackground={true}

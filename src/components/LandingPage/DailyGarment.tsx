@@ -142,16 +142,11 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
           {noImage || !garment ? <DailyGarmentSkeleton /> : null}
           <DailyGarmentTitle styleVars={styleVars} />
           <Styled.ImageCardContainer currentWidth={currentWidth}>
-            <Styled.Card
-              styleVars={styleVars}
-              noImage={noImage}
-              imageLoaded={imageLoaded}
-              ref={sizeRef}
-            >
               <Styled.DisplayedImage
                 styleVars={styleVars}
                 width={maxZoomedImgWidth}
                 onClick={handleZoom}
+                ref={sizeRef}
               >
                 <img
                   ref={imgRef}
@@ -160,7 +155,6 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
                   onLoad={onLoad}
                 />
               </Styled.DisplayedImage>
-            </Styled.Card>
           </Styled.ImageCardContainer>
           <DailyGarmentInfo styleVars={styleVars} garment={garment} />
         </Styled.HomeContentContainer>
@@ -211,7 +205,7 @@ Styled.SubContainer = styled.div(({ theme, styleVars }: Props) => {
     ${t.mq.md} {
       min-height: ${isVeryShortScreen
         ? "630px"
-        : "min(${heightInVh}vh, 800px)"};
+        : `min(${heightInVh}vh, 800px)`};
     }
 
     ${t.mq.xl} {
@@ -274,61 +268,25 @@ Styled.ImageCardContainer = styled.div(
   }
 );
 
-Styled.Card = styled.div(({ theme, styleVars }: Props) => {
+Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
   const { heightInVh, noImage, noGarment, isShortScreen } = styleVars;
   return css`
-    label: Card;
-    display: ${noImage || noGarment ? "none" : "flex"};
-    flex-direction: column;
-    align-items: center;
-    background-color: #d3d9e5;
-    border-radius: 4px;
-    width: auto;
-    max-height: calc(${heightInVh}vh - 316px);
-    max-width: min(500px, 95vw, 100%);
-    position: relative;
-    z-index: 0;
-
-    ${t.mq.md} {
-      max-height: max(
-        calc(${heightInVh}vh - ${isShortScreen ? "40vh" : "414px"}),
-        378px
-      );
-      min-height: 378px;
-    }
-
-    ${t.mq.xl} {
-      max-height: max(calc(${heightInVh}vh - 120px), 510px);
-      min-height: 510px;
-    }
-  `;
-});
-
-Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
-  const t = theme;
-  const { heightInVh, noImage, isShortScreen } = styleVars;
-  return css`
     label: Garment_DisplayedImage;
-    background-color: rgba(211, 217, 229, 0.5);
-    display: ${noImage ? "none" : "flex"};
+    display: ${noImage || noGarment ? "none" : "flex"};
     position: relative;
-    max-width: min(500px, 95vw, 100%);
-    max-height: calc(${heightInVh}vh - 316px);
-    border-radius: 4px;
+    justify-content: center;
+    align-content: center;
     z-index: 1;
-
+    
     ${t.mq.md} {
-      max-height: max(calc(${heightInVh}vh - ${
-    isShortScreen ? "40vh" : "414px"
-  }), 378px);
       min-height: 378px;
     }
 
     ${t.mq.xl} {
-      max-height: max(calc(${heightInVh}vh - 120px), 510px);
       min-height: 510px;
     }
+
 
     &:hover {
       cursor: pointer;

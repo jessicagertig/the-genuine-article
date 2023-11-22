@@ -2,15 +2,15 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
-interface ProgressiveImgProps
+interface ProgressiveImageProps
   extends React.ImgHTMLAttributes<HTMLImageElement> {
-  placeholderSrc: string;
-  src: string;
+  placeholderSrc: string | undefined;
+  src: string | undefined;
   isBackground: boolean;
-  handleLoading?: (loading?: boolean) => void;
+  handleLoading?: (loading: boolean) => void;
 }
 
-const ProgressiveImg: React.FC<ProgressiveImgProps> = ({
+const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   placeholderSrc,
   src,
   isBackground,
@@ -31,15 +31,51 @@ const ProgressiveImg: React.FC<ProgressiveImgProps> = ({
   // });
 
   React.useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
-      setImgSrc(src);
-      if (handleLoading) {
-        handleLoading(false);
+    if (isLoadingState) {
+      // console.log("isLoadingState useEffect", isLoadingState);
+      handleLoading && handleLoading(isLoadingState);
+    }
+  }, [isLoadingState, handleLoading]);
+  React.useEffect(() => {
+    console.log("src changed", src);
+    // rest of the code...
+  }, [src]);
+
+    React.useEffect(() => {
+      console.log("imgSrc changed", imgSrc);
+      // rest of the code...
+    }, [imgSrc]);
+
+  React.useEffect(() => {
+    console.log("handleLoading changed", handleLoading);
+  }, [handleLoading]);
+  
+  React.useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+    if (src !== imgSrc) {
+      const img = new Image();
+      if (src) {
+        console.log("Did this run more than once?")
+        img.src = src;
+        img.onload = () => {
+          setImgSrc(src);
+          intervalId = setInterval(() => {
+            if (img.complete) {
+              if (handleLoading) {
+                handleLoading(false);
+              }
+              clearInterval(intervalId);
+            }
+          }, 100);
+        };
       }
-    };
-  }, [src, handleLoading]);
+      return () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      };
+    }
+  }, [src, handleLoading, imgSrc]);
 
   return (
     <>
@@ -56,24 +92,20 @@ const ProgressiveImg: React.FC<ProgressiveImgProps> = ({
           />
         </Styled.Wrapper>
       ) : (
-        <Styled.Image
-          {...{ src: imgSrc, ...props }}
-          alt={props.alt || ""}
-          isLoading={isLoadingState}
-        />
+        <img {...{ src: imgSrc, ...props }} alt={props.alt || ""} />
       )}
     </>
   );
 };
 
-export default ProgressiveImg;
+export default ProgressiveImage;
 
 // Styled Components
 // =======================================================
 let Styled: any;
 Styled = {};
 
-interface Props extends ProgressiveImgProps {
+interface Props extends ProgressiveImageProps {
   theme: Theme;
   isLoading: boolean;
   isBackground: boolean;
@@ -91,8 +123,8 @@ Styled.Wrapper = styled.div((props: Props) => {
       right: 0;
       bottom: 0;
       left: 0;
-      backdrop-filter: ${props.isLoading ? "blur(7px)" : "blur(0px)"};
-      transition: ${props.isLoading ? "none" : "backdrop-filter 0.5s linear"};
+      backdrop-filter: ${props.isLoading ? "blur(5px)" : "blur(0px)"};
+      transition: ${props.isLoading ? "none" : "backdrop-filter 0.3s linear"};
     }
   `;
 });
@@ -109,11 +141,9 @@ Styled.BackgroundImage = styled.img((props: Props) => {
   `;
 });
 
-Styled.Image = styled.img((props: Props) => {
+Styled.Image = styled.img(() => {
   return css`
     label: ProgressiveImage;
     object-fit: cover;
-    height: ${props.height ?? "100%"};
-    width: ${props.width ?? "100%"};
   `;
 });

@@ -9,6 +9,7 @@ import Skeleton from "@mui/material/Skeleton";
 import IconButton from "@mui/material/IconButton";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import Link from "@mui/material/Link";
+import ProgressiveImage from "src/components/shared/ProgressiveImage";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import Accordian from "src/components/shared/Accordian";
@@ -28,6 +29,16 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
 
   const theme = useTheme();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [imageLoading, setImageLoading] = React.useState(false);
+
+  // const handleLoading = (loading = true) => {
+  //   setImageLoading(loading);
+  // };
+
+  const handleLoading = React.useCallback((loading: boolean) => {
+    setImageLoading(loading);
+  }, []);
 
   type Item = {
     name: string;
@@ -125,13 +136,18 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
               my: "32px",
             }}
           />
-        ) : (
+        ) : null}
+        {!loading && garment ? (
           <>
-            <Styled.DisplayedImage>
-              <img
-                src={garment?.imageUrls?.largeUrl}
-                alt={garment ? garment.garmentTitle : "garment"}
-                onClick={handleZoom}
+            <Styled.DisplayedImage
+              onClick={handleZoom}
+              imageLoading={imageLoading}
+            >
+              <ProgressiveImage
+                src={garment.imageUrls?.largeUrl}
+                placeholderSrc={garment.imageUrls?.tinyLargeUrl}
+                handleLoading={handleLoading}
+                isBackground={false}
               />
             </Styled.DisplayedImage>
             <ImageToolbar
@@ -141,9 +157,10 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
               garmentTitle={garment ? garment.garmentTitle : "garment"}
               mediumScreen={mediumScreen}
             />
+
+            {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
           </>
-        )}
-        {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
+        ) : null}
       </Styled.ImagesSection>
       <Styled.InfoSection isDark={isDark}>
         <Styled.InfoContainer isDark={isDark}>
@@ -281,10 +298,24 @@ Styled.DisplayedImage = styled.div((props: any) => {
       ${t.mt(2)};
     }
 
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      backdrop-filter: ${props.imageLoading ? "blur(5px)" : "blur(0px)"};
+      transition: ${props.imageLoading
+        ? "none"
+        : "backdrop-filter 0.7s linear"};
+    }
+
     img {
       width: calc(100vw - (100vw - 100%));
       max-width: 480px;
       max-height: 575px;
+      object-fit: cover;
 
       ${t.mq.xs} {
         max-width: 500px;

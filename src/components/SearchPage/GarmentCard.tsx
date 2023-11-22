@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import Skeleton from "@mui/material/Skeleton";
-import ProgressiveImg from "src/components/shared/ProgressiveImage";
+import ProgressiveImage from "src/components/shared/ProgressiveImage";
 
 import { GarmentData } from "src/types";
 
@@ -22,9 +22,6 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
   loading,
 }) => {
   const [imageLoading, setImageLoading] = React.useState(true);
-  const url = garment && garment.imageUrls ? garment.imageUrls.displayUrl : "";
-
-  const tinyUrl = garment?.imageUrls ? garment.imageUrls.tinyDisplayUrl : "";
 
   const handleLoading = (loading = true) => {
     setImageLoading(loading);
@@ -50,10 +47,10 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
           }
         >
           <Styled.GarmentCardImage isLoading={imageLoading}>
-            <ProgressiveImg
-              src={url}
+            <ProgressiveImage
+              src={garment?.imageUrls?.displayUrl}
               alt={garment ? garment.garmentTitle : "garment"}
-              placeholderSrc={tinyUrl}
+              placeholderSrc={garment?.imageUrls?.tinyDisplayUrl}
               isBackground={false}
               handleLoading={handleLoading}
             />
@@ -151,6 +148,7 @@ Styled.GarmentCardImage = styled.div((props: any) => {
     width: 280px;
     height: 347px;
     display: block;
+    ${t.rounded.md};
 
     ${t.mq.xxs} {
       width: 296px;
@@ -171,19 +169,17 @@ Styled.GarmentCardImage = styled.div((props: any) => {
       right: 0;
       bottom: 0;
       left: 0;
-      backdrop-filter: ${props.isLoading ? "blur(7px)" : "blur(0px)"};
-      transition: ${props.isLoading ? "none" : "backdrop-filter 0.5s linear"};
+      ${t.rounded.md};
+      backdrop-filter: ${props.isLoading ? "blur(5px)" : "blur(0px)"};
+      transition: ${props.isLoading ? "none" : "backdrop-filter 0.2s linear"};
     }
 
     img {
       ${t.rounded.md};
+      object-fit: cover;
       width: 100%;
       height: 100%;
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
     }
   `;
 });

@@ -65,6 +65,6 @@ Styled.RefContainer = styled.div((props: any) => {
     return css`
     label: RefContainer;
     width: 100%;
-    height: ${props.windowHeight};
+    height: ${props.windowHeight}px;
   `;
 })

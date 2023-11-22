@@ -23,7 +23,7 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
 }) => {
   const [imageLoading, setImageLoading] = React.useState(true);
 
-  const handleLoading = (loading = true) => {
+  const handleLoading = (loading: boolean) => {
     setImageLoading(loading);
   };
 

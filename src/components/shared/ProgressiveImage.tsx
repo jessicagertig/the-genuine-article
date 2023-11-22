@@ -33,7 +33,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   React.useEffect(() => {
     if (isLoadingState) {
       // console.log("isLoadingState useEffect", isLoadingState);
-      handleLoading && handleLoading(isLoadingState);
+      handleLoading !== undefined && handleLoading(isLoadingState);
     }
   }, [isLoadingState, handleLoading]);
   React.useEffect(() => {
@@ -61,6 +61,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
           setImgSrc(src);
           intervalId = setInterval(() => {
             if (img.complete) {
+              console.log("It's complete!!")
               if (handleLoading) {
                 handleLoading(false);
               }

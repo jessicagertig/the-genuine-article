@@ -41,27 +41,27 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
     // rest of the code...
   }, [src]);
 
-    React.useEffect(() => {
-      console.log("imgSrc changed", imgSrc);
-      // rest of the code...
-    }, [imgSrc]);
+  React.useEffect(() => {
+    console.log("imgSrc changed", imgSrc);
+    // rest of the code...
+  }, [imgSrc]);
 
   React.useEffect(() => {
     console.log("handleLoading changed", handleLoading);
   }, [handleLoading]);
-  
+
   React.useEffect(() => {
     let intervalId: NodeJS.Timeout;
     if (src !== imgSrc) {
       const img = new Image();
       if (src) {
-        console.log("Did this run more than once?")
+        console.log("Did this run more than once?");
         img.src = src;
         img.onload = () => {
           setImgSrc(src);
           intervalId = setInterval(() => {
             if (img.complete) {
-              console.log("It's complete!!")
+              console.log("It's complete!!");
               if (handleLoading) {
                 handleLoading(false);
               }
@@ -70,12 +70,12 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
           }, 100);
         };
       }
-      return () => {
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-      };
     }
+    return () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    };
   }, [src, handleLoading, imgSrc]);
 
   return (

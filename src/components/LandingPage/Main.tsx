@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
 import Bounce from "src/components/shared/Bounce";
-import ProgressiveImg from "src/components/shared/ProgressiveImage";
+import ProgressiveImage from "src/components/shared/ProgressiveImage";
 
 interface MainProps {
   windowHeight: number;
@@ -13,7 +13,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
   { windowHeight },
   scrollRef
 ) => {
-  const placeholderUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/tinyBg.jpeg`; 
+  const placeholderUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/tinyBg.jpeg`;
   const imageUrl = `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/blueRoseDress1800.jpeg`;
 
   const handleClickScrollTeaser = () => {
@@ -25,7 +25,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
   return (
     <Styled.HomeContainer height={windowHeight ?? 100}>
       <Styled.BackgroundContainer>
-        <ProgressiveImg
+        <ProgressiveImage
           placeholderSrc={placeholderUrl}
           src={imageUrl}
           alt="background of floral brocaded fabric with red and pink roses on a blue base"
@@ -58,26 +58,28 @@ export default forwardRef(Main);
 let Styled: any;
 Styled = {};
 
-Styled.HomeContainer = styled.div(({ theme, height }: { theme: Theme; height: number }) => {
-  const t = theme;
-  const heightInVh = height / (height * 0.01);
-  return css`
-    label: HomeContainer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: calc(${heightInVh}vh - 50px);
-    width: 100%;
-    position: relative;
-    z-index: 1;
+Styled.HomeContainer = styled.div(
+  ({ theme, height }: { theme: Theme; height: number }) => {
+    const t = theme;
+    const heightInVh = height / (height * 0.01);
+    return css`
+      label: HomeContainer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: calc(${heightInVh}vh - 50px);
+      width: 100%;
+      position: relative;
+      z-index: 1;
 
-    ${t.mq.md} {
-      height: max(calc(${heightInVh}vh - 90px), 630px);
-      min-height: 630px;
-    }
-  `;
-});
+      ${t.mq.md} {
+        height: max(calc(${heightInVh}vh - 90px), 630px);
+        min-height: 630px;
+      }
+    `;
+  }
+);
 
 Styled.BackgroundContainer = styled.div(() => {
   return css`

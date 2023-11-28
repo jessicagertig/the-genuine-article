@@ -6,7 +6,7 @@ import NavBar from "src/components/shared/NavBar";
 import Main from "src/components/LandingPage/Main";
 import BottomContent from "src/components/LandingPage/BottomContent";
 import Footer from "src/components/shared/Footer";
-import DailyGarment from "src/components/LandingPage/DailyGarment";
+import DailyGarmentContainer from "src/components/LandingPage/DailyGarmentContainer";
 
 import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
@@ -27,11 +27,14 @@ const LandingPage: React.FC<LandingPageProps> = props => {
   };
 
   return (
-    <Styled.LandingPageContainer data-testid="landing-page-container" ref={pageContainerRef} >
+    <Styled.LandingPageContainer
+      data-testid="landing-page-container"
+      ref={pageContainerRef}
+    >
       <NavBar backgroundColor="white" />
       <Main ref={scrollRef} windowHeight={height} />
       <Styled.RefContainer ref={scrollRef} windowHeight={height}>
-        <DailyGarment windowHeight={height} windowWidth={width} />
+        <DailyGarmentContainer windowHeight={height} windowWidth={width} />
       </Styled.RefContainer>
       <BottomContent />
       <Footer scrollToTop={scrollToTop} dark={false} />
@@ -46,7 +49,7 @@ export default LandingPage;
 let Styled: any;
 Styled = {};
 
-Styled.LandingPageContainer = styled.div((props) => {
+Styled.LandingPageContainer = styled.div(props => {
   return css`
     label: LandingPageContainer;
     width: 100%;
@@ -54,7 +57,6 @@ Styled.LandingPageContainer = styled.div((props) => {
     display: block;
     overflow-y: scroll;
 
-    
     & > :last-child {
       margin-top: auto;
     }
@@ -62,9 +64,9 @@ Styled.LandingPageContainer = styled.div((props) => {
 });
 
 Styled.RefContainer = styled.div((props: any) => {
-    return css`
+  return css`
     label: RefContainer;
     width: 100%;
     height: ${props.windowHeight}px;
   `;
-})
+});

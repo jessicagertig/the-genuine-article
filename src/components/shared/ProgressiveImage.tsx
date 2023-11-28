@@ -2,6 +2,8 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
+import { useProgressiveImage } from "src/hooks/useProgressiveImage";
+
 interface ProgressiveImageProps
   extends React.ImgHTMLAttributes<HTMLImageElement> {
   placeholderSrc: string | undefined;
@@ -17,42 +19,23 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   handleLoading,
   ...props
 }) => {
-  const [imgSrc, setImgSrc] = React.useState(placeholderSrc || src);
+  const imgSrc = useProgressiveImage(placeholderSrc as string, src as string);
 
   const isLoadingState: boolean = !!(
     placeholderSrc && imgSrc === placeholderSrc
   );
-
-  // console.log("PROGRESSIVE IMAGE", {
-  //   isLoadingState,
-  //   placeholderSrc,
-  //   imgSrc,
-  //   src,
-  // });
+  console.log("PROGRESSIVE IMAGE", {
+    isLoadingState,
+    placeholderSrc,
+    imgSrc,
+    src,
+  });
 
   React.useEffect(() => {
-    if (isLoadingState) {
+
       // console.log("isLoadingState useEffect", isLoadingState);
       handleLoading && handleLoading(isLoadingState);
-    }
-  }, [isLoadingState, handleLoading]);
-
-
-  React.useEffect(() => {
-    const img = new Image();
-    if (src) {
-      console.log("Did this run more than once?");
-      img.src = src;
-      img.onload = () => {
-        setImgSrc(src);
-
-        console.log("Loaded image!");
-        if (handleLoading) {
-          handleLoading(false);
-        }
-      };
-    }
-  }, [src, handleLoading]);
+  }, [isLoadingState, handleLoading, imgSrc]);
 
   return (
     <>

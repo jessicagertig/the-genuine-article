@@ -50,11 +50,11 @@ type Props = { theme: Theme; styleVars: StylingVariables };
 
 Styled.ContentTitleContainer = styled.div(
   ({ theme, styleVars }: Props) => {
-    const { isShortScreen, noGarment } = styleVars;
+    const { isShortScreen } = styleVars;
     const t = theme;
     return css`
       label: DailyGarmentTitle_ContentTitleContainer;
-      display: ${ noGarment ? "none" : "flex"};
+      display: flex;
       flex-direction: column;
       width: min(500px, 95vw, 100%);
       max-height: 48px;

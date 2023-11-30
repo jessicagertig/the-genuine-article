@@ -11,10 +11,11 @@ import DailyGarmentTitle from "src/components/LandingPage/DailyGarmentTitle";
 import DailyGarmentSkeleton from "src/components/LandingPage/DailyGarmentSkeleton";
 
 import { useModalContext } from "src/context/ModalContext";
-import { useDailyGarment } from "src/queryHooks/useGarments";
 import useResizeObserver from "src/hooks/useResizeObserver";
 import useImageDimensions from "src/hooks/useImageDimensions";
 import useIntersectionObserver from "src/hooks/useIntersectionObserver";
+import { useProgressiveImage } from "src/hooks/useProgressiveImage";
+import { GarmentData } from "src/types";
 
 export interface StylingVariables {
   isVeryShortScreen: boolean;
@@ -22,18 +23,17 @@ export interface StylingVariables {
   heightInVh: number;
   addPadding: boolean;
   show: boolean | undefined;
-  noImage: boolean;
-  noGarment: boolean;
+  isLoading: boolean;
 }
 
 interface HomeContentProps {
   windowHeight: number;
   windowWidth: number;
+  garment: GarmentData;
 }
 
-const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
+const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
   const { openModal, removeModal } = useModalContext();
-  const { data: garment } = useDailyGarment();
 
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [dimensions, setDimensions] = React.useState({
@@ -49,6 +49,20 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     dimensions,
   });
   const { ref: sizeRef, width: currentWidth } = useResizeObserver();
+  const placeholderSrc = garment?.imageUrls?.tinyMainUrl;
+  const src = garment?.imageUrls?.mainImageUrl;
+  const imageUrl = useProgressiveImage(placeholderSrc as string, src as string);
+
+  const isLoadingState: boolean = !!(
+    placeholderSrc && imageUrl === placeholderSrc
+  );
+
+  console.log("Daily Garment Image Info", {
+    images: garment?.imageUrls,
+    isLoadingState,
+    imageUrl,
+    placeholderSrc,
+  });
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
   const contentContainerRef = React.useRef<HTMLDivElement>(null!);
@@ -97,10 +111,6 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     }
   }, [imgRef]);
 
-  const imageUrl =
-    garment && garment.imageUrls ? garment.imageUrls.mainImageUrl : "";
-  const noImage = imageUrl === "" || imageUrl === undefined;
-
   const handleZoom = () => {
     const modal = (
       <GarmentZoomModal
@@ -125,41 +135,35 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight }) => {
     heightInVh,
     addPadding: addBottomMobileNavPadding,
     show,
-    noImage,
-    noGarment: !garment,
+    isLoading: isLoadingState,
   };
 
-  // Image container can NOT be conditionally displayed based on loading - only if no garment data exists
-  // because the imageRef cannot be used until img is rendered (don't forget!)
   return (
-    <Styled.Container styleVars={styleVars}>
-      <Styled.SubContainer styleVars={styleVars} ref={contentContainerRef}>
-        <Styled.HomeContentContainer
-          styleVars={styleVars}
-          addBottomMobileNavPadding={addBottomMobileNavPadding}
-          ref={intersectionRef}
-        >
-          {noImage || !garment ? <DailyGarmentSkeleton /> : null}
-          <DailyGarmentTitle styleVars={styleVars} />
-          <Styled.ImageCardContainer currentWidth={currentWidth}>
-              <Styled.DisplayedImage
-                styleVars={styleVars}
-                width={maxZoomedImgWidth}
-                onClick={handleZoom}
-                ref={sizeRef}
-              >
-                <img
-                  ref={imgRef}
-                  src={imageUrl}
-                  alt={garment?.garmentTitle}
-                  onLoad={onLoad}
-                />
-              </Styled.DisplayedImage>
-          </Styled.ImageCardContainer>
-          <DailyGarmentInfo styleVars={styleVars} garment={garment} />
-        </Styled.HomeContentContainer>
-      </Styled.SubContainer>
-    </Styled.Container>
+    <Styled.SubContainer styleVars={styleVars} ref={contentContainerRef}>
+      <Styled.HomeContentContainer
+        styleVars={styleVars}
+        addBottomMobileNavPadding={addBottomMobileNavPadding}
+        ref={intersectionRef}
+      >
+        <DailyGarmentTitle styleVars={styleVars} />
+        <Styled.ImageCardContainer currentWidth={currentWidth}>
+          <Styled.DisplayedImage
+            styleVars={styleVars}
+            width={maxZoomedImgWidth}
+            onClick={handleZoom}
+            ref={sizeRef}
+          >
+            <img
+              ref={imgRef}
+              src={imageUrl}
+              alt={garment?.garmentTitle}
+              onLoad={onLoad}
+            />
+          </Styled.DisplayedImage>
+        </Styled.ImageCardContainer>
+        <DailyGarmentInfo styleVars={styleVars} garment={garment} />
+      </Styled.HomeContentContainer>
+    </Styled.SubContainer>
   );
 };
 
@@ -171,24 +175,6 @@ let Styled: any;
 Styled = {};
 
 type Props = { theme: Theme; styleVars: StylingVariables };
-
-Styled.Container = styled.div(({ theme, styleVars }: Props) => {
-  const t = theme;
-  const { heightInVh, isVeryShortScreen } = styleVars;
-  return css`
-    label: DailyGarment_Container;
-    display: flex;
-    width: 100%;
-    height: ${heightInVh}vh;
-    align-items: center;
-    justify-content: center;
-    background-color: #020b1c;
-
-    ${t.mq.md} {
-      min-height: ${isVeryShortScreen ? "630px" : "unset"};
-    }
-  `;
-});
 
 Styled.SubContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
@@ -270,10 +256,10 @@ Styled.ImageCardContainer = styled.div(
 
 Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { heightInVh, noImage, noGarment, isShortScreen } = styleVars;
+  const { heightInVh, isShortScreen, isLoading } = styleVars;
   return css`
     label: Garment_DisplayedImage;
-    display: ${noImage || noGarment ? "none" : "flex"};
+    display: flex;
     position: relative;
     justify-content: center;
     align-content: center;
@@ -291,6 +277,14 @@ Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
     &:hover {
       cursor: pointer;
       transform: scale(1.005);
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      backdrop-filter: ${isLoading ? "blur(7px)" : "blur(0px)"};
+      transition: ${isLoading ? "none" : "backdrop-filter 0.7s linear"};
     }
 
     img {

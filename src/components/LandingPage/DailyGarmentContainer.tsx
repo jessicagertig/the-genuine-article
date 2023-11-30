@@ -21,7 +21,6 @@ const HomeContentContainer: React.FC<HomeContentContainerProps> = ({
   const isVeryShortScreen = height <= 630;
   const heightInVh = height / (height * 0.01);
 
-  // Image container can NOT be conditionally displayed based on loading - only if no garment data exists
   return (
     <Styled.Container
       isVeryShortScreen={isVeryShortScreen}

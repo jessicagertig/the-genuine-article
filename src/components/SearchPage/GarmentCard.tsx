@@ -83,6 +83,7 @@ Styled.GarmentCard = styled.div(props => {
     display: flex;
     flex-direction: column;
     ${t.m(4)}
+    background-color: rgba(211, 217, 229, 0.5);
     position: relative;
 
     ${t.mq.xxs} {
@@ -91,15 +92,13 @@ Styled.GarmentCard = styled.div(props => {
     }
 
     ${t.mq.sm} {
-      max-width: 296px;
-      max-height: 444px;
-      width: calc(50% - 32px);
-      height: calc((43.5vw - 32px) * 1.5);
+      width: min(calc(50% - 32px), 296px);
+      height: min(calc((43.5vw - 32px) * 1.5), 444px);
     }
 
     ${t.mq.mdlg} {
-      width: calc(33.33% - 32px);
-      height: calc((30vw - 32px) * 1.5);
+      width: min(calc(33.33% - 32px), 296px);
+      height: min(calc((30vw - 32px) * 1.5), 444px);
     }
 
     &:hover {
@@ -156,10 +155,8 @@ Styled.GarmentCardImage = styled.div((props: any) => {
     }
 
     ${t.mq.sm} {
-      max-width: 296px;
-      max-height: 372px;
-      height: calc(100% - 72px);
-      width: 100%;
+      height: min(calc(100% - 72px), 372px);
+      width: min(100%, 296px);
     }
 
     &:after {

@@ -271,7 +271,7 @@ Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: Garment_DisplayedImage;
-    background-color: white;
+    background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     position: relative;
     width: min(calc(100vw - 32px), 480px);
@@ -301,9 +301,9 @@ Styled.DisplayedImage = styled.div((props: any) => {
       bottom: 0;
       left: 0;
       backdrop-filter: ${props.imageLoading ? "blur(7px)" : "blur(0px)"};
-      transition: ${props.imageLoading
-        ? "none"
-        : "backdrop-filter 0.3s linear"};
+      transition: ${
+        props.imageLoading ? "none" : "backdrop-filter 0.3s linear"
+      };
     }
 
     img {

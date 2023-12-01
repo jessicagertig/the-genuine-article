@@ -299,10 +299,10 @@ Styled.DisplayedImage = styled.div((props: any) => {
       right: 0;
       bottom: 0;
       left: 0;
-      backdrop-filter: ${props.imageLoading ? "blur(5px)" : "blur(0px)"};
+      backdrop-filter: ${props.imageLoading ? "blur(4px)" : "blur(0px)"};
       transition: ${props.imageLoading
         ? "none"
-        : "backdrop-filter 0.7s linear"};
+        : "backdrop-filter 0.3s linear"};
     }
 
     img {

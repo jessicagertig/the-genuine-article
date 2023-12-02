@@ -122,41 +122,36 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
   return (
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
-        {loading ? (
-          <Skeleton
-            variant="rectangular"
-            width={smallScreen ? "min(calc(100vw - 32px), 500px)" : "500px"}
-            height={smallScreen ? "min(calc((100vw - 32px) * 1.1447368421), 609px)" : "609px"}
-            sx={{
-              bgcolor: "rgba(211, 217, 229, 0.5)",
-              my: "32px",
-            }}
-          />
-        ) : null}
-        {!loading && garment ? (
-          <>
-            <Styled.DisplayedImage
-              onClick={handleZoom}
-              imageLoading={imageLoading}
-            >
-              <ProgressiveImage
-                src={garment.imageUrls?.largeUrl}
-                placeholderSrc={garment.imageUrls?.tinyLargeUrl}
-                handleLoading={handleLoading}
-                isBackground={false}
-              />
-            </Styled.DisplayedImage>
-            <ImageToolbar
-              garmentMainImgUrl={
-                garment?.imageUrls ? garment?.imageUrls?.mainImageUrl : ""
+        <Styled.DisplayedImage onClick={handleZoom} imageLoading={imageLoading}>
+          {loading || !garment ? (
+            <Skeleton
+              variant="rectangular"
+              width={smallScreen ? "min(calc(100vw - 32px), 500px)" : "500px"}
+              height={
+                smallScreen
+                  ? "min(calc((100vw - 32px) * 1.1447368421), 609px)"
+                  : "609px"
               }
-              garmentTitle={garment ? garment.garmentTitle : "garment"}
-              mediumScreen={mediumScreen}
+              sx={{
+                bgcolor: "rgba(211, 217, 229, 0.5)",
+              }}
             />
-
-            {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
-          </>
-        ) : null}
+          ) : (
+            <ProgressiveImage
+              src={garment.imageUrls?.largeUrl}
+              placeholderSrc={garment.imageUrls?.tinyLargeUrl}
+              handleLoading={handleLoading}
+              isBackground={false}
+            />
+          )}
+        </Styled.DisplayedImage>
+        <ImageToolbar
+          garmentMainImgUrl={
+            garment?.imageUrls ? garment?.imageUrls?.mainImageUrl : ""
+          }
+          garmentTitle={garment ? garment.garmentTitle : "garment"}
+          mediumScreen={mediumScreen}
+        />
       </Styled.ImagesSection>
       <Styled.InfoSection isDark={isDark}>
         <Styled.InfoContainer isDark={isDark}>
@@ -278,7 +273,6 @@ Styled.DisplayedImage = styled.div((props: any) => {
     height: min(calc((100vw - 32px) * 1.1447368421), 575px);
     flex-shrink: 1;
     justify-content: center;
-    ${[t.px(4)]};
 
     ${t.mq.xs} {
       width: min(calc(100vw - 32px), 500px);
@@ -301,9 +295,9 @@ Styled.DisplayedImage = styled.div((props: any) => {
       bottom: 0;
       left: 0;
       backdrop-filter: ${props.imageLoading ? "blur(7px)" : "blur(0px)"};
-      transition: ${
-        props.imageLoading ? "none" : "backdrop-filter 0.3s linear"
-      };
+      transition: ${props.imageLoading
+        ? "none"
+        : "backdrop-filter 0.3s linear"};
     }
 
     img {

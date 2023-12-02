@@ -168,7 +168,6 @@ Styled.GarmentCardImage = styled.div((props: any) => {
       left: 0;
       ${t.rounded.md};
       backdrop-filter: ${props.isLoading ? "blur(4px)" : "blur(0px)"};
-      transition: ${props.isLoading ? "none" : "backdrop-filter 0.2s linear"};
     }
 
     img {

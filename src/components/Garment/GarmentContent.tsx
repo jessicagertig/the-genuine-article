@@ -129,7 +129,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
               width={smallScreen ? "min(calc(100vw - 32px), 500px)" : "500px"}
               height={
                 smallScreen
-                  ? "min(calc((100vw - 32px) * 1.1447368421), 609px)"
+                  ? "min(calc((100vw - 32px) * 1.2), 609px)"
                   : "609px"
               }
               sx={{
@@ -266,17 +266,16 @@ Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: Garment_DisplayedImage;
-    background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     position: relative;
     width: min(calc(100vw - 32px), 480px);
-    height: min(calc((100vw - 32px) * 1.1447368421), 575px);
+    height: min(calc((100vw - 32px) * 1.2), 575px);
     flex-shrink: 1;
     justify-content: center;
 
     ${t.mq.xs} {
       width: min(calc(100vw - 32px), 500px);
-      height: min(calc((100vw - 32px) * 1.1447368421), 609px);
+      height: min(calc((100vw - 32px) * 1.2), 609px);
     }
 
     ${t.mq.sm} {
@@ -295,19 +294,17 @@ Styled.DisplayedImage = styled.div((props: any) => {
       bottom: 0;
       left: 0;
       backdrop-filter: ${props.imageLoading ? "blur(7px)" : "blur(0px)"};
-      transition: ${props.imageLoading
-        ? "none"
-        : "backdrop-filter 0.3s linear"};
     }
 
     img {
       width: min(calc(100vw - 32px), 480px);
-      height: min(calc((100vw - 32px) * 1.1447368421), 575px);
+      height: min(calc((100vw - 32px) * 1.2), 575px);
       object-fit: cover;
+      background-color: rgba(211, 217, 229, 0.5);
 
       ${t.mq.xs} {
         width: min(calc(100vw - 32px), 500px);
-        height: min(calc((100vw - 32px) * 1.1447368421), 609px);
+        height: min(calc((100vw - 32px) * 1.2), 609px);
       }
 
       ${t.mq.sm} {

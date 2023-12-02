@@ -51,16 +51,16 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
   const { ref: sizeRef, width: currentWidth } = useResizeObserver();
   const placeholderSrc = garment?.imageUrls?.tinyMainUrl;
   const src = garment?.imageUrls?.mainImageUrl;
-  const imageUrl = useProgressiveImage(placeholderSrc as string, src as string);
+  const { currentSrc, isLoading } = useProgressiveImage(placeholderSrc as string, src as string);
 
   const isLoadingState: boolean = !!(
-    placeholderSrc && imageUrl === placeholderSrc
+    placeholderSrc && isLoading
   );
 
   console.log("Daily Garment Image Info", {
     images: garment?.imageUrls,
     isLoadingState,
-    imageUrl,
+    currentSrc,
     placeholderSrc,
   });
 
@@ -116,7 +116,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
       <GarmentZoomModal
         onClose={() => removeModal()}
         garmentTitle={garment?.garmentTitle}
-        imageUrl={imageUrl}
+        imageUrl={currentSrc}
         responsiveFullscreen={mediumScreen}
       />
     );
@@ -155,7 +155,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
           >
             <img
               ref={imgRef}
-              src={imageUrl}
+              src={currentSrc}
               alt={garment?.garmentTitle}
               onLoad={onLoad}
             />

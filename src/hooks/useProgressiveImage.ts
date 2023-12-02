@@ -43,33 +43,54 @@ const getDataUri = async (
   return URL.createObjectURL(blob);
 };
 
+const imageReducer = (
+  state: string,
+  action: { type: string; payload: string }
+) => {
+  switch (action.type) {
+    case "MAIN_IMAGE_LOADED":
+      return action.payload;
+    case "FALLBACK_IMAGE_LOADED":
+      return state ? state : action.payload;
+    default:
+      return state;
+  }
+};
+
 export const useProgressiveImage = (
   placeholderSrc: string,
   fullSrc: string
 ) => {
-  const [src, setSrc] = React.useState(placeholderSrc);
+  const [currentSrc, dispatch] = React.useReducer(imageReducer, "");
+  const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
 
-    const load = async () => {
-      try {
-        const dataUri = await getDataUri(fullSrc, signal);
-        setSrc(dataUri);
-      } catch (error: any) {
-        if (error.name !== "AbortError") {
-          console.error(error);
-        }
-      }
-    };
+      const loadPlaceholder = () => {
+          dispatch({ type: "FALLBACK_IMAGE_LOADED", payload: placeholderSrc });
+      };
 
-    load();
+      const loadFull = async () => {
+        try {
+          const fullUri = await getDataUri(fullSrc, signal);
+          dispatch({ type: "MAIN_IMAGE_LOADED", payload: fullUri });
+          setIsLoading(false);
+        } catch (error: any) {
+          if (error.name !== "AbortError") {
+            console.error(error);
+          }
+        }
+      };
+
+      loadFull();
+      loadPlaceholder();
 
     return () => {
       controller.abort();
     };
-  }, [fullSrc]);
+  }, [fullSrc, placeholderSrc]);
 
-  return src;
+  return { currentSrc, isLoading };
 };

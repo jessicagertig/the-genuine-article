@@ -19,15 +19,15 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   handleLoading,
   ...props
 }) => {
-  const imgSrc = useProgressiveImage(placeholderSrc as string, src as string);
+  const { currentSrc, isLoading } = useProgressiveImage(placeholderSrc as string, src as string);
 
   const isLoadingState: boolean = !!(
-    placeholderSrc && imgSrc === placeholderSrc
+    placeholderSrc && isLoading
   );
   console.log("PROGRESSIVE IMAGE", {
     isLoadingState,
     placeholderSrc,
-    imgSrc,
+    currentSrc,
     src,
   });
 
@@ -35,7 +35,7 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
 
       // console.log("isLoadingState useEffect", isLoadingState);
       handleLoading && handleLoading(isLoadingState);
-  }, [isLoadingState, handleLoading, imgSrc]);
+  }, [isLoadingState, handleLoading, currentSrc]);
 
   return (
     <>
@@ -46,13 +46,13 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
           {...{ ...props }}
         >
           <Styled.BackgroundImage
-            {...{ src: imgSrc, ...props }}
+            {...{ src: currentSrc, ...props }}
             alt={props.alt || ""}
             isLoading={isLoadingState}
           />
         </Styled.Wrapper>
       ) : (
-        <img {...{ src: imgSrc, ...props }} alt={props.alt || ""} />
+        <img {...{ src: currentSrc, ...props }} alt={props.alt || ""} />
       )}
     </>
   );

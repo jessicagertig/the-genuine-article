@@ -57,12 +57,12 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
     placeholderSrc && isLoading
   );
 
-  console.log("Daily Garment Image Info", {
-    images: garment?.imageUrls,
-    isLoadingState,
-    currentSrc,
-    placeholderSrc,
-  });
+  // console.log("Daily Garment Image Info", {
+  //   images: garment?.imageUrls,
+  //   isLoadingState,
+  //   currentSrc,
+  //   placeholderSrc,
+  // });
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
   const contentContainerRef = React.useRef<HTMLDivElement>(null!);
@@ -284,7 +284,7 @@ Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
       position: absolute;
       inset: 0;
       backdrop-filter: ${isLoading ? "blur(7px)" : "blur(0px)"};
-      transition: ${isLoading ? "none" : "backdrop-filter 0.7s linear"};
+      transition: ${isLoading ? "none" : "backdrop-filter 0.3s linear"};
     }
 
     img {

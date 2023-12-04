@@ -1490,6 +1490,16 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.1.6.tgz#22958c042e10b67463997bd6ea7115fe28cbcaf9"
   integrity sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==
 
+"@fontsource/bellota-text@^5.0.17":
+  version "5.0.17"
+  resolved "https://registry.yarnpkg.com/@fontsource/bellota-text/-/bellota-text-5.0.17.tgz#0fd427bdd7730df22be1d2de36d7c6c3fb8a9d40"
+  integrity sha512-9MYaVjcmiu+uuL+BXKkdJjOZy1O9A0RiwaEekQjs+VZouyHrks4BK/WAW96titjV8CHgd2L2DGpLgKyJmE0pBg==
+
+"@fontsource/sorts-mill-goudy@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@fontsource/sorts-mill-goudy/-/sorts-mill-goudy-5.0.8.tgz#35ef141663d4031133369c7677b9a5aa343ad263"
+  integrity sha512-8uFdazB/eH9yGRN1lIaQ+tJ9/ahNWWJaiKdIW1tCLNHMxa7OVBhQ3Q6n/c0rLgmo/lv2m2jpESITgDxtaM19kw==
+
 "@gar/promisify@^1.0.1", "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"

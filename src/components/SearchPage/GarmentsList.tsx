@@ -68,7 +68,7 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
     });
   };
 
-  const loadingState = !data && (isLoading || isFetching);
+  const loadingState = !data || isLoading || isFetching;
 
   return (
     <Styled.GarmentsListContainer>

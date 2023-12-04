@@ -31,7 +31,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({
 }) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const { openModal, removeModal } = useModalContext();
   const { mutate: deleteGarment } = useDeleteGarment();
   const garmentTitleOption = {
@@ -178,13 +178,18 @@ const GarmentContent: React.FC<GarmentContentProps> = ({
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
         {isLoading || noImage ? (
-          <Styled.NoImageContainer role="img" aria-label="image is loading or does not exist">
+          <Styled.NoImageContainer
+            role="img"
+            aria-label="image is loading or does not exist"
+          >
             <Skeleton
               variant="rectangular"
-              width={isSmallScreen ? "calc((100vh - 160px) * 0.82)" : "500px"}
-              height={isSmallScreen ? "calc(100vh - 160px)" : "609px"}
+              width={isSmallScreen ? "min(100vw, 480px)" : "500px"}
+              height={
+                isSmallScreen ? "min(calc(100vw * 1.2), 575px)" : "609px"
+              }
               sx={{
-                bgcolor: "rgba(211, 217, 229, 0.9)",
+                bgcolor: "rgba(211, 217, 229, 0.5)",
                 borderRadius: "8px",
                 my: "32px",
               }}
@@ -285,30 +290,22 @@ Styled.DisplayedImage = styled.div(props => {
     background-color: rgba(211, 217, 229, 0.5);
     display: flex;
     width: 100vw;
-    max-height: 575px;
-    min-height: 375px;
+    width: min(100vw, 480px);
+    height: min(calc(100vw * 1.2), 575px);
     flex-shrink: 1;
-
-    ${t.mq.xxs} {
-      min-height: 420px;
-    }
 
     ${t.mq.xs} {
       width: 500px;
       height: 609px;
-      min-height: 609px;
     }
 
     img {
-      width: 100vw;
-      max-width: 480px;
-      max-height: 575px;
+      width: min(100vw, 480px);
+      height: min(calc(100vw * 1.2), 575px);
 
       ${t.mq.xs} {
         width: 500px;
         height: 609px;
-        max-width: 500px;
-        max-height: 609px;
       }
     }
   `;

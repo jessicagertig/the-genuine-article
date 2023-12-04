@@ -92,10 +92,10 @@ type Props = { theme: Theme; styleVars: StylingVariables };
 
 Styled.InfoCardContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
-  const { isShortScreen, noGarment } = styleVars;
+  const { isShortScreen } = styleVars;
   return css`
     label: DailyGarment_InfoCardContainer;
-    display: ${noGarment ? "none" : "flex"};
+    display: flex;
     flex-direction: column;
     justify-content: center;
     position: relative;
@@ -265,7 +265,7 @@ Styled.InfoDetails = styled.div(({ theme, styleVars }: Props) => {
     p {
       color: inherit;
 
-      &:nth-child(2) {
+      &:nth-of-type(2) {
         margin-top: -4px;
       }
 

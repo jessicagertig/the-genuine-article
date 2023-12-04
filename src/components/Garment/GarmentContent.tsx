@@ -9,6 +9,7 @@ import Skeleton from "@mui/material/Skeleton";
 import IconButton from "@mui/material/IconButton";
 import OpenInNewOutlinedIcon from "@mui/icons-material/OpenInNewOutlined";
 import Link from "@mui/material/Link";
+import ProgressiveImage from "src/components/shared/ProgressiveImage";
 
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import Accordian from "src/components/shared/Accordian";
@@ -28,6 +29,13 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
 
   const theme = useTheme();
   const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const smallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const [imageLoading, setImageLoading] = React.useState(false);
+
+  const handleLoading = React.useCallback((loading: boolean) => {
+    setImageLoading(loading);
+  }, []);
 
   type Item = {
     name: string;
@@ -114,36 +122,36 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
   return (
     <Styled.GarmentContainer>
       <Styled.ImagesSection>
-        {loading ? (
-          <Skeleton
-            variant="rectangular"
-            width={mediumScreen ? "calc((100vh - 160px) * 0.82)" : "500px"}
-            height={mediumScreen ? "calc(100vh - 160px)" : "609px"}
-            sx={{
-              bgcolor: "rgba(211, 217, 229, 0.9)",
-              borderRadius: "8px",
-              my: "32px",
-            }}
-          />
-        ) : (
-          <>
-            <Styled.DisplayedImage>
-              <img
-                src={garment?.imageUrls?.largeUrl}
-                alt={garment ? garment.garmentTitle : "garment"}
-                onClick={handleZoom}
-              />
-            </Styled.DisplayedImage>
-            <ImageToolbar
-              garmentMainImgUrl={
-                garment?.imageUrls ? garment?.imageUrls?.mainImageUrl : ""
+        <Styled.DisplayedImage onClick={handleZoom} imageLoading={imageLoading}>
+          {loading || !garment ? (
+            <Skeleton
+              variant="rectangular"
+              width={smallScreen ? "min(calc(100vw - 32px), 500px)" : "500px"}
+              height={
+                smallScreen
+                  ? "min(calc((100vw - 32px) * 1.2), 609px)"
+                  : "609px"
               }
-              garmentTitle={garment ? garment.garmentTitle : "garment"}
-              mediumScreen={mediumScreen}
+              sx={{
+                bgcolor: "rgba(211, 217, 229, 0.5)",
+              }}
             />
-          </>
-        )}
-        {/* <Styled.ThumbGallery></Styled.ThumbGallery> */}
+          ) : (
+            <ProgressiveImage
+              src={garment.imageUrls?.largeUrl}
+              placeholderSrc={garment.imageUrls?.tinyLargeUrl}
+              handleLoading={handleLoading}
+              isBackground={false}
+            />
+          )}
+        </Styled.DisplayedImage>
+        <ImageToolbar
+          garmentMainImgUrl={
+            garment?.imageUrls ? garment?.imageUrls?.mainImageUrl : ""
+          }
+          garmentTitle={garment ? garment.garmentTitle : "garment"}
+          mediumScreen={mediumScreen}
+        />
       </Styled.ImagesSection>
       <Styled.InfoSection isDark={isDark}>
         <Styled.InfoContainer isDark={isDark}>
@@ -201,7 +209,6 @@ Styled.GarmentContainer = styled.div(props => {
     label: Garment_Container;
     display: flex;
     width: 100%;
-    mheight: 100%;
     flex-direction: column;
     align-items: center;
     ${t.mt(4)};
@@ -259,36 +266,45 @@ Styled.DisplayedImage = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: Garment_DisplayedImage;
-    background-color: white;
     display: flex;
     position: relative;
-    width: calc(100vw - (100vw - 100%));
-    max-height: 575px;
-    min-height: 220px;
+    width: min(calc(100vw - 32px), 480px);
+    height: min(calc((100vw - 32px) * 1.2), 575px);
     flex-shrink: 1;
     justify-content: center;
-    ${[t.px(4)]};
 
-    ${t.mq.xxs} {
-      max-height: 609px;
-      min-height: 335px;
+    ${t.mq.xs} {
+      width: min(calc(100vw - 32px), 500px);
+      height: min(calc((100vw - 32px) * 1.2), 609px);
     }
 
     ${t.mq.sm} {
-      width: 532px;
-      max-height: 609px;
-      min-height: 609px;
-      ${t.mt(2)};
+      width: 500px;
+      height: 609px;
+      min-height: unset;
+      max-height: unset;
+      ${[t.mt(2), t.mx(4)]};
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      backdrop-filter: ${props.imageLoading ? "blur(7px)" : "blur(0px)"};
     }
 
     img {
-      width: calc(100vw - (100vw - 100%));
-      max-width: 480px;
-      max-height: 575px;
+      width: min(calc(100vw - 32px), 480px);
+      height: min(calc((100vw - 32px) * 1.2), 575px);
+      object-fit: cover;
+      background-color: rgba(211, 217, 229, 0.5);
 
       ${t.mq.xs} {
-        max-width: 500px;
-        max-height: 609px;
+        width: min(calc(100vw - 32px), 500px);
+        height: min(calc((100vw - 32px) * 1.2), 609px);
       }
 
       ${t.mq.sm} {
@@ -312,6 +328,7 @@ Styled.ThumbGallery = styled.div((props: any) => {
     height: 64px;
     display: flex;
     flex-shrink: 1;
+    position: relative;
 
     ${t.mq.xs} {
       width: 500px;

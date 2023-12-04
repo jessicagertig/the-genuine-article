@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 import Skeleton from "@mui/material/Skeleton";
+import ProgressiveImage from "src/components/shared/ProgressiveImage";
 
 import { GarmentData } from "src/types";
 
@@ -20,8 +21,11 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
   handleClick,
   loading,
 }) => {
-  const url =
-    garment && garment.imageUrls ? garment.imageUrls.displayUrl : undefined;
+  const [imageLoading, setImageLoading] = React.useState(true);
+
+  const handleLoading = React.useCallback((loading: boolean) => {
+    setImageLoading(loading);
+  }, []);
 
   return (
     <>
@@ -42,8 +46,14 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
             handleClick(event, garment?.id)
           }
         >
-          <Styled.GarmentCardImage>
-            <img src={url} alt={garment ? garment?.garmentTitle : "garment"} />
+          <Styled.GarmentCardImage isLoading={imageLoading}>
+            <ProgressiveImage
+              src={garment?.imageUrls?.displayUrl}
+              alt={garment ? garment.garmentTitle : "garment"}
+              placeholderSrc={garment?.imageUrls?.tinyDisplayUrl}
+              isBackground={false}
+              handleLoading={handleLoading}
+            />
           </Styled.GarmentCardImage>
           <Styled.GarmentCardText>
             <h6>{garment?.garmentTitle}</h6>
@@ -73,6 +83,8 @@ Styled.GarmentCard = styled.div(props => {
     display: flex;
     flex-direction: column;
     ${t.m(4)}
+    background-color: rgba(211, 217, 229, 0.5);
+    position: relative;
 
     ${t.mq.xxs} {
       width: 296px;
@@ -80,15 +92,13 @@ Styled.GarmentCard = styled.div(props => {
     }
 
     ${t.mq.sm} {
-      max-width: 296px;
-      max-height: 444px;
-      width: calc(50% - 32px);
-      height: calc((43.5vw - 32px) * 1.5);
+      width: min(calc(50% - 32px), 296px);
+      height: min(calc((43.5vw - 32px) * 1.5), 444px);
     }
 
     ${t.mq.mdlg} {
-      width: calc(33.33% - 32px);
-      height: calc((30vw - 32px) * 1.5);
+      width: min(calc(33.33% - 32px), 296px);
+      height: min(calc((30vw - 32px) * 1.5), 444px);
     }
 
     &:hover {
@@ -107,6 +117,7 @@ Styled.GarmentCardText = styled.div(props => {
     justify-content: space-between;
     background-color: rgba(0, 0, 0, 0.5);
     ${[t.px(3), t.mb(8)]}
+    z-index: 4;
 
     ${t.mq.xxs} {
       ${t.mb(0)}
@@ -129,13 +140,14 @@ Styled.GarmentCardText = styled.div(props => {
   `;
 });
 
-Styled.GarmentCardImage = styled.div(props => {
+Styled.GarmentCardImage = styled.div((props: any) => {
   const t = props.theme;
   return css`
     label: GarmentCardImage;
     width: 280px;
     height: 347px;
     display: block;
+    ${t.rounded.md};
 
     ${t.mq.xxs} {
       width: 296px;
@@ -143,15 +155,27 @@ Styled.GarmentCardImage = styled.div(props => {
     }
 
     ${t.mq.sm} {
-      max-width: 296px;
-      max-height: 372px;
-      height: calc(100% - 72px);
-      width: 100%;
+      height: min(calc(100% - 72px), 372px);
+      width: min(100%, 296px);
+    }
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      ${t.rounded.md};
+      backdrop-filter: ${props.isLoading ? "blur(4px)" : "blur(0px)"};
     }
 
     img {
+      position: absolute;
       ${t.rounded.md};
-      max-width: 100%;
+      object-fit: fill;
+      width: 100%;
+      height: 100%;
     }
   `;
 });

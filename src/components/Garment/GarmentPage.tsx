@@ -16,9 +16,7 @@ import { useGarment } from "src/queryHooks/useGarments";
 interface GarmentPageProps {}
 
 const GarmentPage: React.FC<GarmentPageProps> = () => {
-  const [garmentData, setGarmentData] = React.useState<GarmentData | undefined>(
-    undefined
-  );
+
   const { garmentId } = useParams();
 
   const theme = useTheme();
@@ -41,17 +39,11 @@ const GarmentPage: React.FC<GarmentPageProps> = () => {
     itemId: idToNumber,
   });
 
-  React.useEffect(() => {
-    if (garment) {
-      setGarmentData(garment);
-    }
-  }, [garment]);
-
   return (
     <Styled.GarmentPageContainer ref={pageContainerRef}>
       <NavBar backgroundColor="white" shadow={true} />
       <GarmentContent
-        garment={garmentData}
+        garment={garment}
         loading={garmentIsLoading}
         isDark={largeScreen}
       />

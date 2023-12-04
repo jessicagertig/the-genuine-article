@@ -120,6 +120,7 @@ Styled.GarmentsListContainer = styled.div(() => {
     display: flex;
     flex-direction: column;
     max-width: 1500px;
+    align-content: center;
   `;
 });
 
@@ -155,13 +156,10 @@ Styled.GarmentsList = styled.div(props => {
     label: GarmentsList;
     ${t.mx(0)};
     height: max-content;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
-
-    ${t.mq.xxs} {
-      ${t.mx(4)}
-    }
   `;
 });
 
@@ -170,8 +168,8 @@ Styled.PaginationContainer = styled.div(props => {
   return css`
     label: PaginationContainer;
     ${[t.py(12), t.mb(8)]}
-    width: 100%;
-    height: 100%;
+    width: 342px;
+    height: 128px;
     display: flex;
     justify-content: center;
     align-self: center;

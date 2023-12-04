@@ -93,12 +93,12 @@ Styled.GarmentCard = styled.div(props => {
 
     ${t.mq.sm} {
       width: min(calc(50% - 32px), 296px);
-      height: min(calc((43.5vw - 32px) * 1.5), 444px);
+      height: min(calc((47vw - 32px) * 1.5), 444px);
     }
 
     ${t.mq.mdlg} {
       width: min(calc(33.33% - 32px), 296px);
-      height: min(calc((30vw - 32px) * 1.5), 444px);
+      height: min(calc((31.33vw - 32px) * 1.5), 444px);
     }
 
     &:hover {

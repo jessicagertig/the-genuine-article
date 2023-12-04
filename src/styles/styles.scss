@@ -1,14 +1,15 @@
 @import "normalize.css";
-@import "https://fonts.googleapis.com/css2?family=Bellota+Text:ital,wght@0,300;0,400;0,700;1,400&family=Sorts+Mill+Goudy&display=swap";
+@import "@fontsource/bellota-text";
+@import "https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy&display=swap";
 
 html {
-  font-family: "Bellota Text", cursive;
+  font-family: "Bellota Text", sans-serif;
   font-family: "Sorts Mill Goudy", serif;
 }
 
 @supports (font-variation-settings: normal) {
   html {
-    font-family: "Bellota Text", cursive;
+    font-family: "Bellota Text", sans-serif;
     font-family: "Sorts Mill Goudy", serif;
     // font-feature-settings: ;
   }

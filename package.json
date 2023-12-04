@@ -13,6 +13,7 @@
     "@emotion/react": "^11.0.0-rc.0",
     "@emotion/styled": "^11.8.1",
     "@fontsource/bellota-text": "^5.0.17",
+    "@fontsource/sorts-mill-goudy": "^5.0.8",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.5",
     "@mui/x-date-pickers": "^6.8.0",

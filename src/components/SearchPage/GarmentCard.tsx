@@ -1,24 +1,31 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import { Link } from "react-router-dom";
 
 import Skeleton from "@mui/material/Skeleton";
 import ProgressiveImage from "src/components/shared/ProgressiveImage";
 
 import { GarmentData } from "src/types";
 
+type NavigationState =
+  | {
+      isSearch: boolean;
+      searchParams: string;
+    }
+  | {
+      pageNo: number;
+    };
+
 interface GarmentCardProps {
   garment: GarmentData;
   loading: boolean;
-  handleClick: (
-    event: React.MouseEvent<HTMLDivElement>,
-    garmentId: number
-  ) => void;
+  navigationState: NavigationState;
 }
 
 const GarmentCard: React.FC<GarmentCardProps> = ({
   garment,
-  handleClick,
+  navigationState,
   loading,
 }) => {
   const [imageLoading, setImageLoading] = React.useState(true);
@@ -27,6 +34,7 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
     setImageLoading(loading);
   }, []);
 
+  console.log("NAVIGATION STATE", navigationState);
   return (
     <>
       {loading ? (
@@ -42,9 +50,10 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
         />
       ) : (
         <Styled.GarmentCard
-          onClick={(event: React.MouseEvent<HTMLDivElement>) =>
-            handleClick(event, garment?.id)
-          }
+          role="button"
+          aria-label="Navigate to garment details"
+          to={`/garments/${garment?.id}`}
+          state={navigationState}
         >
           <Styled.GarmentCardImage isLoading={imageLoading}>
             <ProgressiveImage
@@ -72,7 +81,7 @@ export default GarmentCard;
 let Styled: any;
 Styled = {};
 
-Styled.GarmentCard = styled.div(props => {
+Styled.GarmentCard = styled(Link)(props => {
   const t = props.theme;
   return css`
     label: GarmentCard;

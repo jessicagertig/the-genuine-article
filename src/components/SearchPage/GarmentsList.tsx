@@ -56,18 +56,6 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
     }
   };
 
-  const handleOnClick = (
-    e: React.MouseEvent<HTMLDivElement>,
-    garmentId: number
-  ): void => {
-    e.preventDefault();
-    navigate(`/garments/${garmentId}`, {
-      state: {
-        pageNo: pageNo,
-      },
-    });
-  };
-
   const loadingState = !data || isLoading || isFetching;
 
   return (
@@ -84,7 +72,7 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
               <GarmentCard
                 key={index}
                 garment={garment}
-                handleClick={handleOnClick}
+                navigationState={{ pageNo: pageNo }}
                 loading={isLoading}
               />
             ))}

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 import Pagination from "@mui/material/Pagination";
 
@@ -12,29 +12,31 @@ import { usePaginatedGarments } from "src/queryHooks/useGarments";
 
 interface GarmentsListProps {
   scrollToTop: () => void;
+  pageNo: number | null;
 }
 
 const GarmentsList: React.FC<GarmentsListProps> = props => {
-  const [pageNo, setPageNo] = React.useState(1);
+  const [pageNo, setPageNo] = React.useState(props.pageNo ? props.pageNo : 1);
   const [garments, setGarments] = React.useState<GarmentData[]>([]);
   const [pageCount, setPageCount] = React.useState(0);
-  // const [hasMore, setHasMore] = React.useState(false);
-
-  const { data, isFetching, isLoading } = usePaginatedGarments(pageNo);
-
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
-
-  console.log("data", data);
+  // const [hasMore, setHasMore] = React.useState(false);
 
   React.useEffect(() => {
     if (location?.state && location.state.pageNo) {
       setPageNo(location.state.pageNo);
+      setSearchParams({ ...searchParams, pageNo: location.state.pageNo });
     }
     // NOTE: Run effect once on component mount, please
     // recheck dependencies if effect is updated.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  // set page number from navigation state before fetching data
+  const { data, isFetching, isLoading } = usePaginatedGarments(pageNo);
+
+  console.log("Fetched Data:", { data, pageNo });
+
 
   React.useEffect(() => {
     if (data) {
@@ -52,6 +54,7 @@ const GarmentsList: React.FC<GarmentsListProps> = props => {
     setPageNo(value);
     console.log("diffPage", diffPage);
     if (diffPage) {
+      setSearchParams({ ...searchParams, pageNo: value.toString() });
       props.scrollToTop();
     }
   };

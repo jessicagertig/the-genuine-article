@@ -34,7 +34,7 @@ const GarmentCard: React.FC<GarmentCardProps> = ({
     setImageLoading(loading);
   }, []);
 
-  console.log("NAVIGATION STATE", navigationState);
+  // console.log("NAVIGATION STATE", navigationState);
   return (
     <>
       {loading ? (

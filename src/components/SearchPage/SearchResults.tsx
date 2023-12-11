@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import GarmentCard from "src/components/SearchPage/GarmentCard";
 import LoadingBar from "src/components/shared/Loading";
@@ -20,23 +20,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   hasResults,
   noResults,
 }) => {
-  const navigate = useNavigate();
-  const { search } = useLocation();
+  const { search }: { search: string } = useLocation();
   console.log("Loading search results:", isLoading);
   console.log("search params", search);
 
-  const handleOnClick = (
-    e: React.MouseEvent<HTMLDivElement>,
-    garmentId: number
-  ): void => {
-    e.preventDefault();
-    navigate(`/garments/${garmentId}`, {
-      state: {
-        isSearch: true,
-        searchParams: search,
-      },
-    });
-  };
+  const navigationState = { isSearch: true, searchParams: search }
 
   return (
     <Styled.SearchResultsContainer>
@@ -53,7 +41,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
                 <GarmentCard
                   key={index}
                   garment={garment}
-                  handleClick={handleOnClick}
+                  navigationState={navigationState}
                   loading={isLoading}
                 />
               ))}

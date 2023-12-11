@@ -8,7 +8,6 @@ import { useTheme } from "@mui/material/styles";
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import DailyGarmentInfo from "src/components/LandingPage/DailyGarmentInfo";
 import DailyGarmentTitle from "src/components/LandingPage/DailyGarmentTitle";
-import DailyGarmentSkeleton from "src/components/LandingPage/DailyGarmentSkeleton";
 
 import { useModalContext } from "src/context/ModalContext";
 import useResizeObserver from "src/hooks/useResizeObserver";
@@ -24,6 +23,7 @@ export interface StylingVariables {
   addPadding: boolean;
   show: boolean | undefined;
   isLoading: boolean;
+  ratio: number;
 }
 
 interface HomeContentProps {
@@ -51,6 +51,8 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
   const { ref: sizeRef, width: currentWidth } = useResizeObserver();
   const placeholderSrc = garment?.imageUrls?.tinyMainUrl;
   const src = garment?.imageUrls?.mainImageUrl;
+  const stringRatio = garment?.imageUrls?.ratio
+  const ratio = stringRatio ? parseFloat(stringRatio) : 1;
   const { currentSrc, isLoading } = useProgressiveImage(placeholderSrc as string, src as string);
 
   const isLoadingState: boolean = !!(
@@ -136,6 +138,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
     addPadding: addBottomMobileNavPadding,
     show,
     isLoading: isLoadingState,
+    ratio,
   };
 
   return (
@@ -293,7 +296,7 @@ Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
       border-radius: 4px;
 
       ${t.mq.xs} {
-        max-width: min(500px, 95vw, 100%);
+        max-width: min(480px, 95vw, 100%);
       }
 
     ${t.mq.md} {
@@ -306,6 +309,8 @@ Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
     ${t.mq.xl} {
       max-height: max(calc(${heightInVh}vh - 120px), 510px);
       min-height: 510px;
+      width: 480px;
+      max-width: unset;
     }
   `;
 });

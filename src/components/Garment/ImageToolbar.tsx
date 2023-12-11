@@ -19,13 +19,13 @@ interface ImageToolbarProps {
 const ImageToolbar: React.FC<ImageToolbarProps> = props => {
   const { mediumScreen, garmentTitle, garmentMainImgUrl } = props;
   const navigate = useNavigate();
-  const location = useLocation();
+  const { state } = useLocation();
   const { openModal, removeModal } = useModalContext();
 
-  console.log("GARMENT TOOLBAR LOCATION", location);
-  const isSearch = location?.state?.isSearch;
-  const searchParams = location?.state?.searchParams;
-  const pageNumber = location?.state?.pageNo;
+  console.log("GARMENT TOOLBAR LOCATION", state);
+  const isSearch = state?.isSearch;
+  const searchParams = state?.searchParams;
+  const pageNumber = state?.pageNo;
 
   const handleZoom = () => {
     const modal = (

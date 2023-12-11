@@ -24,12 +24,12 @@ const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
   const isLoadingState: boolean = !!(
     placeholderSrc && isLoading
   );
-  console.log("PROGRESSIVE IMAGE", {
-    isLoadingState,
-    placeholderSrc,
-    currentSrc,
-    src,
-  });
+  // console.log("PROGRESSIVE IMAGE", {
+  //   isLoadingState,
+  //   placeholderSrc,
+  //   currentSrc,
+  //   src,
+  // });
 
   React.useEffect(() => {
 

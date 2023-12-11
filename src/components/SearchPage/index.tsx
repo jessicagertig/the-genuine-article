@@ -29,9 +29,14 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useGarmentsKeywordSearch(searchQuery, enabled);
 
-  console.log("Data in index:", data);
-  console.log("Search results:", searchResults);
-  console.log("hasQuery", hasQuery);
+  const pageNumber = searchParams.get("pageNo");
+
+  console.log("RENDER SearchPage/index.tsx", {
+    data,
+    searchResults,
+    hasQuery,
+    pageNoQueryParam: pageNumber,
+  })
 
   const pageContainerRef = React.useRef<HTMLDivElement>(null);
 
@@ -74,10 +79,13 @@ const SearchPage: React.FC<SearchPageProps> = () => {
   }, [data, searchResults, setHasResults]);
 
   const handleOnChange = (value: string) => {
-    console.log("value", value);
+    console.log("Search Input value", { value });
     if (value === "") {
       setSearchQuery(value);
-      setSearchParams({});
+      const query = searchParams.get("query");
+      if (query) {
+        setSearchParams({});
+      }
     }
     setSearchValue(value);
   };
@@ -143,7 +151,7 @@ const SearchPage: React.FC<SearchPageProps> = () => {
       {hasQuery ? (
           <SearchResults garments={searchResults} isLoading={isLoading} hasResults={hasResults} noResults={noResults} />
         ) : (
-          <GarmentsList scrollToTop={scrollToTop} />
+          <GarmentsList scrollToTop={scrollToTop} pageNo={pageNumber ? parseInt(pageNumber) : null} />
         )}
         <Styled.ButtonContainer>
           {hasResults && hasNextPage && !fetchingNextPage ? (

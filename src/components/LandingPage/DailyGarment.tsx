@@ -2,9 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-
 import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
 import DailyGarmentInfo from "src/components/LandingPage/DailyGarmentInfo";
 import DailyGarmentTitle from "src/components/LandingPage/DailyGarmentTitle";
@@ -12,27 +9,17 @@ import DailyGarmentTitle from "src/components/LandingPage/DailyGarmentTitle";
 import { useModalContext } from "src/context/ModalContext";
 import useResizeObserver from "src/hooks/useResizeObserver";
 import useImageDimensions from "src/hooks/useImageDimensions";
-import useIntersectionObserver from "src/hooks/useIntersectionObserver";
+
 import { useProgressiveImage } from "src/hooks/useProgressiveImage";
 import { GarmentData } from "src/types";
-
-export interface StylingVariables {
-  isVeryShortScreen: boolean;
-  isShortScreen: boolean;
-  heightInVh: number;
-  addPadding: boolean;
-  show: boolean | undefined;
-  isLoading: boolean;
-  ratio: number;
-}
+import { StylingVariables } from 'src/components/LandingPage/DailyGarmentContainer';
 
 interface HomeContentProps {
-  windowHeight: number;
-  windowWidth: number;
   garment: GarmentData;
+  styleVars: StylingVariables;
 }
 
-const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
+const HomeContent: React.FC<HomeContentProps> = ({ garment, styleVars }) => {
   const { openModal, removeModal } = useModalContext();
 
   const [imageLoaded, setImageLoaded] = React.useState(false);
@@ -41,9 +28,6 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
     width: 0,
   });
 
-  const theme = useTheme();
-  const mediumScreen = useMediaQuery(theme.breakpoints.down("md"));
-
   const { maxWidth: maxZoomedImgWidth } = useImageDimensions({
     imageLoaded,
     dimensions,
@@ -51,8 +35,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
   const { ref: sizeRef, width: currentWidth } = useResizeObserver();
   const placeholderSrc = garment?.imageUrls?.tinyMainUrl;
   const src = garment?.imageUrls?.mainImageUrl;
-  const stringRatio = garment?.imageUrls?.ratio
-  const ratio = stringRatio ? parseFloat(stringRatio) : 1;
+  
   const { currentSrc, isLoading } = useProgressiveImage(placeholderSrc as string, src as string);
 
   const isLoadingState: boolean = !!(
@@ -67,35 +50,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
   // });
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
-  const contentContainerRef = React.useRef<HTMLDivElement>(null!);
-  const intersectionRef = React.useRef<HTMLDivElement>(null!);
-
-  const [addBottomMobileNavPadding, setaddBottomMobileNavPadding] =
-    React.useState(false);
-
-  React.useEffect(() => {
-    // console.log("CONTENT REF", contentContainerRef);
-    if (
-      contentContainerRef?.current &&
-      contentContainerRef.current.clientHeight
-    ) {
-      const hasBorders =
-        contentContainerRef?.current?.clientHeight < windowHeight;
-      const needsMargin = mediumScreen && !hasBorders;
-      setaddBottomMobileNavPadding(needsMargin);
-    } else {
-      setaddBottomMobileNavPadding(false);
-    }
-  }, [contentContainerRef, mediumScreen, windowHeight]);
-
-  /* ANIMATIONS */
-
-  const dataRef = useIntersectionObserver(intersectionRef, {
-    freezeOnceVisible: true,
-  });
-
-  const show = dataRef?.isIntersecting;
-
+  
   /* HANDLE IMAGE DIMENSIONS */
 
   const onLoad = () => {
@@ -119,40 +74,21 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
         onClose={() => removeModal()}
         garmentTitle={garment?.garmentTitle}
         imageUrl={currentSrc}
-        responsiveFullscreen={mediumScreen}
+        responsiveFullscreen={styleVars.mediumScreen}
       />
     );
 
     openModal(modal);
   };
 
-  // styling variables
-  const height = windowHeight ?? 100;
-  const isVeryShortScreen = height <= 630;
-  const isShortScreen = height <= 800;
-  const heightInVh = height / (height * 0.01);
-  const styleVars: StylingVariables = {
-    isVeryShortScreen,
-    isShortScreen,
-    heightInVh,
-    addPadding: addBottomMobileNavPadding,
-    show,
-    isLoading: isLoadingState,
-    ratio,
-  };
-
   return (
-    <Styled.SubContainer styleVars={styleVars} ref={contentContainerRef}>
-      <Styled.HomeContentContainer
-        styleVars={styleVars}
-        addBottomMobileNavPadding={addBottomMobileNavPadding}
-        ref={intersectionRef}
-      >
+    <>
         <DailyGarmentTitle styleVars={styleVars} />
         <Styled.ImageCardContainer currentWidth={currentWidth}>
           <Styled.DisplayedImage
             styleVars={styleVars}
             width={maxZoomedImgWidth}
+            isLoading={isLoadingState}
             onClick={handleZoom}
             ref={sizeRef}
           >
@@ -165,8 +101,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ windowHeight, garment }) => {
           </Styled.DisplayedImage>
         </Styled.ImageCardContainer>
         <DailyGarmentInfo styleVars={styleVars} garment={garment} />
-      </Styled.HomeContentContainer>
-    </Styled.SubContainer>
+    </>
   );
 };
 
@@ -203,41 +138,6 @@ Styled.SubContainer = styled.div(({ theme, styleVars }: Props) => {
   `;
 });
 
-Styled.HomeContentContainer = styled.div(({ theme, styleVars }: Props) => {
-  const t = theme;
-  const { addPadding, isShortScreen } = styleVars;
-  return css`
-    label: DailyGarment_HomeContentContainer;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: flex-start;
-    max-width: 1500px;
-    padding-bottom: ${addPadding ? "64px" : "0px"};
-
-    ${t.mq.md} {
-      height: ${isShortScreen ? "100%" : "94%"};
-      justify-content: ${isShortScreen ? "space-between" : "flex-start"};
-      ${t.pb(0)};
-    }
-
-    ${t.mq.xl} {
-      height: 100%;
-      padding-right: 2%;
-      padding-left: 2%;
-      flex-direction: row;
-      justify-content: center;
-    }
-
-    ${t.mq.gxl} {
-      padding-right: 5%;
-      padding-left: 5%;
-    }
-  `;
-});
-
 Styled.ImageCardContainer = styled.div(
   ({ theme, currentWidth }: { theme: Theme; currentWidth: number }) => {
     const t = theme;
@@ -257,9 +157,9 @@ Styled.ImageCardContainer = styled.div(
   }
 );
 
-Styled.DisplayedImage = styled.div(({ theme, styleVars }: Props) => {
+Styled.DisplayedImage = styled.div(({ theme, styleVars, isLoading }: {theme: Theme, styleVars: StylingVariables, isLoading: boolean }) => {
   const t = theme;
-  const { heightInVh, isShortScreen, isLoading } = styleVars;
+  const { heightInVh, isShortScreen } = styleVars;
   return css`
     label: Garment_DisplayedImage;
     display: flex;

@@ -1,20 +1,25 @@
-import React from "react";
+import React, { lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-
-import PublicLayout from "src/layouts/PublicLayout";
-import AdminLayout from "src/layouts/AdminLayout";
-import AdminPage from "src/components/AdminPage";
-import LandingPage from "src/components/LandingPage";
-import SearchPage from "src/components/SearchPage";
-import GarmentPage from "src/components/Garment/GarmentPage";
-import AdminGarmentPage from "src/components/AdminPage/AdminGarmentPage";
-import LoginPage from "src/components/Auth/LoginPage";
-import Logout from "src/components/Auth/Logout";
 
 import LoadingState from "src/components/shared/LoadingState";
 
 import { AuthProvider } from "src/context/AuthContext";
 import { useAuthedUser } from "src/queryHooks/useAuth";
+// Import your layouts
+const PublicLayout = lazy(() => import("src/layouts/PublicLayout"));
+const AdminLayout = lazy(() => import("src/layouts/AdminLayout"));
+
+// Import your components
+const LandingPage = lazy(() => import("src/components/LandingPage"));
+const SearchPage = lazy(() => import("src/components/SearchPage"));
+const GarmentPage = lazy(() => import("src/components/Garment/GarmentPage"));
+const AdminPage = lazy(() => import("src/components/AdminPage"));
+const AdminGarmentPage = lazy(
+  () => import("src/components/AdminPage/AdminGarmentPage")
+);
+const LoginPage = lazy(() => import("src/components/Auth/LoginPage"));
+const Logout = lazy(() => import("src/components/Auth/Logout"));
+
 
 // after login auth works as follows
 // if a route is an authed route
@@ -78,7 +83,7 @@ const App: React.FC = () => {
     isLoading,
     isFetching,
   } = useAuthedUser({ enabled: isEnabled });
-  const [ initialUser, setInitialUser ] = React.useState(null)
+  const [initialUser, setInitialUser] = React.useState(null);
 
   React.useEffect(() => {
     // console.log("fetching?", isFetching);
@@ -86,7 +91,7 @@ const App: React.FC = () => {
     // console.log("is enabled?", isEnabled);
     // console.log("user", user);
     if (user !== undefined) {
-      setInitialUser(user)
+      setInitialUser(user);
     }
   }, [user, isLoading, isFetching, isEnabled]);
   // TODO:  possiblyl pass user down to component to be set in context if user is defined but currentUser is not
@@ -95,19 +100,21 @@ const App: React.FC = () => {
       {isLoading ? (
         <LoadingState />
       ) : (
-        <Routes>
-          {pages.map((page, index) => (
-            <Route
-              key={index}
-              path={page.path}
-              element={
-                <page.layout>
-                  <page.component />
-                </page.layout>
-              }
-            />
-          ))}
-        </Routes>
+        <React.Suspense fallback={<LoadingState />}>
+          <Routes>
+            {pages.map((page, index) => (
+              <Route
+                key={index}
+                path={page.path}
+                element={
+                  <page.layout>
+                    <page.component />
+                  </page.layout>
+                }
+              />
+            ))}
+          </Routes>
+        </React.Suspense>
       )}
     </AuthProvider>
   );

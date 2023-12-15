@@ -88,11 +88,11 @@ const HomeContentContainer: React.FC<HomeContentContainerProps> = ({
           addBottomMobileNavPadding={addBottomMobileNavPadding}
           ref={intersectionRef}
         >
-          {!garment ? (
+          {/* {!garment ? (
             <DailyGarmentSkeleton />
-          ) : (
-            <DailyGarment garment={garment} styleVars={styleVars} />
-          )}
+          ) : ( */}
+          <DailyGarment garment={garment} styleVars={styleVars} />
+          {/* )} */}
         </Styled.ContentContainer>
       </Styled.SubContainer>
     </Styled.Container>

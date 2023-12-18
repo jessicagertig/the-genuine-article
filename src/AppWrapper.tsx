@@ -9,6 +9,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ModalProvider } from "src/context/ModalContext";
 import { WindowSizeProvider } from "src/context/WindowSizeContext";
 import { AuthProvider } from "src/context/AuthContext";
+import { ToastProvider } from "src/context/ToastContext";
 
 import myTheme from "src/styles/theme";
 import customTheme from "src/styles/customTheme";
@@ -34,11 +35,13 @@ const AppWrapper = <P extends {}>(
             <EmotionThemeProvider theme={myTheme}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <WindowSizeProvider>
-                  <ModalProvider>
-                    <AuthProvider>
-                      <WrappedComponent {...props} />
-                    </AuthProvider>
-                  </ModalProvider>
+                  <ToastProvider>
+                    <ModalProvider>
+                      <AuthProvider>
+                        <WrappedComponent {...props} />
+                      </AuthProvider>
+                    </ModalProvider>
+                  </ToastProvider>
                 </WindowSizeProvider>
               </LocalizationProvider>
             </EmotionThemeProvider>

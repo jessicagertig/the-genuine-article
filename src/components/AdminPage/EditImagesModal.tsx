@@ -107,6 +107,11 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
             },
             onError: (error: any) => {
               console.log("ERROR", error);
+              addToast({
+                kind: "error",
+                title: "Your image upload failed",
+                delay: 5000,
+              });
               props.onCancel(); //removes modal
             },
           }
@@ -126,6 +131,11 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
             },
             onError: (error: any) => {
               console.log("ERROR", error);
+              addToast({
+                kind: "error",
+                title: "Your image upload failed",
+                delay: 5000,
+              });
               props.onCancel(); //removes modal
             },
           }

@@ -72,6 +72,11 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
             props.onCancel(); //removes modal
           },
           onError: (error: any) => {
+            addToast({
+              kind: "error",
+              title: "Your image upload failed",
+              delay: 5000,
+            });
             console.log("ERROR", error);
             props.onCancel(); //removes modal
           },

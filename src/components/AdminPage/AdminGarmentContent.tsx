@@ -90,7 +90,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({
           );
         } else if (item.name === "Description") {
           const lines = item.value ? item.value.split("\n") : [];
-          console.log("LINES", lines);
+          // console.log("LINES", lines);
           return (
             <Styled.InfoItem key={item.name}>
               <span>{item.name}</span>

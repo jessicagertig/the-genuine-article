@@ -48,6 +48,10 @@ function ToastProvider({ children }: { children: any }) {
 
   const addToast: AddToast = React.useCallback(
     function (toast: Toast) {
+      // console.log("%c[ToastContect] call fn", "color: #FF7602", {
+      //   toast,
+      //   toasts,
+      // });
       setToasts(toasts => [...toasts, { ...toast, id: guid() }]);
     },
     [setToasts]
@@ -73,7 +77,7 @@ function ToastProvider({ children }: { children: any }) {
           next,
           offsetHeight: refMap.get(item).offsetHeight,
         });
-        await next({
+        return await next({
           opacity: 1,
           height: refMap.get(item).offsetHeight,
         });

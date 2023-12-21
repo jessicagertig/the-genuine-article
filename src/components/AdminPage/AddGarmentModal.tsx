@@ -81,14 +81,14 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
           });
           props.onCancel();
         },
-        onError: (error: any) => {
-          const message = error && error.data ? error.data.message : "";
+        onError: (error: any, data: any) => {
+          const message = error && error.data ? error.data.message : "You record could not be added.";
           addToast({
             kind: "error",
             title: message,
             delay: 5000,
           });
-          console.log("Request Error:", message);
+          console.log("Request Error:", { message, data });
         },
       }
     );

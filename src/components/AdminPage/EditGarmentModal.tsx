@@ -135,14 +135,14 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
           });
           props.onCancel();
         },
-        onError: (error: any) => {
-          const message = error && error.data ? error.data.message : "";
+        onError: (error: any, data: any) => {
+          const message = error && error.data ? error.data.message : "Your record could not be updated.";
           addToast({
             kind: "error",
             title: message,
             delay: 5000,
           });
-          console.log("Request Error:", message);
+          console.log("Request Error:", { message, data });
         },
       }
     );

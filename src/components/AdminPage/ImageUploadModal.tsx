@@ -66,19 +66,19 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
             console.log("DATA", { data });
             addToast({
               kind: "success",
-              title: data?.message,
+              title: "Your image uploaded successfully",
               delay: 5000,
             });
             props.onCancel(); //removes modal
           },
           onError: (error: any) => {
+            console.log("ERROR:", { error });
+            const message = error?.data?.error ? error.data.error : "Your image upload failed";
             addToast({
               kind: "error",
-              title: "Your image upload failed",
+              title: message,
               delay: 5000,
             });
-            console.log("ERROR", error);
-            props.onCancel(); //removes modal
           },
         }
       );

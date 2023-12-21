@@ -26,6 +26,10 @@ interface EditImagesModalProps {
   garment: GarmentData | undefined;
 }
 
+type ResponseData = {
+  message: string;
+};
+
 const EditImagesModal: React.FC<EditImagesModalProps> = props => {
   const { garment } = props;
   const id = garment ? garment.id : null;
@@ -96,23 +100,28 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
         await updateMainImage(
           { formData, id },
           {
-            onSuccess: (data: any) => {
-              console.log("[ImageUploadModal]", { data });
+            onSuccess: (data: ResponseData) => {
+              console.log("[EditImagesModal]", { data });
+              const message = data?.message
+                ? data.message
+                : "Your image uploaded successfully.";
               addToast({
                 kind: "success",
-                title: "Your image has been uploaded",
+                title: message,
                 delay: 5000,
               });
               props.onCancel(); //removes modal
             },
             onError: (error: any) => {
               console.log("ERROR", error);
+              const message = error?.data?.message
+                ? error.data.message
+                : "Your image upload failed";
               addToast({
                 kind: "error",
-                title: "Your image upload failed",
+                title: message,
                 delay: 5000,
               });
-              props.onCancel(); //removes modal
             },
           }
         );
@@ -122,21 +131,27 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
           {
             onSuccess: (data: any) => {
               console.log("DATA", data);
+              const message = data?.message
+                ? data.message
+                : "Your image uploaded successfully.";
+              console.log("message:", message);
               addToast({
                 kind: "success",
-                title: "Your image has been uploaded",
+                title: message,
                 delay: 5000,
               });
               props.onCancel(); //removes modal
             },
             onError: (error: any) => {
-              console.log("ERROR", error);
+              console.log("ERROR", { error });
+              const message = error?.data?.error
+                ? error.data.error
+                : "Your image upload failed";;
               addToast({
                 kind: "error",
-                title: "Your image upload failed",
+                title: message,
                 delay: 5000,
               });
-              props.onCancel(); //removes modal
             },
           }
         );

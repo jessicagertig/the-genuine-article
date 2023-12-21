@@ -1,6 +1,6 @@
 import React from "react";
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import DialogModal from "src/components/shared/DialogModal";
@@ -13,6 +13,7 @@ import {
 } from "src/utils/formHelpers";
 
 import { useModalContext } from "src/context/ModalContext";
+import { useToastContext } from "src/context/ToastContext";
 import { useUpdateGarment } from "src/queryHooks/useGarments";
 import { useMenus } from "src/queryHooks/useMenus";
 
@@ -28,8 +29,9 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-  const fullscreen = useMediaQuery(theme.breakpoints.down('md'))
+  const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
   const { modalOpen } = useModalContext();
+  const addToast = useToastContext();
   const { mutate: updateGarment, isLoading: isLoadingUpdateGarment } =
     useUpdateGarment();
   const { data: menus } = useMenus();
@@ -48,7 +50,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
       source: garment?.source ? garment?.source : "",
       itemCollectionNo: garment ? garment?.itemCollectionNo : "",
       description: garment?.description ? garment?.description : "",
-    }
+    };
   }, [garment]);
 
   const [colorsState, setColorsState] = React.useState<Option[]>([]);
@@ -126,10 +128,20 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
       {
         onSuccess: (data: GarmentData) => {
           console.log("Success updating garment. Data:", data);
+          addToast({
+            kind: "success",
+            title: "Your record was successfully updated",
+            delay: 5000,
+          });
           props.onCancel();
         },
         onError: (error: any) => {
           const message = error && error.data ? error.data.message : "";
+          addToast({
+            kind: "error",
+            title: message,
+            delay: 5000,
+          });
           console.log("Request Error:", message);
         },
       }

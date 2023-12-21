@@ -8,7 +8,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import Divider from "src/components/shared/Divider";
 import { GarmentData } from "src/types";
-import { StylingVariables } from "src/components/LandingPage/DailyGarment";
+import { StylingVariables } from "src/components/LandingPage/DailyGarmentContainer";
 
 type Trail = {
   opacity: SpringValue<number>;

@@ -4,7 +4,7 @@ import { css, Theme } from "@emotion/react";
 import { useTrail, animated } from "@react-spring/web";
 
 import Divider from "src/components/shared/Divider";
-import { StylingVariables } from "src/components/LandingPage/DailyGarment";
+import { StylingVariables } from "src/components/LandingPage/DailyGarmentContainer";
 
 interface DailyGarmentTitleProps {
   styleVars: StylingVariables;

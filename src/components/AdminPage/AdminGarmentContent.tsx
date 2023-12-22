@@ -18,6 +18,7 @@ import EditImagesModal from "src/components/AdminPage/EditImagesModal";
 import ConfirmModal from "src/components/shared/ConfirmModal";
 
 import { useModalContext } from "src/context/ModalContext";
+import { useToastContext } from "src/context/ToastContext";
 import { useDeleteGarment } from "src/queryHooks/useGarments";
 
 interface GarmentContentProps {
@@ -33,6 +34,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const { openModal, removeModal } = useModalContext();
+  const addToast = useToastContext();
   const { mutate: deleteGarment } = useDeleteGarment();
   const garmentTitleOption = {
     value: garment?.garmentTitleId,
@@ -162,12 +164,27 @@ const GarmentContent: React.FC<GarmentContentProps> = ({
         {
           onSuccess: (data: any) => {
             console.log("Success deleting garment. Data:", data);
+            const message = data?.message
+              ? data.message
+              : "Your garment record was successfully deleted.";
+            addToast({
+              kind: "success",
+              title: message,
+              delay: 5000,
+            });
             removeModal();
             navigate(`/admin`);
           },
           onError: (error: any) => {
-            const message = error && error.data ? error.data.message : "";
-            console.log("Request Error:", message);
+            console.log("Request Error:", error);
+            const message = error?.data?.message
+              ? error.data.message
+              : "Your garment record could not be deleted.";
+            addToast({
+              kind: "error",
+              title: message,
+              delay: 5000,
+            });
           },
         }
       );
@@ -185,9 +202,7 @@ const GarmentContent: React.FC<GarmentContentProps> = ({
             <Skeleton
               variant="rectangular"
               width={isSmallScreen ? "min(100vw, 480px)" : "500px"}
-              height={
-                isSmallScreen ? "min(calc(100vw * 1.2), 575px)" : "609px"
-              }
+              height={isSmallScreen ? "min(calc(100vw * 1.2), 575px)" : "609px"}
               sx={{
                 bgcolor: "rgba(211, 217, 229, 0.5)",
                 borderRadius: "8px",

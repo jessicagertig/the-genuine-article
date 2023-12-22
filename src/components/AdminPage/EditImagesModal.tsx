@@ -78,12 +78,28 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
     deleteMainImage(garmentId, {
       onSuccess: (data: any) => {
         console.log("DATA", data);
+        const message = data?.message
+          ? data.message
+          : "Your image was successfully deleted.";
+        addToast({
+          kind: "success",
+          title: message,
+          delay: 5000,
+        });
         setPreviewImage(null);
         setExistingImage("");
         setHasImage(false);
       },
       onError: (error: any) => {
         console.log("ERROR", error);
+        const message = error?.data?.message
+          ? error.data.message
+          : "Your image was not deleted.";
+        addToast({
+          kind: "error",
+          title: message,
+          delay: 5000,
+        });
       },
     });
   };
@@ -146,7 +162,7 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
               console.log("ERROR", { error });
               const message = error?.data?.error
                 ? error.data.error
-                : "Your image upload failed";;
+                : "Your image upload failed";
               addToast({
                 kind: "error",
                 title: message,

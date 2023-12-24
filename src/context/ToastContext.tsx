@@ -36,6 +36,9 @@ function ToastProvider({ children }: { children: any }) {
 
   const ref = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
+    console.log("%c[ToastContext] useEffect", "color: #FF7602", {
+      toasts,
+    });
     if (toasts.length > 0) {
       const currentToast: Toast = toasts[0];
       const timer = setTimeout(
@@ -48,10 +51,10 @@ function ToastProvider({ children }: { children: any }) {
 
   const addToast: AddToast = React.useCallback(
     function (toast: Toast) {
-      // console.log("%c[ToastContect] call fn", "color: #FF7602", {
-      //   toast,
-      //   toasts,
-      // });
+      console.log("%c[ToastContect] call fn", "color: #FF7602", {
+        toast,
+        toasts,
+      });
       setToasts(toasts => [...toasts, { ...toast, id: guid() }]);
     },
     [setToasts]

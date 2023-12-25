@@ -13,6 +13,7 @@ import DialogModal from "src/components/shared/DialogModal";
 import FileUpload from "src/components/shared/FileUpload";
 
 import { useModalContext } from "src/context/ModalContext";
+import { useToastContext } from "src/context/ToastContext";
 import {
   useDeleteMainImage,
   useCreateMainImage,
@@ -25,14 +26,18 @@ interface EditImagesModalProps {
   garment: GarmentData | undefined;
 }
 
+type ResponseData = {
+  message: string;
+};
+
 const EditImagesModal: React.FC<EditImagesModalProps> = props => {
   const { garment } = props;
   const id = garment ? garment.id : null;
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
   const { modalOpen } = useModalContext();
-  const { mutate: updateMainImage } =
-    useUpdateMainImage();
+  const addToast = useToastContext();
+  const { mutate: updateMainImage } = useUpdateMainImage();
   const { mutate: createMainImage } = useCreateMainImage();
   const { mutate: deleteMainImage } = useDeleteMainImage();
 
@@ -52,7 +57,7 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
   React.useEffect(() => {
     if (garment && garment.imageUrls !== null) {
       setExistingImage(garment.imageUrls.largeUrl);
-      setHasImage(true)
+      setHasImage(true);
     }
   }, [garment]);
 
@@ -70,20 +75,33 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
   const handleClickDelete = (event: React.SyntheticEvent): void => {
     event.preventDefault();
     const garmentId = garment ? garment.id : null;
-    deleteMainImage(
-      garmentId,
-      {
-        onSuccess: (data: any) => {
-          console.log("DATA", data);
-          setPreviewImage(null);
-          setExistingImage("");
-          setHasImage(false)
-        },
-        onError: (error: any) => {
-          console.log("ERROR", error);
-        },
-      }
-    );
+    deleteMainImage(garmentId, {
+      onSuccess: (data: any) => {
+        console.log("DATA", data);
+        const message = data?.message
+          ? data.message
+          : "Your image was successfully deleted.";
+        addToast({
+          kind: "success",
+          title: message,
+          delay: 5000,
+        });
+        setPreviewImage(null);
+        setExistingImage("");
+        setHasImage(false);
+      },
+      onError: (error: any) => {
+        console.log("ERROR", error);
+        const message = error?.data?.message
+          ? error.data.message
+          : "Your image was not deleted.";
+        addToast({
+          kind: "error",
+          title: message,
+          delay: 5000,
+        });
+      },
+    });
   };
 
   const handleConfirm = async () => {
@@ -95,32 +113,66 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
       //   console.log(`LOGGED ${key}:`, value);
       // }
       if (hasImage) {
-        updateMainImage(
+        await updateMainImage(
           { formData, id },
           {
-            onSuccess: (data: any) => {
-              console.log("DATA", data);
+            onSuccess: (data: ResponseData) => {
+              console.log("[EditImagesModal]", { data });
+              const message = data?.message
+                ? data.message
+                : "Your image uploaded successfully.";
+              addToast({
+                kind: "success",
+                title: message,
+                delay: 5000,
+              });
+              props.onCancel(); //removes modal
             },
             onError: (error: any) => {
               console.log("ERROR", error);
+              const message = error?.data?.message
+                ? error.data.message
+                : "Your image upload failed";
+              addToast({
+                kind: "error",
+                title: message,
+                delay: 5000,
+              });
             },
           }
         );
       } else {
-        createMainImage(
+        await createMainImage(
           { formData, id },
           {
             onSuccess: (data: any) => {
               console.log("DATA", data);
+              const message = data?.message
+                ? data.message
+                : "Your image uploaded successfully.";
+              console.log("message:", message);
+              addToast({
+                kind: "success",
+                title: message,
+                delay: 5000,
+              });
+              props.onCancel(); //removes modal
             },
             onError: (error: any) => {
-              console.log("ERROR", error);
+              console.log("ERROR", { error });
+              const message = error?.data?.error
+                ? error.data.error
+                : "Your image upload failed";
+              addToast({
+                kind: "error",
+                title: message,
+                delay: 5000,
+              });
             },
           }
         );
       }
     }
-    props.onCancel(); //removes modal
   };
 
   const confirmButton = (
@@ -171,9 +223,7 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
             onClick={handleClickDelete}
             disabled={!hasImage}
           >
-            <Styled.Text>
-              Delete Image
-            </Styled.Text>
+            <Styled.Text>Delete Image</Styled.Text>
             <DeleteOutlinedIcon sx={{ color: "red" }} />
           </IconButton>
         </Styled.ActionsContainer>
@@ -267,7 +317,7 @@ Styled.ActionsContainer = styled.div((props: any) => {
   `;
 });
 
-Styled.Text = styled.p((props) => {
+Styled.Text = styled.p(props => {
   const t = props.theme;
   return css`
     label: DeleteButtonText;
@@ -284,8 +334,8 @@ Styled.Text = styled.p((props) => {
     ${t.mq.md} {
       display: none;
     }
-  `
-})
+  `;
+});
 
 // display: -webkit-inline-box;
 // display: -webkit-inline-flex;

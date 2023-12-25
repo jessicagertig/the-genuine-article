@@ -9,6 +9,7 @@ import { GarmentData, ItemInfo } from "src/types";
 import { Option, convertEmptyStringsToNull } from "src/utils/formHelpers";
 
 import { useModalContext } from "src/context/ModalContext";
+import { useToastContext } from "src/context/ToastContext";
 import { useCreateGarment } from "src/queryHooks/useGarments";
 
 interface AddGarmentModalProps {
@@ -19,6 +20,7 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
   const { modalOpen } = useModalContext();
+  const addToast = useToastContext();
   const { mutate: createGarment, isLoading: isLoadingCreateGarment } =
     useCreateGarment();
 
@@ -72,11 +74,21 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
       {
         onSuccess: (data: GarmentData) => {
           console.log("Success creating garment. Data:", data);
+          addToast({
+            kind: "success",
+            title: "Your record was successfully created",
+            delay: 5000,
+          });
           props.onCancel();
         },
-        onError: (error: any) => {
-          const message = error && error.data ? error.data.message : "";
-          console.log("Request Error:", message);
+        onError: (error: any, data: any) => {
+          const message = error && error.data ? error.data.message : "You record could not be added.";
+          addToast({
+            kind: "error",
+            title: message,
+            delay: 5000,
+          });
+          console.log("Request Error:", { message, data });
         },
       }
     );

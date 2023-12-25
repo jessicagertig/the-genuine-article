@@ -8,6 +8,7 @@ import FileUpload from "src/components/shared/FileUpload";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 
 import { useModalContext } from "src/context/ModalContext";
+import { useToastContext } from "src/context/ToastContext";
 
 import { useCreateMainImage } from "src/queryHooks/useImages";
 
@@ -21,21 +22,22 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
   console.log("Image Upload Modal Props", props);
 
   const { id } = props;
-  
+
   const { mutate: createMainImage } = useCreateMainImage();
 
   const { modalOpen } = useModalContext();
+  const addToast = useToastContext();
 
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [previewImage, setPreviewImage] = React.useState<string | null>(null);
-  
+
   React.useEffect(() => {
     return () => {
       if (previewImage) {
         URL.revokeObjectURL(previewImage);
       }
     };
-  }, [previewImage]);  
+  }, [previewImage]);
 
   const handleChangeFileInput = (event: React.BaseSyntheticEvent) => {
     const file = event.target?.files ? event.target.files[0] : null;
@@ -57,23 +59,36 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
       //   console.log(`LOGGED ${key}:`, value);
       // }
 
-      createMainImage(
+      await createMainImage(
         { formData, id },
         {
           onSuccess: (data: any) => {
-            console.log("DATA", data);
+            console.log("DATA", { data });
+            addToast({
+              kind: "success",
+              title: "Your image uploaded successfully",
+              delay: 5000,
+            });
+            props.onCancel(); //removes modal
           },
           onError: (error: any) => {
-            console.log("ERROR", error);
+            console.log("ERROR:", { error });
+            const message = error?.data?.error ? error.data.error : "Your image upload failed";
+            addToast({
+              kind: "error",
+              title: message,
+              delay: 5000,
+            });
           },
         }
       );
     }
-    props.onCancel(); //removes modal
   };
 
   const confirmButton = (
-    <OutlinedButton onClick={handleConfirm} disabled={!previewImage}>Upload</OutlinedButton>
+    <OutlinedButton onClick={handleConfirm} disabled={!previewImage}>
+      Upload
+    </OutlinedButton>
   );
 
   const title = "UPLOAD MAIN IMAGE";
@@ -88,8 +103,8 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
       >
         <Styled.ModalContent>
           <Styled.PreviewImageContainer hasImage={previewImage}>
-            {!previewImage && <ImageOutlinedIcon fontSize="large"/>}
-            {previewImage && <img src={previewImage} alt="preview"/>}
+            {!previewImage && <ImageOutlinedIcon fontSize="large" />}
+            {previewImage && <img src={previewImage} alt="preview" />}
           </Styled.PreviewImageContainer>
           <FileUpload
             handleChangeInput={handleChangeFileInput}
@@ -102,7 +117,6 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
 };
 
 export default ImageUploadModal;
-
 
 // Styled Components
 // =======================================================
@@ -121,7 +135,6 @@ Styled.ModalContent = styled.div(props => {
     align-items: center;
   `;
 });
-
 
 Styled.PreviewImageContainer = styled.div((props: any) => {
   const t = props.theme;

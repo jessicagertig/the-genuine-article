@@ -10,6 +10,7 @@ import DialogModal from "src/components/shared/DialogModal";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 
 import { useModalContext } from "src/context/ModalContext";
+import { useToastContext } from "src/context/ToastContext";
 
 import { useCreateScrapedItem } from "src/queryHooks/useGarments";
 
@@ -26,6 +27,7 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
   const { mutate: createScrapedItem, error } = useCreateScrapedItem();
 
   const { modalOpen } = useModalContext();
+  const addToast = useToastContext();
 
   const [state, setState] = React.useState({
     url: "",
@@ -44,13 +46,24 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
       {
         onSuccess: (data: any) => {
           console.log("DATA", data);
+          addToast({
+            kind: "success",
+            title: "Your record was successfully created",
+            delay: 5000,
+          });
+          props.onCancel(); //removes modal
         },
         onError: (error: any) => {
           console.log("ERROR", error);
+          addToast({
+            kind: "error",
+            title: "The item could not be added.",
+            delay: 5000,
+          });
+          props.onCancel(); //removes modal
         },
       }
     );
-    props.onCancel(); //removes modal
   };
 
   const confirmButton = (

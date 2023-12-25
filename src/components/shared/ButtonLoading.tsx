@@ -1,35 +1,62 @@
 import React from "react";
-import { useTrail, animated, SpringValue } from "@react-spring/web";
+import styled from "@emotion/styled";
+import { css, Keyframes, keyframes, Theme } from "@emotion/react";
 
 const LoadingAnimation: React.FC = () => {
-  const [restart, setRestart] = React.useState(false);
-
-  const trail = useTrail(3, {
-    from: { opacity: 0 },
-    to: { opacity: 1 },
-    config: { duration: 500 },
-    reset: restart,
-    // delay: (i: number) => i * 500, // Delay each dot's animation by an increasing amount
-  });
-
-  React.useEffect(() => {
-    if (trail[2].opacity.get() === 1) {
-      setRestart(!restart);
-    }
-  }, [trail]);
+  const fadeInOut: Keyframes = keyframes`
+    0% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+    100% { opacity: 0; }
+  `;
 
   return (
-    <div>
-      {trail.map((style: { opacity: SpringValue<number> }, index: number) => (
-        <animated.div
-          key={index}
-          style={{ ...style, paddingRight: "2px", fontSize: "1rem" }}
-        >
-          .
-        </animated.div>
-      ))}
-    </div>
+    <Styled.AnimationContainer fade={fadeInOut}>
+      <div>.</div>
+      <div>.</div>
+      <div>.</div>
+    </Styled.AnimationContainer>
   );
 };
 
 export default LoadingAnimation;
+
+// Styled Components
+// =======================================================
+let Styled: any;
+Styled = {};
+
+Styled.AnimationContainer = styled.div(
+  ({ theme, fade }: { theme: Theme; fade: Keyframes }) => {
+    const t = theme;
+    return css`
+      label: Animation_Container;
+      display: flex;
+      justify-content: center;
+
+      div {
+        font-size: 1.33rem;
+        line-height: 1.25rem;
+        font-weight: bold;
+        width: 0.66rem;
+        height: 1rem;
+        opacity: 0;
+        ${[t.mb(2)]}
+      }
+
+      & > *:nth-child(1) {
+        animation: ${fade} 1.5s linear infinite;
+        animation-delay: 0s;
+      }
+
+      & > *:nth-child(2) {
+        animation: ${fade} 1.5s linear infinite;
+        animation-delay: 0.3s;
+      }
+
+      & > *:nth-child(3) {
+        animation: ${fade} 1.5s linear infinite;
+        animation-delay: 0.6s;
+      }
+    `;
+  }
+);

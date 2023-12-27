@@ -6,6 +6,7 @@ import OutlinedButton from "src/components/shared/OutlinedButton";
 import DialogModal from "src/components/shared/DialogModal";
 import GarmentForm from "src/components/AdminPage/GarmentForm";
 import { GarmentData, ItemInfo } from "src/types";
+import ButtonLoading from "src/components/shared/ButtonLoading";
 import { Option, convertEmptyStringsToNull } from "src/utils/formHelpers";
 
 import { useModalContext } from "src/context/ModalContext";
@@ -82,7 +83,10 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
           props.onCancel();
         },
         onError: (error: any, data: any) => {
-          const message = error && error.data ? error.data.message : "You record could not be added.";
+          const message =
+            error && error.data
+              ? error.data.message
+              : "You record could not be added.";
           addToast({
             kind: "error",
             title: message,
@@ -96,7 +100,7 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
 
   const submitButton = (
     <OutlinedButton type="submit" onClick={handleSubmit}>
-      Save
+      {isLoadingCreateGarment ? <ButtonLoading /> : "Save"}
     </OutlinedButton>
   );
 

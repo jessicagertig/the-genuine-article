@@ -6,6 +6,7 @@ import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import DialogModal from "src/components/shared/DialogModal";
 import FileUpload from "src/components/shared/FileUpload";
 import OutlinedButton from "src/components/shared/OutlinedButton";
+import ButtonLoading from "src/components/shared/ButtonLoading";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
@@ -23,7 +24,8 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
 
   const { id } = props;
 
-  const { mutate: createMainImage } = useCreateMainImage();
+  const { mutate: createMainImage, isLoading: isLoadingCreateMainImage } =
+    useCreateMainImage();
 
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
@@ -73,7 +75,9 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
           },
           onError: (error: any) => {
             console.log("ERROR:", { error });
-            const message = error?.data?.error ? error.data.error : "Your image upload failed";
+            const message = error?.data?.error
+              ? error.data.error
+              : "Your image upload failed";
             addToast({
               kind: "error",
               title: message,
@@ -87,7 +91,7 @@ const ImageUploadModal = (props: ImageUploadModalProps) => {
 
   const confirmButton = (
     <OutlinedButton onClick={handleConfirm} disabled={!previewImage}>
-      Upload
+      {isLoadingCreateMainImage ? <ButtonLoading /> : "Upload"}
     </OutlinedButton>
   );
 

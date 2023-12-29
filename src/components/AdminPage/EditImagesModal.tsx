@@ -11,6 +11,7 @@ import { useTheme } from "@mui/material/styles";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import DialogModal from "src/components/shared/DialogModal";
 import FileUpload from "src/components/shared/FileUpload";
+import ButtonLoading from "src/components/shared/ButtonLoading";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
@@ -37,8 +38,10 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
   const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
-  const { mutate: updateMainImage } = useUpdateMainImage();
-  const { mutate: createMainImage } = useCreateMainImage();
+  const { mutate: updateMainImage, isLoading: isLoadingUpdateMainImage } =
+    useUpdateMainImage();
+  const { mutate: createMainImage, isLoading: isLoadingCreateMainImage } =
+    useCreateMainImage();
   const { mutate: deleteMainImage } = useDeleteMainImage();
 
   const [imageFile, setImageFile] = React.useState<File | null>(null);
@@ -177,7 +180,11 @@ const EditImagesModal: React.FC<EditImagesModalProps> = props => {
 
   const confirmButton = (
     <OutlinedButton onClick={handleConfirm} disabled={!previewImage}>
-      Save
+      {isLoadingUpdateMainImage|| isLoadingCreateMainImage ? (
+        <ButtonLoading />
+      ) : (
+        "Save"
+      )}
     </OutlinedButton>
   );
 

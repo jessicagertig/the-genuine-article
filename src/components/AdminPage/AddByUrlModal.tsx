@@ -8,6 +8,7 @@ import { useTheme } from "@mui/material/styles";
 import { StyledTextField } from "src/components/AdminPage/StyledFields";
 import DialogModal from "src/components/shared/DialogModal";
 import OutlinedButton from "src/components/shared/OutlinedButton";
+import ButtonLoading from "src/components/shared/ButtonLoading";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
@@ -24,7 +25,11 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { mutate: createScrapedItem, error } = useCreateScrapedItem();
+  const {
+    mutate: createScrapedItem,
+    error,
+    isLoading: isLoadingCreateScrapedItem,
+  } = useCreateScrapedItem();
 
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
@@ -67,7 +72,9 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
   };
 
   const confirmButton = (
-    <OutlinedButton onClick={handleConfirm}>Submit</OutlinedButton>
+    <OutlinedButton onClick={handleConfirm}>
+      {isLoadingCreateScrapedItem ? <ButtonLoading /> : "Save"}
+    </OutlinedButton>
   );
 
   const title = "ADD GARMENT";

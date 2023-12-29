@@ -5,6 +5,8 @@ import { useTheme } from "@mui/material/styles";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import DialogModal from "src/components/shared/DialogModal";
 import GarmentForm from "src/components/AdminPage/GarmentForm";
+import ButtonLoading from "src/components/shared/ButtonLoading";
+
 import { GarmentData, ItemInfo } from "src/types";
 import {
   Option,
@@ -84,7 +86,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
   }
 
   const handleGarmentChange = (changes: IndexSignatureType) => {
-    console.log("CHANGES", changes);
+    // console.log("CHANGES", changes);
     let value = changes;
     if (changes.hasOwnProperty("garmentTitle")) {
       const object = changes["garmentTitle"];
@@ -92,7 +94,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
         value = { garmentTitle: object.label };
       }
     }
-    console.log("CHANGES NEW VALUE", value);
+    // console.log("CHANGES NEW VALUE", value);
     setInfoState({ ...infoState, ...value });
   };
 
@@ -136,7 +138,10 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
           props.onCancel();
         },
         onError: (error: any, data: any) => {
-          const message = error && error.data ? error.data.message : "Your record could not be updated.";
+          const message =
+            error && error.data
+              ? error.data.message
+              : "Your record could not be updated.";
           addToast({
             kind: "error",
             title: message,
@@ -150,7 +155,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
 
   const submitButton = (
     <OutlinedButton type="submit" onClick={handleSubmit}>
-      Save
+      {isLoadingUpdateGarment ? <ButtonLoading /> : "Save"}
     </OutlinedButton>
   );
 

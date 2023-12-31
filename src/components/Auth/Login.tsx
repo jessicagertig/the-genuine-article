@@ -13,6 +13,8 @@ import Paper from "@mui/material/Paper";
 import textFieldStyles from "src/components/Auth/styles";
 import { useAuthContext } from "src/context/AuthContext";
 import { useLoginUser, useLoginGuest } from "src/queryHooks/useAuth";
+import { logInSchema } from "src/utils/validationWithYup";
+import { ValidationError } from "yup";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -37,9 +39,18 @@ const Login: React.FC = () => {
     password: string;
   }
 
-  const [state, setState] = React.useState({
+  interface State extends LoginParams {
+    emailError: string;
+    passwordError: string;
+    requestError: string;
+  }
+
+  const [state, setState] = React.useState<State>({
     email: "",
     password: "",
+    emailError: "",
+    passwordError: "",
+    requestError: "",
   });
 
   const { currentUser } = useAuthContext();
@@ -57,21 +68,37 @@ const Login: React.FC = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const errorName = `${name}Error`
 
-    setState({ ...state, [name]: value });
+    setState({ ...state, [name]: value, [errorName]: "", requestError: "" });
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    console.log("Submit clicked");
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    handleLogin(state);
+    setState({ ...state, requestError: "" })
+
+    try {
+      await logInSchema.validate(state);
+      handleLogin({ email: state.email, password: state.password });
+    } catch (error) {
+      console.log("Error", { error });
+      if (error instanceof ValidationError) {
+        console.log("Yup Errors", { errors: error.errors });
+        if (error.path === "email") {
+          setState({ ...state, emailError: error.message })
+        } else if (error.path === "password") {
+          setState({ ...state, passwordError: error.message })
+        }
+      }
+    }
   };
 
   const handleGuestLogin = (event: React.FormEvent) => {
     console.log("Submit clicked");
     event.preventDefault();
     try {
-      loginGuest({},
+      loginGuest(
+        {},
         {
           onSuccess: (data: LoginData) => {
             console.log("Success logging in user. Data:", data?.user);
@@ -93,41 +120,39 @@ const Login: React.FC = () => {
     }
   };
 
-
-
   const handleLogin = async (loginParams: LoginParams) => {
     // todo: add validation with Yup
-    try {
-      loginUser(
-        {
-          email: loginParams.email,
-          password: loginParams.password,
+
+    loginUser(
+      {
+        email: loginParams.email,
+        password: loginParams.password,
+      },
+      {
+        onSuccess: (data: LoginData) => {
+          console.log("Success logging in user. Data:", data?.user);
+          const token = data.token;
+          if (data.token) {
+            console.log("saving token");
+            localStorage.setItem("token", token);
+          }
+          navigate("/admin");
         },
-        {
-          onSuccess: (data: LoginData) => {
-            console.log("Success logging in user. Data:", data?.user);
-            const token = data.token;
-            if (data.token) {
-              console.log("saving token");
-              localStorage.setItem("token", token);
-            }
-            navigate("/admin");
-          },
-          onError: (error: any) => {
-            const message = error && error.data ? error.data.message : "";
-            console.log("Request Error:", message);
-          },
-        }
-      );
-    } catch (e) {
-      console.error("ERROR:", e);
-    }
+        onError: (error: any) => {
+          const message =
+            error && error.data ? error.data?.message : "";
+          if (message) {
+            setState({ ...state, requestError: message })
+          }
+        },
+      }
+    );
   };
 
   return (
     <Styled.Container>
       <Paper
-        sx={{ width: isMobile ? "100%" : "450px", minWidth: "300px" }}
+        sx={{ width: isMobile ? "100%" : "450px", minWidth: "300px"}}
         square={isMobile}
       >
         <Styled.FormContainer>
@@ -141,7 +166,8 @@ const Login: React.FC = () => {
               value={email}
               onChange={handleChange}
               sx={textFieldStyles}
-              required={true}
+              error={Boolean(state.emailError)}
+              helperText={Boolean(state.emailError) ? state.emailError : "" }
             />
             <TextField
               label="Password"
@@ -150,8 +176,12 @@ const Login: React.FC = () => {
               value={password}
               onChange={handleChange}
               sx={textFieldStyles}
-              required={true}
+              error={Boolean(state.passwordError)}
+              helperText={ Boolean(state.passwordError) ? state.passwordError : ""}
             />
+            <Styled.Error>
+              {state.requestError ? <p>{state.requestError}</p> : null}
+            </Styled.Error>
             <Styled.ButtonsContainer>
               <Button
                 variant="contained"
@@ -170,7 +200,9 @@ const Login: React.FC = () => {
               >
                 Log in
               </Button>
-              <Styled.Button onClick={handleGuestLogin}>Log in as Guest</Styled.Button>
+              <Styled.Button onClick={handleGuestLogin}>
+                Log in as Guest
+              </Styled.Button>
             </Styled.ButtonsContainer>
           </Styled.Form>
         </Styled.FormContainer>
@@ -215,7 +247,7 @@ Styled.FormContainer = styled.div(props => {
     width: 86%;
     margin-right: 7%;
     margin-left: 7%;
-    height: 350px;
+    height: 418px;
 
     ${t.mq.sm} {
       ${[t.px(8)]}
@@ -281,3 +313,15 @@ Styled.Button = styled.div(props => {
     }
   `;
 });
+
+
+Styled.Error = styled.div(() => {
+  return css`
+    height: 28px;
+
+    p {
+      font-size: 0.875rem;
+      color: red;
+    }
+  `;
+})

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import TextField from "@mui/material/TextField";
 
-import { ItemInfo } from "src/types";
+import { ItemInfo, GarmentErrors } from "src/types";
 import {
   returnConvertedMenus,
   Option,
@@ -28,6 +28,8 @@ interface GarmentFormProps {
   onColorsChange: (colors: Option[]) => void;
   onMaterialsChange: (materials: Option[]) => void;
   loading: boolean;
+  resetError: (name: string) => void;
+  errors: GarmentErrors;
 }
 
 const GarmentForm: React.FC<GarmentFormProps> = ({
@@ -35,6 +37,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
   defaultGarmentTitleOption,
   colors,
   materials,
+  errors,
   ...props
 }) => {
   const { data: menus } = useMenus();
@@ -69,6 +72,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     }
   }, [menus, setColorOptions, setMaterialOptions, setGarmentTitleOptions]);
 
+
   // garmentInfo
   const handleTextInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -76,6 +80,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
   ) => {
     const value = event.target.value;
     props.onGarmentChange({ [name]: value });
+    props.resetError(name);
   };
 
   // garmentTitle (garmentInfo)
@@ -86,6 +91,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
   ) => {
     console.log("change value", value);
     props.onGarmentChange({ [name]: value });
+    props.resetError(name);
   };
 
   // colors or materials
@@ -99,12 +105,14 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     } else if (name === "materials") {
       props.onMaterialsChange(value);
     }
+    props.resetError(name);
   };
 
   // endYear or begingYear (garmentInfo)
   const handleDateInputChange = (value: any, name: string, unit: any) => {
     const dateString = dateToString(unit, value);
     props.onGarmentChange({ [name]: dateString });
+    props.resetError(name);
   };
 
   type Field = {
@@ -113,7 +121,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
     label: string;
     value: any;
     required: boolean;
-    error: any;
     options?: Option[];
     unit?: string;
   };
@@ -127,7 +134,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       options: garmentTitleOptions,
       value: garmentTitle,
       required: true,
-      error: false,
     },
   ];
 
@@ -138,7 +144,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "Begin Year",
       value: beginYear ? stringToDate("year", beginYear) : null,
       required: true,
-      error: false,
       unit: "year",
     },
     {
@@ -147,7 +152,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "End Year",
       value: endYear ? stringToDate("year", endYear) : null,
       required: false,
-      error: false,
       unit: "year",
     },
   ];
@@ -158,8 +162,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       name: "cultureCountry",
       label: "Culture/Country",
       value: cultureCountry,
-      required: false,
-      error: false,
+      required: true,
     },
     {
       kind: "multiSelect",
@@ -168,7 +171,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       options: colorOptions,
       value: colors,
       required: false,
-      error: false,
     },
     {
       kind: "multiSelect",
@@ -177,7 +179,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       options: materialOptions,
       value: materials,
       required: false,
-      error: false,
     },
     {
       kind: "textArea",
@@ -185,7 +186,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "Description",
       value: description,
       required: false,
-      error: false,
     },
   ];
 
@@ -196,7 +196,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "Museum/Collection",
       value: collection,
       required: true,
-      error: false,
     },
     {
       kind: "text",
@@ -204,7 +203,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "Designer/Maker",
       value: creator,
       required: false,
-      error: false,
     },
     {
       kind: "text",
@@ -212,7 +210,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "Source Link",
       value: collectionUrl,
       required: true,
-      error: false,
     },
     {
       kind: "text",
@@ -220,7 +217,6 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "Credit Line/Source",
       value: source,
       required: false,
-      error: false,
     },
     {
       kind: "text",
@@ -228,14 +224,15 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       label: "Institution Item Number",
       value: itemCollectionNo,
       required: true,
-      error: false,
     },
   ];
 
   const buildFormFieldNodes = (fields: Field[]) =>
     fields.map((field: Field, index: number) => {
-      const { kind, label, name, required, error, options, value, unit } =
-        field;
+      const { kind, label, name, required, options, value, unit } = field;
+
+      const errorName = required && (`${name}Error` as keyof GarmentErrors);
+
       if (kind === "singleSelect") {
         return (
           <StyledAutocomplete
@@ -252,7 +249,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
                 name={name}
                 required={required}
                 variant="filled"
-                error={error}
+                error={errorName ? Boolean(errors[errorName]) : errorName}
+                helperText={errorName && errors[errorName]}
               />
             )}
             onInputChange={(event, value) =>
@@ -276,7 +274,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
                 name={name}
                 required={required}
                 variant="filled"
-                error={error}
+                error={errorName ? Boolean(errors[errorName]) : errorName}
+                helperText={errorName && errors[errorName]}
               />
             )}
             multiple={true}
@@ -296,7 +295,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
-            error={error}
+            error={errorName ? Boolean(errors[errorName]) : errorName}
+            helperText={errorName && errors[errorName]}
           />
         );
       } else if (kind === "textArea") {
@@ -311,7 +311,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
-            error={error}
+            error={errorName ? Boolean(errors[errorName]) : errorName}
+            helperText={errorName && errors[errorName]}
           />
         );
       } else if (kind === "date") {
@@ -331,6 +332,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
                 name: name,
                 required: required,
                 variant: "filled",
+                error: errorName ? Boolean(errors[errorName]) : errorName,
+                helperText: errorName && errors[errorName],
               },
             }}
             onChange={value => handleDateInputChange(value, name, unit)}

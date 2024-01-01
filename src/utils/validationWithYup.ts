@@ -45,4 +45,21 @@ export const validateLoginField = async (
   return errorMessage;
 };
 
+const urlOnlySchema = Yup.object().shape({
+  url: Yup.string().url("Please enter a valid URL").required("URL is required"),
+});
+
+export const validateUrl = async (url: string): Promise<string> => {
+  let errorMessage = "";
+  try {
+    await urlOnlySchema.validate({ url: url });
+  } catch (error) {
+    if (error instanceof Yup.ValidationError) {
+      console.log(`Url Validation Error`, { error });
+      errorMessage = error.message;
+    }
+  }
+  return errorMessage;
+};
+
 

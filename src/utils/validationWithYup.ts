@@ -25,3 +25,24 @@ export const logInSchema = Yup.object()
   .noUnknown();
 
 export type LogInValues = Yup.InferType<typeof logInSchema>;
+
+export type LoginField = { key: keyof LogInValues; value: string };
+
+export const validateLoginField = async (
+  field: LoginField
+): Promise<string> => {
+  let errorMessage = "";
+  try {
+    await (logInSchema.fields[field.key] as Yup.StringSchema).validate(
+      field.value
+    );
+  } catch (error) {
+    if (error instanceof Yup.ValidationError) {
+      console.log(`${field.key} Error`, { error });
+      errorMessage = error.message;
+    }
+  }
+  return errorMessage;
+};
+
+

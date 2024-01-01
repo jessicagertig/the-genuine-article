@@ -1,5 +1,5 @@
 const textFieldStyles = {
-  marginBottom: 2,
+  marginBottom: 1,
   marginTop: 1,
   "& .MuiOutlinedInput-root": {
     color: "#223F7C",

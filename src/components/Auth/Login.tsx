@@ -13,8 +13,7 @@ import Paper from "@mui/material/Paper";
 import textFieldStyles from "src/components/Auth/styles";
 import { useAuthContext } from "src/context/AuthContext";
 import { useLoginUser, useLoginGuest } from "src/queryHooks/useAuth";
-import { logInSchema } from "src/utils/validationWithYup";
-import { ValidationError } from "yup";
+import { validateLoginField } from "src/utils/validationWithYup";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -53,6 +52,8 @@ const Login: React.FC = () => {
     requestError: "",
   });
 
+  // console.log("RENDER Login Form", { state });
+
   const { currentUser } = useAuthContext();
 
   React.useEffect(() => {
@@ -68,28 +69,28 @@ const Login: React.FC = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    const errorName = `${name}Error`
+    const errorName = `${name}Error`;
 
     setState({ ...state, [name]: value, [errorName]: "", requestError: "" });
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    setState({ ...state, requestError: "" })
+    setState({ ...state, requestError: "" });
 
-    try {
-      await logInSchema.validate(state);
+    const emailError = await validateLoginField({
+      key: "email",
+      value: state.email,
+    });
+    const passwordError = await validateLoginField({
+      key: "password",
+      value: state.password,
+    });
+
+    setState({ ...state, emailError, passwordError: passwordError });
+
+    if (!emailError && !passwordError) {
       handleLogin({ email: state.email, password: state.password });
-    } catch (error) {
-      console.log("Error", { error });
-      if (error instanceof ValidationError) {
-        console.log("Yup Errors", { errors: error.errors });
-        if (error.path === "email") {
-          setState({ ...state, emailError: error.message })
-        } else if (error.path === "password") {
-          setState({ ...state, passwordError: error.message })
-        }
-      }
     }
   };
 
@@ -139,10 +140,9 @@ const Login: React.FC = () => {
           navigate("/admin");
         },
         onError: (error: any) => {
-          const message =
-            error && error.data ? error.data?.message : "";
+          const message = error && error.data ? error.data?.message : "";
           if (message) {
-            setState({ ...state, requestError: message })
+            setState({ ...state, requestError: message });
           }
         },
       }
@@ -152,7 +152,7 @@ const Login: React.FC = () => {
   return (
     <Styled.Container>
       <Paper
-        sx={{ width: isMobile ? "100%" : "450px", minWidth: "300px"}}
+        sx={{ width: isMobile ? "100%" : "450px", minWidth: "300px" }}
         square={isMobile}
       >
         <Styled.FormContainer>
@@ -160,25 +160,31 @@ const Login: React.FC = () => {
             <h2>Login</h2>
           </Styled.TextContainer>
           <Styled.Form onSubmit={handleSubmit}>
-            <TextField
-              label="Email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              sx={textFieldStyles}
-              error={Boolean(state.emailError)}
-              helperText={Boolean(state.emailError) ? state.emailError : "" }
-            />
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              value={password}
-              onChange={handleChange}
-              sx={textFieldStyles}
-              error={Boolean(state.passwordError)}
-              helperText={ Boolean(state.passwordError) ? state.passwordError : ""}
-            />
+            <Styled.FieldContainer>
+              <TextField
+                label="Email"
+                name="email"
+                value={email}
+                onChange={handleChange}
+                sx={textFieldStyles}
+                error={Boolean(state.emailError)}
+                helperText={Boolean(state.emailError) ? state.emailError : ""}
+              />
+            </Styled.FieldContainer>
+            <Styled.FieldContainer>
+              <TextField
+                label="Password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={handleChange}
+                sx={textFieldStyles}
+                error={Boolean(state.passwordError)}
+                helperText={
+                  Boolean(state.passwordError) ? state.passwordError : ""
+                }
+              />
+            </Styled.FieldContainer>
             <Styled.Error>
               {state.requestError ? <p>{state.requestError}</p> : null}
             </Styled.Error>
@@ -240,7 +246,7 @@ Styled.FormContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Login_FormContainer;
-    ${[t.pb(8), t.pt(3), t.my(4)]}
+    ${[t.pb(4), t.pt(3), t.my(4)]}
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -263,11 +269,21 @@ Styled.Form = styled.form(props => {
   const t = props.theme;
   return css`
     label: Login_Form;
-    ${[t.pb(8), t.pt(4)]}
+    ${[t.pb(4), t.pt(4)]}
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
+  `;
+});
+
+Styled.FieldContainer = styled.div(() => {
+  return css`
+    label: Login_FieldContainer;
+    height: 96px;
+    div {
+      width: 100%;
+    }
   `;
 });
 
@@ -314,7 +330,6 @@ Styled.Button = styled.div(props => {
   `;
 });
 
-
 Styled.Error = styled.div(() => {
   return css`
     height: 28px;
@@ -324,4 +339,4 @@ Styled.Error = styled.div(() => {
       color: red;
     }
   `;
-})
+});

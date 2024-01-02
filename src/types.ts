@@ -1,13 +1,16 @@
-export interface ItemInfo {
+export interface RequiredItemInfo {
   garmentTitle: string; //required
   beginYear: string; //required
-  endYear: string;
-  cultureCountry: string;
+  cultureCountry: string; // required
   collection: string; //required
   collectionUrl: string; //required
+  itemCollectionNo: string; //required
+}
+
+export interface ItemInfo extends RequiredItemInfo {
+  endYear: string;
   creator: string;
   source: string;
-  itemCollectionNo: string; //required
   description: string;
 }
 
@@ -47,6 +50,16 @@ export interface GarmentData extends ItemInfoData {
   colors: string[];
   materials: string[];
   imageUrls: ImageUrls | null;
+}
+
+export interface GarmentErrors {
+  garmentTitleError: string;
+  beginYearError: string;
+  cultureCountryError: string;
+  collectionError: string;
+  collectionUrlError: string;
+  itemCollectionNoError: string;
+  requestError: string;
 }
 
 // for POST request

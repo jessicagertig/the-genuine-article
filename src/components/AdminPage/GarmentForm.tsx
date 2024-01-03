@@ -232,6 +232,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
       const { kind, label, name, required, options, value, unit } = field;
 
       const errorName = required && (`${name}Error` as keyof GarmentErrors);
+      const hasError = errorName ? Boolean(errors[errorName]) : errorName;
+      const errorText = errorName && errors[errorName];
 
       if (kind === "singleSelect") {
         return (
@@ -249,8 +251,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
                 name={name}
                 required={required}
                 variant="filled"
-                error={errorName ? Boolean(errors[errorName]) : errorName}
-                helperText={errorName && errors[errorName]}
+                error={hasError}
+                helperText={errorText}
               />
             )}
             onInputChange={(event, value) =>
@@ -274,8 +276,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
                 name={name}
                 required={required}
                 variant="filled"
-                error={errorName ? Boolean(errors[errorName]) : errorName}
-                helperText={errorName && errors[errorName]}
+                error={hasError}
+                helperText={errorText}
               />
             )}
             multiple={true}
@@ -295,8 +297,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
-            error={errorName ? Boolean(errors[errorName]) : errorName}
-            helperText={errorName && errors[errorName]}
+            error={hasError}
+            helperText={errorText}
           />
         );
       } else if (kind === "textArea") {
@@ -307,12 +309,15 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             value={value}
             id={name}
             multiline={true}
-            minRows={4}
+            rows={5}
             onChange={event => handleTextInputChange(event, name)}
             variant="filled"
             required={required}
-            error={errorName ? Boolean(errors[errorName]) : errorName}
-            helperText={errorName && errors[errorName]}
+            error={hasError}
+            helperText={errorText}
+            style={{
+              height: "149px", marginBottom: "28px",
+            }}
           />
         );
       } else if (kind === "date") {
@@ -332,8 +337,8 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
                 name: name,
                 required: required,
                 variant: "filled",
-                error: errorName ? Boolean(errors[errorName]) : errorName,
-                helperText: errorName && errors[errorName],
+                error: hasError,
+                helperText: errorText,
               },
             }}
             onChange={value => handleDateInputChange(value, name, unit)}
@@ -398,7 +403,7 @@ Styled.Form = styled.form(props => {
     flex-direction: column;
     align-items: center;
 
-    ${t.mq.sm} {
+    ${t.mq.md} {
       margin: 0% 6% 0% 6%;
       width: 88%;
       flex-direction: row;
@@ -418,7 +423,7 @@ Styled.FormSection = styled.section(props => {
     flex-direction: column;
     align-items: flex-start;
 
-    ${t.mq.sm} {
+    ${t.mq.md} {
       width: 46%;
     }
   `;
@@ -442,5 +447,16 @@ Styled.ButtonContainer = styled.div(() => {
   return css`
     label: GarmentFormSubmitButton;
     width: 100%;
+  `;
+});
+
+Styled.Error = styled.div(() => {
+  return css`
+    height: 28px;
+
+    p {
+      font-size: 0.875rem;
+      color: red;
+    }
   `;
 });

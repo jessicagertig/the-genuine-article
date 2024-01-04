@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 import { camelToHumanReadable } from "src/utils/helpers";
-
+// possible to do: use createStringRule for logInSchema
 const createStringRule = (
   fieldName: string,
   type = "default"
@@ -34,25 +34,8 @@ const createStringRule = (
 __________________________________________ */
 export const logInSchema = Yup.object()
   .shape({
-    email: Yup.string()
-      .email("Must be a valid email")
-      .required("Email is required")
-      .test("email", "${path} is invalid", (value, context) => {
-        if (value) {
-          return true;
-        } else {
-          return context.createError({ path: "email" });
-        }
-      }),
-    password: Yup.string()
-      .required("Password is required")
-      .test("password", "${path} is invalid", (value, context) => {
-        if (value) {
-          return true;
-        } else {
-          return context.createError({ path: "password" });
-        }
-      }),
+    email: createStringRule("email", "email"),
+    password: createStringRule("password"),
   })
   .noUnknown();
 

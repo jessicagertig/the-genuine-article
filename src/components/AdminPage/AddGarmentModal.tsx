@@ -127,6 +127,7 @@ const AddGarmentModal: React.FC<AddGarmentModalProps> = props => {
       colors.length > 0 ? colors.map(color => color.value) : [];
     const materialIds: number[] =
       materials.length > 0 ? materials.map(material => material.value) : [];
+    // TO DO: decide how to handle request errors - perhaps check status type & if not 500 then display message on form - otherwise show toast with lengthened display time?
     createGarment(
       {
         itemInfo: info,

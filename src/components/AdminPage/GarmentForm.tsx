@@ -369,6 +369,9 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
           <Styled.FormFields>
             {buildFormFieldNodes(rightFormFields)}
           </Styled.FormFields>
+          <Styled.Error>
+            {errors.requestError ? <p>{errors.requestError}</p> : null}
+          </Styled.Error>
         </Styled.FormSection>
       </Styled.Form>
     </Styled.GarmentFormContainer>

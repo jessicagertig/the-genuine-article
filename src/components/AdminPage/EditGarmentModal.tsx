@@ -7,7 +7,12 @@ import DialogModal from "src/components/shared/DialogModal";
 import GarmentForm from "src/components/AdminPage/GarmentForm";
 import ButtonLoading from "src/components/shared/ButtonLoading";
 
-import { GarmentData, ItemInfo } from "src/types";
+import {
+  GarmentData,
+  ItemInfo,
+  RequiredItemInfo,
+  GarmentErrors,
+} from "src/types";
 import {
   Option,
   convertEmptyStringsToNull,
@@ -18,6 +23,8 @@ import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
 import { useUpdateGarment } from "src/queryHooks/useGarments";
 import { useMenus } from "src/queryHooks/useMenus";
+
+import { validateGarmentField } from "src/utils/validationWithYup";
 
 interface EditGarmentModalProps {
   onCancel: () => void;
@@ -57,8 +64,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
 
   const [colorsState, setColorsState] = React.useState<Option[]>([]);
   const [materialsState, setMaterialsState] = React.useState<Option[]>([]);
-  const [infoState, setInfoState] =
-    React.useState<Partial<ItemInfo>>(initialInfoState);
+  const [infoState, setInfoState] = React.useState<ItemInfo>(initialInfoState);
   const [itemId, setItemId] = React.useState<number | undefined>(undefined);
 
   React.useEffect(() => {
@@ -80,6 +86,21 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
       setMaterialsState(materialOptions);
     }
   }, [menus, garment, initialInfoState]);
+
+  const [errors, setErrors] = React.useState<GarmentErrors>({
+    garmentTitleError: "",
+    beginYearError: "",
+    cultureCountryError: "",
+    collectionError: "",
+    collectionUrlError: "",
+    itemCollectionNoError: "",
+    requestError: "",
+  });
+
+  const resetError = (name: string) => {
+    const errorName = `${name}Error`;
+    setErrors({ ...errors, [errorName]: "", requestError: "" });
+  };
 
   interface IndexSignatureType {
     [key: string]: string | { value: number; label: string };
@@ -106,10 +127,49 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
     setMaterialsState(changes);
   };
 
-  const handleSubmit = (event: React.FormEvent<Element>) => {
+  const requiredFields: Array<keyof RequiredItemInfo> = [
+    "garmentTitle",
+    "beginYear",
+    "cultureCountry",
+    "collection",
+    "collectionUrl",
+    "itemCollectionNo",
+  ];
+
+  const validateRequiredInfoFields = async (info: ItemInfo) => {
+    let newErrors: GarmentErrors = { ...errors }; // Start with the current errors
+    let hasError = false;
+
+    for (const field of requiredFields) {
+      const message = await validateGarmentField({
+        key: field,
+        value: info[field],
+      });
+      const errorName = `${field}Error`;
+      if (errorName in errors) {
+        // errorName is a key of errors, safe to proceed
+        if (message) {
+          hasError = true;
+          // Update the newErrors object instead of calling setErrors
+          newErrors[errorName as keyof GarmentErrors] = message;
+        }
+      } else {
+        // errorName is not a key of errors, handle accordingly
+        console.error(`Invalid errorName: ${errorName}`);
+      }
+    }
+    // After the loop, update the state once with the new errors
+    setErrors(newErrors);
+
+    return hasError;
+  };
+  
+  const handleSubmit = async (event: React.FormEvent<Element>) => {
     event.preventDefault();
-    // TO DO: add validation here
-    handleSubmitItem();
+    const hasValidationErrors = await validateRequiredInfoFields(infoState);
+    if (!hasValidationErrors) {
+      handleSubmitItem();
+    }
   };
 
   const handleSubmitItem = (): void => {
@@ -142,11 +202,7 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
             error && error.data
               ? error.data.message
               : "Your record could not be updated.";
-          addToast({
-            kind: "error",
-            title: message,
-            delay: 5000,
-          });
+          setErrors({...errors, requestError: message })
           console.log("Request Error:", { message, data });
         },
       }
@@ -178,6 +234,8 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
         onColorsChange={handleColorsChange}
         onMaterialsChange={handleMaterialsChange}
         loading={isLoadingUpdateGarment}
+        resetError={resetError}
+        errors={errors}
       />
     </DialogModal>
   );

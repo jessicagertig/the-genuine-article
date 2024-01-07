@@ -6,7 +6,8 @@ import { styled, alpha } from "@mui/system";
 const createRootStyles = (theme: any): any => {
   return {
     width: "100%",
-    margin: "8px 0",
+    height: "84px",
+    margin: "0 0 0 0",
     "& .MuiFilledInput-root": {
       color: theme.palette.primary.main,
       backgroundColor: "rgba(175, 187, 207, 0.2)",

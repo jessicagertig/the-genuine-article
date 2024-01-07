@@ -14,6 +14,7 @@ import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
 
 import { useCreateScrapedItem } from "src/queryHooks/useGarments";
+import { validateUrl } from "src/utils/validationWithYup";
 
 interface AddByUrlModalProps {
   onCancel: () => void;
@@ -25,29 +26,27 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const {
-    mutate: createScrapedItem,
-    error,
-    isLoading: isLoadingCreateScrapedItem,
-  } = useCreateScrapedItem();
+  const { mutate: createScrapedItem, isLoading: isLoadingCreateScrapedItem } =
+    useCreateScrapedItem();
 
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
 
   const [state, setState] = React.useState({
     url: "",
+    errorText: "",
   });
 
   const { url } = state;
 
   const handleChangeInput = (event: React.BaseSyntheticEvent, name: string) => {
     const input = event.target?.value;
-    setState({ ...state, [name]: input });
+    setState({ ...state, [name]: input, errorText: "" });
   };
 
-  const handleConfirm = async () => {
+  const handleSave = async () => {
     createScrapedItem(
-      { ...state },
+      { url: state.url },
       {
         onSuccess: (data: any) => {
           console.log("DATA", data);
@@ -60,19 +59,26 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
         },
         onError: (error: any) => {
           console.log("ERROR", error);
-          addToast({
-            kind: "error",
-            title: "The item could not be added.",
-            delay: 5000,
-          });
-          props.onCancel(); //removes modal
+          const message =
+            error.data && error.data.message
+              ? error.data.message
+              : `The server returned an error of status ${error.status}`;
+          setState({ ...state, errorText: message });
         },
       }
     );
   };
 
+  const handleClickSave = async () => {
+    const validationError = await validateUrl(state.url);
+    setState({ ...state, errorText: validationError });
+    if (!validationError) {
+      handleSave();
+    }
+  };
+
   const confirmButton = (
-    <OutlinedButton onClick={handleConfirm}>
+    <OutlinedButton onClick={handleClickSave}>
       {isLoadingCreateScrapedItem ? <ButtonLoading /> : "Save"}
     </OutlinedButton>
   );
@@ -100,7 +106,8 @@ const AddByUrlModal: React.FC<AddByUrlModalProps> = props => {
             onChange={event => handleChangeInput(event, "url")}
             variant="filled"
             required={true}
-            error={error}
+            error={Boolean(state.errorText)}
+            helperText={state.errorText}
           />
         </Styled.ModalContent>
       </DialogModal>

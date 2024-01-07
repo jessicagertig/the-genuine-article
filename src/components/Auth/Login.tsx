@@ -13,6 +13,7 @@ import Paper from "@mui/material/Paper";
 import textFieldStyles from "src/components/Auth/styles";
 import { useAuthContext } from "src/context/AuthContext";
 import { useLoginUser, useLoginGuest } from "src/queryHooks/useAuth";
+import { validateLoginField } from "src/utils/validationWithYup";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -37,10 +38,21 @@ const Login: React.FC = () => {
     password: string;
   }
 
-  const [state, setState] = React.useState({
+  interface State extends LoginParams {
+    emailError: string;
+    passwordError: string;
+    requestError: string;
+  }
+
+  const [state, setState] = React.useState<State>({
     email: "",
     password: "",
+    emailError: "",
+    passwordError: "",
+    requestError: "",
   });
+
+  // console.log("RENDER Login Form", { state });
 
   const { currentUser } = useAuthContext();
 
@@ -57,21 +69,37 @@ const Login: React.FC = () => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    const errorName = `${name}Error`;
 
-    setState({ ...state, [name]: value });
+    setState({ ...state, [name]: value, [errorName]: "", requestError: "" });
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    console.log("Submit clicked");
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    handleLogin(state);
+    setState({ ...state, requestError: "" });
+
+    const emailError = await validateLoginField({
+      key: "email",
+      value: state.email,
+    });
+    const passwordError = await validateLoginField({
+      key: "password",
+      value: state.password,
+    });
+
+    setState({ ...state, emailError, passwordError: passwordError });
+
+    if (!emailError && !passwordError) {
+      handleLogin({ email: state.email, password: state.password });
+    }
   };
 
   const handleGuestLogin = (event: React.FormEvent) => {
     console.log("Submit clicked");
     event.preventDefault();
     try {
-      loginGuest({},
+      loginGuest(
+        {},
         {
           onSuccess: (data: LoginData) => {
             console.log("Success logging in user. Data:", data?.user);
@@ -93,35 +121,32 @@ const Login: React.FC = () => {
     }
   };
 
-
-
   const handleLogin = async (loginParams: LoginParams) => {
     // todo: add validation with Yup
-    try {
-      loginUser(
-        {
-          email: loginParams.email,
-          password: loginParams.password,
+
+    loginUser(
+      {
+        email: loginParams.email,
+        password: loginParams.password,
+      },
+      {
+        onSuccess: (data: LoginData) => {
+          console.log("Success logging in user. Data:", data?.user);
+          const token = data.token;
+          if (data.token) {
+            console.log("saving token");
+            localStorage.setItem("token", token);
+          }
+          navigate("/admin");
         },
-        {
-          onSuccess: (data: LoginData) => {
-            console.log("Success logging in user. Data:", data?.user);
-            const token = data.token;
-            if (data.token) {
-              console.log("saving token");
-              localStorage.setItem("token", token);
-            }
-            navigate("/admin");
-          },
-          onError: (error: any) => {
-            const message = error && error.data ? error.data.message : "";
-            console.log("Request Error:", message);
-          },
-        }
-      );
-    } catch (e) {
-      console.error("ERROR:", e);
-    }
+        onError: (error: any) => {
+          const message = error && error.data ? error.data?.message : "";
+          if (message) {
+            setState({ ...state, requestError: message });
+          }
+        },
+      }
+    );
   };
 
   return (
@@ -135,23 +160,34 @@ const Login: React.FC = () => {
             <h2>Login</h2>
           </Styled.TextContainer>
           <Styled.Form onSubmit={handleSubmit}>
-            <TextField
-              label="Email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              sx={textFieldStyles}
-              required={true}
-            />
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              value={password}
-              onChange={handleChange}
-              sx={textFieldStyles}
-              required={true}
-            />
+            <Styled.FieldContainer>
+              <TextField
+                label="Email"
+                name="email"
+                value={email}
+                onChange={handleChange}
+                sx={textFieldStyles}
+                error={Boolean(state.emailError)}
+                helperText={Boolean(state.emailError) ? state.emailError : ""}
+              />
+            </Styled.FieldContainer>
+            <Styled.FieldContainer>
+              <TextField
+                label="Password"
+                name="password"
+                type="password"
+                value={password}
+                onChange={handleChange}
+                sx={textFieldStyles}
+                error={Boolean(state.passwordError)}
+                helperText={
+                  Boolean(state.passwordError) ? state.passwordError : ""
+                }
+              />
+            </Styled.FieldContainer>
+            <Styled.Error>
+              {state.requestError ? <p>{state.requestError}</p> : null}
+            </Styled.Error>
             <Styled.ButtonsContainer>
               <Button
                 variant="contained"
@@ -170,7 +206,9 @@ const Login: React.FC = () => {
               >
                 Log in
               </Button>
-              <Styled.Button onClick={handleGuestLogin}>Log in as Guest</Styled.Button>
+              <Styled.Button onClick={handleGuestLogin}>
+                Log in as Guest
+              </Styled.Button>
             </Styled.ButtonsContainer>
           </Styled.Form>
         </Styled.FormContainer>
@@ -208,14 +246,14 @@ Styled.FormContainer = styled.div(props => {
   const t = props.theme;
   return css`
     label: Login_FormContainer;
-    ${[t.pb(8), t.pt(3), t.my(4)]}
+    ${[t.pb(4), t.pt(3), t.my(4)]}
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 86%;
     margin-right: 7%;
     margin-left: 7%;
-    height: 350px;
+    height: 418px;
 
     ${t.mq.sm} {
       ${[t.px(8)]}
@@ -231,11 +269,21 @@ Styled.Form = styled.form(props => {
   const t = props.theme;
   return css`
     label: Login_Form;
-    ${[t.pb(8), t.pt(4)]}
+    ${[t.pb(4), t.pt(4)]}
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
+  `;
+});
+
+Styled.FieldContainer = styled.div(() => {
+  return css`
+    label: Login_FieldContainer;
+    height: 96px;
+    div {
+      width: 100%;
+    }
   `;
 });
 
@@ -278,6 +326,17 @@ Styled.Button = styled.div(props => {
     &:hover {
       cursor: pointer;
       font-size: 1.02rem;
+    }
+  `;
+});
+
+Styled.Error = styled.div(() => {
+  return css`
+    height: 28px;
+
+    p {
+      font-size: 0.875rem;
+      color: red;
     }
   `;
 });

@@ -6,7 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
+import VisibilityOff from "@mui/icons-material/VisibilityOffOutlined";
+import Visibility from "@mui/icons-material/VisibilityOutlined";
 import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 
@@ -52,6 +56,8 @@ const Login: React.FC = () => {
     requestError: "",
   });
 
+  const [showPassword, setShowPassword] = React.useState<boolean>(false);
+
   // console.log("RENDER Login Form", { state });
 
   const { currentUser } = useAuthContext();
@@ -64,6 +70,10 @@ const Login: React.FC = () => {
     // recheck dependencies if effect is updated.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const { email, password } = state;
 
@@ -175,7 +185,7 @@ const Login: React.FC = () => {
               <TextField
                 label="Password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={handleChange}
                 sx={textFieldStyles}
@@ -183,6 +193,19 @@ const Login: React.FC = () => {
                 helperText={
                   Boolean(state.passwordError) ? state.passwordError : ""
                 }
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Styled.FieldContainer>
             <Styled.Error>

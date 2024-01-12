@@ -200,6 +200,7 @@ const Login: React.FC = () => {
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
                         edge="end"
+                        sx={{ color: "#172a4f" }}
                       >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>

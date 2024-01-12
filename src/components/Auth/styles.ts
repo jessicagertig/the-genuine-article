@@ -5,6 +5,9 @@ const textFieldStyles = {
     color: "#223F7C",
     backgroundColor: "white",
     fontSize: "1rem",
+    "& .MuiInputAdornment-root": {
+      width: "40px",
+    },
     "& .MuiOutlinedInput-notchedOutline": {
       border: `1px solid rgba(34, 63, 124, .6)`,
       borderRadius: "4px",

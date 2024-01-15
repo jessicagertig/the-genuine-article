@@ -36,32 +36,36 @@ export const convertEmptyStringsToNull = <T extends Record<string, any>>(
 
 export type Option = { value: number; label: string };
 
-type MenusName = "colorMenu" | "materialsMenu" | "garmentTitlesMenu";
+type MenusName = "colorsMenu" | "materialsMenu" | "garmentTitlesMenu";
 
-type Color = { id: number; color: string };
-type Material = { id: number; material: string };
-type Title = { id: number; garmentTitle: string };
+export type Color = { id: number; color: string };
+export type Material = { id: number; material: string };
+export type Title = { id: number; garmentTitle: string };
 
 export type Menus = {
-  colorMenu: Color[];
+  colorsMenu: Color[];
   materialsMenu: Material[];
   garmentTitlesMenu: Title[];
 };
 
+export type ColorsMenu = Menus["colorsMenu"];
+export type MaterialsMenu = Menus["materialsMenu"];
+export type GarmentTitlesMenu = Menus["garmentTitlesMenu"];
+
 export type ConvertedMenus = {
-  colorMenu: Option[];
+  colorsMenu: Option[];
   materialsMenu: Option[];
   garmentTitlesMenu: Option[];
 };
 
 export const returnConvertedMenus = (menus: Menus) => {
   const names: MenusName[] = [
-    "colorMenu",
+    "colorsMenu",
     "materialsMenu",
     "garmentTitlesMenu",
   ];
   let menusObject = {
-    colorMenu: [] as Option[],
+    colorsMenu: [] as Option[],
     materialsMenu: [] as Option[],
     garmentTitlesMenu: [] as Option[],
   };
@@ -78,7 +82,7 @@ export const returnConvertedMenus = (menus: Menus) => {
 export const convertObjectToOptions = (optionsArray: any[], name: string) => {
   let convertedOptions: any[] = [];
   if (name === "colorMenu") {
-    convertedOptions= optionsArray.map((item: Color) => {
+    convertedOptions = optionsArray.map((item: Color) => {
       const newItem = { value: 0, label: "" };
       newItem.value = item.id;
       newItem.label = item.color;

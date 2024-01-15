@@ -66,7 +66,7 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
   React.useEffect(() => {
     if (menus) {
       const convertedMenus = returnConvertedMenus(menus);
-      setColorOptions(convertedMenus["colorMenu"]);
+      setColorOptions(convertedMenus["colorsMenu"]);
       setMaterialOptions(convertedMenus["materialsMenu"]);
       setGarmentTitleOptions(convertedMenus["garmentTitlesMenu"]);
     }

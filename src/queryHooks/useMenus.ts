@@ -6,7 +6,7 @@ import {
   UseQueryResult,
 } from "react-query";
 import { apiGet, apiPost, apiDelete } from "./api";
-import { Menus, Title, Color } from "src/utils/formHelpers";
+import { Menus, Title, Color, Material } from "src/utils/formHelpers";
 
 const getMenus = async (): Promise<Menus> => {
   return await apiGet({ endpoint: "/items/menus" });
@@ -44,6 +44,18 @@ const addColorOption = async ({
     variables: { colorOption },
   });
 };
+
+const addMaterialOption = async ({
+  materialOption,
+}: {
+  materialOption: string;
+}): Promise<Material> => {
+  return await apiPost({
+    endpoint: "/materials",
+    variables: { materialOption },
+  });
+};
+
 
 /* Hooks
 --===================================================-- */
@@ -105,4 +117,21 @@ function useAddColorOption(): {
 }
 
 
-export { useMenus, useAddGarmentTitleOption, useDeleteGarmentTitleOption, useAddColorOption };
+function useAddMaterialOption(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  // console.log("QUERY HOOK");
+  const queryClient: QueryClient = useQueryClient();
+  return useMutation(addMaterialOption, {
+    onSuccess: (data, variables) => {
+      console.log("VARIABLES", variables);
+      console.log("DATA", data);
+      queryClient.invalidateQueries(["menus"]);
+    },
+  });
+}
+
+export { useMenus, useAddGarmentTitleOption, useDeleteGarmentTitleOption, useAddColorOption, useAddMaterialOption };

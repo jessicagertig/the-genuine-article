@@ -23,17 +23,6 @@ const addGarmentTitleOption = async ({
   });
 };
 
-const deleteGarmentTitleOption = async ({
-  garmentTitleOptionId,
-}: {
-  garmentTitleOptionId: number;
-}) => {
-  return await apiDelete({
-    endpoint: `/items/garment_titles/${garmentTitleOptionId}`,
-    variables: {},
-  });
-};
-
 const addColorOption = async ({
   colorOption,
 }: {
@@ -56,6 +45,27 @@ const addMaterialOption = async ({
   });
 };
 
+const deleteGarmentTitleOption = async ({
+  garmentTitleOptionId,
+}: {
+  garmentTitleOptionId: number;
+}) => {
+  return await apiDelete({
+    endpoint: `/items/garment_titles/${garmentTitleOptionId}`,
+    variables: {},
+  });
+};
+
+const deleteColorOption = async ({
+  colorOptionId,
+}: {
+  colorOptionId: number;
+}) => {
+  return await apiDelete({
+    endpoint: `/colors/${colorOptionId}`,
+    variables: {},
+  });
+};
 
 /* Hooks
 --===================================================-- */
@@ -83,22 +93,6 @@ function useAddGarmentTitleOption(): {
   });
 }
 
-function useDeleteGarmentTitleOption(): {
-  mutate: any;
-  status: any;
-  error: any;
-  isLoading: boolean;
-} {
-  const queryClient: QueryClient = useQueryClient();
-  return useMutation(deleteGarmentTitleOption, {
-    onSuccess: (data: any) => {
-      console.log("DATA", data);
-      queryClient.invalidateQueries(["menus"]);
-      // queryClient.invalidateQueries(["garment", data.id]);
-    },
-  });
-}
-
 function useAddColorOption(): {
   mutate: any;
   status: any;
@@ -115,7 +109,6 @@ function useAddColorOption(): {
     },
   });
 }
-
 
 function useAddMaterialOption(): {
   mutate: any;
@@ -134,4 +127,43 @@ function useAddMaterialOption(): {
   });
 }
 
-export { useMenus, useAddGarmentTitleOption, useDeleteGarmentTitleOption, useAddColorOption, useAddMaterialOption };
+function useDeleteGarmentTitleOption(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  const queryClient: QueryClient = useQueryClient();
+  return useMutation(deleteGarmentTitleOption, {
+    onSuccess: (data: any) => {
+      console.log("DATA", data);
+      queryClient.invalidateQueries(["menus"]);
+      // queryClient.invalidateQueries(["garment", data.id]);
+    },
+  });
+}
+
+function useDeleteColorOption(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  const queryClient: QueryClient = useQueryClient();
+  return useMutation(deleteColorOption, {
+    onSuccess: (data: any) => {
+      console.log("DATA", data);
+      queryClient.invalidateQueries(["menus"]);
+      // queryClient.invalidateQueries(["garment", data.id]);
+    },
+  });
+}
+
+export {
+  useMenus,
+  useAddGarmentTitleOption,
+  useAddColorOption,
+  useAddMaterialOption,
+  useDeleteGarmentTitleOption,
+  useDeleteColorOption
+};

@@ -8,6 +8,7 @@ import LandingPage from "src/components/LandingPage";
 import SearchPage from "src/components/SearchPage";
 import GarmentPage from "src/components/Garment/GarmentPage";
 import AdminGarmentPage from "src/components/AdminPage/AdminGarmentPage";
+import AdminEditMenusPage from "src/components/AdminEditMenusPage/EditMenusPage";
 import LoginPage from "src/components/Auth/LoginPage";
 import Logout from "src/components/Auth/Logout";
 
@@ -66,6 +67,11 @@ const pages: Page[] = [
     component: AdminGarmentPage,
     layout: AdminLayout,
   },
+  {
+    path: "/admin/menus",
+    component: AdminEditMenusPage,
+    layout: AdminLayout,
+  },
 ];
 
 const App: React.FC = () => {
@@ -78,7 +84,7 @@ const App: React.FC = () => {
     isLoading,
     isFetching,
   } = useAuthedUser({ enabled: isEnabled });
-  const [ initialUser, setInitialUser ] = React.useState(null)
+  const [initialUser, setInitialUser] = React.useState(null);
 
   React.useEffect(() => {
     // console.log("fetching?", isFetching);
@@ -86,7 +92,7 @@ const App: React.FC = () => {
     // console.log("is enabled?", isEnabled);
     // console.log("user", user);
     if (user !== undefined) {
-      setInitialUser(user)
+      setInitialUser(user);
     }
   }, [user, isLoading, isFetching, isEnabled]);
   // TODO:  possiblyl pass user down to component to be set in context if user is defined but currentUser is not

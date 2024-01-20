@@ -29,7 +29,7 @@ const addColorOption = async ({
   colorOption: string;
 }): Promise<Color> => {
   return await apiPost({
-    endpoint: "/colors",
+    endpoint: "/items-colors",
     variables: { colorOption },
   });
 };
@@ -40,7 +40,7 @@ const addMaterialOption = async ({
   materialOption: string;
 }): Promise<Material> => {
   return await apiPost({
-    endpoint: "/materials",
+    endpoint: "/items-materials",
     variables: { materialOption },
   });
 };
@@ -62,7 +62,18 @@ const deleteColorOption = async ({
   colorOptionId: number;
 }) => {
   return await apiDelete({
-    endpoint: `/colors/${colorOptionId}`,
+    endpoint: `/items-colors/${colorOptionId}`,
+    variables: {},
+  });
+};
+
+const deleteMaterialOption = async ({
+  materialOptionId,
+}: {
+  materialOptionId: number;
+}) => {
+  return await apiDelete({
+    endpoint: `/items-materials/${materialOptionId}`,
     variables: {},
   });
 };
@@ -82,12 +93,10 @@ function useAddGarmentTitleOption(): {
   error: any;
   isLoading: boolean;
 } {
-  // console.log("QUERY HOOK");
   const queryClient: QueryClient = useQueryClient();
   return useMutation(addGarmentTitleOption, {
     onSuccess: (data, variables) => {
-      console.log("VARIABLES", variables);
-      console.log("DATA", data);
+      console.log("Add GarmentTitle Option DATA", data);
       queryClient.invalidateQueries(["menus"]);
     },
   });
@@ -103,8 +112,7 @@ function useAddColorOption(): {
   const queryClient: QueryClient = useQueryClient();
   return useMutation(addColorOption, {
     onSuccess: (data, variables) => {
-      console.log("VARIABLES", variables);
-      console.log("DATA", data);
+      console.log("Add Color Option DATA", data);
       queryClient.invalidateQueries(["menus"]);
     },
   });
@@ -116,12 +124,11 @@ function useAddMaterialOption(): {
   error: any;
   isLoading: boolean;
 } {
-  // console.log("QUERY HOOK");
   const queryClient: QueryClient = useQueryClient();
   return useMutation(addMaterialOption, {
     onSuccess: (data, variables) => {
       console.log("VARIABLES", variables);
-      console.log("DATA", data);
+      console.log("Add Material option DATA", data);
       queryClient.invalidateQueries(["menus"]);
     },
   });
@@ -136,9 +143,8 @@ function useDeleteGarmentTitleOption(): {
   const queryClient: QueryClient = useQueryClient();
   return useMutation(deleteGarmentTitleOption, {
     onSuccess: (data: any) => {
-      console.log("DATA", data);
+      console.log("Delete GarmentTitle DATA", data);
       queryClient.invalidateQueries(["menus"]);
-      // queryClient.invalidateQueries(["garment", data.id]);
     },
   });
 }
@@ -152,9 +158,23 @@ function useDeleteColorOption(): {
   const queryClient: QueryClient = useQueryClient();
   return useMutation(deleteColorOption, {
     onSuccess: (data: any) => {
-      console.log("DATA", data);
+      console.log("Delete Color DATA", data);
       queryClient.invalidateQueries(["menus"]);
-      // queryClient.invalidateQueries(["garment", data.id]);
+    },
+  });
+}
+
+function useDeleteMaterialOption(): {
+  mutate: any;
+  status: any;
+  error: any;
+  isLoading: boolean;
+} {
+  const queryClient: QueryClient = useQueryClient();
+  return useMutation(deleteMaterialOption, {
+    onSuccess: (data: any) => {
+      console.log("Delete Material DATA", data);
+      queryClient.invalidateQueries(["menus"]);
     },
   });
 }
@@ -165,5 +185,6 @@ export {
   useAddColorOption,
   useAddMaterialOption,
   useDeleteGarmentTitleOption,
-  useDeleteColorOption
+  useDeleteColorOption,
+  useDeleteMaterialOption,
 };

@@ -1,17 +1,19 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
-import { useParams, useLocation } from "react-router-dom";
+import { css, Theme } from "@emotion/react";
+import { useLocation } from "react-router-dom";
 
 import TextField from "@mui/material/TextField";
 
-import {
-  StyledAutocomplete,
-} from "src/components/AdminPage/StyledFields";
+import { StyledAutocomplete } from "src/components/AdminPage/StyledFields";
 import SecondaryNav from "src/components/shared/SecondaryNav";
+import AddOptionModal from "src/components/AdminEditMenusPage/AddOptionModal";
+import EmptyState from "src/components/shared/EmptyState";
+import OutlinedButton from "src/components/shared/OutlinedButton";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
+import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
 import {
   useMenus,
@@ -24,21 +26,23 @@ import { Menus } from "src/utils/formHelpers";
 
 interface AdminEditMenusPageProps {}
 
-type MenusKeys = keyof Menus;
+type MenusKey = keyof Menus;
 
-interface MenuState {
+export interface MenuState {
   name: string;
-  menu: Menus[MenusKeys] | never[];
+  menu: Menus[MenusKey] | never[];
 }
 
 const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
-  const { garmentId } = useParams();
+  const {
+    dimensions: { height, width },
+  } = useWindowSizeContext();
   const location = useLocation();
 
   const pageNo = location?.state?.pageNo;
   const rowsNo = location?.state?.rowsNo;
 
-  const { modalOpen } = useModalContext();
+  const { modalOpen, openModal, removeModal } = useModalContext();
   const addToast = useToastContext();
   const [menuState, setMenuState] = React.useState<MenuState>({
     name: "",
@@ -47,15 +51,60 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
   const [newOption, setNewOption] = React.useState<string>("");
   const [errorText, setErrorText] = React.useState<string>("");
 
-  const handleChangeOptionInput = (event: React.BaseSyntheticEvent, value: string) => {
+  const { data: menus, isLoading } = useMenus();
+
+  const handleChangeOptionInput = (
+    event: React.BaseSyntheticEvent,
+    value: string
+  ) => {
     setNewOption(value);
     setErrorText("");
   };
 
-  const menuOptions: Array<string> = ["Colors", "Materials", "Garment Titles"]; 
+  const handleClickAddOption = (event: React.SyntheticEvent): void => {
+    event.preventDefault();
+    const modal = (
+      <AddOptionModal
+        onCancel={() => removeModal()}
+        menuName={menuState.name}
+        handleChangeOptionInput={handleChangeOptionInput}
+      />
+    );
+
+    openModal(modal);
+  };
+
+  const handleChangeMenu = (event: React.BaseSyntheticEvent) => {
+    const value: string = event.target.value;
+    interface Keys {
+      [key: string]: MenusKey;
+    }
+
+    const menusKeysLookup: Keys = {
+      Colors: "colorsMenu",
+      Materials: "materialsMenu",
+      "Garment Titles": "garmentTitlesMenu",
+    };
+    const menusKey: MenusKey = menusKeysLookup[value];
+    const menuContent = menus ? menus[menusKey] : [];
+    setMenuState({ name: value, menu: menuContent });
+  };
+
+  const menuOptions: Array<string> = ["Colors", "Materials", "Garment Titles"];
+
+  const submitButton = (
+    <OutlinedButton
+      onClick={handleClickAddOption}
+      hasEndIcon={true}
+      iconType="add"
+      styles={{ height: "40px", width: "156px"}}
+    >
+      Add option
+    </OutlinedButton>
+  );
 
   return (
-    <Styled.EditMenusPageContainer>
+    <Styled.EditMenusPageContainer height={height}>
       <SecondaryNav
         backPath="/admin"
         pageTitle={"Edit menus"}
@@ -63,13 +112,14 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
         rowsNumber={rowsNo}
       />
       <Styled.PageContent>
-        <form>
+        <Styled.Form>
           <StyledAutocomplete
             key="menuType"
             disablePortal={true}
             id="menuType"
             // defaultValue={defaultGarmentTitleOption}
             options={menuOptions}
+            loading={isLoading}
             // getOptionLabel={(option: unknown) => (option as Option).label}
             renderInput={params => (
               <TextField
@@ -82,11 +132,18 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
                 // helperText={errorText}
               />
             )}
+            onChange={event => handleChangeMenu(event)}
             // onInputChange={(event, value) =>
             //   handleSelectInputChange(event, name, value)
             // }
+            // sx={{ maxWidth: "300px", width: "100%" }}
           />
-        </form>
+        </Styled.Form>
+        <EmptyState
+          title="No Menu Selected"
+          description="Select a menu type to get started"
+        />
+        <Styled.BottomBar>{submitButton}</Styled.BottomBar>
       </Styled.PageContent>
     </Styled.EditMenusPageContainer>
   );
@@ -99,13 +156,72 @@ export default AdminEditMenusPage;
 let Styled: any;
 Styled = {};
 
-Styled.EditMenusPageContainer = styled.div(() => {
+Styled.EditMenusPageContainer = styled.div(
+  ({ theme, height }: { theme: Theme; height: number | undefined }) => {
+    const t = theme;
+    return css`
+      label: AdminEditMenusPage_Container;
+      width: 100%;
+      height: 100%;
+      min-height: ${height ? `${height - 50}px` : "100%"};
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      ${t.mq.md} {
+        min-height: ${height ? `${height - 90}px` : "100%"};
+      }
+    `;
+  }
+);
+
+Styled.PageContent = styled.div(() => {
   return css`
-    label: AdminEditMenusPage_Container;
+    label: AdminEditMenusPage_PageContent;
     width: 100%;
+    height: 100%;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 50px;
   `;
 });
+
+Styled.Form = styled.form(props => {
+  const t = props.theme;
+  return css`
+    label: GarmentForm;
+    margin: 50px 2% 0% 2%;
+    width: 96%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    ${t.mq.md} {
+      margin: 50px 10% 0% 10%;
+      width: 50%;
+      align-items: flex-start;
+    }
+  `;
+});
+
+Styled.BottomBar = styled.div(
+  ({ theme, height }: { theme: Theme; height: number | undefined }) => {
+    const t = theme;
+    return css`
+      label: AdminEditMenusPage_BottomBar;
+      width: 100%;
+      padding-right: 25%;
+      padding-left: 25%;
+      display: flex;
+      position: absolute;
+      bottom: 0px;
+      height: 90px;
+      background: white;
+      z-index: 2;
+      justify-content: flex-end;
+      align-items: center;
+      margin-bottom: 50px;
+    `;
+  }
+);

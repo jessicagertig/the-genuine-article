@@ -34,8 +34,7 @@ Styled.Container = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
     label: EmptyState_Container;
-    ${t.m(2)}
-    height: 100%;
+    ${t.m(8)}
     width: 100%;
     display: flex;
     justify-content: center;

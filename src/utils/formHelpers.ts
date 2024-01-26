@@ -40,7 +40,10 @@ type MenusName = "colorsMenu" | "materialsMenu" | "garmentTitlesMenu";
 
 export type Color = { id: number; color: string };
 export type Material = { id: number; material: string };
-export type Title = { id: number; garmentTitle: string };
+export type Title = { id: number; garmentTitle: string; };
+
+export type MenuItem = Color | Material | Title
+export type Menu = Color[] | Material[] | Title[] 
 
 export type Menus = {
   colorsMenu: Color[];

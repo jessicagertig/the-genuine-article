@@ -10,6 +10,7 @@ import SecondaryNav from "src/components/shared/SecondaryNav";
 import AddOptionModal from "src/components/AdminEditMenusPage/AddOptionModal";
 import EmptyState from "src/components/shared/EmptyState";
 import OutlinedButton from "src/components/shared/OutlinedButton";
+import MenuOptionsList from "src/components/AdminEditMenusPage/MenuOptionsList";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
@@ -22,14 +23,14 @@ import {
   useAddMaterialOption,
 } from "src/queryHooks/useMenus";
 
-import { Menus } from "src/utils/formHelpers";
+import { Menus, Option } from "src/utils/formHelpers";
 
 interface AdminEditMenusPageProps {}
 
 type MenusKey = keyof Menus;
 
 export interface MenuState {
-  name: string;
+  menuName: string;
   menu: Menus[MenusKey] | never[];
 }
 
@@ -45,13 +46,17 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
   const { modalOpen, openModal, removeModal } = useModalContext();
   const addToast = useToastContext();
   const [menuState, setMenuState] = React.useState<MenuState>({
-    name: "",
+    menuName: "",
     menu: [],
   });
+  const { menuName, menu } = menuState
   const [newOption, setNewOption] = React.useState<string>("");
   const [errorText, setErrorText] = React.useState<string>("");
 
   const { data: menus, isLoading } = useMenus();
+
+  console.log("Edit Menus Page MENUS:", { menus });
+  console.log("Edit Menus Page MENUSTATE:", { menuState });
 
   const handleChangeOptionInput = (
     event: React.BaseSyntheticEvent,
@@ -66,7 +71,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     const modal = (
       <AddOptionModal
         onCancel={() => removeModal()}
-        menuName={menuState.name}
+        menuName={menuName}
         handleChangeOptionInput={handleChangeOptionInput}
       />
     );
@@ -74,30 +79,37 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     openModal(modal);
   };
 
-  const handleChangeMenu = (event: React.BaseSyntheticEvent) => {
-    const value: string = event.target.value;
-    interface Keys {
-      [key: string]: MenusKey;
-    }
+  type MenuOption = { label: string; value: keyof Menus };
+  const menuOptions: Array<MenuOption> = [
+    { label: "Colors", value: "colorsMenu" },
+    { label: "Materials", value: "materialsMenu" },
+    { label: "Garment Titles", value: "garmentTitlesMenu" },
+  ];
 
-    const menusKeysLookup: Keys = {
-      Colors: "colorsMenu",
-      Materials: "materialsMenu",
-      "Garment Titles": "garmentTitlesMenu",
-    };
-    const menusKey: MenusKey = menusKeysLookup[value];
-    const menuContent = menus ? menus[menusKey] : [];
-    setMenuState({ name: value, menu: menuContent });
+  const handleChangeMenu = (event: React.BaseSyntheticEvent, value: any) => {
+    // const value: string = event.target.value;
+    console.log("Edit Menus Page MENUSTATE:", { value });
+    // interface Keys {
+    //   [key: string]: MenusKey;
+    // }
+
+    // const menusKeysLookup: Keys = {
+    //   Colors: "colorsMenu",
+    //   Materials: "materialsMenu",
+    //   "Garment Titles": "garmentTitlesMenu",
+    // };
+    // const menusKey: MenusKey = menusKeysLookup[value];
+    const menuKey: MenusKey = value.value as MenusKey;
+    const menuContent = menus && menuKey ? menus[menuKey] : [];
+    setMenuState({ menuName: menuKey, menu: menuContent });
   };
-
-  const menuOptions: Array<string> = ["Colors", "Materials", "Garment Titles"];
 
   const submitButton = (
     <OutlinedButton
       onClick={handleClickAddOption}
       hasEndIcon={true}
       iconType="add"
-      styles={{ height: "40px", width: "156px"}}
+      styles={{ height: "40px", width: "156px" }}
     >
       Add option
     </OutlinedButton>
@@ -114,35 +126,35 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
       <Styled.PageContent>
         <Styled.Form>
           <StyledAutocomplete
-            key="menuType"
+            key="menuName"
             disablePortal={true}
-            id="menuType"
+            id="menuName"
             // defaultValue={defaultGarmentTitleOption}
-            options={menuOptions}
+            options={menuOptions as MenuOption[]}
             loading={isLoading}
-            // getOptionLabel={(option: unknown) => (option as Option).label}
+            getOptionLabel={(option: unknown) => (option as MenuOption).label}
             renderInput={params => (
               <TextField
                 {...params}
                 label="Menu type"
-                name="menuType"
+                name="menuName"
                 required={true}
                 variant="filled"
                 // error={hasError}
                 // helperText={errorText}
               />
             )}
-            onChange={event => handleChangeMenu(event)}
-            // onInputChange={(event, value) =>
-            //   handleSelectInputChange(event, name, value)
-            // }
-            // sx={{ maxWidth: "300px", width: "100%" }}
+            onChange={(event, value) => handleChangeMenu(event, value)}
           />
         </Styled.Form>
-        <EmptyState
-          title="No Menu Selected"
-          description="Select a menu type to get started"
-        />
+        {menuName === "" ? (
+          <EmptyState
+            title="No Menu Selected"
+            description="Select a menu type to get started"
+          />
+        ) : (
+          <MenuOptionsList menuState={menuState} />
+        )}
         <Styled.BottomBar>{submitButton}</Styled.BottomBar>
       </Styled.PageContent>
     </Styled.EditMenusPageContainer>
@@ -187,10 +199,11 @@ Styled.PageContent = styled.div(() => {
   `;
 });
 
-Styled.Form = styled.form(props => {
+Styled.Form = styled.form((props: { theme: Theme }) => {
   const t = props.theme;
   return css`
     label: GarmentForm;
+    ${t.pr(20)}
     margin: 50px 2% 0% 2%;
     width: 96%;
     display: flex;

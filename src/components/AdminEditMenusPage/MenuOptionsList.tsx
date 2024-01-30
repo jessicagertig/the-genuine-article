@@ -11,7 +11,7 @@ interface MenuOptionsListProps {
 }
 
 const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
-  const { menuState: { name, menu} } = props;
+  const { menuState: { menuName, menu} } = props;
 
   const handleClickEdit = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -25,12 +25,12 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
 
   return (
     <Styled.Container>
-      {menu.map(item => (
+      {menu && menu.map(item => (
         <MenuOptionsItem
           handleClickDelete={handleClickDelete}
           handleClickEdit={handleClickEdit}
           item={item}
-          name={name}
+          name={menuName}
         />
       ))}
     </Styled.Container>
@@ -44,11 +44,11 @@ export default MenuOptionsList;
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div((theme: Theme) => {
+Styled.Container = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
     label: MenuOptionsList_Container;
-    ${t.m(2)}
+    ${[t.m(2)]}
     height: 100%;
     width: 100%;
     display: flex;

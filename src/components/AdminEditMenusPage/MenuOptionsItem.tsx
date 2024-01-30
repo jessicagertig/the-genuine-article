@@ -60,7 +60,7 @@ export default MenuOptionsItem;
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div((theme: Theme) => {
+Styled.Container = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
     label: MenuOptionsItem_Container;
@@ -79,7 +79,7 @@ Styled.Container = styled.div((theme: Theme) => {
   `;
 });
 
-Styled.Option = styled.div((theme: Theme) => {
+Styled.Option = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
     label: MenuOptionsItem_Option;
@@ -90,7 +90,7 @@ Styled.Option = styled.div((theme: Theme) => {
   `;
 });
 
-Styled.Actions = styled.div((theme: Theme) => {
+Styled.Actions = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
     label: MenuOptionsItem_Actions;

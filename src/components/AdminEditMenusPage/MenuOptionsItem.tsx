@@ -64,18 +64,14 @@ Styled.Container = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
     label: MenuOptionsItem_Container;
-    ${t.m(2)}
+    ${[t.mx(2), t.p(1)]}
     height: 100%;
-    width: 100%;
+    width: calc(100% - 16px);
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #020b1c;
     border-left: 1px solid #020b1c;
     border-right: 1px solid #020b1c;
-
-    p {
-      color: #020b1c;
-    }
   `;
 });
 
@@ -83,10 +79,11 @@ Styled.Option = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
     label: MenuOptionsItem_Option;
-    ${t.ml(2)}
+    ${[t.ml(2), t.mt(2)]}
     height: 100%;
     display: flex;
     justify-content: flex-start;
+    font-size: 1rem;
   `;
 });
 

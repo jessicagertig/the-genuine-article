@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
 import MenuOptionsItem from "src/components/AdminEditMenusPage/MenuOptionsItem";
-import { Menu } from "src/utils/formHelpers";
 import { MenuState } from "src/components/AdminEditMenusPage/EditMenusPage";
 
 interface MenuOptionsListProps {
@@ -31,6 +30,7 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
           handleClickEdit={handleClickEdit}
           item={item}
           name={menuName}
+          key={item.id}
         />
       ))}
     </Styled.Container>
@@ -50,8 +50,14 @@ Styled.Container = styled.div(({ theme }: { theme: Theme }) => {
     label: MenuOptionsList_Container;
     ${[t.m(2)]}
     height: 100%;
-    width: 100%;
+    width: 90%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+
+    ${t.mq.md} {
+      width: 50%;
+    }
   `;
 });

@@ -87,19 +87,9 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
   ];
 
   const handleChangeMenu = (event: React.BaseSyntheticEvent, value: any) => {
-    // const value: string = event.target.value;
     console.log("Edit Menus Page MENUSTATE:", { value });
-    // interface Keys {
-    //   [key: string]: MenusKey;
-    // }
-
-    // const menusKeysLookup: Keys = {
-    //   Colors: "colorsMenu",
-    //   Materials: "materialsMenu",
-    //   "Garment Titles": "garmentTitlesMenu",
-    // };
-    // const menusKey: MenusKey = menusKeysLookup[value];
-    const menuKey: MenusKey = value.value as MenusKey;
+    const menuKey: MenusKey = value?.value as MenusKey;
+    console.log("Edit Menus Page MENUSTATE:", { menuKey });
     const menuContent = menus && menuKey ? menus[menuKey] : [];
     setMenuState({ menuName: menuKey, menu: menuContent });
   };
@@ -147,7 +137,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
             onChange={(event, value) => handleChangeMenu(event, value)}
           />
         </Styled.Form>
-        {menuName === "" ? (
+        {menuName === ""|| !menuName ? (
           <EmptyState
             title="No Menu Selected"
             description="Select a menu type to get started"
@@ -174,13 +164,14 @@ Styled.EditMenusPageContainer = styled.div(
     return css`
       label: AdminEditMenusPage_Container;
       width: 100%;
-      height: 100%;
+      height: ${height ? `${height - 50}px` : "100%"};
       min-height: ${height ? `${height - 50}px` : "100%"};
       display: flex;
       flex-direction: column;
       align-items: center;
 
       ${t.mq.md} {
+        height: ${height ? `${height - 90}px` : "100%"};
         min-height: ${height ? `${height - 90}px` : "100%"};
       }
     `;
@@ -203,7 +194,6 @@ Styled.Form = styled.form((props: { theme: Theme }) => {
   const t = props.theme;
   return css`
     label: GarmentForm;
-    ${t.pr(20)}
     margin: 50px 2% 0% 2%;
     width: 96%;
     display: flex;

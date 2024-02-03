@@ -164,15 +164,17 @@ Styled.EditMenusPageContainer = styled.div(
     return css`
       label: AdminEditMenusPage_Container;
       width: 100%;
-      height: ${height ? `${height - 50}px` : "100%"};
-      min-height: ${height ? `${height - 50}px` : "100%"};
+      height: ${height ? `${height - 50}px` : "auto"};
+      min-height: ${height ? `${height - 50}px` : "auto"};
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      flex-grow: 1;
 
       ${t.mq.md} {
-        height: ${height ? `${height - 90}px` : "100%"};
-        min-height: ${height ? `${height - 90}px` : "100%"};
+        height: ${height ? `${height - 90}px` : "auto"};
+        min-height: ${height ? `${height - 90}px` : "auto"};
       }
     `;
   }
@@ -182,11 +184,12 @@ Styled.PageContent = styled.div(() => {
   return css`
     label: AdminEditMenusPage_PageContent;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 72px);
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 110px;
   `;
 });
 
@@ -219,12 +222,13 @@ Styled.BottomBar = styled.div(
       display: flex;
       position: absolute;
       bottom: 0px;
-      height: 90px;
+      height: 110px;
       background: white;
       z-index: 2;
       justify-content: flex-end;
       align-items: center;
-      margin-bottom: 50px;
+      padding-bottom: 36px;
+      padding-top: 36px;
     `;
   }
 );

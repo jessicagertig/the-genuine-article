@@ -98,7 +98,7 @@ function useAddGarmentTitleOption(): {
     onSuccess: (data, variables) => {
       console.log("Add GarmentTitle Option VARIABLES:", { variables });
       console.log("Add GarmentTitle Option DATA:", { data });
-      queryClient.invalidateQueries(["menus"]);
+      queryClient.invalidateQueries("menus");
     },
   });
 }
@@ -115,7 +115,7 @@ function useAddColorOption(): {
     onSuccess: (data, variables) => {
       console.log("Add Color Option VARIABLES:", { variables });
       console.log("Add Color Option DATA:", { data });
-      queryClient.invalidateQueries(["menus"]);
+      queryClient.invalidateQueries("menus");
     },
   });
 }
@@ -131,7 +131,7 @@ function useAddMaterialOption(): {
     onSuccess: (data, variables) => {
       console.log("Add Material option VARIABLES:", { variables });
       console.log("Add Material option DATA:", { data });
-      queryClient.invalidateQueries(["menus"]);
+      queryClient.invalidateQueries("menus");
     },
   });
 }
@@ -146,7 +146,7 @@ function useDeleteGarmentTitleOption(): {
   return useMutation(deleteGarmentTitleOption, {
     onSuccess: (data: any) => {
       console.log("Delete GarmentTitle DATA:", { data });
-      queryClient.invalidateQueries(["menus"]);
+      queryClient.invalidateQueries("menus");
     },
   });
 }
@@ -161,7 +161,7 @@ function useDeleteColorOption(): {
   return useMutation(deleteColorOption, {
     onSuccess: (data: any) => {
       console.log("Delete Color DATA:", { data });
-      queryClient.invalidateQueries(["menus"]);
+      queryClient.invalidateQueries("menus");
     },
   });
 }
@@ -176,7 +176,7 @@ function useDeleteMaterialOption(): {
   return useMutation(deleteMaterialOption, {
     onSuccess: (data: any) => {
       console.log("Delete Material DATA:", { data });
-      queryClient.invalidateQueries(["menus"]);
+      queryClient.invalidateQueries("menus");
     },
   });
 }

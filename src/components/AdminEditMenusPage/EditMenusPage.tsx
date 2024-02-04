@@ -18,9 +18,6 @@ import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
 import {
   useMenus,
-  useAddGarmentTitleOption,
-  useAddColorOption,
-  useAddMaterialOption,
 } from "src/queryHooks/useMenus";
 
 import { Menus, Option } from "src/utils/formHelpers";
@@ -57,6 +54,12 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
 
   console.log("Edit Menus Page MENUS:", { menus });
   console.log("Edit Menus Page MENUSTATE:", { menuState });
+
+  React.useEffect(() => {
+    if (menus && menuName !== "") {
+      setMenuState({ ...menuState, menu: menus[menuName as MenusKey] });
+    }
+  }, [menus])
 
   const handleChangeOptionInput = (
     event: React.BaseSyntheticEvent,

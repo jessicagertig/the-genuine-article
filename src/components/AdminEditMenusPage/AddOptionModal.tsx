@@ -16,10 +16,9 @@ import ButtonLoading from "src/components/shared/ButtonLoading";
 
 import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
-
-import { Menus } from "src/utils/formHelpers";
-
-import { validateUrl } from "src/utils/validationWithYup";
+import {
+  useAddColorOption,
+} from "src/queryHooks/useMenus";
 
 interface EditMenusModalProps {
   onCancel: () => void;
@@ -29,17 +28,21 @@ interface EditMenusModalProps {
 }
 
 const EditMenusModal: React.FC<EditMenusModalProps> = props => {
+  const { onCancel, menuName } = props;
   const theme = useTheme();
   const isFullscreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  // const { mutate: createScrapedItem, isLoading: isLoadingCreateScrapedItem } =
-  //   useCreateScrapedItem();
+  const { mutate: addColorOption, isLoading: isLoadingAddColor } =
+    useAddColorOption();
+  
+  
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
 
   const [newOption, setNewOption] = React.useState<string>("");
   const [errorText, setErrorText] = React.useState<string>("");
 
+  const isLoading = isLoadingAddColor
   const handleChangeInput = (event: React.BaseSyntheticEvent) => {
     const input = event.target?.value;
     setNewOption(input);
@@ -48,18 +51,54 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
 
   const menuOptions: Array<string> = ["Colors", "Materials", "Garment Titles"];
 
+  const handleAddColor = async () => {
+    addColorOption(
+      {
+        colorOption: newOption
+      },
+      {
+        onSuccess: (data: any) => {
+          console.log("Success creating garment. Data:", data);
+          addToast({
+            kind: "success",
+            title: "Your option was successfully added",
+            delay: 5000,
+          });
+          onCancel();
+        },
+        onError: (error: any, data: any) => {
+          const message =
+            error && error.data
+              ? error.data.message
+              : "You record could not be added.";
+          setErrorText(message);
+          console.log("Request Error:", { message, data });
+        },
+      }
+    );
+  }
+
   const handleClickSave = async () => {
-    const validationError = await validateUrl(newOption);
-    setErrorText(validationError);
-    if (!validationError) {
-      // props.handleSave();
+    // const validationError = await validateUrl(newOption);
+    // setErrorText(validationError);
+    // if (!validationError) {
+    //   props.handleSave();
+    // }
+    switch (menuName) {
+      case "colorsMenu":
+        await handleAddColor()
+        break;
+    
+      default:
+        break;
     }
   };
 
   const confirmButton = (
     <>
       <OutlinedButton onClick={handleClickSave}>
-        {/* {isLoadingCreateScrapedItem ? <ButtonLoading /> : "Add item"} */}
+        Add item
+        {/* {isLoading ? <ButtonLoading /> : "Add item"} */}
       </OutlinedButton>
     </>
   );
@@ -81,9 +120,8 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
             key="menuType"
             disablePortal={true}
             id="menuType"
-            // defaultValue={defaultGarmentTitleOption}
+            defaultValue={menuName}
             options={menuOptions}
-            // getOptionLabel={(option: unknown) => (option as Option).label}
             renderInput={params => (
               <TextField
                 {...params}

@@ -16,6 +16,8 @@ import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
 import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
+import { getLabelFromValue } from 'src/utils/formHelpers';
+
 import {
   useMenus,
 } from "src/queryHooks/useMenus";
@@ -69,12 +71,22 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     setErrorText("");
   };
 
+  type MenuOption = { label: string; value: keyof Menus };
+  const menuOptions: Array<MenuOption> = [
+    { label: "Colors", value: "colorsMenu" },
+    { label: "Materials", value: "materialsMenu" },
+    { label: "Garment Titles", value: "garmentTitlesMenu" },
+  ];
+
+
   const handleClickAddOption = (event: React.SyntheticEvent): void => {
     event.preventDefault();
+    
+    const menuTitle =  getLabelFromValue(menuOptions, menuName)
     const modal = (
       <AddOptionModal
         onCancel={() => removeModal()}
-        menuName={menuName}
+        menuTitle={menuTitle}
         handleChangeOptionInput={handleChangeOptionInput}
       />
     );
@@ -82,12 +94,6 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     openModal(modal);
   };
 
-  type MenuOption = { label: string; value: keyof Menus };
-  const menuOptions: Array<MenuOption> = [
-    { label: "Colors", value: "colorsMenu" },
-    { label: "Materials", value: "materialsMenu" },
-    { label: "Garment Titles", value: "garmentTitlesMenu" },
-  ];
 
   const handleChangeMenu = (event: React.BaseSyntheticEvent, value: any) => {
     console.log("Edit Menus Page MENUSTATE:", { value });
@@ -102,6 +108,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
       onClick={handleClickAddOption}
       hasEndIcon={true}
       iconType="add"
+      disabled={!menuName}
       styles={{ height: "40px", width: "156px" }}
     >
       Add option

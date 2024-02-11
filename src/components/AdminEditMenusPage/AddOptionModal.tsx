@@ -18,6 +18,7 @@ import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
 import {
   useAddColorOption,
+  useAddMaterialOption,
 } from "src/queryHooks/useMenus";
 
 interface EditMenusModalProps {
@@ -35,6 +36,8 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   const { mutate: addColorOption, isLoading: isLoadingAddColor } =
     useAddColorOption();
   
+    const { mutate: addMaterialOption, isLoading: isLoadingAddMaterial } =
+      useAddMaterialOption();
   
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
@@ -42,7 +45,7 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   const [newOption, setNewOption] = React.useState<string>("");
   const [errorText, setErrorText] = React.useState<string>("");
 
-  const isLoading = isLoadingAddColor
+  const isLoading = isLoadingAddColor || isLoadingAddMaterial
   const handleChangeInput = (event: React.BaseSyntheticEvent) => {
     const input = event.target?.value;
     setNewOption(input);
@@ -58,10 +61,38 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
       },
       {
         onSuccess: (data: any) => {
-          console.log("Success creating garment. Data:", data);
+          console.log("Success adding color. Data:", data);
           addToast({
             kind: "success",
-            title: "Your option was successfully added",
+            title: "Your color option was successfully added",
+            delay: 5000,
+          });
+          onCancel();
+        },
+        onError: (error: any, data: any) => {
+          const message =
+            error && error.data
+              ? error.data.message
+              : "You record could not be added.";
+          setErrorText(message);
+          console.log("Request Error:", { message, data });
+        },
+      }
+    );
+  }
+
+  const handleAddMaterial = async () => {
+    console.log("HANDLE ADD MATERIAL")
+    addMaterialOption(
+      {
+        materialOption: newOption
+      },
+      {
+        onSuccess: (data: any) => {
+          console.log("Success adding material. Data:", data);
+          addToast({
+            kind: "success",
+            title: "Your material option was successfully added",
             delay: 5000,
           });
           onCancel();
@@ -79,16 +110,14 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   }
 
   const handleClickSave = async () => {
-    // const validationError = await validateUrl(newOption);
-    // setErrorText(validationError);
-    // if (!validationError) {
-    //   props.handleSave();
-    // }
+    console.log("Handle click save:", { menuName })
     switch (menuName) {
       case "colorsMenu":
         await handleAddColor()
         break;
-    
+      case "materialsMenu":
+        await handleAddMaterial();
+        break;
       default:
         break;
     }
@@ -98,7 +127,7 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
     <>
       <OutlinedButton onClick={handleClickSave}>
         Add item
-        {/* {isLoading ? <ButtonLoading /> : "Add item"} */}
+        {/* {isLoading ? <ButtonLoading /> : "Add option"} */}
       </OutlinedButton>
     </>
   );
@@ -110,7 +139,7 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
       <DialogModal
         open={modalOpen}
         dialogTitle={title}
-        onCancel={props.onCancel}
+        onCancel={onCancel}
         confirmButton={confirmButton}
         full={true}
         responsiveFullscreen={true}

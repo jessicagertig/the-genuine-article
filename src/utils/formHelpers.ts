@@ -108,3 +108,15 @@ export const convertObjectToOptions = (optionsArray: any[], name: string) => {
   }
   return convertedOptions;
 };
+
+type OptionWithStringValue = { label: string, value: string; };
+
+export const getLabelFromValue = (array: Array<OptionWithStringValue>, valueOfValue: string) => {
+  for (const object of array) {
+    if (object.value === valueOfValue) {
+      return object.label
+    }
+  }
+  return ""
+}
+

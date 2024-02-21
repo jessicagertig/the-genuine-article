@@ -24,14 +24,14 @@ import {
 interface EditMenusModalProps {
   onCancel: () => void;
   onConfirm?: () => void;
-  menuName: string;
+  menuTitle: string;
   handleChangeOptionInput: (event: React.BaseSyntheticEvent, value: string) => void;
 }
 
 const EditMenusModal: React.FC<EditMenusModalProps> = props => {
-  const { onCancel, menuName } = props;
+  const { onCancel, menuTitle } = props;
   const theme = useTheme();
-  const isFullscreen = useMediaQuery(theme.breakpoints.down("md"));
+  const isFullscreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { mutate: addColorOption, isLoading: isLoadingAddColor } =
     useAddColorOption();
@@ -51,8 +51,6 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
     setNewOption(input);
     setErrorText("");
   };
-
-  const menuOptions: Array<string> = ["Colors", "Materials", "Garment Titles"];
 
   const handleAddColor = async () => {
     addColorOption(
@@ -110,8 +108,8 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   }
 
   const handleClickSave = async () => {
-    console.log("Handle click save:", { menuName })
-    switch (menuName) {
+    console.log("Handle click save:", { menuTitle })
+    switch (menuTitle) {
       case "colorsMenu":
         await handleAddColor()
         break;
@@ -126,13 +124,14 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   const confirmButton = (
     <>
       <OutlinedButton onClick={handleClickSave}>
-        Add item
+        Add option
         {/* {isLoading ? <ButtonLoading /> : "Add option"} */}
       </OutlinedButton>
     </>
   );
-
-  const title = "EDIT A MENU";
+  
+ 
+  const title = `Add ${menuTitle} Option`;
 
   return (
     <>
@@ -141,31 +140,10 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
         dialogTitle={title}
         onCancel={onCancel}
         confirmButton={confirmButton}
-        full={true}
-        responsiveFullscreen={true}
+        responsiveFullscreen={isFullscreen}
+        full={false}
       >
         <Styled.ModalContent>
-          <StyledAutocomplete
-            key="menuType"
-            disablePortal={true}
-            id="menuType"
-            defaultValue={menuName}
-            options={menuOptions}
-            renderInput={params => (
-              <TextField
-                {...params}
-                label="Menu type"
-                name="menuType"
-                required={true}
-                variant="filled"
-                // error={hasError}
-                // helperText={errorText}
-              />
-            )}
-            // onInputChange={(event, value) =>
-            //   handleSelectInputChange(event, name, value)
-            // }
-          />
           <StyledTextField
             key="newOption"
             label="New Menu Option"
@@ -196,8 +174,8 @@ Styled.ModalContent = styled.div(props => {
   return css`
     label: ModalContent;
     ${[t.mx(6), t.my(6)]}
-    width: 100%;
-    height: 160px;
+    width: 306px;
+    height: 140px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

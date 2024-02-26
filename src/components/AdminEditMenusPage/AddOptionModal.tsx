@@ -19,6 +19,7 @@ import { useToastContext } from "src/context/ToastContext";
 import {
   useAddColorOption,
   useAddMaterialOption,
+  useAddGarmentTitleOption
 } from "src/queryHooks/useMenus";
 
 interface EditMenusModalProps {
@@ -36,8 +37,10 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   const { mutate: addColorOption, isLoading: isLoadingAddColor } =
     useAddColorOption();
   
-    const { mutate: addMaterialOption, isLoading: isLoadingAddMaterial } =
-      useAddMaterialOption();
+  const { mutate: addMaterialOption, isLoading: isLoadingAddMaterial } =
+    useAddMaterialOption();
+  
+  const { mutate: addGarmentTitleOption, isLoading: isLoadingAddGarmentTitle } = useAddGarmentTitleOption();
   
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
@@ -107,14 +110,45 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
     );
   }
 
+    const handleAddGarmentTitle = async () => {
+      console.log("HANDLE ADD GARMENT TITLE");
+      addGarmentTitleOption(
+        {
+          garmentTitleOption: newOption,
+        },
+        {
+          onSuccess: (data: any) => {
+            console.log("Success adding material. Data:", data);
+            addToast({
+              kind: "success",
+              title: "Your garment title option was successfully added",
+              delay: 5000,
+            });
+            onCancel();
+          },
+          onError: (error: any, data: any) => {
+            const message =
+              error && error.data
+                ? error.data.message
+                : "You record could not be added.";
+            setErrorText(message);
+            console.log("Request Error:", { message, data });
+          },
+        }
+      );
+    };
+
   const handleClickSave = async () => {
     console.log("Handle click save:", { menuTitle })
     switch (menuTitle) {
-      case "colorsMenu":
+      case "Colors":
         await handleAddColor()
         break;
-      case "materialsMenu":
+      case "Materials":
         await handleAddMaterial();
+        break;
+      case "Garment Titles":
+        await handleAddGarmentTitle();
         break;
       default:
         break;

@@ -23,7 +23,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
   };
 
   return (
-    <Styled.HomeContainer height={windowHeight ?? 100}>
+    <Styled.AboutContainer height={windowHeight ?? 100}>
       <Styled.BackgroundContainer>
         <ProgressiveImage
           placeholderSrc={placeholderUrl}
@@ -47,7 +47,7 @@ const Main: React.ForwardRefRenderFunction<HTMLDivElement, MainProps> = (
       >
         <Bounce />
       </Styled.ButtonContainer>
-    </Styled.HomeContainer>
+    </Styled.AboutContainer>
   );
 };
 
@@ -58,12 +58,12 @@ export default forwardRef(Main);
 let Styled: any;
 Styled = {};
 
-Styled.HomeContainer = styled.div(
+Styled.AboutContainer = styled.div(
   ({ theme, height }: { theme: Theme; height: number }) => {
     const t = theme;
     const heightInVh = height / (height * 0.01);
     return css`
-      label: HomeContainer;
+      label: AboutContainer;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -97,7 +97,7 @@ Styled.BackgroundContainer = styled.div(() => {
 Styled.ContentContainer = styled.div(({ theme }: { theme: Theme }) => {
   const t = theme;
   return css`
-    label: HomeHeaderTextContainer;
+    label: AboutHeaderTextContainer;
     ${[t.pt(8), t.pb(10), t.mb(28)]}
     display: block;
     z-index: 2;

@@ -24,8 +24,8 @@ const Footer: React.FC<FooterProps> = props => {
   };
 
   const links: Link[] = [
-    { name: "Home", path: "/" },
     { name: "Garments", path: "/garments" },
+    { name: "About", path: "/about" },
     { name: "Admin", path: "/admin" },
   ];
 

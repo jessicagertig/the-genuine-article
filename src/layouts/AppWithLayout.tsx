@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import PublicLayout from "src/layouts/PublicLayout";
 import AdminLayout from "src/layouts/AdminLayout";
@@ -32,7 +32,7 @@ interface Page {
 const pages: Page[] = [
   // Public pages
   {
-    path: "/",
+    path: "/about",
     component: LandingPage,
     layout: PublicLayout,
   },
@@ -74,6 +74,10 @@ const pages: Page[] = [
   },
 ];
 
+const RedirectToGarments = () => {
+  return <Navigate to="/garments" replace />;
+};
+
 const App: React.FC = () => {
   const location = useLocation();
   const isAuthedRoute = location.pathname.includes("admin");
@@ -113,6 +117,7 @@ const App: React.FC = () => {
               }
             />
           ))}
+          <Route path="/" element={<RedirectToGarments />} />
         </Routes>
       )}
     </AuthProvider>

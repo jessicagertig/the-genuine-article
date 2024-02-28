@@ -51,8 +51,8 @@ const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <NavMenuItem onClose={handleClose} name={"Home"} to={"/"} />
         <NavMenuItem onClose={handleClose} name={"Garments"} to={"/garments"} />
+        <NavMenuItem onClose={handleClose} name={"About"} to={"/about"} />
         {currentUser ? (
           <NavMenuItem onClose={handleClose} name={"Admin"} to={"/admin"} />
         ) : (
@@ -75,8 +75,8 @@ const NavBar: React.FC<NavBarProps> = ({ backgroundColor, shadow }) => {
       </Styled.Container>
       <Styled.Container>
         <Styled.LinksContainer>
-          <Styled.NavLink to="/">Home</Styled.NavLink>
           <Styled.NavLink to="/garments">Garments</Styled.NavLink>
+          <Styled.NavLink to="/about">About</Styled.NavLink>
           {currentUser ? (
             <Styled.NavLink to="/admin">Admin</Styled.NavLink>
           ) : (

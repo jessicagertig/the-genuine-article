@@ -3,9 +3,9 @@ import { MemoryRouter } from "react-router-dom";
 import App from "./layouts/AppWithLayout";
 
 describe("App Routing Test", () => {
-  it("should render the LandingPage component at /", () => {
+  it("should render the LandingPage component at /about", () => {
     render(
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter initialEntries={["/about"]}>
         <App />
       </MemoryRouter>
     );
@@ -15,7 +15,7 @@ describe("App Routing Test", () => {
     expect(landingPageElement).toBeInTheDocument();
   });
 
-  it("should render the PublicFooter at /", () => {
+  it("should render the PublicFooter at /about", () => {
     render(
       <MemoryRouter>
         <App />

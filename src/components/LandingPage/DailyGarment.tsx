@@ -12,14 +12,14 @@ import useImageDimensions from "src/hooks/useImageDimensions";
 
 import { useProgressiveImage } from "src/hooks/useProgressiveImage";
 import { GarmentData } from "src/types";
-import { StylingVariables } from 'src/components/LandingPage/DailyGarmentContainer';
+import { StylingVariables } from "src/components/LandingPage/DailyGarmentContainer";
 
-interface HomeContentProps {
+interface AboutContentProps {
   garment: GarmentData;
   styleVars: StylingVariables;
 }
 
-const HomeContent: React.FC<HomeContentProps> = ({ garment, styleVars }) => {
+const AboutContent: React.FC<AboutContentProps> = ({ garment, styleVars }) => {
   const { openModal, removeModal } = useModalContext();
 
   const [imageLoaded, setImageLoaded] = React.useState(false);
@@ -35,12 +35,13 @@ const HomeContent: React.FC<HomeContentProps> = ({ garment, styleVars }) => {
   const { ref: sizeRef, width: currentWidth } = useResizeObserver();
   const placeholderSrc = garment?.imageUrls?.tinyMainUrl;
   const src = garment?.imageUrls?.mainImageUrl;
-  
-  const { currentSrc, isLoading } = useProgressiveImage(placeholderSrc as string, src as string);
 
-  const isLoadingState: boolean = !!(
-    placeholderSrc && isLoading
+  const { currentSrc, isLoading } = useProgressiveImage(
+    placeholderSrc as string,
+    src as string
   );
+
+  const isLoadingState: boolean = !!(placeholderSrc && isLoading);
 
   // console.log("Daily Garment Image Info", {
   //   images: garment?.imageUrls,
@@ -50,7 +51,7 @@ const HomeContent: React.FC<HomeContentProps> = ({ garment, styleVars }) => {
   // });
 
   const imgRef = React.useRef<HTMLImageElement>(null!);
-  
+
   /* HANDLE IMAGE DIMENSIONS */
 
   const onLoad = () => {
@@ -83,29 +84,29 @@ const HomeContent: React.FC<HomeContentProps> = ({ garment, styleVars }) => {
 
   return (
     <>
-        <DailyGarmentTitle styleVars={styleVars} />
-        <Styled.ImageCardContainer currentWidth={currentWidth}>
-          <Styled.DisplayedImage
-            styleVars={styleVars}
-            width={maxZoomedImgWidth}
-            isLoading={isLoadingState}
-            onClick={handleZoom}
-            ref={sizeRef}
-          >
-            <img
-              ref={imgRef}
-              src={currentSrc}
-              alt={garment?.garmentTitle}
-              onLoad={onLoad}
-            />
-          </Styled.DisplayedImage>
-        </Styled.ImageCardContainer>
-        <DailyGarmentInfo styleVars={styleVars} garment={garment} />
+      <DailyGarmentTitle styleVars={styleVars} />
+      <Styled.ImageCardContainer currentWidth={currentWidth}>
+        <Styled.DisplayedImage
+          styleVars={styleVars}
+          width={maxZoomedImgWidth}
+          isLoading={isLoadingState}
+          onClick={handleZoom}
+          ref={sizeRef}
+        >
+          <img
+            ref={imgRef}
+            src={currentSrc}
+            alt={garment?.garmentTitle}
+            onLoad={onLoad}
+          />
+        </Styled.DisplayedImage>
+      </Styled.ImageCardContainer>
+      <DailyGarmentInfo styleVars={styleVars} garment={garment} />
     </>
   );
 };
 
-export default HomeContent;
+export default AboutContent;
 
 // Styled Components
 // =======================================================
@@ -157,10 +158,19 @@ Styled.ImageCardContainer = styled.div(
   }
 );
 
-Styled.DisplayedImage = styled.div(({ theme, styleVars, isLoading }: {theme: Theme, styleVars: StylingVariables, isLoading: boolean }) => {
-  const t = theme;
-  const { heightInVh, isShortScreen } = styleVars;
-  return css`
+Styled.DisplayedImage = styled.div(
+  ({
+    theme,
+    styleVars,
+    isLoading,
+  }: {
+    theme: Theme;
+    styleVars: StylingVariables;
+    isLoading: boolean;
+  }) => {
+    const t = theme;
+    const { heightInVh, isShortScreen } = styleVars;
+    return css`
     label: Garment_DisplayedImage;
     display: flex;
     position: relative;
@@ -201,8 +211,8 @@ Styled.DisplayedImage = styled.div(({ theme, styleVars, isLoading }: {theme: The
 
     ${t.mq.md} {
       max-height: max(calc(${heightInVh}vh - ${
-    isShortScreen ? "40vh" : "414px"
-  }), 378px);
+      isShortScreen ? "40vh" : "414px"
+    }), 378px);
       min-height: 378px;
     }
 
@@ -213,4 +223,5 @@ Styled.DisplayedImage = styled.div(({ theme, styleVars, isLoading }: {theme: The
       max-width: unset;
     }
   `;
-});
+  }
+);

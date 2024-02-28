@@ -48,11 +48,16 @@ const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
         aria-labelledby="dialog-modal-title"
         aria-describedby="dialog-modal-description"
       >
-        <DialogTitle  id="dialog-modal-title" sx={{ textAlign: "center", color: "#223F7C" }}>
+        <DialogTitle
+          id="dialog-modal-title"
+          sx={{ textAlign: "center", color: "#223F7C" }}
+        >
           {dialogTitle}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="dialog-modal-description">{dialogMessage}</DialogContentText>
+          <DialogContentText id="dialog-modal-description">
+            {dialogMessage}
+          </DialogContentText>
           {children}
         </DialogContent>
         <Styled.ButtonsContainer full={full}>

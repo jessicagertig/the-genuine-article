@@ -2,9 +2,9 @@ import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
-interface HomeHeaderProps {}
+interface AboutHeaderProps {}
 
-const HomeHeader: React.FC<HomeHeaderProps> = () => {
+const AboutHeader: React.FC<AboutHeaderProps> = () => {
   const imageUrls = [
     `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/greenMetSquare.jpg`,
     `${process.env.REACT_APP_S3_BASE_URL}Gallery_Images/BlueWorth1870sSquare.jpg`,
@@ -15,7 +15,7 @@ const HomeHeader: React.FC<HomeHeaderProps> = () => {
   ];
 
   return (
-    <Styled.HomeHeaderContainer>
+    <Styled.AboutHeaderContainer>
       <Styled.InfoSectionContainer>
         <Styled.HeaderTextContainer>
           <h3>Genuine articles of clothing from the 19th century.</h3>
@@ -33,21 +33,21 @@ const HomeHeader: React.FC<HomeHeaderProps> = () => {
           <Styled.ImageItem key={image} src={image} />
         ))}
       </Styled.ImageGridContainer>
-    </Styled.HomeHeaderContainer>
+    </Styled.AboutHeaderContainer>
   );
 };
 
-export default HomeHeader;
+export default AboutHeader;
 
 // Styled Components
 // =======================================================
 let Styled: any;
 Styled = {};
 
-Styled.HomeHeaderContainer = styled.div(props => {
+Styled.AboutHeaderContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: HomeHeaderContainer;
+    label: AboutHeaderContainer;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -68,7 +68,7 @@ Styled.HomeHeaderContainer = styled.div(props => {
 Styled.InfoSectionContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: HomeHeaderTextContainer;
+    label: AboutHeaderTextContainer;
     display: flex;
     flex-direction: column;
     width: 94%;
@@ -88,7 +88,7 @@ Styled.InfoSectionContainer = styled.div(props => {
 Styled.HeaderTextContainer = styled.div(props => {
   const t = props.theme;
   return css`
-    label: HomeHeaderTextContainer;
+    label: AboutHeaderTextContainer;
     height: 31%;
     padding-top: 3%;
 

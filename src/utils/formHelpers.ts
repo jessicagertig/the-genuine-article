@@ -84,7 +84,7 @@ export const returnConvertedMenus = (menus: Menus) => {
 
 export const convertObjectToOptions = (optionsArray: any[], name: string) => {
   let convertedOptions: any[] = [];
-  if (name === "colorMenu") {
+  if (name === "colorsMenu") {
     convertedOptions = optionsArray.map((item: Color) => {
       const newItem = { value: 0, label: "" };
       newItem.value = item.id;

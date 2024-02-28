@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
+import { useNavigate } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
@@ -20,6 +21,8 @@ const AdminHeader: React.FC<Props> = props => {
   const { openModal, removeModal } = useModalContext();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate();
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,6 +53,7 @@ const AdminHeader: React.FC<Props> = props => {
 
   const handleClickEditMenus = () => {
     console.log("Clicked Edit Menus");
+    navigate(`/admin/menus`);
   };
 
   const actions: Action[] = [

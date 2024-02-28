@@ -20,7 +20,7 @@ interface CustomFormDialogProps extends DialogProps {
 }
 
 const DialogModal = (props: CustomFormDialogProps): JSX.Element => {
-  console.log("DialogModalProps", props);
+  // console.log("DialogModalProps", props);
 
   const {
     dialogMessage,

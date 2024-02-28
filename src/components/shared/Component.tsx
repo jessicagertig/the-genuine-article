@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 
-interface AdminFooterProps {};
+interface ComponentProps {};
 
 // basic format for a component
-// replace "AdminFooter" with new component name throuhgout
+// replace "Component" with new component name throughout
 
-const AdminFooter: React.FC<AdminFooterProps> = (props) => {
+const Component: React.FC<ComponentProps> = (props) => {
 
   return (
     <Styled.Container>
@@ -21,22 +21,21 @@ const AdminFooter: React.FC<AdminFooterProps> = (props) => {
   );
 };
 
-export default AdminFooter;
+export default Component;
 
 // Styled Components
 // =======================================================
 let Styled: any;
 Styled = {};
 
-Styled.Container = styled.div(props => {
-  const t = props.theme;
+Styled.Container = styled.div((theme: Theme)=> {
+  const t = theme;
   return css`
-    label: AdminFooter_Container;
+    label: Component_Container;
     ${t.m(2)}
     height: 100%;
     width: 100%;
     display: flex;
     justify-content: center;
-    background-color: rgba(251, 233, 239, 0.28);
   `;
 });

@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
-// import "@testing-library/jest-dom/extend-expect";
 import LandingPage from "src/components/LandingPage";
 import { WindowSizeProvider } from "src/context/WindowSizeContext";
 import * as WindowSizeContext from "src/context/WindowSizeContext";
@@ -24,10 +23,9 @@ function mockMain() {
 
 // Mock the components
 jest.mock("src/components/shared/NavBar", () => () => <div>NavBar</div>);
-jest.mock("src/components/LandingPage/Main", () => () => <div>Main</div>);
 jest.mock("src/components/LandingPage/Main", () => mockMain());
-jest.mock("src/components/LandingPage/DailyGarment", () => () => (
-  <div>DailyGarment</div>
+jest.mock("src/components/LandingPage/DailyGarmentContainer", () => () => (
+  <div>DailyGarmentContainer</div>
 ));
 jest.mock("src/components/LandingPage/BottomContent", () => () => (
   <div>BottomContent</div>

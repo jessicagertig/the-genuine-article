@@ -11,8 +11,8 @@ describe("Main component", () => {
     // Test for background image
     const backgroundImage = screen.getByRole("img");
     expect(backgroundImage).toHaveAttribute(
-      "src",
-      expect.stringContaining("blueRoseDress1800")
+      "alt",
+      expect.stringContaining("background of floral brocaded")
     );
   
     // Test for header text

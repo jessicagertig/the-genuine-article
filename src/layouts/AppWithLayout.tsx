@@ -11,6 +11,7 @@ import AdminGarmentPage from "src/components/AdminPage/AdminGarmentPage";
 import AdminEditMenusPage from "src/components/AdminEditMenusPage/EditMenusPage";
 import LoginPage from "src/components/Auth/LoginPage";
 import Logout from "src/components/Auth/Logout";
+import PrivacyPolicy from "src/components/Policies/PrivacyPolicy";
 
 import LoadingState from "src/components/shared/LoadingState";
 
@@ -34,6 +35,11 @@ const pages: Page[] = [
   {
     path: "/about",
     component: LandingPage,
+    layout: PublicLayout,
+  },
+  {
+    path: "/privacy-policy",
+    component: PrivacyPolicy,
     layout: PublicLayout,
   },
   {

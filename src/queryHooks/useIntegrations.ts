@@ -1,120 +1,3 @@
-// import { useMutation, useQuery, useQueryClient, QueryClient } from "react-query";
-// import { apiGet, apiPost } from "./api";
-
-// type BoardParam = { boardId: string | undefined };
-// type PinParam = { pinId: string | undefined };
-
-// const getBoards = async () => {
-//   return await apiGet({ endpoint: "/integrations/pinterest/boards" });
-// };
-
-// const getBoard = async ({ boardId }: BoardParam) => {
-//   if (boardId !== undefined) {
-//     return await apiGet({
-//       endpoint: `/integrations/pinterest/board/${boardId}`,
-//     });
-//   }
-// };
-
-// const getPin = async ({ pinId }: PinParam) => {
-//   if (pinId !== undefined) {
-//     return await apiGet({ endpoint: `/integrations/pinterest/pin/${pinId}` });
-//   }
-// };
-
-// const createBoard = async (boardData: any) => {
-//   return await apiPost({
-//     endpoint: "/integrations/pinterest/boards",
-//     variables: boardData,
-//   });
-// };
-
-// type CreatePinData = {
-//   itemId: number;
-//   boardId: string;
-// };
-
-// const createPin = async ({ itemId, boardId }: CreatePinData) => {
-//   return await apiPost({
-//     endpoint: "/integrations/pinterest/pin",
-//     variables: { item_id: itemId, board_id: boardId },
-//   });
-// };
-
-// /* Hooks
-// --===================================================-- */
-
-// function useBoards(): {
-//   status: any;
-//   data: any;
-//   error: any;
-//   isFetching: boolean;
-//   isLoading: boolean;
-// } {
-//   return useQuery(["boards"], () => getBoards(), {
-//     refetchOnWindowFocus: false,
-//   });
-// }
-
-// function useBoard({ boardId }: BoardParam): {
-//   status: any;
-//   data: any;
-//   error: any;
-//   isFetching: boolean;
-//   isLoading: boolean;
-// } {
-//   return useQuery(["board", boardId ? boardId : null], () => {
-//     return getBoard({ boardId });
-//   });
-// }
-
-// function usePin({ pinId }: PinParam): {
-//   status: any;
-//   data: any;
-//   error: any;
-//   isFetching: boolean;
-//   isLoading: boolean;
-// } {
-//   return useQuery(["pin", pinId ? pinId : null], () => {
-//     return getPin({ pinId });
-//   });
-// }
-
-// function useCreateBoard(): {
-//   mutate: any;
-//   status: any;
-//   error: any;
-//   isLoading: boolean;
-// } {
-//   const queryClient: QueryClient = useQueryClient();
-//   return useMutation(createBoard, {
-//     onSuccess: (data, variables) => {
-//       console.log("VARIABLES", variables);
-//       console.log("DATA", data);
-//       queryClient.invalidateQueries(["boards"]);
-//     },
-//   });
-// }
-
-// function useCreatePin(): {
-//   mutate: any;
-//   status: any;
-//   error: any;
-//   isLoading: boolean;
-// } {
-//   const queryClient: QueryClient = useQueryClient();
-//   return useMutation(createPin, {
-//     onSuccess: (data, { itemId, boardId }) => {
-//       console.log("ITEM ID", itemId);
-//       console.log("BOARD ID", boardId);
-//       console.log("DATA", data);
-//       queryClient.invalidateQueries(["pins"]);
-//     },
-//   });
-// }
-
-// export { useBoards, useBoard, usePin, useCreateBoard, useCreatePin };
-
 import {
   useQuery,
   useQueryClient,
@@ -124,43 +7,91 @@ import {
 } from "react-query";
 import { apiGet, apiPost } from "./api";
 
-// Pinterest API endpoints
-const getPinterestBoards = async (): Promise<any[]> => {
+// Types
+interface PinterestBoard {
+  name: string;
+  description: string;
+}
+
+interface PinterestPin {
+  itemId: number;
+  boardId: number;
+}
+
+interface PinterestPinResponse {
+  title: string;
+  description: string;
+  link: string;
+  image_url: string;
+}
+
+// Functions
+const getPinterestBoards = async (): Promise<any> => {
+  console.log(
+    "%cgetPinterestBoards params:",
+    "background-color: black; color: white;",
+    {}
+  );
   return await apiGet({ endpoint: "/integrations/pinterest/boards" });
 };
 
-const createPinterestBoard = async (board: any): Promise<any> => {
+const createPinterestBoard = async ({
+  board,
+}: {
+  board: PinterestBoard;
+}): Promise<any> => {
   return await apiPost({
     endpoint: "/integrations/pinterest/boards",
     variables: { board },
   });
 };
 
-const getPinterestBoard = async (boardId: string) => {
-  console.log(boardId)
-  return await apiGet({ endpoint: `/integrations/pinterest/board/${boardId}` });
+const getPinterestBoard = async ({
+  boardId,
+  enabled = false,
+}: {
+  boardId: string;
+  enabled?: boolean;
+}): Promise<any> => {
+  console.log(
+    "%cgetPinterestBoard params:",
+    "background-color: black; color: white;",
+    { boardId, enabled }
+  );
+  return await apiGet({
+    endpoint: `/integrations/pinterest/board/${boardId}`,
+  });
 };
 
-const getPinterestPin = async (pinId: string) => {
-  return await apiGet({ endpoint: `/integrations/pinterest/pin/${pinId}` });
+const getPinterestPin = async ({
+  pinId,
+  enabled = false,
+}: {
+  pinId: string;
+  enabled?: boolean;
+}): Promise<any> => {
+  console.log(
+    "%cgetPinterestPin params:",
+    "background-color: black; color: white;",
+    { pinId, enabled }
+  );
+  return await apiGet({
+    endpoint: `/integrations/pinterest/pin/${pinId}`,
+  });
 };
-
-type PinParams = { itemId: number; boardId: string };
 
 const createPinterestPin = async ({
   itemId,
   boardId,
-}: PinParams): Promise<any> => {
+}: PinterestPin): Promise<PinterestPinResponse> => {
   return await apiPost({
-    endpoint: `/integrations/pinterest/pin`,
+    endpoint: "/integrations/pinterest/pin",
     variables: { itemId, boardId },
   });
 };
 
-/* Hooks
---===================================================-- */
-
-function usePinterestBoards(): UseQueryResult<any[], string> {
+// Hooks
+function usePinterestBoards(): UseQueryResult<any, string> {
   return useQuery(["pinterestBoards"], () => getPinterestBoards(), {
     refetchOnWindowFocus: false,
   });
@@ -179,32 +110,62 @@ function useCreatePinterestBoard(): {
       console.log("Create Pinterest Board DATA:", { data });
       queryClient.invalidateQueries("pinterestBoards");
     },
+    onError: (error, variables) => {
+      console.log(
+        "%cCreate Pinterest Board ERROR:",
+        "background-color: pink;",
+        { variables, error }
+      );
+    },
   });
 }
 
-function useGetPinterestBoard(boardId: string, enabled = false): {
+function usePinterestBoard({
+  boardId,
+  enabled = false,
+}: {
+  boardId: string;
+  enabled?: boolean;
+}): {
+  status: any;
   data: any;
-  isLoading: boolean;
+  error: any;
   refetch: any;
+  isFetching: boolean;
+  isLoading: boolean;
 } {
-  return useQuery(["pinterestBoard"], () => getPinterestBoard(boardId), {
-    enabled: enabled,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    ["pinterestBoard", boardId],
+    () => getPinterestBoard({ boardId, enabled }),
+    {
+      enabled,
+      refetchOnWindowFocus: true,
+    }
+  );
 }
 
-function useGetPinterestPin(
-  pinId: string,
-  enabled = false
-): {
+function usePinterestPin({
+  pinId,
+  enabled = false,
+}: {
+  pinId: string;
+  enabled?: boolean;
+}): {
+  status: any;
   data: any;
-  isLoading: boolean;
+  error: any;
   refetch: any;
+  isFetching: boolean;
+  isLoading: boolean;
 } {
-  return useQuery(["pinterestPin"], () => getPinterestPin(pinId), {
-    enabled: enabled,
-    refetchOnWindowFocus: false,
-  });
+  return useQuery(
+    ["pinterestPin", pinId],
+    () => getPinterestPin({ pinId, enabled }),
+    {
+      enabled,
+      refetchOnWindowFocus: true,
+    }
+  );
 }
 
 function useCreatePinterestPin(): {
@@ -220,13 +181,20 @@ function useCreatePinterestPin(): {
       console.log("Create Pinterest Pin DATA:", { data });
       queryClient.invalidateQueries("pinterestBoards");
     },
+    onError: (error, variables) => {
+      console.log(
+        "%cCreate Pinterest Pin ERROR:",
+        "background-color: pink;",
+        { variables, error }
+      );
+    },
   });
 }
 
 export {
   usePinterestBoards,
   useCreatePinterestBoard,
-  useGetPinterestBoard,
-  useGetPinterestPin,
+  usePinterestBoard,
+  usePinterestPin,
   useCreatePinterestPin,
 };

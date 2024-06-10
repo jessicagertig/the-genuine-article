@@ -189,9 +189,14 @@ import {
   TextField,
   List,
   ListItemText,
-  ListItem
+  ListItem,
 } from "@mui/material";
 import { GarmentData, PinterestBoard } from "src/types";
+import {
+  useCreatePinterestBoard,
+  usePinterestBoard,
+  useCreatePinterestPin,
+} from "src/queryHooks/useIntegrations";
 
 interface PinterestModalProps {
   garment: GarmentData | null;
@@ -241,6 +246,34 @@ function PinterestModal({
   onCancel,
   onSelectBoard,
 }: PinterestModalProps) {
+  const [boardId, setBoardId] = React.useState("");
+  const { mutate: createBoard } = useCreatePinterestBoard();
+  const { mutate: createPin } = useCreatePinterestPin();
+  const { data: pinterestBoard, refetch } = usePinterestBoard({
+    boardId: boardId,
+  });
+
+  const createBoardOnClick = () => {
+    const board = {
+      name: "Magical Mysteries",
+      description: "A place to put all the magical stuff",
+    };
+    createBoard({ board: board });
+  };
+
+  const createPinOnClick = () => {
+    const boardId = "101471866543589332";
+    const itemId = garment?.id;
+    console.log('createPin')
+    createPin({ itemId, boardId });
+  };
+
+  const setBoardOnClick = () => {
+    const boardId = "101471866543589332";
+    setBoardId(boardId);
+    refetch({ board: boardId });
+  };
+
   return (
     <Modal
       open={open}
@@ -262,6 +295,22 @@ function PinterestModal({
               <Typography variant="body2">
                 {truncateDescription(garment?.description || "")}
               </Typography>
+              <Button
+                variant="contained"
+                color="secondary"
+                fullWidth
+                onClick={createBoardOnClick}
+              >
+                Create Board
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                fullWidth
+                onClick={createPinOnClick}
+              >
+                Create Pin
+              </Button>
             </Box>
             <Box flex="1" display="flex" flexDirection="column">
               <TextField fullWidth label="Search" variant="outlined" />
@@ -284,9 +333,9 @@ function PinterestModal({
             variant="contained"
             color="secondary"
             fullWidth
-            onClick={onCancel}
+            onClick={setBoardOnClick}
           >
-            Create Board
+            Set Board
           </Button>
         </Box>
       </Box>
@@ -295,5 +344,3 @@ function PinterestModal({
 }
 
 export default PinterestModal;
-
-

@@ -1,10 +1,11 @@
 import React from "react";
 import {
   Box,
+  Button,
   TextField,
+  Typography,
   ToggleButton,
   ToggleButtonGroup,
-  Button,
 } from "@mui/material";
 
 interface CreatePinterestBoardFormProps {
@@ -30,12 +31,13 @@ function CreatePinterestBoardForm({
 
   return (
     <Box display="flex" flexDirection="column">
+      <Typography variant="h6">Create board</Typography>
       <TextField
         name="name"
         label="Name"
         variant="outlined"
-        required
         onChange={handleChange}
+        required
       />
       <TextField
         name="description"
@@ -43,17 +45,11 @@ function CreatePinterestBoardForm({
         variant="outlined"
         onChange={handleChange}
       />
-      <ToggleButtonGroup
-        exclusive
-        onChange={handleToggleChange}
-        aria-label="Secret"
-      >
-        <ToggleButton value={true} aria-label="Secret">
-          Secret
-        </ToggleButton>
+      <ToggleButtonGroup value={false} exclusive onChange={handleToggleChange}>
+        <ToggleButton value={true}>Secret</ToggleButton>
       </ToggleButtonGroup>
       <Button variant="contained" color="primary" onClick={onSubmit}>
-        Create Board
+        Create
       </Button>
     </Box>
   );

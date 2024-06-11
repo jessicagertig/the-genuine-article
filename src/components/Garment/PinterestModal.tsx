@@ -194,9 +194,10 @@ import {
 import { GarmentData, PinterestBoard } from "src/types";
 import {
   useCreatePinterestBoard,
-  usePinterestBoard,
+  usePinterestPin,
   useCreatePinterestPin,
 } from "src/queryHooks/useIntegrations";
+import CreatePinterestBoardForm from "./CreatePinterestBoardForm";
 
 interface PinterestModalProps {
   garment: GarmentData | null;
@@ -204,6 +205,12 @@ interface PinterestModalProps {
   open: boolean;
   onCancel: () => void;
   onSelectBoard: (boardId: string) => void;
+}
+
+interface NewBoardState {
+  name: string;
+  description: string;
+  secret: boolean;
 }
 
 const modalStyle = {
@@ -246,32 +253,56 @@ function PinterestModal({
   onCancel,
   onSelectBoard,
 }: PinterestModalProps) {
-  const [boardId, setBoardId] = React.useState("");
   const { mutate: createBoard } = useCreatePinterestBoard();
   const { mutate: createPin } = useCreatePinterestPin();
-  const { data: pinterestBoard, refetch } = usePinterestBoard({
-    boardId: boardId,
+  const [boardId, setBoardId] = React.useState("");
+  const [pinId, setPinId] = React.useState("");
+  const [newBoardState, setNewBoardState] = useState<NewBoardState>({
+    name: "",
+    description: "",
+    secret: false,
   });
+  const [showForm, setShowForm] = useState(false);
 
-  const createBoardOnClick = () => {
+  const onChangePinterestBoard = (name: string, value: string | boolean) => {
+    setNewBoardState(prev => ({ ...prev, [name]: value }));
+  };
+
+  const onSubmit = () => {
     const board = {
-      name: "Magical Mysteries",
-      description: "A place to put all the magical stuff",
+      name: newBoardState.name,
+      description: newBoardState.description,
     };
     createBoard({ board: board });
+  };
+
+  const logBoardsOnClick = () => {
+    console.log("BOARDS");
   };
 
   const createPinOnClick = () => {
     const boardId = "101471866543589332";
     const itemId = garment?.id;
-    console.log('createPin')
+    console.log("CREATE PIN");
     createPin({ itemId, boardId });
   };
 
-  const setBoardOnClick = () => {
+  const setBoardIdOnClick = () => {
     const boardId = "101471866543589332";
+
+    console.log("GET BOARD");
     setBoardId(boardId);
-    refetch({ board: boardId });
+  };
+
+  const fetchPinOnClick = () => {
+    const pinId = "101471797848011244";
+
+    console.log("GET PIN");
+    setPinId(pinId);
+  };
+
+  const toggleShowForm = () => {
+    setShowForm(prev => !prev);
   };
 
   return (
@@ -295,24 +326,14 @@ function PinterestModal({
               <Typography variant="body2">
                 {truncateDescription(garment?.description || "")}
               </Typography>
-              <Button
-                variant="contained"
-                color="secondary"
-                fullWidth
-                onClick={createBoardOnClick}
-              >
-                Create Board
-              </Button>
-              <Button
-                variant="contained"
-                color="secondary"
-                fullWidth
-                onClick={createPinOnClick}
-              >
-                Create Pin
-              </Button>
             </Box>
             <Box flex="1" display="flex" flexDirection="column">
+              {showForm && (
+                <CreatePinterestBoardForm
+                  onChange={onChangePinterestBoard}
+                  onSubmit={onSubmit}
+                />
+              )}
               <TextField fullWidth label="Search" variant="outlined" />
               <List style={{ overflow: "auto", maxHeight: 300, marginTop: 8 }}>
                 {boards.map(board => (
@@ -333,9 +354,9 @@ function PinterestModal({
             variant="contained"
             color="secondary"
             fullWidth
-            onClick={setBoardOnClick}
+            onClick={toggleShowForm}
           >
-            Set Board
+            Create Board
           </Button>
         </Box>
       </Box>

@@ -190,6 +190,7 @@ import {
   List,
   ListItemText,
   ListItem,
+  Avatar,
 } from "@mui/material";
 import { GarmentData, PinterestBoard } from "src/types";
 import {
@@ -198,6 +199,8 @@ import {
   useCreatePinterestPin,
 } from "src/queryHooks/useIntegrations";
 import CreatePinterestBoardForm from "./CreatePinterestBoardForm";
+import AddIcon from "@mui/icons-material/Add";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface PinterestModalProps {
   garment: GarmentData | null;
@@ -207,22 +210,19 @@ interface PinterestModalProps {
   onSelectBoard: (boardId: string) => void;
 }
 
-interface NewBoardState {
-  name: string;
-  description: string;
-  secret: boolean;
-}
-
 const modalStyle = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
+  width: 800,
+  height: 600,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
   borderRadius: "16px",
+  display: "flex",
+  flexDirection: "column",
 };
 
 const StyledImage = styled.img`
@@ -257,12 +257,12 @@ function PinterestModal({
   const { mutate: createPin } = useCreatePinterestPin();
   const [boardId, setBoardId] = React.useState("");
   const [pinId, setPinId] = React.useState("");
-  const [newBoardState, setNewBoardState] = useState<NewBoardState>({
+  const [newBoardState, setNewBoardState] = React.useState({
     name: "",
     description: "",
     secret: false,
   });
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = React.useState(false);
 
   const onChangePinterestBoard = (name: string, value: string | boolean) => {
     setNewBoardState(prev => ({ ...prev, [name]: value }));
@@ -272,8 +272,10 @@ function PinterestModal({
     const board = {
       name: newBoardState.name,
       description: newBoardState.description,
+      privacy: newBoardState.secret,
     };
     createBoard({ board: board });
+    setShowForm(false);
   };
 
   const logBoardsOnClick = () => {
@@ -313,51 +315,67 @@ function PinterestModal({
       aria-describedby="pinterest-modal-description"
     >
       <Box sx={modalStyle}>
-        <Box display="flex" flexDirection="column">
-          <Box flex="1" p={2} display="flex">
-            <Box flex="1" display="flex" flexDirection="column">
-              <StyledImage
-                src={garment?.imageUrls?.mainImageUrl}
-                alt="Garment"
-              />
-              <Typography variant="h6" mt={2}>
-                {garment?.garmentTitle}
-              </Typography>
-              <Typography variant="body2">
-                {truncateDescription(garment?.description || "")}
-              </Typography>
-            </Box>
-            <Box flex="1" display="flex" flexDirection="column">
-              {showForm && (
-                <CreatePinterestBoardForm
-                  onChange={onChangePinterestBoard}
-                  onSubmit={onSubmit}
-                />
-              )}
-              <TextField fullWidth label="Search" variant="outlined" />
-              <List style={{ overflow: "auto", maxHeight: 300, marginTop: 8 }}>
-                {boards.map(board => (
-                  <StyledListItem
-                    key={board.id}
-                    onMouseEnter={() => onSelectBoard(board.id)}
-                  >
-                    <ListItemText primary={board.name} />
-                    <Button variant="contained" color="primary">
-                      Pin it
-                    </Button>
-                  </StyledListItem>
-                ))}
-              </List>
-            </Box>
+        <Box display="flex" flexDirection="row" flex="1" p={2}>
+          <Box flex="1" display="flex" flexDirection="column" width="33%">
+            <StyledImage src={garment?.imageUrls?.mainImageUrl} alt="Garment" />
+            <Typography variant="h6" mt={2}>
+              {garment?.garmentTitle}
+            </Typography>
+            <Typography variant="body2">
+              {truncateDescription(garment?.description || "")}
+            </Typography>
           </Box>
+          <Box flex="1" display="flex" flexDirection="column" width="67%">
+            {showForm && (
+              <CreatePinterestBoardForm
+                onChange={onChangePinterestBoard}
+                newBoardState={newBoardState}
+              />
+            )}
+            <TextField fullWidth label="Search" variant="outlined" />
+            <List style={{ overflow: "auto", maxHeight: 300, marginTop: 8 }}>
+              {boards.map(board => (
+                <StyledListItem
+                  key={board.id}
+                  onMouseEnter={() => onSelectBoard(board.id)}
+                >
+                  <Avatar
+                    src={board.media.image_cover_url}
+                    variant="rounded"
+                    sx={{ marginRight: 2 }}
+                  />
+                  <ListItemText primary={board.name} />
+                  <Button variant="contained" color="primary">
+                    Pin it
+                  </Button>
+                </StyledListItem>
+              ))}
+            </List>
+          </Box>
+        </Box>
+        <Box display="flex" justifyContent="space-between" p={2}>
           <Button
             variant="contained"
             color="secondary"
-            fullWidth
-            onClick={toggleShowForm}
+            onClick={onCancel}
+            startIcon={<CancelIcon />}
           >
-            Create Board
+            Cancel
           </Button>
+          {showForm ? (
+            <Button variant="contained" color="primary" onClick={onSubmit}>
+              Save Board
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={toggleShowForm}
+              endIcon={<AddIcon />}
+            >
+              Create Board
+            </Button>
+          )}
         </Box>
       </Box>
     </Modal>

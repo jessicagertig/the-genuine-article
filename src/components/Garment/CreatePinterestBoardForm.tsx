@@ -1,3 +1,4 @@
+// CreatePinterestBoardForm component
 import React from "react";
 import {
   Box,
@@ -10,12 +11,16 @@ import {
 
 interface CreatePinterestBoardFormProps {
   onChange: (name: string, value: string | boolean) => void;
-  onSubmit: () => void;
+  newBoardState: {
+    name: string;
+    description: string;
+    secret: boolean;
+  };
 }
 
 function CreatePinterestBoardForm({
   onChange,
-  onSubmit,
+  newBoardState,
 }: CreatePinterestBoardFormProps) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.name, event.target.value);
@@ -25,7 +30,6 @@ function CreatePinterestBoardForm({
     event: React.MouseEvent<HTMLElement>,
     value: boolean
   ) => {
-    console.log('Secret?', value)
     onChange("secret", value);
   };
 
@@ -45,12 +49,14 @@ function CreatePinterestBoardForm({
         variant="outlined"
         onChange={handleChange}
       />
-      <ToggleButtonGroup value={false} exclusive onChange={handleToggleChange}>
+      <ToggleButtonGroup
+        exclusive
+        value={newBoardState.secret}
+        onChange={handleToggleChange}
+      >
         <ToggleButton value={true}>Secret</ToggleButton>
+        <ToggleButton value={false}>Public</ToggleButton>
       </ToggleButtonGroup>
-      <Button variant="contained" color="primary" onClick={onSubmit}>
-        Create
-      </Button>
     </Box>
   );
 }

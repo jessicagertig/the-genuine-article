@@ -17,6 +17,7 @@ import {
   useCreatePinterestBoard,
   usePinterestPin,
   useCreatePinterestPin,
+  usePinterestBoards,
 } from "src/queryHooks/useIntegrations";
 import CreatePinterestBoardForm from "./CreatePinterestBoardForm";
 
@@ -91,6 +92,7 @@ function PinterestModal({
   });
   const [showForm, setShowForm] = useState(false);
 
+  const { data: pinterestBoards } = usePinterestBoards();
   const onChangePinterestBoard = (name: string, value: string | boolean) => {
     setNewBoardState(prev => ({ ...prev, [name]: value }));
   };

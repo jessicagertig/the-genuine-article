@@ -93,6 +93,13 @@ const createPinterestPin = async ({
 // Hooks
 function usePinterestBoards(): UseQueryResult<any, string> {
   return useQuery(["pinterestBoards"], () => getPinterestBoards(), {
+    onSuccess: (data) => {
+        console.log(
+          "%cusePinterestBoards onSuccess",
+          "background-color: black; color: white;",
+          { data }
+        );
+    },
     refetchOnWindowFocus: false,
   });
 }

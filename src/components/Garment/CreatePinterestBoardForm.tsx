@@ -1,4 +1,3 @@
-// CreatePinterestBoardForm component
 import React from "react";
 import {
   Box,
@@ -42,17 +41,20 @@ function CreatePinterestBoardForm({
         variant="outlined"
         onChange={handleChange}
         required
+        sx={{ marginY: 2 }}
       />
       <TextField
         name="description"
         label="Description"
         variant="outlined"
         onChange={handleChange}
+        sx={{ marginY: 2 }}
       />
       <ToggleButtonGroup
         exclusive
         value={newBoardState.secret}
         onChange={handleToggleChange}
+        sx={{ marginY: 2 }}
       >
         <ToggleButton value={true}>Secret</ToggleButton>
         <ToggleButton value={false}>Public</ToggleButton>

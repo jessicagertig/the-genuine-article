@@ -151,6 +151,7 @@ const GarmentContent: React.FC<GarmentContentProps> = props => {
           }
           garmentTitle={garment ? garment.garmentTitle : "garment"}
           mediumScreen={mediumScreen}
+          garment={garment}
         />
       </Styled.ImagesSection>
       <Styled.InfoSection isDark={isDark}>

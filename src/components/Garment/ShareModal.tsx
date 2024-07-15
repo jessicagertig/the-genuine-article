@@ -1,11 +1,18 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { useLocation } from "react-router-dom";
+
 import IconButton from "@mui/material/IconButton";
 import PinterestIcon from "@mui/icons-material/Pinterest";
 import XIcon from "@mui/icons-material/X";
 import LinkIcon from "@mui/icons-material/Link";
 import CloseIcon from "@mui/icons-material/Close";
+
+import PinterestModal from "src/components/Garment/PinterestModal";
+
+import { useModalContext } from "src/context/ModalContext";
 import { GarmentData } from "src/types";
+import { constructPinterestQueryString } from "src/utils/helpers";
 
 interface ShareModalProps {
   onClose: () => void;
@@ -14,6 +21,40 @@ interface ShareModalProps {
 }
 
 const ShareModal: React.FC<ShareModalProps> = ({ onClose, garment, url }) => {
+  const { state, pathname } = useLocation();
+  const { openModal, removeModal, modalOpen } = useModalContext();
+
+  const searchParams = state?.searchParams;
+  const pageNumber = state?.pageNo;
+
+  const handlePinterestClick = () => {
+    const params = constructPinterestQueryString({
+      pathname,
+      pageNumber,
+      searchParams,
+    });
+    // console.log("Pinterest OnClick redirect to Pinterest Oauth:", {
+    //   params,
+    // });
+    // window.location.href = `${process.env.REACT_APP_API_URL}/integrations/auth/pinterest${params}`; // Redirect
+
+    const onConfirm = (boardId: string) => {
+      // console.log("ON CONFIRM", { boardId });
+    };
+
+    const modal = (
+      <PinterestModal
+        garment={garment ? garment : null}
+        // boards={boards} get boards within Pinterest Modal
+        onCancel={() => removeModal()}
+        onSelectBoard={onConfirm}
+        open={modalOpen}
+      />
+    );
+
+    openModal(modal);
+  };
+  
   const handlePinterestShare = () => {
     // Implement Pinterest sharing logic
   };

@@ -23,7 +23,6 @@ import CreatePinterestBoardForm from "./CreatePinterestBoardForm";
 
 interface PinterestModalProps {
   garment: GarmentData | null;
-  boards: PinterestBoard[];
   open: boolean;
   onCancel: () => void;
   onSelectBoard: (boardId: string) => void;
@@ -76,11 +75,11 @@ function truncateDescription(description: string): string {
 
 function PinterestModal({
   garment,
-  boards,
   open,
   onCancel,
   onSelectBoard,
 }: PinterestModalProps) {
+  const { data: boards } = usePinterestBoards();
   const { mutate: createBoard } = useCreatePinterestBoard();
   const { mutate: createPin } = useCreatePinterestPin();
   const [boardId, setBoardId] = React.useState("");
@@ -92,7 +91,6 @@ function PinterestModal({
   });
   const [showForm, setShowForm] = useState(false);
 
-  const { data: pinterestBoards } = usePinterestBoards();
   const onChangePinterestBoard = (name: string, value: string | boolean) => {
     setNewBoardState(prev => ({ ...prev, [name]: value }));
   };
@@ -178,7 +176,7 @@ function PinterestModal({
                 <List
                   style={{ overflow: "auto", maxHeight: 300, marginTop: 8 }}
                 >
-                  {boards.map(board => (
+                  {boards && boards.map(board => (
                     <ListItemWrapper key={board.id}>
                       <StyledListItem
                         onMouseEnter={() => onSelectBoard(board.id)}

@@ -3,36 +3,55 @@ import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
 import MenuOptionsItem from "src/components/AdminEditMenusPage/MenuOptionsItem";
+import { useDeleteGarmentTitleOption } from "src/queryHooks/useMenus";
 import { MenuState } from "src/components/AdminEditMenusPage/EditMenusPage";
 
 interface MenuOptionsListProps {
-  menuState: MenuState
+  menuState: MenuState;
 }
 
 const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
-  const { menuState: { menuName, menu} } = props;
+  const {
+    menuState: { menuName, menu },
+  } = props;
+  const { mutate: deleteGarmentTitle } = useDeleteGarmentTitleOption();
 
   const handleClickEdit = (event: React.SyntheticEvent) => {
     event.preventDefault();
     console.log("Edit");
   };
 
-  const handleClickDelete = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    console.log("Edit");
+  const handleClickDelete = (itemId: number) => {
+    console.log("MENU NAME", { menuName });
+    switch (menuName) {
+      case "garmentTitlesMenu":
+        deleteGarmentTitle({ garmentTitleOptionId: itemId });
+        console.log("Deleting garment title");
+        break;
+      case "colorsMenu":
+        console.log("Deleting color option");
+        break;
+      case "materialsMenu":
+        console.log("Deleting material option");
+        break;
+      default:
+        console.log("Unhandled menu type");
+        break;
+    }
   };
 
   return (
     <Styled.Container>
-      {menu && menu.map(item => (
-        <MenuOptionsItem
-          handleClickDelete={handleClickDelete}
-          handleClickEdit={handleClickEdit}
-          item={item}
-          name={menuName}
-          key={item.id}
-        />
-      ))}
+      {menu &&
+        menu.map(item => (
+          <MenuOptionsItem
+            handleClickDelete={handleClickDelete}
+            handleClickEdit={handleClickEdit}
+            item={item}
+            name={menuName}
+            key={item.id}
+          />
+        ))}
     </Styled.Container>
   );
 };

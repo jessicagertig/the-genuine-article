@@ -10,7 +10,7 @@ import { MenuItem } from "src/utils/formHelpers";
 
 interface MenuOptionsItemProps {
   handleClickEdit: (event: React.SyntheticEvent) => void;
-  handleClickDelete: (event: React.SyntheticEvent) => void;
+  handleClickDelete: (itemId: number) => void;
   item: MenuItem;
   name: string;
 }
@@ -44,7 +44,7 @@ const MenuOptionsItem: React.FC<MenuOptionsItemProps> = props => {
         </IconButton>
         <IconButton
           sx={{ color: "#020b1c" }}
-          onClick={event => props.handleClickDelete(event)}
+          onClick={() => props.handleClickDelete(item.id)}
         >
           <DeleteOutlineIcon />
         </IconButton>

@@ -3,7 +3,11 @@ import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
 import MenuOptionsItem from "src/components/AdminEditMenusPage/MenuOptionsItem";
-import { useDeleteGarmentTitleOption } from "src/queryHooks/useMenus";
+import {
+  useDeleteGarmentTitleOption,
+  useDeleteColorOption,
+  useDeleteMaterialOption,
+} from "src/queryHooks/useMenus";
 import { MenuState } from "src/components/AdminEditMenusPage/EditMenusPage";
 
 interface MenuOptionsListProps {
@@ -15,6 +19,8 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
     menuState: { menuName, menu },
   } = props;
   const { mutate: deleteGarmentTitle } = useDeleteGarmentTitleOption();
+  const { mutate: deleteColor } = useDeleteColorOption();
+  const { mutate: deleteMaterial } = useDeleteMaterialOption();
 
   const handleClickEdit = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -29,9 +35,11 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
         console.log("Deleting garment title");
         break;
       case "colorsMenu":
+        deleteColor({ colorOptionId: itemId });
         console.log("Deleting color option");
         break;
       case "materialsMenu":
+        deleteMaterial({ materialOptionId: itemId });
         console.log("Deleting material option");
         break;
       default:

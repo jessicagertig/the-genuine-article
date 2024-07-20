@@ -16,11 +16,8 @@ import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";
 import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
-import { getLabelFromValue } from 'src/utils/formHelpers';
-
-import {
-  useMenus,
-} from "src/queryHooks/useMenus";
+import { getLabelFromValue } from "src/utils/formHelpers";
+import { useMenus } from "src/queryHooks/useMenus";
 
 import { Menus, Option } from "src/utils/formHelpers";
 
@@ -48,7 +45,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     menuName: "",
     menu: [],
   });
-  const { menuName, menu } = menuState
+  const { menuName, menu } = menuState;
   const [newOption, setNewOption] = React.useState<string>("");
   const [errorText, setErrorText] = React.useState<string>("");
 
@@ -61,7 +58,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     if (menus && menuName !== "") {
       setMenuState({ ...menuState, menu: menus[menuName as MenusKey] });
     }
-  }, [menus])
+  }, [menus]);
 
   const handleChangeOptionInput = (
     event: React.BaseSyntheticEvent,
@@ -78,11 +75,10 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     { label: "Garment Titles", value: "garmentTitlesMenu" },
   ];
 
-
   const handleClickAddOption = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    
-    const menuTitle =  getLabelFromValue(menuOptions, menuName)
+
+    const menuTitle = getLabelFromValue(menuOptions, menuName);
     const modal = (
       <AddOptionModal
         onCancel={() => removeModal()}
@@ -93,7 +89,6 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
 
     openModal(modal);
   };
-
 
   const handleChangeMenu = (event: React.BaseSyntheticEvent, value: any) => {
     console.log("Edit Menus Page MENUSTATE:", { value });
@@ -147,7 +142,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
             onChange={(event, value) => handleChangeMenu(event, value)}
           />
         </Styled.Form>
-        {menuName === ""|| !menuName ? (
+        {menuName === "" || !menuName ? (
           <EmptyState
             title="No Menu Selected"
             description="Select a menu type to get started"

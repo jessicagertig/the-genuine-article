@@ -8,6 +8,7 @@ import {
   useDeleteColorOption,
   useDeleteMaterialOption,
 } from "src/queryHooks/useMenus";
+import { useToastContext } from "src/context/ToastContext";   
 import { MenuState } from "src/components/AdminEditMenusPage/EditMenusPage";
 
 interface MenuOptionsListProps {
@@ -18,6 +19,7 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
   const {
     menuState: { menuName, menu },
   } = props;
+  const addToast = useToastContext();
   const { mutate: deleteGarmentTitle } = useDeleteGarmentTitleOption();
   const { mutate: deleteColor } = useDeleteColorOption();
   const { mutate: deleteMaterial } = useDeleteMaterialOption();
@@ -27,19 +29,91 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
     console.log("Edit");
   };
 
+  const handleDeleteGarmentTitle = (itemId: number) => {
+    deleteGarmentTitle(
+      { garmentTitleOptionId: itemId },
+      {
+        onSuccess: () => {
+          addToast({
+            kind: "success",
+            title: "Garment title deleted successfully.",
+            delay: 5000,
+          });
+          console.log("Garment title deleted successfully.");
+        },
+        onError: (error: any) => {
+          addToast({
+            kind: "error",
+            title: "Failed to delete garment title.",
+            delay: 5000,
+          });
+          console.error("Failed to delete garment title:", error);
+        },
+      }
+    );
+  };
+
+  const handleDeleteColor = (itemId: number) => {
+    deleteColor(
+      { colorOptionId: itemId },
+      {
+        onSuccess: () => {
+          addToast({
+            kind: "success",
+            title: "Color option deleted successfully.",
+            delay: 5000,
+          });
+          console.log("Color option deleted successfully.");
+        },
+        onError: (error: any) => {
+          addToast({
+            kind: "error",
+            title: "Failed to delete color option.",
+            delay: 5000,
+          });
+          console.error("Failed to delete color option:", error);
+        },
+      }
+    );
+  };
+
+  const handleDeleteMaterial = (itemId: number) => {
+    deleteMaterial(
+      { materialOptionId: itemId },
+      {
+        onSuccess: () => {
+          addToast({
+            kind: "success",
+            title: "Material option deleted successfully.",
+            delay: 5000,
+          });
+          console.log("Material option deleted successfully.");
+        },
+        onError: (error: any) => {
+          addToast({
+            kind: "error",
+            title: "Failed to delete material option.",
+            delay: 5000,
+          });
+          console.error("Failed to delete material option:", error);
+        },
+      }
+    );
+  };
+
   const handleClickDelete = (itemId: number) => {
     console.log("MENU NAME", { menuName });
     switch (menuName) {
       case "garmentTitlesMenu":
-        deleteGarmentTitle({ garmentTitleOptionId: itemId });
+        handleDeleteGarmentTitle(itemId);
         console.log("Deleting garment title");
         break;
       case "colorsMenu":
-        deleteColor({ colorOptionId: itemId });
+        handleDeleteColor(itemId);
         console.log("Deleting color option");
         break;
       case "materialsMenu":
-        deleteMaterial({ materialOptionId: itemId });
+        handleDeleteMaterial(itemId);
         console.log("Deleting material option");
         break;
       default:

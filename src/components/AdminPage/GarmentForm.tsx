@@ -244,6 +244,11 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             defaultValue={defaultGarmentTitleOption}
             options={options as Option[]}
             getOptionLabel={(option: unknown) => (option as Option).label}
+            ListboxProps={{
+              sx: {
+                maxHeight: "300px",
+              }
+            }}
             renderInput={params => (
               <TextField
                 {...params}
@@ -269,6 +274,11 @@ const GarmentForm: React.FC<GarmentFormProps> = ({
             id={name}
             options={options as Option[]}
             getOptionLabel={(option: unknown) => (option as Option).label}
+            ListboxProps={{
+              sx: {
+                maxHeight: "220px",
+              },
+            }}
             renderInput={params => (
               <TextField
                 {...params}

@@ -74,13 +74,13 @@ const EditGarmentModal: React.FC<EditGarmentModalProps> = ({
     }
     if (garment && menus) {
       const convertedMenus = returnConvertedMenus(menus);
-      const colorMenu = convertedMenus["colorsMenu"];
-      const colorOptions = colorMenu.filter(option =>
+      const colorsMenu = convertedMenus["colorsMenu"];
+      const colorOptions = colorsMenu.filter(option =>
         garment.colors.includes(option.label)
       );
       setColorsState(colorOptions);
-      const materialMenu = convertedMenus["materialsMenu"];
-      const materialOptions = materialMenu.filter(option =>
+      const materialsMenu = convertedMenus["materialsMenu"];
+      const materialOptions = materialsMenu.filter(option =>
         garment.materials.includes(option.label)
       );
       setMaterialsState(materialOptions);

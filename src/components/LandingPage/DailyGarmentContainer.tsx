@@ -11,7 +11,7 @@ import { useDailyGarment } from "src/queryHooks/useGarments";
 
 import useIntersectionObserver from "src/hooks/useIntersectionObserver";
 
-interface HomeContentContainerProps {
+interface AboutContentContainerProps {
   windowHeight: number;
   windowWidth: number;
 }
@@ -25,7 +25,7 @@ export interface StylingVariables {
   mediumScreen: boolean;
 }
 
-const HomeContentContainer: React.FC<HomeContentContainerProps> = ({
+const AboutContentContainer: React.FC<AboutContentContainerProps> = ({
   windowHeight,
   windowWidth,
 }) => {
@@ -88,11 +88,9 @@ const HomeContentContainer: React.FC<HomeContentContainerProps> = ({
           addBottomMobileNavPadding={addBottomMobileNavPadding}
           ref={intersectionRef}
         >
-          {!garment ? (
-            null
+          {!garment ? null : (
             // <DailyGarmentSkeleton />
-          ) : (
-          <DailyGarment garment={garment} styleVars={styleVars} />
+            <DailyGarment garment={garment} styleVars={styleVars} />
           )}
         </Styled.ContentContainer>
       </Styled.SubContainer>
@@ -100,7 +98,7 @@ const HomeContentContainer: React.FC<HomeContentContainerProps> = ({
   );
 };
 
-export default HomeContentContainer;
+export default AboutContentContainer;
 
 // Styled Components
 // =======================================================
@@ -159,7 +157,7 @@ Styled.ContentContainer = styled.div(({ theme, styleVars }: Props) => {
   const t = theme;
   const { addPadding, isShortScreen } = styleVars;
   return css`
-    label: DailyGarment_HomeContentContainer;
+    label: DailyGarment_AboutContentContainer;
     display: flex;
     flex-direction: column;
     width: 100%;

@@ -6,12 +6,7 @@ import {
   UseQueryResult,
 } from "react-query";
 import { apiGet, apiPost } from "./api";
-
-// Types
-interface PinterestBoard {
-  name: string;
-  description: string;
-}
+import { PinterestBoard } from "src/types";
 
 interface PinterestPin {
   itemId: number;
@@ -26,7 +21,7 @@ interface PinterestPinResponse {
 }
 
 // Functions
-const getPinterestBoards = async (): Promise<any> => {
+const getPinterestBoards = async (): Promise<PinterestBoard[]> => {
   console.log(
     "%cgetPinterestBoards params:",
     "background-color: black; color: white;",
@@ -91,7 +86,7 @@ const createPinterestPin = async ({
 };
 
 // Hooks
-function usePinterestBoards(): UseQueryResult<any, string> {
+function usePinterestBoards(): UseQueryResult<PinterestBoard[], string> {
   return useQuery(["pinterestBoards"], () => getPinterestBoards(), {
     onSuccess: (data) => {
         console.log(

@@ -4,12 +4,8 @@ import { css } from "@emotion/react";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
 
-import {
-  StyledTextField,
-  StyledAutocomplete,
-} from "src/components/AdminPage/StyledFields";
+import { StyledTextField } from "src/components/AdminPage/StyledFields";
 import DialogModal from "src/components/shared/DialogModal";
 import OutlinedButton from "src/components/shared/OutlinedButton";
 import ButtonLoading from "src/components/shared/ButtonLoading";
@@ -19,36 +15,39 @@ import { useToastContext } from "src/context/ToastContext";
 import {
   useAddColorOption,
   useAddMaterialOption,
-  useAddGarmentTitleOption
+  useAddGarmentTitleOption,
 } from "src/queryHooks/useMenus";
 
-interface EditMenusModalProps {
+interface AddOptionModalProps {
   onCancel: () => void;
   onConfirm?: () => void;
   menuTitle: string;
-  handleChangeOptionInput: (event: React.BaseSyntheticEvent, value: string) => void;
+  handleChangeOptionInput: (
+    event: React.BaseSyntheticEvent,
+    value: string
+  ) => void;
 }
 
-const EditMenusModal: React.FC<EditMenusModalProps> = props => {
+const AddOptionModal: React.FC<AddOptionModalProps> = props => {
   const { onCancel, menuTitle } = props;
   const theme = useTheme();
   const isFullscreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const { mutate: addColorOption, isLoading: isLoadingAddColor } =
     useAddColorOption();
-  
   const { mutate: addMaterialOption, isLoading: isLoadingAddMaterial } =
     useAddMaterialOption();
-  
-  const { mutate: addGarmentTitleOption, isLoading: isLoadingAddGarmentTitle } = useAddGarmentTitleOption();
-  
+  const { mutate: addGarmentTitleOption, isLoading: isLoadingAddGarmentTitle } =
+    useAddGarmentTitleOption();
+
   const { modalOpen } = useModalContext();
   const addToast = useToastContext();
 
   const [newOption, setNewOption] = React.useState<string>("");
   const [errorText, setErrorText] = React.useState<string>("");
 
-  const isLoading = isLoadingAddColor || isLoadingAddMaterial
+  const isLoading =
+    isLoadingAddColor || isLoadingAddMaterial || isLoadingAddGarmentTitle;
   const handleChangeInput = (event: React.BaseSyntheticEvent) => {
     const input = event.target?.value;
     setNewOption(input);
@@ -58,7 +57,7 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   const handleAddColor = async () => {
     addColorOption(
       {
-        colorOption: newOption
+        colorOption: newOption,
       },
       {
         onSuccess: (data: any) => {
@@ -80,13 +79,13 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
         },
       }
     );
-  }
+  };
 
   const handleAddMaterial = async () => {
-    console.log("HANDLE ADD MATERIAL")
+    console.log("HANDLE ADD MATERIAL");
     addMaterialOption(
       {
-        materialOption: newOption
+        materialOption: newOption,
       },
       {
         onSuccess: (data: any) => {
@@ -108,41 +107,41 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
         },
       }
     );
-  }
+  };
 
-    const handleAddGarmentTitle = async () => {
-      console.log("HANDLE ADD GARMENT TITLE");
-      addGarmentTitleOption(
-        {
-          garmentTitleOption: newOption,
+  const handleAddGarmentTitle = async () => {
+    console.log("HANDLE ADD GARMENT TITLE");
+    addGarmentTitleOption(
+      {
+        garmentTitleOption: newOption,
+      },
+      {
+        onSuccess: (data: any) => {
+          console.log("Success adding material. Data:", data);
+          addToast({
+            kind: "success",
+            title: "Your garment title option was successfully added",
+            delay: 5000,
+          });
+          onCancel();
         },
-        {
-          onSuccess: (data: any) => {
-            console.log("Success adding material. Data:", data);
-            addToast({
-              kind: "success",
-              title: "Your garment title option was successfully added",
-              delay: 5000,
-            });
-            onCancel();
-          },
-          onError: (error: any, data: any) => {
-            const message =
-              error && error.data
-                ? error.data.message
-                : "You record could not be added.";
-            setErrorText(message);
-            console.log("Request Error:", { message, data });
-          },
-        }
-      );
-    };
+        onError: (error: any, data: any) => {
+          const message =
+            error && error.data
+              ? error.data.message
+              : "You record could not be added.";
+          setErrorText(message);
+          console.log("Request Error:", { message, data });
+        },
+      }
+    );
+  };
 
   const handleClickSave = async () => {
-    console.log("Handle click save:", { menuTitle })
+    console.log("Handle click save:", { menuTitle });
     switch (menuTitle) {
       case "Colors":
-        await handleAddColor()
+        await handleAddColor();
         break;
       case "Materials":
         await handleAddMaterial();
@@ -158,13 +157,11 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   const confirmButton = (
     <>
       <OutlinedButton onClick={handleClickSave}>
-        Add option
-        {/* {isLoading ? <ButtonLoading /> : "Add option"} */}
+        {isLoading ? <ButtonLoading /> : "Add option"}
       </OutlinedButton>
     </>
   );
-  
- 
+
   const title = `Add ${menuTitle} Option`;
 
   return (
@@ -196,7 +193,7 @@ const EditMenusModal: React.FC<EditMenusModalProps> = props => {
   );
 };
 
-export default EditMenusModal;
+export default AddOptionModal;
 
 // Styled Components
 // =======================================================

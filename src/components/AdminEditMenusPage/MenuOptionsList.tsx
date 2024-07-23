@@ -3,11 +3,14 @@ import styled from "@emotion/styled";
 import { css, Theme } from "@emotion/react";
 
 import MenuOptionsItem from "src/components/AdminEditMenusPage/MenuOptionsItem";
+import EditOptionModal from "src/components/AdminEditMenusPage/EditOptionModal";
+
 import {
   useDeleteGarmentTitleOption,
   useDeleteColorOption,
   useDeleteMaterialOption,
 } from "src/queryHooks/useMenus";
+import { useModalContext } from "src/context/ModalContext";
 import { useToastContext } from "src/context/ToastContext";   
 import { MenuState } from "src/components/AdminEditMenusPage/EditMenusPage";
 
@@ -20,18 +23,27 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
     menuState: { menuName, menu },
   } = props;
   const addToast = useToastContext();
+  const { openModal, removeModal } = useModalContext();
   const { mutate: deleteGarmentTitle } = useDeleteGarmentTitleOption();
   const { mutate: deleteColor } = useDeleteColorOption();
   const { mutate: deleteMaterial } = useDeleteMaterialOption();
 
-  const handleClickEdit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    console.log("Edit");
+  const handleClickEdit = (optionValue: string, optionId: number) => {
+    const modal = (
+      <EditOptionModal
+        onCancel={() => removeModal()}
+        menuTitle={menuName}
+        currentOption={optionValue}
+        optionId={optionId}
+      />
+    );
+
+    openModal(modal);
   };
 
-  const handleDeleteGarmentTitle = (itemId: number) => {
+  const handleDeleteGarmentTitle = (optionId: number) => {
     deleteGarmentTitle(
-      { garmentTitleOptionId: itemId },
+      { garmentTitleOptionId: optionId },
       {
         onSuccess: () => {
           addToast({
@@ -53,9 +65,9 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
     );
   };
 
-  const handleDeleteColor = (itemId: number) => {
+  const handleDeleteColor = (optionId: number) => {
     deleteColor(
-      { colorOptionId: itemId },
+      { colorOptionId: optionId },
       {
         onSuccess: () => {
           addToast({
@@ -77,9 +89,9 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
     );
   };
 
-  const handleDeleteMaterial = (itemId: number) => {
+  const handleDeleteMaterial = (optionId: number) => {
     deleteMaterial(
-      { materialOptionId: itemId },
+      { materialOptionId: optionId },
       {
         onSuccess: () => {
           addToast({
@@ -101,19 +113,19 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
     );
   };
 
-  const handleClickDelete = (itemId: number) => {
+  const handleClickDelete = (optionId: number) => {
     console.log("MENU NAME", { menuName });
     switch (menuName) {
       case "garmentTitlesMenu":
-        handleDeleteGarmentTitle(itemId);
+        handleDeleteGarmentTitle(optionId);
         console.log("Deleting garment title");
         break;
       case "colorsMenu":
-        handleDeleteColor(itemId);
+        handleDeleteColor(optionId);
         console.log("Deleting color option");
         break;
       case "materialsMenu":
-        handleDeleteMaterial(itemId);
+        handleDeleteMaterial(optionId);
         console.log("Deleting material option");
         break;
       default:

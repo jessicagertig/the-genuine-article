@@ -22,10 +22,6 @@ interface AddOptionModalProps {
   onCancel: () => void;
   onConfirm?: () => void;
   menuTitle: string;
-  handleChangeOptionInput: (
-    event: React.BaseSyntheticEvent,
-    value: string
-  ) => void;
 }
 
 const AddOptionModal: React.FC<AddOptionModalProps> = props => {
@@ -150,6 +146,7 @@ const AddOptionModal: React.FC<AddOptionModalProps> = props => {
         await handleAddGarmentTitle();
         break;
       default:
+        console.log("Unhandled menu type", { menuTitle });
         break;
     }
   };

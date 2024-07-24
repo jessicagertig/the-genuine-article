@@ -9,8 +9,8 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { MenuItem } from "src/utils/formHelpers";
 
 interface MenuOptionsItemProps {
-  handleClickEdit: (event: React.SyntheticEvent) => void;
-  handleClickDelete: (itemId: number) => void;
+  handleClickEdit: (optionValue: string, optionId: number) => void;
+  handleClickDelete: (optionId: number) => void;
   item: MenuItem;
   name: string;
 }
@@ -28,7 +28,7 @@ const MenuOptionsItem: React.FC<MenuOptionsItemProps> = props => {
     }
   };
 
-  const itemName = getItemName();
+  const itemName = getItemName() || "";
 
   return (
     <Styled.Container>
@@ -38,7 +38,7 @@ const MenuOptionsItem: React.FC<MenuOptionsItemProps> = props => {
       <Styled.Actions>
         <IconButton
           sx={{ color: "#020b1c" }}
-          onClick={event => props.handleClickEdit(event)}
+          onClick={()=> props.handleClickEdit(itemName, item.id)}
         >
           <BorderColorOutlinedIcon />
         </IconButton>

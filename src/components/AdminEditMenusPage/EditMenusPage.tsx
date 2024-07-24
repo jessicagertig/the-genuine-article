@@ -13,13 +13,12 @@ import OutlinedButton from "src/components/shared/OutlinedButton";
 import MenuOptionsList from "src/components/AdminEditMenusPage/MenuOptionsList";
 
 import { useModalContext } from "src/context/ModalContext";
-import { useToastContext } from "src/context/ToastContext";
 import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
 import { getLabelFromValue } from "src/utils/formHelpers";
 import { useMenus } from "src/queryHooks/useMenus";
 
-import { Menus, Option } from "src/utils/formHelpers";
+import { Menus } from "src/utils/formHelpers";
 
 interface AdminEditMenusPageProps {}
 
@@ -39,8 +38,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
   const pageNo = location?.state?.pageNo;
   const rowsNo = location?.state?.rowsNo;
 
-  const { modalOpen, openModal, removeModal } = useModalContext();
-  const addToast = useToastContext();
+  const { openModal, removeModal } = useModalContext();
   const [menuState, setMenuState] = React.useState<MenuState>({
     menuName: "",
     menu: [],
@@ -83,7 +81,6 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
       <AddOptionModal
         onCancel={() => removeModal()}
         menuTitle={menuTitle}
-        handleChangeOptionInput={handleChangeOptionInput}
       />
     );
 

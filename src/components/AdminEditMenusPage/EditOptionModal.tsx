@@ -22,14 +22,9 @@ import {
 
 interface EditOptionModalProps {
   onCancel: () => void;
-  onConfirm?: () => void;
   menuTitle: string;
   currentOption: string;
   optionId: number;
-  handleChangeOptionInput: (
-    event: React.BaseSyntheticEvent,
-    value: string
-  ) => void;
 }
 
 const EditOptionModal: React.FC<EditOptionModalProps> = props => {
@@ -39,10 +34,8 @@ const EditOptionModal: React.FC<EditOptionModalProps> = props => {
 
   const { mutate: editColorOption, isLoading: isLoadingEditColor } =
     useEditColorOption();
-
   const { mutate: editMaterialOption, isLoading: isLoadingEditMaterial } =
     useEditMaterialOption();
-
   const { mutate: editGarmentTitleOption, isLoading: isLoadingEditGarmentTitle } =
     useEditGarmentTitleOption();
 
@@ -59,7 +52,7 @@ const EditOptionModal: React.FC<EditOptionModalProps> = props => {
     setErrorText("");
   };
 
-  const handleAddColor = async () => {
+  const handleEditColor = async () => {
     editColorOption(
       {
         colorOptionId: optionId,
@@ -87,7 +80,7 @@ const EditOptionModal: React.FC<EditOptionModalProps> = props => {
     );
   };
 
-  const handleAddMaterial = async () => {
+  const handleEditMaterial = async () => {
     console.log("HANDLE EDIT MATERIAL");
     editMaterialOption(
       {
@@ -116,7 +109,7 @@ const EditOptionModal: React.FC<EditOptionModalProps> = props => {
     );
   };
 
-  const handleAddGarmentTitle = async () => {
+  const handleEditGarmentTitle = async () => {
     console.log("HANDLE EDIT GARMENT TITLE");
     editGarmentTitleOption(
       {
@@ -149,15 +142,16 @@ const EditOptionModal: React.FC<EditOptionModalProps> = props => {
     console.log("Handle click save:", { menuTitle });
     switch (menuTitle) {
       case "Colors":
-        await handleAddColor();
+        await handleEditColor();
         break;
       case "Materials":
-        await handleAddMaterial();
+        await handleEditMaterial();
         break;
       case "Garment Titles":
-        await handleAddGarmentTitle();
+        await handleEditGarmentTitle();
         break;
       default:
+        console.log("Unhandled menu type", { menuTitle });
         break;
     }
   };

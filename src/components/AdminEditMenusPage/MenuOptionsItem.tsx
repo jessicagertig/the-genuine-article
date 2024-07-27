@@ -12,11 +12,15 @@ interface MenuOptionsItemProps {
   handleClickEdit: (optionValue: string, optionId: number) => void;
   handleClickDelete: (optionId: number) => void;
   item: MenuItem;
-  name: string;
 }
 
 const MenuOptionsItem: React.FC<MenuOptionsItemProps> = props => {
-  const { item, name } = props;
+  // console.log(
+  //   "%cMenuOptionsItem RENDER",
+  //   "background-color: blue; color: white;",
+  //   { props }
+  // );
+  const { item } = props;
 
   const getItemName = () => {
     if ("color" in item) {

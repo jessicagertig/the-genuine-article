@@ -9,14 +9,18 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { MenuItem } from "src/utils/formHelpers";
 
 interface MenuOptionsItemProps {
-  handleClickEdit: (event: React.SyntheticEvent) => void;
-  handleClickDelete: (event: React.SyntheticEvent) => void;
+  handleClickEdit: (optionValue: string, optionId: number) => void;
+  handleClickDelete: (optionId: number) => void;
   item: MenuItem;
-  name: string;
 }
 
 const MenuOptionsItem: React.FC<MenuOptionsItemProps> = props => {
-  const { item, name } = props;
+  // console.log(
+  //   "%cMenuOptionsItem RENDER",
+  //   "background-color: blue; color: white;",
+  //   { props }
+  // );
+  const { item } = props;
 
   const getItemName = () => {
     if ("color" in item) {
@@ -28,7 +32,7 @@ const MenuOptionsItem: React.FC<MenuOptionsItemProps> = props => {
     }
   };
 
-  const itemName = getItemName();
+  const itemName = getItemName() || "";
 
   return (
     <Styled.Container>
@@ -38,13 +42,13 @@ const MenuOptionsItem: React.FC<MenuOptionsItemProps> = props => {
       <Styled.Actions>
         <IconButton
           sx={{ color: "#020b1c" }}
-          onClick={event => props.handleClickEdit(event)}
+          onClick={()=> props.handleClickEdit(itemName, item.id)}
         >
           <BorderColorOutlinedIcon />
         </IconButton>
         <IconButton
           sx={{ color: "#020b1c" }}
-          onClick={event => props.handleClickDelete(event)}
+          onClick={() => props.handleClickDelete(item.id)}
         >
           <DeleteOutlineIcon />
         </IconButton>

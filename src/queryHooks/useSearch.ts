@@ -9,11 +9,11 @@ type SearchParams = {
   page?: number;
   limit?: number;
 }
-
+// On hold?
 const getGarmentsSearch = async ({ query, page = 1, limit = 12}: SearchParams) => {
   return await apiGet({ endpoint: `/items/search?q=${query}&page=${page}&limit=${limit}` });
 };
-
+// In use
 const getGarmentsKeywordSearch = async ({ query, page = 1, limit = 12}: SearchParams): Promise<{
   data: any;
   pagination: any;
@@ -51,7 +51,7 @@ function useGarmentsSearch(query: string, enabled = false): {
     },
   );
 }
-
+// IN use
 function useGarmentsKeywordSearch(query: string, enabled = false): {
   data: any;
   pagination: any;

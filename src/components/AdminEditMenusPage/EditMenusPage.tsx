@@ -13,16 +13,12 @@ import OutlinedButton from "src/components/shared/OutlinedButton";
 import MenuOptionsList from "src/components/AdminEditMenusPage/MenuOptionsList";
 
 import { useModalContext } from "src/context/ModalContext";
-import { useToastContext } from "src/context/ToastContext";
 import { useWindowSizeContext } from "src/context/WindowSizeContext";
 
-import { getLabelFromValue } from 'src/utils/formHelpers';
+import { getLabelFromValue } from "src/utils/formHelpers";
+import { useMenus } from "src/queryHooks/useMenus";
 
-import {
-  useMenus,
-} from "src/queryHooks/useMenus";
-
-import { Menus, Option } from "src/utils/formHelpers";
+import { Menus } from "src/utils/formHelpers";
 
 interface AdminEditMenusPageProps {}
 
@@ -42,34 +38,27 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
   const pageNo = location?.state?.pageNo;
   const rowsNo = location?.state?.rowsNo;
 
-  const { modalOpen, openModal, removeModal } = useModalContext();
-  const addToast = useToastContext();
+  const { openModal, removeModal } = useModalContext();
   const [menuState, setMenuState] = React.useState<MenuState>({
     menuName: "",
     menu: [],
   });
-  const { menuName, menu } = menuState
-  const [newOption, setNewOption] = React.useState<string>("");
-  const [errorText, setErrorText] = React.useState<string>("");
+  const { menuName, menu } = menuState;
 
   const { data: menus, isLoading } = useMenus();
 
-  console.log("Edit Menus Page MENUS:", { menus });
-  console.log("Edit Menus Page MENUSTATE:", { menuState });
+  // console.log("Edit Menus Page MENUS:", { menus });
+  // console.log("Edit Menus Page MENUSTATE:", { menuState });
 
   React.useEffect(() => {
+    console.log(
+      "%cEditMenusPage useEffect",
+      "background-color: #d36; color: white;"
+    );
     if (menus && menuName !== "") {
       setMenuState({ ...menuState, menu: menus[menuName as MenusKey] });
     }
-  }, [menus])
-
-  const handleChangeOptionInput = (
-    event: React.BaseSyntheticEvent,
-    value: string
-  ) => {
-    setNewOption(value);
-    setErrorText("");
-  };
+  }, [menus, menuName]);
 
   type MenuOption = { label: string; value: keyof Menus };
   const menuOptions: Array<MenuOption> = [
@@ -78,29 +67,29 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     { label: "Garment Titles", value: "garmentTitlesMenu" },
   ];
 
-
   const handleClickAddOption = (event: React.SyntheticEvent): void => {
     event.preventDefault();
-    
-    const menuTitle =  getLabelFromValue(menuOptions, menuName)
+
+    const menuTitle = getLabelFromValue(menuOptions, menuName);
     const modal = (
-      <AddOptionModal
-        onCancel={() => removeModal()}
-        menuTitle={menuTitle}
-        handleChangeOptionInput={handleChangeOptionInput}
-      />
+      <AddOptionModal onCancel={() => removeModal()} menuTitle={menuTitle} />
     );
 
     openModal(modal);
   };
 
-
   const handleChangeMenu = (event: React.BaseSyntheticEvent, value: any) => {
+    event.preventDefault();
     console.log("Edit Menus Page MENUSTATE:", { value });
     const menuKey: MenusKey = value?.value as MenusKey;
     console.log("Edit Menus Page MENUSTATE:", { menuKey });
     const menuContent = menus && menuKey ? menus[menuKey] : [];
-    setMenuState({ menuName: menuKey, menu: menuContent });
+    setMenuState(prevState => {
+      if (prevState.menuName !== menuKey) {
+        return { menuName: menuKey, menu: menuContent };
+      }
+      return prevState; // No change, return previous state
+    });
   };
 
   const submitButton = (
@@ -147,7 +136,7 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
             onChange={(event, value) => handleChangeMenu(event, value)}
           />
         </Styled.Form>
-        {menuName === ""|| !menuName ? (
+        {menuName === "" || !menuName ? (
           <EmptyState
             title="No Menu Selected"
             description="Select a menu type to get started"

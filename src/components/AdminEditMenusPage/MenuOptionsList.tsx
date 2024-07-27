@@ -19,6 +19,11 @@ interface MenuOptionsListProps {
 }
 
 const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
+  console.log(
+    "%cMenuOptionsList RENDER",
+    "background-color: purple; color: white;",
+    { props }
+  );
   const {
     menuState: { menuName, menu },
   } = props;
@@ -28,11 +33,26 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
   const { mutate: deleteColor } = useDeleteColorOption();
   const { mutate: deleteMaterial } = useDeleteMaterialOption();
 
+    const getMenuTitle = (): string => {
+      if (menuName.includes("color")) {
+        return "Colors";
+      } else if (menuName.includes("material")) {
+        return "Materials";
+      } else if (menuName.includes("garment")) {
+        return "Garment Titles";
+      } else {
+        console.log("Unknown menuName")
+        return "Unknown"
+      }
+    };
+
   const handleClickEdit = (optionValue: string, optionId: number) => {
+    console.log("Handle click edit", { optionId })
+    const menuTitle = getMenuTitle()
     const modal = (
       <EditOptionModal
         onCancel={() => removeModal()}
-        menuTitle={menuName}
+        menuTitle={menuTitle}
         currentOption={optionValue}
         optionId={optionId}
       />
@@ -142,7 +162,6 @@ const MenuOptionsList: React.FC<MenuOptionsListProps> = props => {
             handleClickDelete={handleClickDelete}
             handleClickEdit={handleClickEdit}
             item={item}
-            name={menuName}
             key={item.id}
           />
         ))}

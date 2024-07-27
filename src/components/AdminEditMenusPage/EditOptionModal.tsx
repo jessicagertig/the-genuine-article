@@ -113,7 +113,7 @@ const EditOptionModal: React.FC<EditOptionModalProps> = props => {
     console.log("HANDLE EDIT GARMENT TITLE");
     editGarmentTitleOption(
       {
-        garmentTileOptionId: optionId,
+        garmentTitleOptionId: optionId,
         garmentTitleOption: newOption,
       },
       {

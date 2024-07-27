@@ -44,27 +44,21 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
     menu: [],
   });
   const { menuName, menu } = menuState;
-  const [newOption, setNewOption] = React.useState<string>("");
-  const [errorText, setErrorText] = React.useState<string>("");
 
   const { data: menus, isLoading } = useMenus();
 
-  console.log("Edit Menus Page MENUS:", { menus });
-  console.log("Edit Menus Page MENUSTATE:", { menuState });
+  // console.log("Edit Menus Page MENUS:", { menus });
+  // console.log("Edit Menus Page MENUSTATE:", { menuState });
 
   React.useEffect(() => {
+    console.log(
+      "%cEditMenusPage useEffect",
+      "background-color: #d36; color: white;"
+    );
     if (menus && menuName !== "") {
       setMenuState({ ...menuState, menu: menus[menuName as MenusKey] });
     }
-  }, [menus]);
-
-  const handleChangeOptionInput = (
-    event: React.BaseSyntheticEvent,
-    value: string
-  ) => {
-    setNewOption(value);
-    setErrorText("");
-  };
+  }, [menus, menuName]);
 
   type MenuOption = { label: string; value: keyof Menus };
   const menuOptions: Array<MenuOption> = [
@@ -78,21 +72,24 @@ const AdminEditMenusPage: React.FC<AdminEditMenusPageProps> = () => {
 
     const menuTitle = getLabelFromValue(menuOptions, menuName);
     const modal = (
-      <AddOptionModal
-        onCancel={() => removeModal()}
-        menuTitle={menuTitle}
-      />
+      <AddOptionModal onCancel={() => removeModal()} menuTitle={menuTitle} />
     );
 
     openModal(modal);
   };
 
   const handleChangeMenu = (event: React.BaseSyntheticEvent, value: any) => {
+    event.preventDefault();
     console.log("Edit Menus Page MENUSTATE:", { value });
     const menuKey: MenusKey = value?.value as MenusKey;
     console.log("Edit Menus Page MENUSTATE:", { menuKey });
     const menuContent = menus && menuKey ? menus[menuKey] : [];
-    setMenuState({ menuName: menuKey, menu: menuContent });
+    setMenuState(prevState => {
+      if (prevState.menuName !== menuKey) {
+        return { menuName: menuKey, menu: menuContent };
+      }
+      return prevState; // No change, return previous state
+    });
   };
 
   const submitButton = (

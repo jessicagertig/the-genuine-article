@@ -52,6 +52,10 @@ const editGarmentTitleOption = async ({
   garmentTitleOptionId: number;
   garmentTitleOption: string;
 }) => {
+  console.log("%ceditGarmentTitleOption inputs", "background-color: orange;", {
+    garmentTitleOptionId,
+    garmentTitleOption,
+  });
   return await apiPut({
     endpoint: `/items/garment_titles/${garmentTitleOptionId}`,
     variables: { garmentTitleOption },

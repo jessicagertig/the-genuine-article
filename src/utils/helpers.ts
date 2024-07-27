@@ -12,5 +12,30 @@ export const camelToHumanReadable = (camelCaseString: string): string => {
     words[i] = words[i].toLowerCase();
   }
   return words.join(" ");
+};
+
+export interface PinterestQueryParams {
+  pathname: string;
+  pageNumber?: string;
+  searchParams?: string;
 }
 
+export const constructPinterestQueryString = ({pathname, pageNumber, searchParams}: PinterestQueryParams) =>{
+  let params = new URLSearchParams();
+  params.append("returnTo", pathname);
+
+  // Conditionally add pageNumber if it is defined
+  if (pageNumber !== undefined) {
+    params.append("pageNumber", pageNumber);
+  }
+
+  // Conditionally add searchParams if they are defined
+  if (searchParams !== undefined) {
+    Object.entries(searchParams).forEach(([key, value]: [string, string]) => {
+      params.append(key, value);
+    });
+  }
+
+  // Convert URLSearchParams to a string and prepend with '?'
+  return "?" + params.toString();
+}

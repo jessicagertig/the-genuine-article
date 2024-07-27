@@ -4,28 +4,45 @@ import { css } from "@emotion/react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
+import ShareIcon from "@mui/icons-material/ShareOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ZoomOutMapOutlinedIcon from "@mui/icons-material/ZoomOutMapOutlined";
 
-import GarmentZoomModal from "src/components/Garment/GarmentZoomModal";
+import GarmentZoomModal from 'src/components/Garment/GarmentZoomModal';
+import ShareModal from "src/components/Garment/ShareModal"; 
 import { useModalContext } from "src/context/ModalContext";
+
+import { GarmentData } from 'src/types';
 
 interface ImageToolbarProps {
   garmentMainImgUrl: string;
   garmentTitle: string;
   mediumScreen: boolean;
+  garment?: GarmentData;
 }
 
 const ImageToolbar: React.FC<ImageToolbarProps> = props => {
-  const { mediumScreen, garmentTitle, garmentMainImgUrl } = props;
+  const { mediumScreen, garmentTitle, garmentMainImgUrl, garment } = props;
   const navigate = useNavigate();
   const { state } = useLocation();
   const { openModal, removeModal } = useModalContext();
 
-  console.log("GARMENT TOOLBAR LOCATION", state);
+  // console.log("GARMENT TOOLBAR LOCATION", { state, pathname });
   const isSearch = state?.isSearch;
   const searchParams = state?.searchParams;
   const pageNumber = state?.pageNo;
+
+    const handleShareClick = () => {
+      const modal = (
+        <ShareModal
+          onClose={() => removeModal()}
+          garment={garment}
+          url={window.location.href}
+        />
+      );
+
+      openModal(modal);
+    };
 
   const handleZoom = () => {
     const modal = (
@@ -48,6 +65,7 @@ const ImageToolbar: React.FC<ImageToolbarProps> = props => {
         },
       });
     } else if (isSearch && searchParams !== undefined) {
+      console.log("searchParams", { searchParams });
       navigate(`/garments${searchParams}`);
     } else {
       navigate("/garments");
@@ -68,16 +86,25 @@ const ImageToolbar: React.FC<ImageToolbarProps> = props => {
   return (
     <Styled.Container>
       <Styled.ButtonsContainer>
-        <Styled.IconButton
+        <Styled.NavButton
           onClick={handleClickBack}
           aria-label="navigate back to list"
         >
           <ArrowBackIcon fontSize="small" />
           <p>{isSearch ? "search results" : "garments"}</p>
-        </Styled.IconButton>
-        <IconButton onClick={handleZoom} aria-label="zoom" sx={buttonStyles}>
-          <ZoomOutMapOutlinedIcon fontSize="small" />
-        </IconButton>
+        </Styled.NavButton>
+        <Styled.ImageActionsButtons>
+          <IconButton
+            onClick={handleShareClick}
+            aria-label="Share this garment"
+            sx={buttonStyles}
+          >
+            <ShareIcon fontSize="small" />
+          </IconButton>
+          <IconButton onClick={handleZoom} aria-label="zoom" sx={buttonStyles}>
+            <ZoomOutMapOutlinedIcon fontSize="small" />
+          </IconButton>
+        </Styled.ImageActionsButtons>
       </Styled.ButtonsContainer>
     </Styled.Container>
   );
@@ -115,7 +142,18 @@ Styled.ButtonsContainer = styled.div((props: any) => {
   `;
 });
 
-Styled.IconButton = styled.div(() => {
+Styled.ImageActionsButtons = styled.div((props: any) => {
+  const t = props.theme;
+  return css`
+    label: ImageToolbar_ImageActionButtons;
+    ${[t.pr(1)]}
+    display: flex;
+    width: fit-content;
+    justify-content: space-between;
+  `;
+})
+
+Styled.NavButton = styled.div(() => {
   return css`
     label: ImageToolbar_BackButton;
     display: flex;
